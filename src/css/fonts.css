@@ -1,6 +1,20 @@
 @font-face {
-  font-family: 'Open Sans';
+  font-family: 'Raleway-Medium';
   font-style: normal;
   font-weight: normal;
-  src: url(../fonts/open-sans/OpenSans-ExtraBold.ttf) format('truetype');
+  font-stretch: normal; 
+  src: url(../fonts/Raleway/Raleway-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Raleway-ExtraBold';
+  font-style: bold;
+  font-weight: bold;
+  font-stretch: bold; 
+  src: url(../fonts/Raleway/Raleway-ExtraBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter', sans-serif;
+  src: url(../fonts/Inter/Inter-VariableFont_slnt\,wght.ttf) format('truetype');
 }

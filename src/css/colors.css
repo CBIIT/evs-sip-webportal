@@ -1,0 +1,12 @@
+:root { 
+  --black: #3a3a3a;
+  --white: #f9f9f9;
+  --nav-back-color-style: #1B6CB7;
+  --nav-link-color-style: var(--white);
+  --graphic-blue-light: #00C6FF;
+  --tools-green: #45F2B9;
+  --toolbox-title: #00C87F;
+  --toolbox-paragraph: #03934D;
+  --toolbox-link: #004F98;
+  --footer-bkdg: #283247;
+}

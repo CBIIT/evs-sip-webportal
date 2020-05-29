@@ -1,4 +1,5 @@
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -9,7 +10,8 @@ module.exports = {
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, './dist')
+    contentBase: path.resolve(__dirname, './dist'),
+    // hot: true
   },
   module: {
     rules: [
@@ -26,8 +28,26 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' }
+          { 
+            loader: 'style-loader'
+          },
+          // { loader: 'css-loader' },
+
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              // modules: true,
+              // localIdentName: '[name]__[local]__[hash:base64:5]'
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [autoprefixer()]
+            },
+          },
         ]
       },
 
@@ -38,13 +58,30 @@ module.exports = {
           loader: 'html-loader'
         }
       },
-
+      
+      //FONTS
       {
-        test: /\.(svg|gif|jpg|png|eot|woff|ttf)$/,
+        test: /\.(woff|woff2|eot|ttf|svg)$/,  
+        exclude: path.resolve(__dirname, '.src/img'),
         use: {
           loader: 'url-loader',
           options: {
-            limit: 8192 // in bytes
+            limit: 50000, // in bytes
+            fallback: 'file-loader',
+            name: 'fonts/[name].[hash:8].[ext]'
+          }
+        }
+      },
+
+      //IMAGES
+      {
+        test: /\.(svg|gif|png|jpe?g)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000, // in bytes
+            fallback: 'file-loader',
+            name: 'img/[name].[hash:8].[ext]'
           }
         }
       }
@@ -53,10 +90,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index.html'),
-      // inject: true,
-      // //chunks: ['index'],
-      // filename: 'index.html'
+      template: path.resolve(__dirname, './src/index.html')
     })
   ]
 } 
