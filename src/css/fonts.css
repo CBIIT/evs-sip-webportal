@@ -14,6 +14,22 @@
   src: url(../fonts/Raleway/Raleway-ExtraBold.ttf) format('truetype');
 }
 
+
+@font-face {
+  font-family: 'Lato-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato-Bold';
+  font-style: bold;
+  font-weight: bold;
+  src: url(../fonts/Lato/Lato-Bold.ttf) format('truetype');
+}
+
+
 @font-face {
   font-family: 'Inter', sans-serif;
   src: url(../fonts/Inter/Inter-VariableFont_slnt\,wght.ttf) format('truetype');

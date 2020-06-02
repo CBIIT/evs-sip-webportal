@@ -1,5 +1,6 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -32,7 +33,7 @@ module.exports = {
             loader: 'style-loader'
           },
           // { loader: 'css-loader' },
-
+          MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
@@ -89,6 +90,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({ filename: 'styles.css' }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html')
     })
