@@ -1,0 +1,47 @@
+{
+  "name": "evs-sip",
+  "version": "v1.0.0-alpha.1",
+  "description": "EVS-SIP project",
+  "main": "app.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "watch": "webpack --watch --mode=development --devtool=eval-source-map",
+    "start": "webpack-dev-server --open --mode=development --devtool=eval-source-map"
+  },
+  "author": "CBIIT",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CBIIT/GDCMVS"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "bootstrap": "^4.5.0",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
+    "autoprefixer": "^9.8.0",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^1.2.1",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "browserslist": [
+    ">1%",
+    "last 4 versions",
+    "Firefox ESR",
+    "not ie < 9"
+  ]
+}
