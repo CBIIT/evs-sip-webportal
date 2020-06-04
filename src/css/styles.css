@@ -34,8 +34,8 @@ header .logo {
 
 .search-section {
   height: 30rem;
-  background: url(../img/search-bkdg.png) repeat;
-  /* background-size: cover; */
+  background: url(../img/search-bkgd.jpg) no-repeat top;
+  background-color: #fff;
 }
 
 .search-container {
@@ -60,9 +60,9 @@ header .logo {
   filter: drop-shadow(0 0 2rem rgba(80, 80, 80, 0.5));
 }
 
-.search-triangle-bkdg {
-  background: var(--white);
-  /* background-size: cover; */
+.search-triangle-bkgd {
+  background: url(../img/triangle-bkgd.jpg) no-repeat center right;
+  background-color: #fff;
   width: 42%;
   height: 30rem;
   position: absolute;
@@ -88,12 +88,14 @@ header .logo {
   position: absolute;
 }
 
-.graphic-left-bkdg {
-  background: #042A68;
+.graphic-left-bkgd {
+  background: url(../img/graph-bkgd.jpg) no-repeat center;
+  background-size: cover;
+  background-color: #042A68;
   width: 60%;
 }
 
-.graphic-right-bkdg {
+.graphic-right-bkgd {
   background-color: var(--graphic-blue-light);
   width: 40%;
 }
@@ -148,7 +150,7 @@ header .logo {
   filter: drop-shadow(0 0 2rem rgba(0, 0, 0, 0.5));
 }
 
-.tools-triangle-bkdg {
+.tools-triangle-bkgd {
   background: var(--white);
   width: 65%;
   height: 50rem;
@@ -411,7 +413,7 @@ header .logo {
 .footer {
   position: relative;
   z-index: 1;
-  background-color: var(--footer-bkdg);
+  background-color: var(--footer-bkgd);
   border: none;
 }
 
