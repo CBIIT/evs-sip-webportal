@@ -1,26 +1,12 @@
+/* no-responsive body */
+body {
+  min-width: 80rem;
+}
+
 .header {
   position: relative;
   z-index: 1;
 }
-/* 
-nav a, 
-nav a:link, 
-nav a:visited {
-  display: inline-block;
-  font-family: 'Inter', sans-serif;
-  color: var(--nav-link-color-style);
-  padding: 0.9375rem 1.3rem 0.625rem;
-} */
-/* 
-.nav-bar {
-  background-color: var(--nav-back-color-style);
-}
-
-.nav-container {
-  max-width: 80rem;
-  text-align: right;
-  margin: 0 auto;
-} */
 
 .navbar-container {
   width: 100%;
