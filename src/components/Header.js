@@ -1,6 +1,7 @@
 import React from 'react';
-import logo from '../assets/nih-evs-sip-logo-color.png'
 import styled from 'styled-components';
+
+import logo from '../assets/img/nih-evs-sip-logo-color.png';
 
 const LogoContainer = styled.div`
   max-width: 80rem;

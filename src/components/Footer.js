@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
-import logo from '../assets/nih-white-logo.png';
+
+import logo from '../assets/img/nih-white-logo.png';
 
 const FooterStyled = styled.footer`
   background-color: var(--footer-bkgd);
@@ -80,34 +81,34 @@ const Footer = () => {
                 <Col xs={3}>
                   <Title>About ICDC</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href>Steering Committee</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>FAQs</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Contact Us</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Steering Committee</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Policies</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">FAQs</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Contact Us</MenuLink></MenuLi>
                   </MenuUl>
                 </Col>
                 <Col xs={3}>
                   <Title>About the Data</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href>Data Access Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Data Analysis</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>REST APIs</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Data Access Policies</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Data Analysis</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">REST APIs</MenuLink></MenuLi>
                   </MenuUl>
                 </Col>
                 <Col xs={3}>
                   <Title>About Data Submission</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href>Data Governance Advisory Board</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Process and Tools</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Submission Guide</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Data Governance Advisory Board</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Process and Tools</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Submission Guide</MenuLink></MenuLi>
                   </MenuUl>
                 </Col>
                 <Col xs={3}>
                   <Title>NIH Policies</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href>Disclaimer Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>Accessibility</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href>FOIA</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Disclaimer Policies</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">Accessibility</MenuLink></MenuLi>
+                    <MenuLi><MenuLink href="/">FOIA</MenuLink></MenuLi>
                   </MenuUl>
                 </Col>
               </Row>
@@ -118,13 +119,13 @@ const Footer = () => {
         <Row>
           <Col xs={12}> 
             <Caption>
-              <a href>U.S. Department of Health and Human Services</a><span>|</span>
-              <a href>National Institutes of Health</a><span>|</span>
-              <a href>National Cancer Institute</a><span>|</span>
-              <a href>USA.gov</a>
+              <a href="/">U.S. Department of Health and Human Services</a><span>|</span>
+              <a href="/">National Institutes of Health</a><span>|</span>
+              <a href="/">National Cancer Institute</a><span>|</span>
+              <a href="/">USA.gov</a>
             </Caption>
             <Copyright>
-              <a href>NIH … Turning Discovery Into Health®</a>
+              <a href="/">NIH … Turning Discovery Into Health®</a>
             </Copyright>
           </Col>
         </Row>
