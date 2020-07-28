@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import bkgd from '../../assets/img/search-bkgd.jpg';
 

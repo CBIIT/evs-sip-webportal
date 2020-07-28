@@ -16,8 +16,20 @@ module.exports = function(app) {
   app.use(express.static(path.resolve(config.root, 'build')));
   console.log(path.resolve(config.root, 'build'));
 
+  app.use(function (req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+		if (next) {
+			next();
+		}
+	});
+
   //Routers
   //app.use('/api', indexRouter)
+  app.use('/search/', require('../service/search'));
+
   app.get('*', (req, res) => {
     res.sendFile('build/index.html', { root: config.root });
   });

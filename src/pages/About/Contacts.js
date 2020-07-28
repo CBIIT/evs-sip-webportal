@@ -42,7 +42,7 @@ const ContentBoxText = styled.div`
   }
 `;
 
-const DataSources = () => {
+const Contacts = () => {
   return <ContentBox>
     <ContentBoxTitle>EVS Contacts</ContentBoxTitle>
     <ContentBoxText>
@@ -51,4 +51,4 @@ const DataSources = () => {
   </ContentBox>
 }
 
-export default DataSources;
+export default Contacts;

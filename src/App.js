@@ -12,6 +12,7 @@ import Layout from './components/Layout';
 // Pages
 import Home from './pages/Home';
 import About from './pages/About';
+import Search from './pages/Search';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Layout>
             <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/search" component={Search} />
               <Route path="/about" component={About} />
             </Switch>
           </Layout>
