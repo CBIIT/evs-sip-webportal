@@ -14,10 +14,9 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Search from './pages/Search';
 
-
 function App() {
   return (
-      <Router>
+      <Router basename={'/evssip'}>
         <div>
           <Header/>
           <NavigationBar/>

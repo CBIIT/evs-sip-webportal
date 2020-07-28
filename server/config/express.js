@@ -9,7 +9,9 @@ const config = require('./index');
 // const indexRouter = require('./routes/index')
 
 module.exports = function(app) {
-  app.use(logger('dev'));
+  if (config.env !== 'prod') { 
+    app.use(logger('dev')) 
+  };
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
@@ -40,13 +42,14 @@ module.exports = function(app) {
   });
 
   // TODO: Add your own error handler here.
-  if (process.env.NODE_ENV === 'prod') {
+  if (config.env === 'prod') {
     // Do not send stack trace of error message when in production
     app.use((err, req, res, next) => {
       res.status(err.status || 500);
       res.send('Error occurred while handling the request.');
     });
   } else {
+    app.use(logger('dev'));
     // Log stack trace of error message while in development
     app.use((err, req, res, next) => {
       res.status(err.status || 500);

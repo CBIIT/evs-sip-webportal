@@ -10,7 +10,7 @@ require('./config/express')(app);
 
 // Start server
 app.listen(config.port, config.ip, function () {
-  console.log('Server listening on %d, in %s mode', config.port, app.get('env'));
+  console.log('Server listening on %d, in %s mode', config.port, config.env);
 });
 
 // Expose app
