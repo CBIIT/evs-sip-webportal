@@ -1,4 +1,4 @@
-const baseUrl = './search';
+const baseUrl = './api/search';
 
 export const apiSuggest = async keyword => {
   const response = await fetch(`${baseUrl}/suggest?keyword=${keyword}`);

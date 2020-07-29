@@ -30,7 +30,7 @@ module.exports = function(app) {
 
   //Routers
   //app.use('/api', indexRouter)
-  app.use('/search/', require('../service/search'));
+  app.use('/api/search', require('../service/search'));
 
   app.get('*', (req, res) => {
     res.sendFile('build/index.html', { root: config.root });
