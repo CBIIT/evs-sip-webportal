@@ -84,6 +84,7 @@ const InputBoxButton = styled(Button)`
   font-size: 1.25rem; 
   width: 4rem;
   height: 2.375rem;
+  border-color: transparent;
 
   &&:hover,
   &&:focus {

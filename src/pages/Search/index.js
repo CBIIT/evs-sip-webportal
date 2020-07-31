@@ -4,16 +4,15 @@ import { apiSearchAll } from '../../api';
 import SearchBox from './SearchBox';
 import TabsController from './TabsController';
 
-const Page = styled.div`
-  background-color: var(--page-bkgd);
-  overflow: auto;
-`;
+// const Page = styled.div`
+//   background-color: var(--page-bkgd);
+//   overflow: auto;
+// `;
 
-const PageContainer = styled.div`
-  max-width: 80rem;
-  margin: 0 auto;
+const Page = styled.div`
   background-color: var(--white);
-  padding: 2rem;
+  min-height: calc(100vh - 26.5rem);
+  padding-bottom: 18rem;
 `;
 
 const Search = () => {
@@ -26,11 +25,9 @@ const Search = () => {
   };
 
   return <Page>
-      <PageContainer>
         <SearchBox searchTrigger={searchHandler}/>
         <TabsController keyword={keywordState} source={sourceState}/>
-      </PageContainer>;
-    </Page>
+    </Page>;
 }
 
 export default Search;

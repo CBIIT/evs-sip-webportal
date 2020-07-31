@@ -6,6 +6,10 @@ import logo from '../assets/img/nih-white-logo.png';
 
 const FooterStyled = styled.footer`
   background-color: var(--footer-bkgd);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 18rem; 
 `;
 
 const FooterContainer = styled(Container)`

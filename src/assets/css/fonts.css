@@ -8,6 +8,14 @@
 }
 
 @font-face {
+  font-family: 'Raleway-Light';
+  font-style: normal;
+  font-weight: lighter;
+  font-stretch: normal; 
+  src: url(../fonts/Raleway/Raleway-Light.ttf) format('truetype');
+}
+
+@font-face {
   font-family: 'Raleway-Bold';
   font-style: bold;
   font-weight: bold;

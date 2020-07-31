@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styled from 'styled-components';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
@@ -14,10 +15,16 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Search from './pages/Search';
 
+
+const MainContainer = styled.div`
+  position: relative;
+  min-height: 100vh;
+`
+
 function App() {
   return (
       <Router basename={'/evssip'}>
-        <div>
+        <MainContainer>
           <Header/>
           <NavigationBar/>
           <Layout>
@@ -28,7 +35,7 @@ function App() {
             </Switch>
           </Layout>
           <Footer/>
-        </div>
+        </MainContainer>
       </Router>
   );
 }

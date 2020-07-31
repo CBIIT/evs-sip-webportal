@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab, Row, Col, Nav } from 'react-bootstrap';
+import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import ValuesTable from './ValuesTable';
 import PropsTable from './PropsTable';
 import DictTable from './DictTable';
@@ -94,40 +94,42 @@ const TabsController = (props) => {
   return (
     <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
       <Tab.Container id="tabs-controller" defaultActiveKey="values">
-        <Row className="clearfix">
-          <TabNavsCol sm={12}>
-            <TabNavText>Results for <b>{props.keyword}</b> in:</TabNavText>
-            <StyledNav variant="tabs">
-              {/* <NavItem eventKey="values">Values</NavItem>
-              <NavItem eventKey="properties">Properties</NavItem>
-              <NavItem eventKey="dictionary">Dictionary</NavItem> */}
+        <Container>
+          <Row className="clearfix">
+            <TabNavsCol sm={12}>
+              <TabNavText>Results for <b>{props.keyword}</b> in:</TabNavText>
+              <StyledNav variant="tabs">
+                {/* <NavItem eventKey="values">Values</NavItem>
+                <NavItem eventKey="properties">Properties</NavItem>
+                <NavItem eventKey="dictionary">Dictionary</NavItem> */}
 
-              <Nav.Item>
-                <Nav.Link eventKey="values">Values</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="properties">Properties</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="dictionary">Dictionary</Nav.Link>
-              </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="values">Values</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="properties">Properties</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="dictionary">Dictionary</Nav.Link>
+                </Nav.Item>
 
-            </StyledNav>
-          </TabNavsCol>
-          <Col sm={12}>
-            <Tab.Content transition="false">
-              <Tab.Pane unmountOnExit={true} eventKey="values">
-                <ValuesTable values={props.source}/>
-              </Tab.Pane>
-              <Tab.Pane unmountOnExit={true} eventKey="properties">
-                <PropsTable properties={props.source}/>
-              </Tab.Pane>
-              <Tab.Pane unmountOnExit={true} eventKey="dictionary">
-                <DictTable dictionary={props.source}/>
-              </Tab.Pane>
-            </Tab.Content>
-          </Col>
-        </Row>
+              </StyledNav>
+            </TabNavsCol>
+            <Col sm={12}>
+              <Tab.Content transition="false">
+                <Tab.Pane unmountOnExit={true} eventKey="values">
+                  <ValuesTable values={props.source}/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="properties">
+                  <PropsTable properties={props.source}/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="dictionary">
+                  <DictTable dictionary={props.source}/>
+                </Tab.Pane>
+              </Tab.Content>
+            </Col>
+          </Row>
+        </Container>
       </Tab.Container>
     </Result>
   );

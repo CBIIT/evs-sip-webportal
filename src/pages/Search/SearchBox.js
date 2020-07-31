@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { apiSuggest } from '../../api';
-import { InputGroup, FormControl, Form, Button } from 'react-bootstrap';
+import { InputGroup, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
+
+const SearchBoxContainer = styled.div`
+  padding-top: 2rem;
+  background-color: var(--gray-bkgd);
+`;
+
+const SearchBarContainer = styled.div`
+  max-width: 80rem;
+  margin: 0 auto;
+`;
 
 const SearchBar = styled.div`
   width: 60%;
@@ -24,12 +34,54 @@ const SearchOptions = styled.div`
   border-bottom: 1px solid #ecf0f1;
 `;
 
+const SearchFormControl = styled(Form.Control)`
+  width: 100% !important;
+  border-radius: 0;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: 3px solid #397DED;
+  font-size: 1.875rem;
+  font-family: 'Raleway-Light', sans-serif;
+
+  &&:focus {
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: 3px solid #397DED;
+  }
+
+  &&::placeholder {
+    color: #3A9CF7;
+  }
+`;
+
 const SearchButton = styled(Button)`
-  background-color: #6a7676;
-  border-color: #6a7676;
-  padding: 8px 45px;
-  font-size: 17px;
-  color: #fff;
+  position: absolute;
+  right: 0rem;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  z-index: 3;
+  background-color: #A1A0A0;
+  border-radius: 2rem !important;
+  color: var(--white);
+  font-size: 1.25rem; 
+  width: 5rem;
+  height: 2rem;
+  padding: .2rem .75rem;
+  border-color: transparent;
+
+  &&:hover,
+  &&:focus {
+    background-color: #397ded;
+    color: var(--white);
+    box-shadow: none;
+  }
+`;
+
+const SearchButtonIcon = styled(FontAwesomeIcon)`
+  font-size: 1.25rem;
+  vertical-align: 0;
 `;
 
 const FormGroupStyled = styled(Form.Group)`
@@ -80,10 +132,6 @@ const CheckboxStyled = styled(Form.Check)`
   }
 `;
 
-const ExternalLink = styled.a`
-  margin-left: 2em;
-`;
-
 const SearchBox = (props) => {
   let [suggestState, setSuggestState] = useState([]);
   let [searchState, setSearchState] = useState('');
@@ -101,10 +149,15 @@ const SearchBox = (props) => {
   };
 
   const suggestKeyPressHandler = event => {
-    if (event.keyCode === 13 && suggestState.length !== 0) {
+    if (event.keyCode === 13 && selectIndexState === -1) {
+      setSearchState(event.target.value);
+      setSuggestState([]);
+      props.searchTrigger(event.target.value, optionsState);
+    }
+    if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      props.searchTrigger(suggestState[selectIndexState].id);
+      props.searchTrigger(suggestState[selectIndexState].id, optionsState);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -137,62 +190,55 @@ const SearchBox = (props) => {
   };
 
   return (
-    <div>
-      <SearchBar>
-        <InputGroup>
-          <FormControl
-            type="text"
-            value={searchState}
-            onChange={suggestHandler}
-            onKeyDown={suggestKeyPressHandler}
-          />
-          <InputGroup.Append>
+    <SearchBoxContainer>
+      <SearchBarContainer>
+        <SearchBar>
+          <InputGroup>
+            <SearchFormControl
+              type="text"
+              value={searchState}
+              onChange={suggestHandler}
+              onKeyDown={suggestKeyPressHandler}
+              placeholder="Search EVS-SIP"
+            />
             <SearchButton onClick={() => props.searchTrigger(searchState, optionsState)}>
-              Search
+              <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
-          </InputGroup.Append>
-        </InputGroup>
-        <SuggestBox
-          suggest={suggestState}
-          suggestClick={suggestClickHandler}
-          suggestSelected={selectIndexState}
-          cleanSuggest={cleanSuggestHandler}
-        />
-      </SearchBar>
-      <SearchOptions>
-        <FormGroupStyled>
-          <Form.Check inline type="checkbox" id="match" label="Exact match" value={optionsState.match} onChange={checkedToggleHandler}/>
-          <Form.Check inline type="checkbox" id="desc" label="Property description" value={optionsState.desc} onChange={checkedToggleHandler}/>
-          <Form.Check inline type="checkbox" id="syns" label="Synonyms" value={optionsState.syns} onChange={checkedToggleHandler}/>
-          {/* <CheckboxStyled id="match" label="Check"  inline value={optionsState.match} onChange={checkedToggleHandler}>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Exact match
-          </CheckboxStyled>
-          <CheckboxStyled id="desc" inline value={optionsState.desc} onChange={checkedToggleHandler}>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Property description
-          </CheckboxStyled>
-          <CheckboxStyled id="syns" inline value={optionsState.syns} onChange={checkedToggleHandler}>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Synonyms
-          </CheckboxStyled> */}
-        </FormGroupStyled>
-        <div>
-          <ExternalLink href="https://ncit.nci.nih.gov/" target="_blank" rel="noreferrer">
-            Search in NCIt
-          </ExternalLink>
-          <ExternalLink href="https://ncit.nci.nih.gov/" target="_blank" rel="noreferrer">
-            Search in NCIt
-          </ExternalLink>
-        </div>
-      </SearchOptions>
-    </div>
+          </InputGroup>
+          <SuggestBox
+            suggest={suggestState}
+            suggestClick={suggestClickHandler}
+            suggestSelected={selectIndexState}
+            cleanSuggest={cleanSuggestHandler}
+          />
+        </SearchBar>
+        <SearchOptions>
+          <FormGroupStyled>
+            <Form.Check inline type="checkbox" id="match" label="Exact match" value={optionsState.match} onChange={checkedToggleHandler}/>
+            <Form.Check inline type="checkbox" id="desc" label="Property description" value={optionsState.desc} onChange={checkedToggleHandler}/>
+            <Form.Check inline type="checkbox" id="syns" label="Synonyms" value={optionsState.syns} onChange={checkedToggleHandler}/>
+            {/* <CheckboxStyled id="match" label="Check"  inline value={optionsState.match} onChange={checkedToggleHandler}>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Exact match
+            </CheckboxStyled>
+            <CheckboxStyled id="desc" inline value={optionsState.desc} onChange={checkedToggleHandler}>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Property description
+            </CheckboxStyled>
+            <CheckboxStyled id="syns" inline value={optionsState.syns} onChange={checkedToggleHandler}>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Synonyms
+            </CheckboxStyled> */}
+          </FormGroupStyled>
+        </SearchOptions>
+      </SearchBarContainer>
+    </SearchBoxContainer>
   );
 };
 

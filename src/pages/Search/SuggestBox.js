@@ -6,16 +6,16 @@ const Suggest = styled.div`
 `;
 
 const SuggestContent = styled.div`
-  width: calc(100% - 11.5em);
+  width: 100%;
   display: none;
-  border-radius: 5px;
-  padding-top: .5em;
-  padding-bottom: .5em;
+  border-radius: 0.3125rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   background-color: #fff;
-  box-shadow: 0 2px 3px 3px rgba(0,0,0,.16), 0 0 0 1px rgba(0,0,0,.08);
+  box-shadow: 0 0.125rem 0.1875rem 0.1875rem rgba(0,0,0,.16), 0 0 0 0.0625rem rgba(0,0,0,.08);
   position: absolute;
-  top: 2px;
-  left: 3px;
+  top: 0.125rem;
+  left: 0.1875rem;
   z-index: 100;
 `;
 
