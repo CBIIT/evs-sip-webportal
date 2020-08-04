@@ -8,7 +8,7 @@ import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
-  padding-top: 2rem;
+  padding: 4rem 0;
   background-color: var(--gray-bkgd);
 `;
 
@@ -18,20 +18,8 @@ const SearchBarContainer = styled.div`
 `;
 
 const SearchBar = styled.div`
-  width: 60%;
-  min-width: 690px;
+  width: 48rem;
   margin: 0 auto;
-`;
-
-const SearchOptions = styled.div`
-  width: 60%;
-  min-width: 690px;
-  margin: 0 auto;
-  padding: 1.5em 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ecf0f1;
 `;
 
 const SearchFormControl = styled(Form.Control)`
@@ -84,9 +72,41 @@ const SearchButtonIcon = styled(FontAwesomeIcon)`
   vertical-align: 0;
 `;
 
+const SearchOptionsContainer = styled.div`
+  padding: 1.5rem;
+`;
+
+const SearchAllOptions = styled.div`
+  width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 0;
+
+  && ${SearchOptionsContainer}:not(:last-child) {
+    border-bottom: 1px solid #898989;
+  }
+`;
+
+
+const SearchOptions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const SearchOptionsLabel = styled.h4`
+  font-family: 'Lato-Regular',sans-serif;
+  color: #397DED;
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+`;
+
 const FormGroupStyled = styled(Form.Group)`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  width: 30rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0;
 `;
 
 const CheckboxSpan = styled.span`
@@ -94,43 +114,82 @@ const CheckboxSpan = styled.span`
   display: block;
   border: 1px solid #dce4ec;
   background-color: #fff;
-  border-radius: .25em;
-  width: 2em;
-  height: 2em;
+  border-radius: .25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   float: left;
-  margin-right: .5em;
+  margin-right: .5rem;
 `;
 
 const CheckboxIcon = styled(FontAwesomeIcon)`
   position: absolute;
-  font-size: .9em;
+  font-size: .7rem;
   line-height: 0;
-  top: 50%;
-  left: 26%;
+  top: 25%;
+  left: 25%;
 `;
 
-const CheckboxStyled = styled(Form.Check)`
-  input[type=checkbox]:checked + ${CheckboxSpan} {
-    background-color: #6a7676;
-    border-color: #6a7676;
-  }
+const CheckboxLabel = styled.label`
+  font-family: 'Lato-Regular', sans-serif;
+  position: relative;
+  font-size: 0.875rem;
+  color: #1C1C1C;
+  inline-size: 9rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+`;
+const CheckboxLabelSpace = styled(CheckboxLabel)`
+  inline-size: 11rem;
+`;
 
-  input[type=checkbox]:focus + ${CheckboxSpan} {
-    box-shadow: 0 0 4px 2px #c2c2c2;
-    outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
-  }
+const SpanNormal = styled.span`
+  font-weight: normal;
+`; 
 
-  input[type=checkbox] + ${CheckboxSpan} > ${CheckboxIcon}{
+const CheckboxInput = styled.input`
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  &&:checked+${CheckboxSpan} {
+    background-color: var(--checkbox-green);
+    border-color: var(--checkbox-green);
+  }
+  
+  &&+${CheckboxSpan}>${CheckboxIcon}{
     opacity: 0;
   }
-
-  input[type=checkbox]:checked + ${CheckboxSpan} > ${CheckboxIcon}{
+  
+  &&:checked+${CheckboxSpan}>${CheckboxIcon} {
     opacity: 1;
-    color: #fff;
+    color: var(--white);
   }
 `;
+
+const SelectBtn = styled(Button)`
+  font-family: 'Lato-Regular', sans-serif;
+  border: 1px solid #154C5E;
+  background-color: #F5F5F5;
+  border-radius: 2em;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  color: #154C5E;
+  padding: 0.25rem 0.75rem;
+
+  &&:hover,
+  &&:focus {
+    background-color: #F5F5F5;
+    border: 1px solid #154C5E;
+    color: #154C5E;
+  }
+`
 
 const SearchBox = (props) => {
   let [suggestState, setSuggestState] = useState([]);
@@ -141,6 +200,8 @@ const SearchBox = (props) => {
     desc: false,
     syns: false
   });
+
+
 
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
@@ -185,8 +246,19 @@ const SearchBox = (props) => {
   const checkedToggleHandler = event => {
     setOptionsState({
       ...optionsState,
-      [event.target.id]: event.target.checked
+      [event.target.name]: !event.target.checked
     });
+    
+  };
+
+  const checkedAllToggleHandler = event => {
+    setOptionsState({
+      match: true,
+      desc: true,
+      syns: true
+    });
+
+    console.log(optionsState);
   };
 
   return (
@@ -212,31 +284,65 @@ const SearchBox = (props) => {
             cleanSuggest={cleanSuggestHandler}
           />
         </SearchBar>
-        <SearchOptions>
-          <FormGroupStyled>
-            <Form.Check inline type="checkbox" id="match" label="Exact match" value={optionsState.match} onChange={checkedToggleHandler}/>
-            <Form.Check inline type="checkbox" id="desc" label="Property description" value={optionsState.desc} onChange={checkedToggleHandler}/>
-            <Form.Check inline type="checkbox" id="syns" label="Synonyms" value={optionsState.syns} onChange={checkedToggleHandler}/>
-            {/* <CheckboxStyled id="match" label="Check"  inline value={optionsState.match} onChange={checkedToggleHandler}>
-              <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
-              </CheckboxSpan>
-              Exact match
-            </CheckboxStyled>
-            <CheckboxStyled id="desc" inline value={optionsState.desc} onChange={checkedToggleHandler}>
-              <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
-              </CheckboxSpan>
-              Property description
-            </CheckboxStyled>
-            <CheckboxStyled id="syns" inline value={optionsState.syns} onChange={checkedToggleHandler}>
-              <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
-              </CheckboxSpan>
-              Synonyms
-            </CheckboxStyled> */}
-          </FormGroupStyled>
-        </SearchOptions>
+        <SearchAllOptions>
+          <SearchOptionsContainer>
+            <SearchOptions>
+              <SelectBtn onClick={checkedAllToggleHandler}>Select All</SelectBtn>
+              <FormGroupStyled>
+                <CheckboxLabel>
+                  <CheckboxInput name="match" type="checkbox" checked={optionsState['match']} onClick={checkedToggleHandler}/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Exact Match
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput name="desc" type="checkbox" checked={optionsState['desc']}  onClick={checkedToggleHandler}/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Property Description
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput name="syns" type="checkbox" checked={optionsState['syns']} onClick={checkedToggleHandler}/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Synonyms
+                </CheckboxLabel>
+              </FormGroupStyled>
+            </SearchOptions>
+          </SearchOptionsContainer>
+          <SearchOptionsContainer>
+            <SearchOptionsLabel>Choose your Data Source</SearchOptionsLabel>
+            <SearchOptions>
+              <SelectBtn>Select All</SelectBtn>
+              <FormGroupStyled>
+                <CheckboxLabel>
+                  <CheckboxInput  type="checkbox"/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Clinical Trial Data Commons <SpanNormal>(CTDC)</SpanNormal>
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput type="checkbox"/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Genomic Data Commons <SpanNormal>(GDC)</SpanNormal>
+                </CheckboxLabel>
+                <CheckboxLabelSpace>
+                  <CheckboxInput type="checkbox"/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Integrated Canine Data Commons <SpanNormal>(ICDC)</SpanNormal>
+                </CheckboxLabelSpace>
+              </FormGroupStyled>
+            </SearchOptions>
+          </SearchOptionsContainer>
+        </SearchAllOptions>
       </SearchBarContainer>
     </SearchBoxContainer>
   );
