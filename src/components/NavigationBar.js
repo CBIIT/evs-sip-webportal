@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 
 const NavbarStyled = styled(Navbar)`
@@ -27,6 +27,49 @@ const NavbarContainer = styled.div`
   text-align: right;
 `;
 
+const NavDropdownStyled = styled(NavDropdown)`
+  @media (min-width: 992px){
+    && .dropdown-menu {
+      margin: .125rem 0 0 !important;
+      right: 0;
+      left: auto;
+      background-color: var(--nav-back-color-submenu);
+      padding: 0.8rem 0;
+    }
+
+    && .dropdown-toggle::after {
+      content: none;
+    }
+
+    && .dropdown-menu::before {
+      content: '';
+      color: var(--nav-back-color-submenu);
+      border-top: 0;
+      border-right: 0.5rem solid transparent;
+      border-bottom: 0.5rem solid;
+      border-left: 0.5rem solid transparent;
+      position: absolute;
+      top: -0.5rem;
+      right: 3rem;
+    }
+  }
+`;
+
+const NavDropdownItem = styled(NavDropdown.Item)`
+  color: #fff;
+  border-bottom: 0.1rem solid transparent;
+  margin: 0.25rem 1.5rem;
+  padding: 0;
+  width: fit-content;
+  
+  &&:hover,
+  &&:focus {
+    color: #fff;
+    background-color: transparent;
+    border-bottom: 0.1rem solid #09a58a;
+  }
+`;
+
 const NavigationBar = () => (
   <NavbarStyled bg="dark" expand="lg">
     <NavbarContainer>
@@ -34,7 +77,13 @@ const NavigationBar = () => (
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav>
           <Nav.Link as={Link} to="/" >Home</Nav.Link>
-          <Nav.Link as={Link} to="/datamodel">Data Model</Nav.Link>
+          <Nav.Link as={Link} to="/search">Search</Nav.Link>
+          <NavDropdownStyled title="Data Model">
+            <NavDropdownItem href="/#">Action</NavDropdownItem>
+            <NavDropdownItem href="/#">Another action</NavDropdownItem>
+            <NavDropdownItem href="/#">Something</NavDropdownItem>
+            <NavDropdownItem href="/#">Separated link</NavDropdownItem>
+          </NavDropdownStyled>
           <Nav.Link as={Link} to="/about">About</Nav.Link>
         </Nav>
       </Navbar.Collapse>

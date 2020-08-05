@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { apiSuggest } from '../../api';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
@@ -86,7 +86,6 @@ const SearchAllOptions = styled.div`
   }
 `;
 
-
 const SearchOptions = styled.div`
   display: flex;
   justify-content: space-between;
@@ -100,6 +99,12 @@ const SearchOptionsLabel = styled.h4`
   font-weight: bold;
   margin-bottom: 1.5rem;
 `;
+
+
+// const FormGroupStyled = styled(InputGroup)`
+//   position:r
+// `;
+
 
 const FormGroupStyled = styled(Form.Group)`
   width: 30rem;
@@ -139,6 +144,7 @@ const CheckboxLabel = styled.label`
   margin-bottom: 0;
   cursor: pointer;
 `;
+
 const CheckboxLabelSpace = styled(CheckboxLabel)`
   inline-size: 11rem;
 `;
@@ -171,6 +177,11 @@ const CheckboxInput = styled.input`
     opacity: 1;
     color: var(--white);
   }
+
+  &&:focus+${CheckboxSpan} {
+    border: 1px solid #042A68;
+    box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  }
 `;
 
 const SelectBtn = styled(Button)`
@@ -179,6 +190,7 @@ const SelectBtn = styled(Button)`
   background-color: #F5F5F5;
   border-radius: 2em;
   text-transform: uppercase;
+  inline-size: 6rem;
   font-size: 0.625rem;
   color: #154C5E;
   padding: 0.25rem 0.75rem;
@@ -189,7 +201,16 @@ const SelectBtn = styled(Button)`
     border: 1px solid #154C5E;
     color: #154C5E;
   }
-`
+`;
+
+const DeleteBtn = styled.a`
+  position: absolute;
+  right: 6rem;
+  top: 0.9rem;
+  z-index: 100;
+  font-size: 1.375rem;
+  color: #5376ac;
+`;
 
 const SearchBox = (props) => {
   let [suggestState, setSuggestState] = useState([]);
@@ -201,7 +222,7 @@ const SearchBox = (props) => {
     syns: false
   });
 
-
+  const searchInputRef = useRef();
 
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
@@ -233,6 +254,12 @@ const SearchBox = (props) => {
     }
   };
 
+  const cleanSearchBar = event => {
+    event.preventDefault();
+    setSearchState('');
+    searchInputRef.current.focus();
+  }
+
   const cleanSuggestHandler = () => {
     setSuggestState([]);
     setSelectIndexState(-1);
@@ -248,7 +275,6 @@ const SearchBox = (props) => {
       ...optionsState,
       [event.target.name]: !event.target.checked
     });
-    
   };
 
   const checkedAllToggleHandler = event => {
@@ -257,8 +283,6 @@ const SearchBox = (props) => {
       desc: true,
       syns: true
     });
-
-    console.log(optionsState);
   };
 
   return (
@@ -272,7 +296,9 @@ const SearchBox = (props) => {
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
               placeholder="Search EVS-SIP"
+              ref={searchInputRef}
             />
+            <DeleteBtn href="/#" onClick={cleanSearchBar}><FontAwesomeIcon icon={faTimes}/></DeleteBtn>
             <SearchButton onClick={() => props.searchTrigger(searchState, optionsState)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>

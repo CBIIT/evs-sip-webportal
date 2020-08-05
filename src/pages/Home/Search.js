@@ -188,7 +188,7 @@ const Search = () => {
         <Col xs={5}>
           <SeachTitleContainer>
             <SearchTitle>
-              Semantic Integration for Multiple Data Sources.
+              Semantic Integration for Multiple Data Sources
             </SearchTitle>
           </SeachTitleContainer>
         </Col>

@@ -30,7 +30,7 @@ function App() {
           <Layout>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/datamodel" component={Search} />
+              <Route path="/search" component={Search} />
               <Route path="/about" component={About} />
             </Switch>
           </Layout>

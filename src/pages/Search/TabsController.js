@@ -6,23 +6,17 @@ import PropsTable from './PropsTable';
 import DictTable from './DictTable';
 
 const Result = styled.div`
-display: 'none'
-border: 1px solid #dce4ec;
-border-radius: 5px;
-background-color: #fff;
+  display: 'none'
+  border: 1px solid #dce4ec;
+  border-radius: 5px;
+  background-color: #fff;
 `;
 
 const TabNavsCol = styled(Col)`
-display: flex;
-justify-content: center;
-align-items: center;
-margin: 2em 0;
-`;
-
-const TabNavText = styled.div`
-color: #535a60;
-max-width: 400px;
-margin-left: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
 `;
 
 const StyledNav = styled(Nav)`
@@ -92,17 +86,12 @@ padding: 0;
 
 const TabsController = (props) => {
   return (
-    <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
+    <Result>
       <Tab.Container id="tabs-controller" defaultActiveKey="values">
         <Container>
           <Row className="clearfix">
             <TabNavsCol sm={12}>
-              <TabNavText>Results for <b>{props.keyword}</b> in:</TabNavText>
               <StyledNav variant="tabs">
-                {/* <NavItem eventKey="values">Values</NavItem>
-                <NavItem eventKey="properties">Properties</NavItem>
-                <NavItem eventKey="dictionary">Dictionary</NavItem> */}
-
                 <Nav.Item>
                   <Nav.Link eventKey="values">Values</Nav.Link>
                 </Nav.Item>
@@ -112,7 +101,6 @@ const TabsController = (props) => {
                 <Nav.Item>
                   <Nav.Link eventKey="dictionary">Dictionary</Nav.Link>
                 </Nav.Item>
-
               </StyledNav>
             </TabNavsCol>
             <Col sm={12}>
@@ -127,6 +115,7 @@ const TabsController = (props) => {
                   <DictTable dictionary={props.source}/>
                 </Tab.Pane>
               </Tab.Content>
+
             </Col>
           </Row>
         </Container>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { apiSearchAll } from '../../api';
 import SearchBox from './SearchBox';
-import TabsController from './TabsController';
+import MainTabsController from './MainTabsController';
 
 // const Page = styled.div`
 //   background-color: var(--page-bkgd);
@@ -26,7 +26,7 @@ const Search = () => {
 
   return <Page>
         <SearchBox searchTrigger={searchHandler}/>
-        <TabsController keyword={keywordState} source={sourceState}/>
+        <MainTabsController keyword={keywordState} source={sourceState}/>
     </Page>;
 }
 
