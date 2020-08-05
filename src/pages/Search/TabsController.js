@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
-import ValuesTable from './ValuesTable';
+import CrossValuesTable from './CrossValuesTable';
 import PropsTable from './PropsTable';
 import DictTable from './DictTable';
 
@@ -106,7 +106,7 @@ const TabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false">
                 <Tab.Pane unmountOnExit={true} eventKey="values">
-                  <ValuesTable values={props.source}/>
+                  <CrossValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="properties">
                   <PropsTable properties={props.source}/>

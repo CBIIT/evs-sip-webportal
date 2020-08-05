@@ -70,7 +70,7 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
-const ValuesTable = (props) => {
+const CrossValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
 
@@ -78,11 +78,34 @@ const ValuesTable = (props) => {
 
   let values = [];
 
+  let mainValues = [];
+
+  // items.forEach((data) => {
+  //   let enums = data.inner_hits.enum;
+  //   if (enums.hits.total !== 0) { // If the searched term is cde id.
+  //     let enumHits = enums.hits.hits;
+  //     let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
+  //     enumHits.forEach(hits => {
+  //       if (highlightCdeId === undefined) {
+  //         let source = hits._source;
+  //         if (source.n_syn !== undefined) {
+  //           source.n_syn.forEach(data => {
+  //             if(ncitDictionary[data.n_c] === undefined){
+  //               ncitDictionary[data.n_c] = [];
+  //             }
+  //           });
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
+
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
     if (enums.hits.total !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
       let obj = {};
+      obj.dataSource = 'Genomic Data Commons';
       obj.category = data._source.category;
       obj.node = data._source.node;
       obj.property = data._source.property;
@@ -94,6 +117,9 @@ const ValuesTable = (props) => {
       // if (highlightCdeId !== undefined) {
       //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
       // }
+
+      let ncitMatch = [];
+
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -130,6 +156,16 @@ const ValuesTable = (props) => {
                 }
                 newSyn.push(synObj);
               });
+
+              // if(ncitDictionary[data.n_c] !== undefined && ncitMatch.indexOf(data.n_c) === -1) {
+              //   ncitMatch.push(data.n_c);
+              // };
+
+
+              if(ncitMatch.indexOf(data.n_c) === -1) {
+                ncitMatch.push(data.n_c);
+              };
+
               data.n_c = highlightNCObj[data.n_c] ? highlightNCObj[data.n_c] : data.n_c;
               data.id = (obj.property + '-' + valueObj.src_n + '-' + data.n_c).replace(/[^a-zA-Z0-9-]+/gi, '');
               data.pt = preferredTerm;
@@ -162,10 +198,55 @@ const ValuesTable = (props) => {
         }
       });
       obj.vs = sortAlphabetically(obj.vs);
+
+
+      obj.n_match = ncitMatch;
       // valuesCount += obj.vs.length;
       values.push(obj);
+      
+      // ncitMatch.forEach((match) => {
+      //   ncitDictionary[match].push(obj);
+      // })
+
+
+      //console.log(ncitMatch);
+      //ncitDictionary[ncitMatch].push(obj);
     }
   });
+
+
+  let ncitObjs = {}
+
+  values.forEach((value)=> {
+
+    value.n_match.forEach((match) => {
+
+      if(ncitObjs[match] === undefined) {
+        ncitObjs[match] = [];
+      }
+
+      ncitObjs[match].push(value);
+    })
+  })
+
+
+  // Object.keys(ncitObjs).forEach((key, index) => {
+
+  //   let ncitObj = {};
+
+  //   if(ncitObjs[key] !== undefined) {
+  //     ncitObj[key] = ncitObjs[key];
+
+  //     mainValues.push(ncitObj)
+  //   }
+  // });
+
+
+ // console.log(Object.entries(ncitObjs));
+
+  //console.log(mainValues);
+
+  // console.log(values);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -369,44 +450,72 @@ const ValuesTable = (props) => {
     );
   };
 
-  const valuesItems = values.map((item, index) =>
-    <TableRowFlex key={index}>
-      <TableCol xs={3}>
-        {item.category}
-        <TableUl>
-          <TableLi>{item.node}
+  const ValuesItems = (props) => {
+    return (
+      <Col sx={12}>
+        <Row>
+          <TableCol xs={3}>
+            {props.item.category}
             <TableUl>
-              <TableLi>{item.property}</TableLi>
+              <TableLi>{props.item.node}
+                <TableUl>
+                  <TableLi>{props.item.property}</TableLi>
+                </TableUl>
+              </TableLi>
             </TableUl>
-          </TableLi>
-        </TableUl>
-        {/* <GDCTerms idterm={item.id}/> */}
-      </TableCol>
-      <TableValues xs={9}>
-        {item.vs.map((value, index) =>
-          <TableRowFlex key={index}>
-            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-          </TableRowFlex>
-        )}
-      </TableValues>
+            {/* <GDCTerms idterm={item.id}/> */}
+          </TableCol>
+          <TableValues xs={9}>
+            {props.item.vs.map((value, index) =>
+              <TableRowFlex key={index}>
+                <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+              </TableRowFlex>
+            )}
+          </TableValues>
+        </Row>
+      </Col>
+    )
+  };
+
+
+  const mainValuesItems = Object.entries(ncitObjs).map(([key, values]) => {
+    return (
+      <TableRowFlex key={key}>
+        <TableCol xs={2}>{key}</TableCol>
+        <TableCol xs={2}>Genomic Data Commons</TableCol>
+        <TableCol xs={8}>
+          {values.map((value, index) =>
+            <TableRowFlex key={index}>
+              <ValuesItems item={value}/>
+            </TableRowFlex>
+          )}
+        </TableCol>
     </TableRowFlex>
-  );
+    );
+  });
+
 
   return (
     <ContainerStyled>
       <TableThead>
-        <Col xs={3}>
+      <Col xs={2}>
+          <TableTh>Terminology Reference</TableTh>
+        </Col>
+        <Col xs={2}>
+          <TableTh>Data Sources</TableTh>
+        </Col>
+        <Col xs={2}>
           <TableTh>Category / Node / Property</TableTh>
         </Col>
-        <Col xs={9}>
+        <Col xs={6}>
           <TableTh>Matched GDC Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>
-        <Col xs={12}>{valuesItems}</Col>
+        <Col xs={12}>{mainValuesItems}</Col>
       </TableBody>
     </ContainerStyled>
   );
 };
 
-export default ValuesTable;
+export default CrossValuesTable;
