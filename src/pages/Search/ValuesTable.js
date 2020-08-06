@@ -10,6 +10,9 @@ const ContainerStyled = styled(Container)`
   font-size: 1.3rem;
   padding-left: 15px;
   padding-right: 15px;
+  background-color: #fff;
+  border-radius: 2rem;
+  height: 50rem;
 `;
 
 const TableThead = styled(Row)`

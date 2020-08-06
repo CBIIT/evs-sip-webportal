@@ -210,6 +210,7 @@ const DeleteBtn = styled.a`
   z-index: 100;
   font-size: 1.375rem;
   color: #5376ac;
+  display: none;
 `;
 
 const SearchBox = (props) => {
@@ -298,7 +299,7 @@ const SearchBox = (props) => {
               placeholder="Search EVS-SIP"
               ref={searchInputRef}
             />
-            <DeleteBtn href="/#" onClick={cleanSearchBar}><FontAwesomeIcon icon={faTimes}/></DeleteBtn>
+            <DeleteBtn href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
             <SearchButton onClick={() => props.searchTrigger(searchState, optionsState)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>

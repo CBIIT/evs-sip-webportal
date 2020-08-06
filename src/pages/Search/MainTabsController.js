@@ -2,13 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import TabsController from './TabsController';
+import ValuesTable from './ValuesTable';
+
 
 const Result = styled.div`
-  display: 'none'
+  display: 'none';
   border: 1px solid #dce4ec;
   border-radius: 5px;
   background-color: #fff;
-  margin: 2rem auto;
+  padding: 2rem 0;
 `;
 
 const TabNavsCol = styled(Col)`
@@ -69,7 +71,7 @@ const NavLinkStyled = styled(Nav.Link)`
 `;
 
 const NavStyled = styled(Nav)`
-padding: 0;
+border-bottom: none;
 
 && ${NavLinkStyled} {
   border: 0.5rem solid var(--white);
@@ -83,7 +85,7 @@ padding: 0;
   border-right: 2px solid #397DED;
   border-bottom: 0;
   position: relative;
-  bottom: -0.15rem;
+  bottom: -1px;
   z-index: 10;
   padding-bottom: 1.1rem;
 }
@@ -117,7 +119,7 @@ const MainTabsController = (props) => {
                   <TabsController source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="single">
-                  Single
+                  <ValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="graph">
                   Graph

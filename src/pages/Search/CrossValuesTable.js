@@ -1,26 +1,37 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+
+
 // import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
+  background-color: var(--white);
+  border-radius: 1rem;
+  height: 45rem;
+  border: 2px solid #535F74;
 `;
 
 const TableThead = styled(Row)`
-  background: #f1f1f1;
+  background: #535F74;
+  display: flex;
+  align-items: center;
+  border-radius: 0.8rem 0.8rem 0 0;
 `;
 
 const TableTh = styled.div`
-  font-weight: 700;
-  text-align: left;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  font-family: 'Lato-Bold', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--white);
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
 `;
 
 const TableBody = styled(Row)`
@@ -29,7 +40,7 @@ const TableBody = styled(Row)`
 `;
 
 const TableRow = styled(Row)`
-  border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid #BBC5CD;
 `;
 
 const TableRowFlex = styled(TableRow)`
@@ -50,20 +61,34 @@ const TableUl = styled.ul`
 `;
 
 const TableLi = styled.li`
-  &::before {
-    font-family: 'Glyphicons Halflings';
-    content: "\\e259";
-    font-size: 1rem;
-    display: inline-block;
-    margin: 0 5px 0 -15px;
-    color: #acacac;
-    transform: rotate(45deg);
-    position: absolute;
-  }
+  position: relative;
+`;
+
+const SpanIcon = styled.span`
+  left: -0.9rem;
+  top: 0.2rem;
+  position: absolute;
+  width: 1rem;
+  line-height: inherit;
+  color: var(--checkbox-green);
+  transform: rotate(45deg);
+`;
+
+const TableLiBreak = styled(TableLi)`
+  word-wrap: break-word;
+`;
+
+
+const TableColValues = styled(Col)`
+  text-align: left;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  line-height: 1.428571;
+  border-left: 1px solid #BBC5CD;
 `;
 
 const TableValues = styled(Col)`
-  border-left: 1px solid #ecf0f1;
+  border-left: 1px solid #BBC5CD;
 `;
 
 const ColRight = styled(Col)`
@@ -77,28 +102,6 @@ const CrossValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
 
   let values = [];
-
-  let mainValues = [];
-
-  // items.forEach((data) => {
-  //   let enums = data.inner_hits.enum;
-  //   if (enums.hits.total !== 0) { // If the searched term is cde id.
-  //     let enumHits = enums.hits.hits;
-  //     let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-  //     enumHits.forEach(hits => {
-  //       if (highlightCdeId === undefined) {
-  //         let source = hits._source;
-  //         if (source.n_syn !== undefined) {
-  //           source.n_syn.forEach(data => {
-  //             if(ncitDictionary[data.n_c] === undefined){
-  //               ncitDictionary[data.n_c] = [];
-  //             }
-  //           });
-  //         }
-  //       }
-  //     });
-  //   }
-  // });
 
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
@@ -157,10 +160,6 @@ const CrossValuesTable = (props) => {
                 newSyn.push(synObj);
               });
 
-              // if(ncitDictionary[data.n_c] !== undefined && ncitMatch.indexOf(data.n_c) === -1) {
-              //   ncitMatch.push(data.n_c);
-              // };
-
 
               if(ncitMatch.indexOf(data.n_c) === -1) {
                 ncitMatch.push(data.n_c);
@@ -203,14 +202,6 @@ const CrossValuesTable = (props) => {
       obj.n_match = ncitMatch;
       // valuesCount += obj.vs.length;
       values.push(obj);
-      
-      // ncitMatch.forEach((match) => {
-      //   ncitDictionary[match].push(obj);
-      // })
-
-
-      //console.log(ncitMatch);
-      //ncitDictionary[ncitMatch].push(obj);
     }
   });
 
@@ -228,25 +219,6 @@ const CrossValuesTable = (props) => {
       ncitObjs[match].push(value);
     })
   })
-
-
-  // Object.keys(ncitObjs).forEach((key, index) => {
-
-  //   let ncitObj = {};
-
-  //   if(ncitObjs[key] !== undefined) {
-  //     ncitObj[key] = ncitObjs[key];
-
-  //     mainValues.push(ncitObj)
-  //   }
-  // });
-
-
- // console.log(Object.entries(ncitObjs));
-
-  //console.log(mainValues);
-
-  // console.log(values);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -457,9 +429,9 @@ const CrossValuesTable = (props) => {
           <TableCol xs={3}>
             {props.item.category}
             <TableUl>
-              <TableLi>{props.item.node}
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
                 <TableUl>
-                  <TableLi>{props.item.property}</TableLi>
+                  <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
                 </TableUl>
               </TableLi>
             </TableUl>
@@ -482,14 +454,14 @@ const CrossValuesTable = (props) => {
     return (
       <TableRowFlex key={key}>
         <TableCol xs={2}>{key}</TableCol>
-        <TableCol xs={2}>Genomic Data Commons</TableCol>
-        <TableCol xs={8}>
+        <TableColValues xs={2}>Genomic Data Commons</TableColValues>
+        <TableValues xs={8}>
           {values.map((value, index) =>
             <TableRowFlex key={index}>
               <ValuesItems item={value}/>
             </TableRowFlex>
           )}
-        </TableCol>
+        </TableValues>
     </TableRowFlex>
     );
   });
@@ -505,10 +477,10 @@ const CrossValuesTable = (props) => {
           <TableTh>Data Sources</TableTh>
         </Col>
         <Col xs={2}>
-          <TableTh>Category / Node / Property</TableTh>
+          <TableTh>Node / Property</TableTh>
         </Col>
         <Col xs={6}>
-          <TableTh>Matched GDC Values</TableTh>
+          <TableTh>Matched Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>
