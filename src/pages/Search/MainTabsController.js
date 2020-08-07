@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import TabsController from './TabsController';
 import GraphTabsController from './GraphTabsController';
-import ValuesTable from './ValuesTable';
+import SingleTabsController from './SingleTabsController';
 
 
 const Result = styled.div`
@@ -120,7 +120,7 @@ const MainTabsController = (props) => {
                   <TabsController source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="single">
-                  <ValuesTable values={props.source}/>
+                  <SingleTabsController source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="graph">
                   <GraphTabsController />

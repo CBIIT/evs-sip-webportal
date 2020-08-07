@@ -125,9 +125,6 @@ const TabsController = (props) => {
                 <Nav.Item>
                   <NavLinkStyled eventKey="properties">Node/Properties</NavLinkStyled>
                 </Nav.Item>
-                <Nav.Item>
-                  <NavLinkStyled eventKey="dictionary">Dictionary</NavLinkStyled>
-                </Nav.Item>
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
@@ -137,9 +134,6 @@ const TabsController = (props) => {
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="properties">
                   <PropsTable properties={props.source}/>
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="dictionary">
-                  <DictTable dictionary={props.source}/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

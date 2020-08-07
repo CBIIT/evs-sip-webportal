@@ -1,29 +1,35 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 // import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #fff;
-  border-radius: 2rem;
-  height: 50rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  height: 45rem;
+  border: 2px solid #535F74;
 `;
 
 const TableThead = styled(Row)`
-  background: #f1f1f1;
+  background: #535F74;
+  display: flex;
+  align-items: center;
+  border-radius: 0.8rem 0.8rem 0 0;
 `;
 
 const TableTh = styled.div`
-  font-weight: 700;
-  text-align: left;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  font-family: 'Lato-Bold', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--white);
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
 `;
 
 const TableBody = styled(Row)`
@@ -32,7 +38,7 @@ const TableBody = styled(Row)`
 `;
 
 const TableRow = styled(Row)`
-  border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid #BBC5CD;
 `;
 
 const TableRowFlex = styled(TableRow)`
@@ -53,20 +59,25 @@ const TableUl = styled.ul`
 `;
 
 const TableLi = styled.li`
-  &::before {
-    font-family: 'Glyphicons Halflings';
-    content: "\\e259";
-    font-size: 1rem;
-    display: inline-block;
-    margin: 0 5px 0 -15px;
-    color: #acacac;
-    transform: rotate(45deg);
-    position: absolute;
-  }
+  position: relative;
+`;
+
+const SpanIcon = styled.span`
+  left: -0.9rem;
+  top: 0.2rem;
+  position: absolute;
+  width: 1rem;
+  line-height: inherit;
+  color: var(--checkbox-green);
+  transform: rotate(45deg);
+`;
+
+const TableLiBreak = styled(TableLi)`
+  word-wrap: break-word;
 `;
 
 const TableValues = styled(Col)`
-  border-left: 1px solid #ecf0f1;
+  border-left: 1px solid #BBC5CD;
 `;
 
 const ColRight = styled(Col)`
@@ -377,9 +388,9 @@ const ValuesTable = (props) => {
       <TableCol xs={3}>
         {item.category}
         <TableUl>
-          <TableLi>{item.node}
+          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
             <TableUl>
-              <TableLi>{item.property}</TableLi>
+              <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
             </TableUl>
           </TableLi>
         </TableUl>
