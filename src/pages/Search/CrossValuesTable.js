@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+
+
 // import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
@@ -76,6 +78,15 @@ const TableLiBreak = styled(TableLi)`
   word-wrap: break-word;
 `;
 
+
+const TableColValues = styled(Col)`
+  text-align: left;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  line-height: 1.428571;
+  border-left: 1px solid #BBC5CD;
+`;
+
 const TableValues = styled(Col)`
   border-left: 1px solid #BBC5CD;
 `;
@@ -84,7 +95,7 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
-const ValuesTable = (props) => {
+const CrossValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
 
@@ -92,11 +103,14 @@ const ValuesTable = (props) => {
 
   let values = [];
 
+  let ncitMatchObj = {};
+
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
     if (enums.hits.total !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
       let obj = {};
+      obj.dataSource = 'Genomic Data Commons';
       obj.category = data._source.category;
       obj.node = data._source.node;
       obj.property = data._source.property;
@@ -108,6 +122,9 @@ const ValuesTable = (props) => {
       // if (highlightCdeId !== undefined) {
       //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
       // }
+
+      let ncitMatch = [];
+
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -144,6 +161,16 @@ const ValuesTable = (props) => {
                 }
                 newSyn.push(synObj);
               });
+
+
+              if(ncitMatch.indexOf(data.n_c) === -1) {
+                ncitMatch.push(data.n_c);
+
+                if(ncitMatchObj[data.n_c] === undefined) {
+                  ncitMatchObj[data.n_c] = preferredTerm;
+                };
+              };
+
               data.n_c = highlightNCObj[data.n_c] ? highlightNCObj[data.n_c] : data.n_c;
               data.id = (obj.property + '-' + valueObj.src_n + '-' + data.n_c).replace(/[^a-zA-Z0-9-]+/gi, '');
               data.pt = preferredTerm;
@@ -176,10 +203,42 @@ const ValuesTable = (props) => {
         }
       });
       obj.vs = sortAlphabetically(obj.vs);
+
+
+      obj.n_match = ncitMatch;
+      //obj.n_match_obj = ncitMatchObj;
       // valuesCount += obj.vs.length;
       values.push(obj);
     }
   });
+
+  let ncitObjs = {};
+
+  values.forEach((value) => {
+
+    value.n_match.forEach((match) => {
+
+      if(ncitObjs[match] === undefined) {
+        ncitObjs[match] = [];
+      }
+      ncitObjs[match].push(value);
+    })
+  });
+
+  let crossValues = [];
+
+  Object.entries(ncitObjs).forEach((entry)=> {
+    crossValues.push({
+      code: entry[0],
+      preferredTerm: ncitMatchObj[entry[0]],
+      values: {
+        gdcvalues: entry[1],
+        idcvalues: entry[1], 
+      }
+    })
+  });
+
+  console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -383,44 +442,91 @@ const ValuesTable = (props) => {
     );
   };
 
-  const valuesItems = values.map((item, index) =>
-    <TableRowFlex key={index}>
-      <TableCol xs={3}>
-        {item.category}
-        <TableUl>
-          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+  const ValuesItems = (props) => {
+    return (
+      <Col sx={12}>
+        <Row>
+          <TableCol xs={3}>
+            {props.item.category}
             <TableUl>
-              <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
+                <TableUl>
+                  <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
+                </TableUl>
+              </TableLi>
             </TableUl>
-          </TableLi>
-        </TableUl>
-        {/* <GDCTerms idterm={item.id}/> */}
-      </TableCol>
-      <TableValues xs={9}>
-        {item.vs.map((value, index) =>
-          <TableRowFlex key={index}>
-            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-          </TableRowFlex>
-        )}
-      </TableValues>
+            {/* <GDCTerms idterm={item.id}/> */}
+          </TableCol>
+          <TableValues xs={9}>
+            {props.item.vs.map((value, index) =>
+              <TableRowFlex key={index}>
+                <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+              </TableRowFlex>
+            )}
+          </TableValues>
+        </Row>
+      </Col>
+    )
+  };
+
+
+  const mainValuesItems = crossValues.map((cross, index) => {
+    return (
+      <TableRowFlex key={index}>
+        <TableCol xs={2}>{cross.code}<br/>{cross.preferredTerm}</TableCol>
+        <TableValues xs={10}>
+          {cross.values.gdcvalues.length !== 0 &&
+            <Row>
+              <TableCol xs={2}>Genomic Data Commons</TableCol>
+              <TableValues xs={10}>
+                {cross.values.gdcvalues.map((value, index) =>
+                  <TableRowFlex key={index}>
+                    <ValuesItems item={value}/>
+                  </TableRowFlex>
+                )}
+              </TableValues>
+            </Row>
+          }
+          {cross.values.idcvalues.length !== 0 &&
+            <Row>
+              <TableCol xs={2}>Clinical Trials Data Commos</TableCol>
+              <TableValues xs={10}>
+                {cross.values.idcvalues.map((value, index) =>
+                  <TableRowFlex key={index}>
+                    <ValuesItems item={value}/>
+                  </TableRowFlex>
+                )}
+              </TableValues>
+            </Row>
+          }
+        </TableValues>
     </TableRowFlex>
-  );
+    );
+  });
+
 
   return (
     <ContainerStyled>
       <TableThead>
-        <Col xs={3}>
-          <TableTh>Category / Node / Property</TableTh>
+      <Col xs={2}>
+          <TableTh>Terminology Reference</TableTh>
         </Col>
-        <Col xs={9}>
-          <TableTh>Matched GDC Values</TableTh>
+        <Col xs={2}>
+          <TableTh>Data Sources</TableTh>
+        </Col>
+        <Col xs={2}>
+          <TableTh>Node / Property</TableTh>
+        </Col>
+        <Col xs={6}>
+          <TableTh>Matched Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>
-        <Col xs={12}>{valuesItems}</Col>
+        <Col xs={12}>{mainValuesItems}</Col>
+        {/* <Col xs={12}>test</Col> */}
       </TableBody>
     </ContainerStyled>
   );
 };
 
-export default ValuesTable;
+export default CrossValuesTable;
