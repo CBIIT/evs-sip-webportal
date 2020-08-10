@@ -110,7 +110,6 @@ const CrossValuesTable = (props) => {
     if (enums.hits.total !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
       let obj = {};
-      obj.dataSource = 'Genomic Data Commons';
       obj.category = data._source.category;
       obj.node = data._source.node;
       obj.property = data._source.property;
@@ -237,8 +236,6 @@ const CrossValuesTable = (props) => {
       }
     })
   });
-
-  console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {

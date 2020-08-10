@@ -3,21 +3,47 @@ import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
 import { getHighlightObj } from '../../shared';
 
+// const ContainerStyled = styled(Container)`
+//   font-size: 1.3rem;
+//   padding-left: 15px;
+//   padding-right: 15px;
+// `;
+
 const ContainerStyled = styled(Container)`
-  font-size: 1.3rem;
+  font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
+  background-color: var(--white);
+  border-radius: 1rem;
+  height: 45rem;
+  border: 2px solid #535F74;
 `;
 
+// const TableThead = styled(Row)`
+//   background: #f1f1f1;
+// `;
+
+// const TableTh = styled.div`
+//   font-weight: 700;
+//   text-align: left;
+//   padding-top: 15px;
+//   padding-bottom: 15px;
+// `;
+
 const TableThead = styled(Row)`
-  background: #f1f1f1;
+  background: #535F74;
+  display: flex;
+  align-items: center;
+  border-radius: 0.8rem 0.8rem 0 0;
 `;
 
 const TableTh = styled.div`
-  font-weight: 700;
-  text-align: left;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  font-family: 'Lato-Bold', sans-serif;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--white);
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
 `;
 
 const TableBody = styled(Row)`
@@ -34,6 +60,10 @@ const TableCol = styled(Col)`
   padding-top: 12px;
   padding-bottom: 12px;
   line-height: 1.428571;
+`;
+
+const LinkBreak = styled.a`
+  word-wrap: break-word;
 `;
 
 const PropsTable = (props) => {
@@ -85,7 +115,7 @@ const PropsTable = (props) => {
         </ul>
       </TableCol>
       <TableCol xs={2}>
-        <a href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></a>
+        <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak>
       </TableCol>
       <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
       <TableCol xs={2}>
