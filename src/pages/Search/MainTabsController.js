@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import TabsController from './TabsController';
+import GraphicalView_D3 from './GraphicalView_D3';
 
 const Result = styled.div`
   display: 'none'
@@ -93,7 +94,7 @@ const MainTabsController = (props) => {
   return (
     <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
       <Tab.Container id="tabs-controller" defaultActiveKey="cross">
-        <Container>
+        <Container style={{"min-width": "1400px"}}>
           <Row className="clearfix">
             <TabNavTextCol sm={12}>
               <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
@@ -120,7 +121,7 @@ const MainTabsController = (props) => {
                   Single
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="graph">
-                  Graph
+                  <GraphicalView_D3 />
                 </Tab.Pane>
               </TabContentStyled>
 
