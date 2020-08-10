@@ -21,7 +21,7 @@
 .data-dictionary__main {
   width: calc(100vw - var(--data-dictionary__sidebar-width));
   min-width: 900px;
-  overflow-y: scroll;
+  /* verflow-y: scroll; */
 }
 
 .data-dictionary__graph {
