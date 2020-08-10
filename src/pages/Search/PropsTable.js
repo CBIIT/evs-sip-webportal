@@ -74,6 +74,8 @@ const PropsTable = (props) => {
     properties.push(propObj);
   });
 
+  console.log(properties);
+
   const propsItems = properties.map((item, index) =>
     <TableRow key={index}>
       <TableCol xs={2}>
@@ -96,7 +98,7 @@ const PropsTable = (props) => {
         }
       </TableCol>
       <TableCol xs={2}>
-        <div></div>
+      <a href="/#" target="_blank">CDE ID - {item.cdeId}</a>
       </TableCol>
     </TableRow>
   );

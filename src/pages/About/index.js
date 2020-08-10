@@ -9,6 +9,7 @@ import Contacts from './Contacts';
 const Page = styled.div`
   background-color: var(--page-bkgd);
   overflow: auto;
+  padding-bottom: 18rem;
 `;
 
 const PageContainer = styled.div`

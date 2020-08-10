@@ -11,7 +11,6 @@ import MainTabsController from './MainTabsController';
 
 const Page = styled.div`
   background-color: var(--white);
-  min-height: calc(100vh - 26.5rem);
   padding-bottom: 18rem;
 `;
 

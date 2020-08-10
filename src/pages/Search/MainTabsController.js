@@ -2,14 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import TabsController from './TabsController';
-import GraphicalView_D3 from './GraphicalView_D3';
+import GraphTabsController from './GraphTabsController';
+import SingleTabsController from './SingleTabsController';
 
 const Result = styled.div`
-  display: 'none'
+  display: 'none';
   border: 1px solid #dce4ec;
   border-radius: 5px;
   background-color: #fff;
-  margin: 2rem auto;
+  padding: 2rem 0;
 `;
 
 const TabNavsCol = styled(Col)`
@@ -70,7 +71,7 @@ const NavLinkStyled = styled(Nav.Link)`
 `;
 
 const NavStyled = styled(Nav)`
-padding: 0;
+border-bottom: none;
 
 && ${NavLinkStyled} {
   border: 0.5rem solid var(--white);
@@ -84,7 +85,7 @@ padding: 0;
   border-right: 2px solid #397DED;
   border-bottom: 0;
   position: relative;
-  bottom: -0.15rem;
+  bottom: -1px;
   z-index: 10;
   padding-bottom: 1.1rem;
 }
@@ -93,7 +94,7 @@ padding: 0;
 const MainTabsController = (props) => {
   return (
     <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
-      <Tab.Container id="tabs-controller" defaultActiveKey="cross">
+      <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
         <Container style={{"min-width": "1400px"}}>
           <Row className="clearfix">
             <TabNavTextCol sm={12}>
@@ -118,10 +119,10 @@ const MainTabsController = (props) => {
                   <TabsController source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="single">
-                  Single
+                  <SingleTabsController source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="graph">
-                  <GraphicalView_D3 />
+                  <GraphTabsController />
                 </Tab.Pane>
               </TabContentStyled>
 
