@@ -5,7 +5,6 @@ import TabsController from './TabsController';
 import GraphTabsController from './GraphTabsController';
 import SingleTabsController from './SingleTabsController';
 
-
 const Result = styled.div`
   display: 'none';
   border: 1px solid #dce4ec;
@@ -96,7 +95,7 @@ const MainTabsController = (props) => {
   return (
     <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
       <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
-        <Container>
+        <Container style={{"min-width": "1400px"}}>
           <Row className="clearfix">
             <TabNavTextCol sm={12}>
               <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
