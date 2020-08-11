@@ -25,37 +25,6 @@ class DataDictionary extends React.Component {
     this.dictionarySearcherRef.current.getWrappedInstance().launchClearSearchFromOutside();
   };
 
-  /*
-  <div className='data-dictionary__sidebar'>
-          <div className='data-dictionary__switch'>
-            <span
-              className={`data-dictionary__switch-button ${!this.props.isGraphView ? '' : 'data-dictionary__switch-button--active'}`}
-              onClick={() => { this.setGraphView(true); }}
-              onKeyPress={() => { this.setGraphView(true); }}
-              role='button'
-              tabIndex={0}
-            >
-              Graph View
-            </span>
-            <span
-              className={`data-dictionary__switch-button ${this.props.isGraphView ? '' : 'data-dictionary__switch-button--active'}`}
-              onClick={() => { this.setGraphView(false); }}
-              onKeyPress={() => { this.setGraphView(true); }}
-              role='button'
-              tabIndex={0}
-            >
-              Table View
-            </span>
-          </div>
-          <ReduxDictionarySearcher ref={this.dictionarySearcherRef} />
-          <ReduxDataModelStructure />
-          <ReduxDictionarySearchHistory
-            onClickSearchHistoryItem={this.handleClickSearchHistoryItem}
-          />
-          <div className='data-dictionary__search-history' />
-        </div>
-  */
-
   render() {
     return (
       <div className='data-dictionary'>

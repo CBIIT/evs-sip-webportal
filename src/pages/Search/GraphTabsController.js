@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import GDC_Graph from './GraphicalView_D3';
+import ICDC_Graph from './GraphicalView_D3';
+import CTDC_Graph from './GraphicalView_D3';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -76,10 +78,10 @@ const GraphTabsController = (props) => {
                   PDC content
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
-                  ICDC content
+                  ICDC Content
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctcd">
-                  CTDC content
+                  CTDC Content
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="idc">
                   IDC content

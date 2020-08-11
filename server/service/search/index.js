@@ -14,4 +14,9 @@ router.get('/all/data', controller.searchICDO3Data);
 router.get('/all/p', controller.searchP);
 router.get('/p/local/vs', controller.getGDCData);
 
+//graphical view
+router.get('/graph/gdc', controller.getGraphicalGDCDictionary);
+router.get('/graph/icdc', controller.getGraphicalICDCDictionary);
+router.get('/graph/ctdc', controller.getGraphicalCTDCDictionary);
+
 module.exports = router;
