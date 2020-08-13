@@ -2,7 +2,13 @@ var path = require('path');
 var _ = require('lodash');
 
 if (process.env.NODE_ENV !== 'prod') {
-  require('dotenv').config();
+  const cfg = require('dotenv').config();
+  if (cfg.error) {
+    throw cfg.error
+  }
+
+  let tmp = cfg.parsed;
+  process.env.NODE_ENV = tmp.NODE_ENV;
 };
 
 // All configurations will extend these options

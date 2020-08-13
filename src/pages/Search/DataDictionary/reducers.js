@@ -33,118 +33,158 @@ const ddgraphInitialState = {
   highlightingMatchedNodeOpened: false,
 };
 
-const ddgraph = (state = ddgraphInitialState, action) => {
+const ddgraphsInitialState = {};
+ddgraphsInitialState.gdc = ddgraphInitialState;
+ddgraphsInitialState.icdc = ddgraphInitialState;
+ddgraphsInitialState.ctdc = ddgraphInitialState;
+
+const generateState = (state, graphType, toUpdate) => {
+  switch (graphType) {
+    case 'icdc': {
+      return {
+        ...state,
+        icdc: {...state.icdc, ...toUpdate}
+      };
+    }
+    case 'ctdc': {
+      return {
+        ...state,
+        ctdc: {...state.ctdc, ...toUpdate}
+      };
+    }
+    default:
+      return {
+        ...state,
+        gdc: {...state.gdc, ...toUpdate}
+      };
+  } 
+}
+
+const ddgraph = (state = ddgraphsInitialState, action) => {
   switch (action.type) {
   case 'TOGGLE_GRAPH_TABLE_VIEW': {
-    return {
-      ...state,
-      isGraphView: action.isGraphView,
-      overlayPropertyHidden: true,
+    let toUpdate = {
+      isGraphView: action.isGraphView, 
+      overlayPropertyHidden: true
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_LAYOUT_CALCULATED': {
-    return {
-      ...state,
+    let toUpdate = {
       nodes: action.nodes,
       edges: action.edges,
       graphBoundingBox: action.graphBoundingBox,
       layoutInitialized: true,
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_LEGEND_CALCULATED': {
-    return {
-      ...state,
-      legendItems: action.legendItems,
+    let toUpdate = {
+      legendItems: action.legendItems
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_HOVERING_NODE': {
-    const newHoveringNode = state.nodes.find(n => n.id === action.nodeID);
-    return {
-      ...state,
-      hoveringNode: newHoveringNode,
+    const newHoveringNode = state[action.graphType].nodes.find(n => n.id === action.nodeID);
+    let toUpdate = {
+      hoveringNode: newHoveringNode
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_CANVAS_BOUNDING_RECT': {
-    return {
-      ...state,
-      canvasBoundingRect: action.canvasBoundingRect,
+    let toUpdate = {
+      canvasBoundingRect: action.canvasBoundingRect
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_RELATED_HIGHLIGHTING_NODE': {
-    return {
-      ...state,
-      relatedNodeIDs: action.relatedNodeIDs,
+    let toUpdate = {
+      relatedNodeIDs: action.relatedNodeIDs
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_SECOND_HIGHLIGHTING_NODE_CANDIDATES': {
-    return {
-      ...state,
-      secondHighlightingNodeCandidateIDs: action.secondHighlightingNodeCandidateIDs,
+    let toUpdate = {
+      secondHighlightingNodeCandidateIDs: action.secondHighlightingNodeCandidateIDs
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_PATH_RELATED_TO_SECOND_HIGHLIGHTING_NODE': {
-    return {
-      ...state,
-      pathRelatedToSecondHighlightingNode: action.pathRelatedToSecondHighlightingNode,
+    let toUpdate = {
+      pathRelatedToSecondHighlightingNode: action.pathRelatedToSecondHighlightingNode
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_UPDATE_DATA_MODEL_STRUCTURE': {
-    return {
-      ...state,
+    let toUpdate = {
       dataModelStructure: action.dataModelStructure,
       dataModelStructureRelatedNodeIDs: action.dataModelStructureRelatedNodeIDs,
-      dataModelStructureAllRoutesBetween: action.routesBetweenStartEndNodes,
+      dataModelStructureAllRoutesBetween: action.routesBetweenStartEndNodes
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_SET_OVERLAY_PROPERTY_TABLE_HIDDEN': {
-    return {
-      ...state,
-      overlayPropertyHidden: action.isHidden,
+    let toUpdate = {
+      overlayPropertyHidden: action.isHidden
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_CANVAS_RESET_REQUIRED': {
-    return {
-      ...state,
-      needReset: action.needReset,
+    let toUpdate = {
+      needReset: action.needReset
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_RESET_HIGHLIGHT': {
-    return {
-      ...state,
+    let toUpdate = {
       highlightingNode: null,
       secondHighlightingNodeID: null,
-      tableExpandNodeID: null,
+      tableExpandNodeID: null
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_CLICK_NODE': {
-    if (state.isSearchMode) {
+    if (state[action.graphType].isSearchMode) {
       // clicking node in search mode opens property table
-      return {
-        ...state,
+      let toUpdate = {
         highlightingMatchedNodeID: action.nodeID,
         highlightingMatchedNodeOpened: false,
-        overlayPropertyHidden: false,
+        overlayPropertyHidden: false
       };
+      
+      return generateState(state, action.graphType, toUpdate);
     }
     let newHighlightingNode = null;
     let newSecondHighlightingNodeID = null;
     if (action.nodeID) {
       // if no node is selected, select this node as highlight node
-      if (!state.highlightingNode) {
-        newHighlightingNode = state.nodes.find(n => n.id === action.nodeID);
-      } else if (state.highlightingNode) {
-        newHighlightingNode = state.highlightingNode;
+      if (!state[action.graphType].highlightingNode) {
+        newHighlightingNode = state[action.graphType].nodes.find(n => n.id === action.nodeID);
+      } else if (state[action.graphType].highlightingNode) {
+        newHighlightingNode = state[action.graphType].highlightingNode;
 
         // if is clicking the same node
-        if (state.highlightingNode.id === action.nodeID) {
+        if (state[action.graphType].highlightingNode.id === action.nodeID) {
           // if no second node is selected, regard this as cancel selecting
-          if (!state.secondHighlightingNodeID) {
+          if (!state[action.graphType].secondHighlightingNodeID) {
             newHighlightingNode = null;
           }
-        } else if (state.secondHighlightingNodeCandidateIDs.length > 1
-          && state.secondHighlightingNodeCandidateIDs.includes(action.nodeID)) {
+        } else if (state[action.graphType].secondHighlightingNodeCandidateIDs.length > 1
+          && state[action.graphType].secondHighlightingNodeCandidateIDs.includes(action.nodeID)) {
           // regard as canceling selecting second highlight node
-          if (state.secondHighlightingNodeID === action.nodeID) {
+          if (state[action.graphType].secondHighlightingNodeID === action.nodeID) {
             newSecondHighlightingNodeID = null;
           } else { // select this as second highlight node
             newSecondHighlightingNodeID = action.nodeID;
@@ -153,53 +193,57 @@ const ddgraph = (state = ddgraphInitialState, action) => {
       }
     }
     const newTableExpandNodeID = newHighlightingNode ? newHighlightingNode.id : null;
-    return {
-      ...state,
+    let toUpdate_1 = {
       highlightingNode: newHighlightingNode,
       secondHighlightingNodeID: newSecondHighlightingNodeID,
-      tableExpandNodeID: newTableExpandNodeID,
+      tableExpandNodeID: newTableExpandNodeID
     };
+    
+    return generateState(state, action.graphType, toUpdate_1);
   }
   case 'GRAPH_CLICK_BLANK_SPACE': {
-    let newHighlightingNode = state.highlightingNode;
-    let newSecondHighlightingNodeID = state.secondHighlightingNodeID;
-    let newTableExpandNodeID = state.tableExpandNodeID;
-    if (state.highlightingNode) {
-      if (state.secondHighlightingNodeID) {
+    let newHighlightingNode = state[action.graphType].highlightingNode;
+    let newSecondHighlightingNodeID = state[action.graphType].secondHighlightingNodeID;
+    let newTableExpandNodeID = state[action.graphType].tableExpandNodeID;
+    if (state[action.graphType].highlightingNode) {
+      if (state[action.graphType].secondHighlightingNodeID) {
         newSecondHighlightingNodeID = null;
       } else {
         newHighlightingNode = null;
         newTableExpandNodeID = null;
       }
     }
-    return {
-      ...state,
+    let toUpdate = {
       highlightingNode: newHighlightingNode,
       secondHighlightingNodeID: newSecondHighlightingNodeID,
-      tableExpandNodeID: newTableExpandNodeID,
+      tableExpandNodeID: newTableExpandNodeID
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'TABLE_EXPAND_NODE': {
     let newHighlightingNode = null;
     if (action.nodeID) {
-      newHighlightingNode = state.nodes.find(n => n.id === action.nodeID);
+      newHighlightingNode = state[action.graphType].nodes.find(n => n.id === action.nodeID);
     }
-    return {
-      ...state,
+    
+    let toUpdate = {
       tableExpandNodeID: action.nodeID,
       highlightingNode: newHighlightingNode,
-      secondHighlightingNodeID: null,
+      secondHighlightingNodeID: null
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_SET_IS_SEARCHING_STATUS': {
-    return {
-      ...state,
-      isSearching: action.isSearching,
+    let toUpdate = {
+      isSearching: action.isSearching
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_RESULT_UPDATED': {
-    return {
-      ...state,
+    let toUpdate = {
       searchResult: action.searchResult,
       matchedNodeIDs: action.searchResultSummary.generalMatchedNodeIDs,
       matchedNodeIDsInNameAndDescription:
@@ -211,49 +255,57 @@ const ddgraph = (state = ddgraphInitialState, action) => {
       highlightingMatchedNodeOpened: false,
       highlightingNode: null,
       secondHighlightingNodeID: null,
-      tableExpandNodeID: null,
+      tableExpandNodeID: null
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_CLEAR_HISTORY': {
-    return {
-      ...state,
-      searchHistoryItems: clearSearchHistoryItems(),
+    let toUpdate = {
+      searchHistoryItems: clearSearchHistoryItems()
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_HISTORY_ITEM_CREATED': {
-    return {
-      ...state,
-      searchHistoryItems: addSearchHistoryItems(action.searchHistoryItem),
+    let toUpdate = {
+      searchHistoryItems: addSearchHistoryItems(action.searchHistoryItem)
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_NODES_SVG_ELEMENTS_UPDATED': {
-    return {
-      ...state,
-      graphNodesSVGElements: action.graphNodesSVGElements,
+    let toUpdate = {
+      graphNodesSVGElements: action.graphNodesSVGElements
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_RESULT_CLEARED': {
-    return {
-      ...state,
+    let toUpdate = {
       searchResult: [],
       matchedNodeIDs: [],
       currentSearchKeyword: '',
       isSearchMode: false,
       highlightingMatchedNodeID: null,
-      highlightingMatchedNodeOpened: false,
+      highlightingMatchedNodeOpened: false
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'SEARCH_SAVE_CURRENT_KEYWORD': {
-    return {
-      ...state,
-      currentSearchKeyword: action.keyword,
+    let toUpdate = {
+      currentSearchKeyword: action.keyword
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   case 'GRAPH_MATCHED_NODE_OPENED': {
-    return {
-      ...state,
-      highlightingMatchedNodeOpened: action.opened,
+    let toUpdate = {
+      highlightingMatchedNodeOpened: action.opened
     };
+    
+    return generateState(state, action.graphType, toUpdate);
   }
   default:
     return state;

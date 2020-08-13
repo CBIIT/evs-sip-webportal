@@ -3,12 +3,13 @@ import { setGraphView } from './action.js';
 import DataDictionary from './DataDictionary';
 
 const ReduxDataDictionary = (() => {
-  const mapStateToProps = state => ({
-    isGraphView: state.ddgraph.isGraphView,
+  const mapStateToProps = (state, ownProps) => ({
+    isGraphView: state.ddgraph[ownProps.graphType].isGraphView,
+    graphType: ownProps.graphType,
   });
 
-  const mapDispatchToProps = dispatch => ({
-    onSetGraphView: isGraphView => dispatch(setGraphView(isGraphView)),
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onSetGraphView: isGraphView => dispatch(setGraphView(ownProps.graphType, isGraphView)),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(DataDictionary);

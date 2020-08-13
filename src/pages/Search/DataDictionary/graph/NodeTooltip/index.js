@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 import NodeTooltip from './NodeTooltip';
 
 const ReduxNodeTooltip = (() => {
-  const mapStateToProps = state => ({
-    hoveringNode: state.ddgraph.hoveringNode,
-    canvasBoundingRect: state.ddgraph.canvasBoundingRect,
-    graphNodesSVGElements: state.ddgraph.graphNodesSVGElements,
+  const mapStateToProps = (state, ownProps) => ({
+    hoveringNode: state.ddgraph[ownProps.graphType].hoveringNode,
+    canvasBoundingRect: state.ddgraph[ownProps.graphType].canvasBoundingRect,
+    graphNodesSVGElements: state.ddgraph[ownProps.graphType].graphNodesSVGElements,
   });
 
   return connect(mapStateToProps)(NodeTooltip);

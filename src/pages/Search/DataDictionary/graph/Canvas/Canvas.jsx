@@ -41,13 +41,14 @@ class Canvas extends React.Component {
         this.zoomTarget
           .attr('transform', d3.event.transform);
       });
-    this.zoomTarget = d3.select('.canvas__container');
-    this.zoomCatcher = d3.select('.canvas__overlay')
+    this.zoomTarget = d3.select('#canvas__container_' + this.props.graphType);
+    this.zoomCatcher = d3.select('#canvas__overlay_' + this.props.graphType)
       .style('fill', 'none')
       .style('pointer-events', 'all')
       .call(this.zoomBehavior);
     this.updateCanvasSize();
     window.addEventListener('resize', this.handleResize);
+    window.addEventListener('scroll', this.handleCanvasUpdate);
   }
 
   componentDidUpdate() {
@@ -58,9 +59,10 @@ class Canvas extends React.Component {
   }
 
   componentWillUnmount() {
-    d3.select('.canvas__overlay')
+    d3.select('#canvas__overlay_' + this.props.graphType)
       .on('.zoom', null);
     window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('scroll', this.handleCanvasUpdate);
   }
 
   handleResize = () => {
@@ -74,6 +76,7 @@ class Canvas extends React.Component {
       canvasWidth: this.canvasElement.current.clientWidth,
       canvasHeight: this.canvasElement.current.clientHeight,
     });
+    console.log(this.canvasElement.current.clientHeight);
     this.handleCanvasUpdate();
   }
 
@@ -120,6 +123,9 @@ class Canvas extends React.Component {
   }
 
   render() {
+    const containerID = "canvas__container_" + this.props.graphType;
+    const overlayID = "canvas__overlay_" + this.props.graphType;
+    const markerArrowID = "markerArrow_" + this.props.graphType;
     return (
       <div className='canvas' ref={this.canvasElement} style={{ width: '100%', height: '100%' }}>
         <div className='canvas__zoom-button-group'>
@@ -159,7 +165,7 @@ class Canvas extends React.Component {
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <marker id="markerArrow" markerWidth="20" markerHeight="20" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+            <marker id={markerArrowID} markerWidth="20" markerHeight="20" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L0,6 L9,3 z" fill="black" />
             </marker>
               </defs>
@@ -168,12 +174,14 @@ class Canvas extends React.Component {
           <rect
             
             className='canvas__overlay'
+            id={overlayID}
             width={this.state.canvasWidth}
             height={this.state.canvasHeight}
             onClick={this.handleClick}
           />
           <g
-            className='canvas__container'
+            className='canvas__container' 
+            id={containerID} 
             ref={this.containerElement}
           >
             {
@@ -203,6 +211,7 @@ Canvas.propTypes = {
   onCanvasBoundingBoxUpdate: PropTypes.func,
   isGraphView: PropTypes.bool,
   needReset: PropTypes.bool,
+  graphType: PropTypes.string,
   onResetCanvasFinished: PropTypes.func,
 };
 
@@ -215,6 +224,7 @@ Canvas.defaultProps = {
   onCanvasBoundingBoxUpdate: () => {},
   isGraphView: true,
   needReset: false,
+  graphType: "gdc",
   onResetCanvasFinished: () => {},
 };
 

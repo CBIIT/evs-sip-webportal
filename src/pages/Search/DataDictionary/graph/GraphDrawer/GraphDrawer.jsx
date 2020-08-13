@@ -157,6 +157,7 @@ class GraphDrawer extends React.Component {
                 isFaded={isEdgeFaded}
                 isHalfFaded={isEdgeHalfFaded}
                 isHighlighted={isEdgeHighlighted}
+                graphType={this.props.graphType}
               />
     
             );
@@ -189,6 +190,7 @@ GraphDrawer.propTypes = {
   matchedNodeIDsInNameAndDescription: PropTypes.arrayOf(PropTypes.string),
   onGraphNodesSVGElementsUpdated: PropTypes.func,
   searchResult: PropTypes.arrayOf(SearchResultItemShape),
+  graphType: PropTypes.string,
 };
 
 GraphDrawer.defaultProps = {
@@ -212,6 +214,7 @@ GraphDrawer.defaultProps = {
   matchedNodeIDsInNameAndDescription: [],
   onGraphNodesSVGElementsUpdated: () => {},
   searchResult: [],
+  graphType: "gdc",
 };
 
 export default GraphDrawer;
