@@ -20,3 +20,13 @@ code {
 
 @import url(./assets/css/colors.css);
 @import url(./assets/css/fonts.css);
+
+@media (min-width: 1200px) {
+  .container, 
+  .container-lg, 
+  .container-md, 
+  .container-sm, 
+  .container-xl {
+    max-width: 80rem !important;
+  }
+}

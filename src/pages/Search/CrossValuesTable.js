@@ -56,7 +56,7 @@ const TableCol = styled(Col)`
 `;
 
 const TableUl = styled.ul`
-  padding-left: 15px;
+  padding-left: 0.5625rem;
   list-style: none;
 `;
 
@@ -65,7 +65,7 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
+  left: -0.8rem;
   top: 0.2rem;
   position: absolute;
   width: 1rem;
@@ -95,6 +95,31 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
+const Indicator = styled.div`
+  position: relative;
+  padding-bottom: 36%;
+`;
+
+const IndicatorContent = styled.div`
+  width: 60%;
+  min-width: 550px;
+  text-align: center;
+  margin: auto;
+  padding: 1em 0;
+  background-color: #fff;
+  color: #535a60;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
+const IndicatorTerm = styled.span`
+  color: #2a72a4;
+`;
+
 const CrossValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
@@ -110,7 +135,6 @@ const CrossValuesTable = (props) => {
     if (enums.hits.total !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
       let obj = {};
-      obj.dataSource = 'Genomic Data Commons';
       obj.category = data._source.category;
       obj.node = data._source.node;
       obj.property = data._source.property;
@@ -150,6 +174,7 @@ const CrossValuesTable = (props) => {
             source.n_syn.forEach(data => {
               let newSyn = [];
               let preferredTerm;
+              let preferredTermObj;
               data.s.forEach(s => {
                 if (s.termSource !== 'NCI') return;
                 let synObj = {};
@@ -158,6 +183,7 @@ const CrossValuesTable = (props) => {
                 synObj.termGroup = s.termGroup;
                 if (s.termGroup === 'PT' && preferredTerm === undefined) {
                   preferredTerm = s.termName;
+                  preferredTermObj = synObj;
                 }
                 newSyn.push(synObj);
               });
@@ -167,7 +193,7 @@ const CrossValuesTable = (props) => {
                 ncitMatch.push(data.n_c);
 
                 if(ncitMatchObj[data.n_c] === undefined) {
-                  ncitMatchObj[data.n_c] = preferredTerm;
+                  ncitMatchObj[data.n_c] = preferredTermObj;
                 };
               };
 
@@ -216,6 +242,15 @@ const CrossValuesTable = (props) => {
 
   values.forEach((value) => {
 
+    if(value.n_match.length === 0){
+
+      if(ncitObjs['norelationship'] === undefined) {
+        ncitObjs['norelationship'] = [];
+      }
+
+      ncitObjs['norelationship'].push(value);
+    } 
+
     value.n_match.forEach((match) => {
 
       if(ncitObjs[match] === undefined) {
@@ -229,7 +264,7 @@ const CrossValuesTable = (props) => {
 
   Object.entries(ncitObjs).forEach((entry)=> {
     crossValues.push({
-      code: entry[0],
+      code: entry[0] !== 'norelation'? entry[0]: 'No NCIT Relationship',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
         gdcvalues: entry[1],
@@ -473,7 +508,9 @@ const CrossValuesTable = (props) => {
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
       <TableRowFlex key={index}>
-        <TableCol xs={2}>{cross.code}<br/>{cross.preferredTerm}</TableCol>
+        <TableCol xs={2}>{cross.code}<br/>{cross.preferredTerm !== undefined && 
+          <div>{cross.preferredTerm.termName} {cross.preferredTerm.termGroup}</div>
+        } </TableCol>
         <TableValues xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
             <Row>
@@ -504,29 +541,39 @@ const CrossValuesTable = (props) => {
     );
   });
 
-
-  return (
-    <ContainerStyled>
-      <TableThead>
-      <Col xs={2}>
-          <TableTh>Terminology Reference</TableTh>
-        </Col>
+  if (crossValues.length !== 0) {
+    return (
+      <ContainerStyled>
+        <TableThead>
         <Col xs={2}>
-          <TableTh>Data Sources</TableTh>
-        </Col>
-        <Col xs={2}>
-          <TableTh>Node / Property</TableTh>
-        </Col>
-        <Col xs={6}>
-          <TableTh>Matched Values</TableTh>
-        </Col>
-      </TableThead>
-      <TableBody>
-        <Col xs={12}>{mainValuesItems}</Col>
-        {/* <Col xs={12}>test</Col> */}
-      </TableBody>
-    </ContainerStyled>
-  );
+            <TableTh>Terminology Reference</TableTh>
+          </Col>
+          <Col xs={2}>
+            <TableTh>Data Sources</TableTh>
+          </Col>
+          <Col xs={2}>
+            <TableTh>Node / Property</TableTh>
+          </Col>
+          <Col xs={6}>
+            <TableTh>Matched Values</TableTh>
+          </Col>
+        </TableThead>
+        <TableBody>
+          <Col xs={12}>{mainValuesItems}</Col>
+        </TableBody>
+      </ContainerStyled>
+    );
+  } else {
+    return (
+      <ContainerStyled>
+        <Indicator>
+          <IndicatorContent>
+            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+          </IndicatorContent>
+        </Indicator>
+      </ContainerStyled>
+    );
+  }
 };
 
 export default CrossValuesTable;
