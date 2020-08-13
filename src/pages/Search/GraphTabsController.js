@@ -46,7 +46,7 @@ const GraphTabsController = (props) => {
   return (
     <div>
       <Tab.Container id="graph-tabs-controller" defaultActiveKey="gdc">
-        <Container style={{"minWidth": "100%"}}>
+        <Container>
           <Row className="clearfix">
             <TabNavsCol sm={12}>
               <NavStyled variant="tabs">

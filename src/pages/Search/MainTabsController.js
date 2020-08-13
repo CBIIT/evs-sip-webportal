@@ -95,7 +95,7 @@ const MainTabsController = (props) => {
   return (
     <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
       <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
-        <Container style={{"min-width": "1400px"}}>
+        <Container>
           <Row className="clearfix">
             <TabNavTextCol sm={12}>
               <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>

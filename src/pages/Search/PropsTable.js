@@ -3,12 +3,6 @@ import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
 import { getHighlightObj } from '../../shared';
 
-// const ContainerStyled = styled(Container)`
-//   font-size: 1.3rem;
-//   padding-left: 15px;
-//   padding-right: 15px;
-// `;
-
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
   padding-left: 15px;
@@ -18,17 +12,6 @@ const ContainerStyled = styled(Container)`
   height: 45rem;
   border: 2px solid #535F74;
 `;
-
-// const TableThead = styled(Row)`
-//   background: #f1f1f1;
-// `;
-
-// const TableTh = styled.div`
-//   font-weight: 700;
-//   text-align: left;
-//   padding-top: 15px;
-//   padding-bottom: 15px;
-// `;
 
 const TableThead = styled(Row)`
   background: #535F74;
@@ -65,6 +48,32 @@ const TableCol = styled(Col)`
 const LinkBreak = styled.a`
   word-wrap: break-word;
 `;
+
+const Indicator = styled.div`
+  position: relative;
+  padding-bottom: 36%;
+`;
+
+const IndicatorContent = styled.div`
+  width: 60%;
+  min-width: 550px;
+  text-align: center;
+  margin: auto;
+  padding: 1em 0;
+  background-color: #fff;
+  color: #535a60;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
+const IndicatorTerm = styled.span`
+  color: #2a72a4;
+`;
+
 
 const PropsTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.properties));
@@ -104,8 +113,6 @@ const PropsTable = (props) => {
     properties.push(propObj);
   });
 
-  console.log(properties);
-
   const propsItems = properties.map((item, index) =>
     <TableRow key={index}>
       <TableCol xs={2}>
@@ -133,30 +140,42 @@ const PropsTable = (props) => {
     </TableRow>
   );
 
-  return (
-    <ContainerStyled>
+  if (properties.length !== 0) {
+    return (
+      <ContainerStyled>
       <TableThead>
-        <Col xs={2}>
-          <TableTh>Category / Node</TableTh>
-        </Col>
-        <Col xs={2}>
-          <TableTh>Property</TableTh>
-        </Col>
-        <Col xs={4}>
-          <TableTh>Description</TableTh>
-        </Col>
-        <Col xs={2}>
-          <TableTh>GDC Property Values</TableTh>
-        </Col>
-        <Col xs={2}>
-          <TableTh>caDSR CDE Reference</TableTh>
-        </Col>
-      </TableThead>
-      <TableBody>
-        <Col xs={12}>{propsItems}</Col>
-      </TableBody>
-    </ContainerStyled>
-  );
+          <Col xs={2}>
+            <TableTh>Category / Node</TableTh>
+          </Col>
+          <Col xs={2}>
+            <TableTh>Property</TableTh>
+          </Col>
+          <Col xs={4}>
+            <TableTh>Description</TableTh>
+          </Col>
+          <Col xs={2}>
+            <TableTh>GDC Property Values</TableTh>
+          </Col>
+          <Col xs={2}>
+            <TableTh>caDSR CDE Reference</TableTh>
+          </Col>
+        </TableThead>
+        <TableBody>
+          <Col xs={12}>{propsItems}</Col>
+        </TableBody>
+      </ContainerStyled>
+    );
+  } else {
+    return (
+      <ContainerStyled>
+        <Indicator>
+          <IndicatorContent>
+            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+          </IndicatorContent>
+        </Indicator>
+      </ContainerStyled>
+    );
+  }
 };
 
 export default PropsTable;
