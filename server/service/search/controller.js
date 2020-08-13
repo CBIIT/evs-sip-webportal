@@ -10,6 +10,7 @@ const xlsx = require('node-xlsx');
 const _ = require('lodash');
 const shared = require('./shared');
 const folderPath = path.join(__dirname, '..', '..', 'data');
+const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
 // const git = require('nodegit');
 var cdeData = {};
 var gdcData = {};
@@ -1241,6 +1242,40 @@ const gdcDictionaryVersion = (req, res) => {
 	res.json(shared.readGdcDictionaryVersion());
 }
 
+const getGraphicalGDCDictionary = (req, res) => {
+	let jsonData = {};
+	var termsJson = yaml.load(folderPath + '/_terms.yaml');
+	jsonData["_terms.yaml"] = termsJson;
+	var defJson = yaml.load(folderPath + '/_definitions.yaml');
+	jsonData["_definitions.yaml"] = defJson;
+	// let bulkBody = [];
+	fs.readdirSync(folderPath).forEach(file => {
+		if (file.indexOf('_') !== 0) {
+		  let fileJson = yaml.load(folderPath + '/' + file);
+		  jsonData[file] = fileJson;
+		}
+	});
+	res.json(jsonData);
+}
+
+const getGraphicalICDCDictionary = (req, res) => {
+	let jsonData = {};
+	var mpJson = yaml.load(dataFilesPath + '/ICDC/icdc-model-props.yml');
+	jsonData.mpData = mpJson;
+	var mJson = yaml.load(dataFilesPath + '/ICDC/icdc-model.yml');
+	jsonData.mData = mJson;
+	res.json(jsonData);
+}
+
+const getGraphicalCTDCDictionary = (req, res) => {
+	let jsonData = {};
+	var mpJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_properties_file.yaml');
+	jsonData.mpData = mpJson;
+	var mJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_file.yaml');
+	jsonData.mData = mJson;
+	res.json(jsonData);
+}
+
 module.exports = {
 	suggestion,
 	suggestionMisSpelled,
@@ -1262,5 +1297,8 @@ module.exports = {
 	//preloadDataTypeFromCaDSR,
 	//Unmapped,
 	gitClone,
-	gdcDictionaryVersion
+	gdcDictionaryVersion,
+	getGraphicalGDCDictionary,
+	getGraphicalICDCDictionary,
+	getGraphicalCTDCDictionary
 };

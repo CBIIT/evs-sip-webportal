@@ -7,29 +7,30 @@ import {
 import GraphDrawer from './GraphDrawer';
 
 const ReduxGraphDrawer = (() => {
-  const mapStateToProps = state => ({
-    nodes: state.ddgraph.nodes,
-    edges: state.ddgraph.edges,
-    graphBoundingBox: state.ddgraph.graphBoundingBox,
-    layoutInitialized: state.ddgraph.layoutInitialized,
-    highlightingNode: state.ddgraph.highlightingNode,
-    relatedNodeIDs: state.ddgraph.relatedNodeIDs,
-    secondHighlightingNodeCandidateIDs: state.ddgraph.secondHighlightingNodeCandidateIDs,
-    pathRelatedToSecondHighlightingNode: state.ddgraph.pathRelatedToSecondHighlightingNode,
-    secondHighlightingNodeID: state.ddgraph.secondHighlightingNodeID,
-    isGraphView: state.ddgraph.isGraphView,
-    matchedNodeIDs: state.ddgraph.matchedNodeIDs,
-    matchedNodeIDsInNameAndDescription: state.ddgraph.matchedNodeIDsInNameAndDescription,
-    searchResult: state.ddgraph.searchResult,
-    isSearchMode: state.ddgraph.isSearchMode,
+  const mapStateToProps = (state, ownProps) => ({
+    nodes: state.ddgraph[ownProps.graphType].nodes,
+    edges: state.ddgraph[ownProps.graphType].edges,
+    graphBoundingBox: state.ddgraph[ownProps.graphType].graphBoundingBox,
+    layoutInitialized: state.ddgraph[ownProps.graphType].layoutInitialized,
+    highlightingNode: state.ddgraph[ownProps.graphType].highlightingNode,
+    relatedNodeIDs: state.ddgraph[ownProps.graphType].relatedNodeIDs,
+    secondHighlightingNodeCandidateIDs: state.ddgraph[ownProps.graphType].secondHighlightingNodeCandidateIDs,
+    pathRelatedToSecondHighlightingNode: state.ddgraph[ownProps.graphType].pathRelatedToSecondHighlightingNode,
+    secondHighlightingNodeID: state.ddgraph[ownProps.graphType].secondHighlightingNodeID,
+    isGraphView: state.ddgraph[ownProps.graphType].isGraphView,
+    matchedNodeIDs: state.ddgraph[ownProps.graphType].matchedNodeIDs,
+    matchedNodeIDsInNameAndDescription: state.ddgraph[ownProps.graphType].matchedNodeIDsInNameAndDescription,
+    searchResult: state.ddgraph[ownProps.graphType].searchResult,
+    isSearchMode: state.ddgraph[ownProps.graphType].isSearchMode,
+    graphType: ownProps.graphType,
   });
 
-  const mapDispatchToProps = dispatch => ({
-    onHoverNode: nodeID => dispatch(hoverNode(nodeID)),
-    onCancelHoverNode: () => dispatch(hoverNode(null)),
-    onClickNode: nodeID => dispatch(clickNode(nodeID)),
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onHoverNode: nodeID => dispatch(hoverNode(ownProps.graphType, nodeID)),
+    onCancelHoverNode: () => dispatch(hoverNode(ownProps.graphType, null)),
+    onClickNode: nodeID => dispatch(clickNode(ownProps.graphType, nodeID)),
     onGraphNodesSVGElementsUpdated: graphNodesSVGElements =>
-      dispatch(setGraphNodesSVGElements(graphNodesSVGElements)),
+      dispatch(setGraphNodesSVGElements(ownProps.graphType, graphNodesSVGElements)),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(GraphDrawer);

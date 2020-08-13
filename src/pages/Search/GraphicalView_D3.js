@@ -10,8 +10,9 @@ class GraphicalView_D3 extends Component {
 	}
 
 	render() {
+		let graphType = this.props.type;
 		return (
-		    <ReduxDataDictionary />
+		    <ReduxDataDictionary graphType={graphType}/>
 		);
 	}
 

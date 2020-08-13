@@ -3,16 +3,17 @@ import { clickBlankSpace, setCanvasBoundingRect, setNeedReset } from '../../acti
 import Canvas from './Canvas';
 
 const ReduxCanvas = (() => {
-  const mapStateToProps = state => ({
-    isGraphView: state.ddgraph.isGraphView,
-    needReset: state.ddgraph.needReset,
+  const mapStateToProps = (state, ownProps) => ({
+    isGraphView: state.ddgraph[ownProps.graphType].isGraphView,
+    needReset: state.ddgraph[ownProps.graphType].needReset,
+    graphType: ownProps.graphType,
   });
 
-  const mapDispatchToProps = dispatch => ({
-    onClickBlankSpace: () => dispatch(clickBlankSpace()),
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onClickBlankSpace: () => dispatch(clickBlankSpace(ownProps.graphType)),
     onCanvasBoundingBoxUpdate:
-      canvasBoundingRect => dispatch(setCanvasBoundingRect(canvasBoundingRect)),
-    onResetCanvasFinished: () => dispatch(setNeedReset(false)),
+      canvasBoundingRect => dispatch(setCanvasBoundingRect(ownProps.graphType, canvasBoundingRect)),
+    onResetCanvasFinished: () => dispatch(setNeedReset(ownProps.graphType, false)),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(Canvas);

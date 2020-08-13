@@ -2,40 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from './api';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
-import ReduxDataDictionary from './pages/Search/DataDictionary';
 import reducers from './pages/Search/reducers'
 import $RefParser from "@apidevtools/json-schema-ref-parser";
-import jsonData_sample from './pages/Search/schema_sample.json';
-import _terms_yaml from './pages/Search/DataFiles/GDC/_terms.yaml';
-import _definitions_yaml from './pages/Search/DataFiles/GDC/_definitions.yaml';
-import program_yaml from './pages/Search/DataFiles/GDC/program.yaml';
-import project_yaml from './pages/Search/DataFiles/GDC/project.yaml';
-import case_yaml from './pages/Search/DataFiles/GDC/case.yaml';
-import aggregated_somatic_mutation_yaml from './pages/Search/DataFiles/GDC/aggregated_somatic_mutation.yaml';
-import aligned_reads_yaml from './pages/Search/DataFiles/GDC/aligned_reads.yaml';
-import aligned_reads_index from './pages/Search/DataFiles/GDC/aligned_reads_index.yaml';
-import aliquot_yaml from './pages/Search/DataFiles/GDC/aliquot.yaml';
-import analyte_yaml from './pages/Search/DataFiles/GDC/analyte.yaml';
-import archive_yaml from './pages/Search/DataFiles/GDC/archive.yaml';
-import center_yaml from './pages/Search/DataFiles/GDC/center.yaml';
-import clinical_yaml from './pages/Search/DataFiles/GDC/clinical.yaml';
-import demographic_yaml from './pages/Search/DataFiles/GDC/demographic.yaml';
-import diagnosis_yaml from './pages/Search/DataFiles/GDC/diagnosis.yaml';
-import exposure_yaml from './pages/Search/DataFiles/GDC/exposure.yaml';
-import sample_yaml from './pages/Search/DataFiles/GDC/sample.yaml';
-import tissue_source_site_yaml from './pages/Search/DataFiles/GDC/tissue_source_site.yaml';
-import axios from 'axios';
-import yaml from 'js-yaml';
-
-// you can change to use bento data in here
-//import icdcModel from './bento_model_file.yaml';
-//import icdcModelProps from './bento_model_properties.yaml'; 
-import icdcModel from './pages/Search/icdc-model.yml';
-import icdcModelProps from './pages/Search/icdc-model-props.yml'; 
-
 
 const version = {"commit":"913161064b02bcef024d072873e77c8c79cc1a68","dictionary":{"commit":"520a25999fd183f6c5b7ddef2980f3e839517da5","version":"0.2.1-9-g520a259"},"version":"4.0.0-44-g9131610"};
 
@@ -59,97 +31,13 @@ const findObjectWithRef = (obj, updateFn, root_key = '', level = 0) => {
   return obj;
 };
 
-async function loadGDCData() {
-	
-  var jsonData = {};
-  let tmp = await axios(_terms_yaml);
-  let tmpData = yaml.safeLoad(tmp.data);
-  jsonData["_terms.yaml"] = tmpData;
-  tmp = await axios(_definitions_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["_definitions.yaml"] = tmpData;
-  tmp = await axios(program_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["program.yaml"] = tmpData;
-  tmp = await axios(project_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["project.yaml"] = tmpData;
-  
-  tmp = await axios(case_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["case.yaml"] = tmpData;
-
-  tmp = await axios(aggregated_somatic_mutation_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["aggregated_somatic_mutation.yaml"] = tmpData;
-
-  tmp = await axios(aligned_reads_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["aligned_reads.yaml"] = tmpData;
-
-  tmp = await axios(aligned_reads_index);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["aligned_reads.yaml"] = tmpData;
-
-  tmp = await axios(aliquot_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["aliquot.yaml"] = tmpData;
-
-  tmp = await axios(analyte_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["analyte.yaml"] = tmpData;
-
-  tmp = await axios(archive_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["archive.yaml"] = tmpData;
-
-  tmp = await axios(center_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["center.yaml"] = tmpData;
-
-  tmp = await axios(clinical_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["clinical.yaml"] = tmpData;
-
-  tmp = await axios(demographic_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["demographic.yaml"] = tmpData;
-
-  tmp = await axios(diagnosis_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["diagnosis.yaml"] = tmpData;
-
-  tmp = await axios(exposure_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["exposure.yaml"] = tmpData;
-
-  tmp = await axios(sample_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["sample.yaml"] = tmpData;
-
-  tmp = await axios(tissue_source_site_yaml);
-  tmpData = yaml.safeLoad(tmp.data);
-  jsonData["tissue_source_site.yaml"] = tmpData;
-
-  //var defJson = yaml.load(_definitions_yaml);
-  //jsonData["_definitions.yaml"] = defJson;
-  //let fileJson = yaml.load(case_yaml);
-  //jsonData["case.yaml"] = fileJson;
-  return jsonData;
-};
-
-async function init() {
-  const store = createStore(reducers);
-
-  /*
-  const icdcM = await axios(icdcModel);
-  const icdcMData = yaml.safeLoad(icdcM.data);
-  const icdcMP = await axios(icdcModelProps);
-  const icdcMPData = yaml.safeLoad(icdcMP.data);
+const generateICDCorCTDCData = (dc) => {
+  const dcMData = dc.mData;
+  const dcMPData = dc.mpData;
 
   const dataList={};
  
-  for (let [key, value] of Object.entries(icdcMData.Nodes)) {
+  for (let [key, value] of Object.entries(dcMData.Nodes)) {
     //console.log(key);
     //console.log(value.Category);
     const item = {}
@@ -158,10 +46,10 @@ async function init() {
     item["title"]=key;
     if("Category" in value){
       item["category"]=value.Category;
-  }else{
-    item["category"]="Undefined";
     }
-     
+    else{
+      item["category"]="Undefined";
+    }
     
     item["program"]="*";
     item["project"]="*";
@@ -175,21 +63,21 @@ async function init() {
     const properties={};
     const pRequired=[];
     
-    if (icdcMData.Nodes[key].Props != null ) {
+    if (dcMData.Nodes[key].Props != null ) {
      
-      for(var i=0;i<icdcMData.Nodes[key].Props.length;i++){
+      for(var i=0;i<dcMData.Nodes[key].Props.length;i++){
         //console.log(icdcMData.Nodes[key].Props[i]);
-        const nodeP=icdcMData.Nodes[key].Props[i];
+        const nodeP=dcMData.Nodes[key].Props[i];
         const propertiesItem={};
-        for(var propertyName in icdcMPData.PropDefinitions){
+        for(var propertyName in dcMPData.PropDefinitions){
           
           if(propertyName==nodeP){
             
-            propertiesItem["description"]=icdcMPData.PropDefinitions[propertyName].Desc;
-            propertiesItem["type"]=icdcMPData.PropDefinitions[propertyName].Type;
-            propertiesItem["src"]=icdcMPData.PropDefinitions[propertyName].Src;
+            propertiesItem["description"]=dcMPData.PropDefinitions[propertyName].Desc;
+            propertiesItem["type"]=dcMPData.PropDefinitions[propertyName].Type;
+            propertiesItem["src"]=dcMPData.PropDefinitions[propertyName].Src;
             
-            if(icdcMPData.PropDefinitions[propertyName].Req==true){
+            if(dcMPData.PropDefinitions[propertyName].Req==true){
               pRequired.push(nodeP);
             }
 
@@ -198,7 +86,6 @@ async function init() {
         }
         properties[nodeP]=propertiesItem;
 
-      
       }
 
       item["properties"]=properties;
@@ -209,20 +96,20 @@ async function init() {
     }
     
     
-    for (var propertyName in icdcMData.Relationships) {
+    for (var propertyName in dcMData.Relationships) {
       const linkItem={};
       //console.log(propertyName);
       //console.log(icdcMData.Relationships[propertyName]);
       //console.log(icdcMData.Relationships[propertyName].Ends);
       const label=propertyName;
-      const multiplicity=icdcMData.Relationships[propertyName].Mul;
+      const multiplicity=dcMData.Relationships[propertyName].Mul;
       const required=false;
-      for(var i=0;i<icdcMData.Relationships[propertyName].Ends.length;i++){
+      for(var i=0;i<dcMData.Relationships[propertyName].Ends.length;i++){
         
-        if(icdcMData.Relationships[propertyName].Ends[i].Src==key){
-          const backref=icdcMData.Relationships[propertyName].Ends[i].Src;
-          const name=icdcMData.Relationships[propertyName].Ends[i].Dst;
-          const target=icdcMData.Relationships[propertyName].Ends[i].Dst;
+        if(dcMData.Relationships[propertyName].Ends[i].Src==key){
+          const backref=dcMData.Relationships[propertyName].Ends[i].Src;
+          const name=dcMData.Relationships[propertyName].Ends[i].Dst;
+          const target=dcMData.Relationships[propertyName].Ends[i].Dst;
 
           linkItem["name"]=name;
           linkItem["backref"]=backref;
@@ -236,25 +123,26 @@ async function init() {
       
     }
 
-
-
     //console.log(link);
     item["links"]=link;
 
-
     dataList[key]=item;
-
-    
-    
   }
  
-  //console.log(newDict);
-  const newDataList=dataList;
+  return dataList;
+}
+
+async function init() {
+  const store = createStore(reducers);
+
+  /*
+  
   console.log(newDataList);
   */
 
   //let schema =jsonData_sample;
-  let schema = await loadGDCData();
+  //let schema = await loadGDCData();
+  let schema = await apiGetGDCDictionary();
 
   // Remove .yaml extension from keys 
   let dict = {};  
@@ -322,15 +210,27 @@ async function init() {
     }
   });
 
-  console.log(newDict);
+  let icdc_data = await apiGetICDCDictionary();
 
+  const newDataList_icdc = generateICDCorCTDCData(icdc_data);
+
+  let ctdc_data = await apiGetCTDCDictionary();
+
+  const newDataList_ctdc = generateICDCorCTDCData(ctdc_data);
 
   await Promise.all(
     [
       store.dispatch({
-        type: 'RECEIVE_DICTIONARY',
+        type: 'RECEIVE_DICTIONARY_GDC',
         data: newDict
-        //data: newDataList
+      }),
+      store.dispatch({
+        type: 'RECEIVE_DICTIONARY_ICDC',
+        data: newDataList_icdc
+      }),
+      store.dispatch({
+        type: 'RECEIVE_DICTIONARY_CTDC',
+        data: newDataList_ctdc
       }),
       store.dispatch({
         type: 'RECEIVE_VERSION_INFO',

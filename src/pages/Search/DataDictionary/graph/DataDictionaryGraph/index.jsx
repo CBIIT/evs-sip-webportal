@@ -13,15 +13,15 @@ class DataDictionaryGraph extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ReduxGraphCalculator />
-        <ReduxLegend />
-        <ReduxCanvas>
-          <ReduxGraphDrawer />
+        <ReduxGraphCalculator graphType={this.props.graphType}/>
+        <ReduxLegend graphType={this.props.graphType}/>
+        <ReduxCanvas graphType={this.props.graphType}>
+          <ReduxGraphDrawer graphType={this.props.graphType}/>
         </ReduxCanvas>
-        <ReduxNodeTooltip />
-        <ReduxNodePopup />
-        <ReduxOverlayPropertyTable />
-        <ReduxActionLayer onClearSearchResult={this.props.onClearSearchResult} />
+        <ReduxNodeTooltip graphType={this.props.graphType}/>
+        <ReduxNodePopup graphType={this.props.graphType}/>
+        <ReduxOverlayPropertyTable graphType={this.props.graphType}/>
+        <ReduxActionLayer onClearSearchResult={this.props.onClearSearchResult} graphType={this.props.graphType}/>
       </React.Fragment>
     );
   }
