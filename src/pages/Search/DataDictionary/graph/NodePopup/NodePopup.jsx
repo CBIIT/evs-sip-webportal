@@ -24,9 +24,6 @@ class NodePopup extends React.Component {
     const popupLeft = (svgBoundingBox.left - this.props.canvasBoundingRect.left)
       + (svgBoundingBox.width / 2);
     const popupTop = svgBoundingBox.bottom - this.props.canvasBoundingRect.top;
-    //const popupTop = svgBoundingBox.bottom;
-    console.log(svgBoundingBox.bottom);
-    console.log(this.props.canvasBoundingRect);
     return (
       <div
         className='node-popup'

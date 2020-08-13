@@ -221,23 +221,7 @@ async function init() {
   await Promise.all(
     [
       store.dispatch({
-        type: 'RECEIVE_DICTIONARY',
-        //data: newDict
-        data: newDataList_icdc
-        //data: newDataList_ctdc
-      }),
-      store.dispatch({
-        type: 'RECEIVE_VERSION_INFO',
-        data: version
-      })
-    ],
-  );
-
-  /*
-   await Promise.all(
-    [
-      store.dispatch({
-        type: 'RECEIVE_DICTIONARY',
+        type: 'RECEIVE_DICTIONARY_GDC',
         data: newDict
       }),
       store.dispatch({
@@ -254,7 +238,6 @@ async function init() {
       })
     ],
   );
-  */
 
   ReactDOM.render(
     

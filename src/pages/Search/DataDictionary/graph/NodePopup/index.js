@@ -6,15 +6,15 @@ import {
 import NodePopup from './NodePopup';
 
 const ReduxNodePopup = (() => {
-  const mapStateToProps = state => ({
-    highlightingNode: state.ddgraph.highlightingNode,
-    canvasBoundingRect: state.ddgraph.canvasBoundingRect,
-    graphNodesSVGElements: state.ddgraph.graphNodesSVGElements,
+  const mapStateToProps = (state, ownProps) => ({
+    highlightingNode: state.ddgraph[ownProps.graphType].highlightingNode,
+    canvasBoundingRect: state.ddgraph[ownProps.graphType].canvasBoundingRect,
+    graphNodesSVGElements: state.ddgraph[ownProps.graphType].graphNodesSVGElements,
   });
 
-  const mapDispatchToProps = dispatch => ({
-    onClosePopup: () => dispatch(resetGraphHighlight()),
-    onOpenOverlayPropertyTable: () => dispatch(setOverlayPropertyTableHidden(false)),
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onClosePopup: () => dispatch(resetGraphHighlight(ownProps.graphType)),
+    onOpenOverlayPropertyTable: () => dispatch(setOverlayPropertyTableHidden(ownProps.graphType, false)),
   });
 
   return connect(mapStateToProps, mapDispatchToProps)(NodePopup);

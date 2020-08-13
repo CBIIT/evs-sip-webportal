@@ -10,32 +10,32 @@ import {
 } from '../../action';
 
 const ReduxGraphCalculator = (() => {
-  const mapStateToProps = state => ({
-    dictionary: state.submission.dictionary,
+  const mapStateToProps = (state, ownProps) => ({
+    dictionary: state.submission['dictionary_' + ownProps.graphType ],
     countsSearch: state.submission.counts_search,
     linksSearch: state.submission.links_search,
-    highlightingNode: state.ddgraph.highlightingNode,
-    nodes: state.ddgraph.nodes,
-    edges: state.ddgraph.edges,
-    secondHighlightingNodeID: state.ddgraph.secondHighlightingNodeID,
-    layoutInitialized: state.ddgraph.layoutInitialized,
+    highlightingNode: state.ddgraph[ownProps.graphType].highlightingNode,
+    nodes: state.ddgraph[ownProps.graphType].nodes,
+    edges: state.ddgraph[ownProps.graphType].edges,
+    secondHighlightingNodeID: state.ddgraph[ownProps.graphType].secondHighlightingNodeID,
+    layoutInitialized: state.ddgraph[ownProps.graphType].layoutInitialized,
   });
 
-  const mapDispatchToProps = dispatch => ({
-    onGraphLayoutCalculated: layout => dispatch(setGraphLayout(layout)),
-    onGraphLegendCalculated: legendItems => dispatch(setGraphLegend(legendItems)),
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onGraphLayoutCalculated: layout => dispatch(setGraphLayout(ownProps.graphType, layout)),
+    onGraphLegendCalculated: legendItems => dispatch(setGraphLegend(ownProps.graphType, legendItems)),
     onHighlightRelatedNodesCalculated: relatedNodeIDs =>
-      dispatch(setRelatedNodeIDs(relatedNodeIDs)),
+      dispatch(setRelatedNodeIDs(ownProps.graphType, relatedNodeIDs)),
     onSecondHighlightingNodeCandidateIDsCalculated: secondHighlightingNodeCandidateIDs =>
-      dispatch(setSecondHighlightingNodeCandidateIDs(secondHighlightingNodeCandidateIDs)),
+      dispatch(setSecondHighlightingNodeCandidateIDs(ownProps.graphType, secondHighlightingNodeCandidateIDs)),
     onPathRelatedToSecondHighlightingNodeCalculated: pathRelatedToSecondHighlightingNode =>
-      dispatch(setPathRelatedToSecondHighlightingNode(pathRelatedToSecondHighlightingNode)),
+      dispatch(setPathRelatedToSecondHighlightingNode(ownProps.graphType, pathRelatedToSecondHighlightingNode)),
     onDataModelStructureCalculated: (
       dataModelStructure,
       dataModelStructureRelatedNodeIDs,
       routesBetweenStartEndNodes,
     ) =>
-      dispatch(setDataModelStructure(
+      dispatch(setDataModelStructure(ownProps.graphType, 
         dataModelStructure,
         dataModelStructureRelatedNodeIDs,
         routesBetweenStartEndNodes,

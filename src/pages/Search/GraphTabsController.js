@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
-import GDC_Graph from './GraphicalView_D3';
-import ICDC_Graph from './GraphicalView_D3';
-import CTDC_Graph from './GraphicalView_D3';
+import Graph_View from './GraphicalView_D3';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -62,7 +60,7 @@ const GraphTabsController = (props) => {
                   <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="ctcd">CTDC</NavLinkStyled>
+                  <NavLinkStyled eventKey="ctdc">CTDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
                   <NavLinkStyled eventKey="idc">IDC</NavLinkStyled>
@@ -72,16 +70,16 @@ const GraphTabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false" style={{"fontSize": "1rem","backgroundColor": "var(--white)","borderRadius": "1rem","border": "2px solid #535F74"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
-                  <GDC_Graph />
+                  <Graph_View type="gdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="pdc">
                   PDC content
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
-                  ICDC Content
+                  <Graph_View type="icdc"/>
                 </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="ctcd">
-                  CTDC Content
+                <Tab.Pane unmountOnExit={true} eventKey="ctdc">
+                  <Graph_View type="ctdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="idc">
                   IDC content

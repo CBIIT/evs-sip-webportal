@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReduxDataDictionaryTable from './table/DataDictionaryTable';
-import ReduxDataModelStructure from './DataModelStructure';
 import DataDictionaryGraph from './graph/DataDictionaryGraph/.';
 import ReduxDictionarySearcher from './search/DictionarySearcher/.';
 import ReduxDictionarySearchHistory from './search/DictionarySearchHistory/.';
@@ -31,20 +30,12 @@ class DataDictionary extends React.Component {
         <div
           className='data-dictionary__main'
         >
-          { this.props.isGraphView
-            ? (
-              <div className={`data-dictionary__graph ${this.props.isGraphView ? '' : 'data-dictionary__graph--hidden'}`}>
-                <DataDictionaryGraph
-                  onClearSearchResult={this.handleClearSearchResult}
-                />
-              </div>
-            )
-            : (
-              <div className={`data-dictionary__table ${!this.props.isGraphView ? '' : 'data-dictionary__table--hidden'}`}>
-                <ReduxDataDictionaryTable />
-              </div>
-            )
-          }
+          <div className={`data-dictionary__graph ${this.props.isGraphView ? '' : 'data-dictionary__graph--hidden'}`}>
+            <DataDictionaryGraph
+              onClearSearchResult={this.handleClearSearchResult} 
+              graphType={this.props.graphType}
+            />
+          </div>
         </div>
       </div>
     );
@@ -54,11 +45,13 @@ class DataDictionary extends React.Component {
 DataDictionary.propTypes = {
   onSetGraphView: PropTypes.func,
   isGraphView: PropTypes.bool,
+  graphType: PropTypes.string,
 };
 
 DataDictionary.defaultProps = {
   onSetGraphView: () => {},
   isGraphView: false,
+  graphType: "gdc",
 };
 
 
