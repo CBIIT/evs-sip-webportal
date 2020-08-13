@@ -84,6 +84,33 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
+
+const Indicator = styled.div`
+  position: relative;
+  padding-bottom: 36%;
+`;
+
+const IndicatorContent = styled.div`
+  width: 60%;
+  min-width: 550px;
+  text-align: center;
+  margin: auto;
+  padding: 1em 0;
+  background-color: #fff;
+  color: #535a60;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
+const IndicatorTerm = styled.span`
+  color: #2a72a4;
+`;
+
+
 const ValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
@@ -406,7 +433,8 @@ const ValuesTable = (props) => {
     </TableRowFlex>
   );
 
-  return (
+  if (values.length !== 0) {
+    return (
     <ContainerStyled>
       <TableThead>
         <Col xs={3}>
@@ -420,7 +448,18 @@ const ValuesTable = (props) => {
         <Col xs={12}>{valuesItems}</Col>
       </TableBody>
     </ContainerStyled>
-  );
+    );
+  } else {
+    return (
+      <ContainerStyled>
+        <Indicator>
+          <IndicatorContent>
+            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+          </IndicatorContent>
+        </Indicator>
+      </ContainerStyled>
+    );
+  }
 };
 
 export default ValuesTable;

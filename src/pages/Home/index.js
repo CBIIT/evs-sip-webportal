@@ -9,25 +9,8 @@ const Page = styled.div`
   padding-bottom: 18rem;
 `;
 
-
-const Test = styled.div`
-  text-align: center;
-
-  &::before {
-    content: "x";
-    font-size: 1rem;
-    display: inline-block;
-    margin: 0 5px 0 -15px;
-    color: #acacac;
-    transform: rotate(45deg);
-    position: absolute;
-  }
-`;
-
 const Home = () => {
   return <Page>
-      <Test />
-
       <Search></Search>
       <Graph></Graph>
       <Tools></Tools>
