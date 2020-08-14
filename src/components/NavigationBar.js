@@ -61,12 +61,14 @@ const NavDropdownItem = styled(NavDropdown.Item)`
   margin: 0.25rem 1.5rem;
   padding: 0;
   width: fit-content;
+  display: block;
   
   &&:hover,
   &&:focus {
     color: #fff;
     background-color: transparent;
     border-bottom: 0.1rem solid #09a58a;
+    text-decoration: none;
   }
 `;
 
@@ -79,10 +81,9 @@ const NavigationBar = () => (
           <Nav.Link as={Link} to="/" >Home</Nav.Link>
           <Nav.Link as={Link} to="/search">Search</Nav.Link>
           <NavDropdownStyled title="Data Model">
-            <NavDropdownItem href="/#">Action</NavDropdownItem>
-            <NavDropdownItem href="/#">Another action</NavDropdownItem>
-            <NavDropdownItem href="/#">Something</NavDropdownItem>
-            <NavDropdownItem href="/#">Separated link</NavDropdownItem>
+            <NavDropdownItem as={Link} to="/datamodel">GDC</NavDropdownItem>
+            <NavDropdownItem as={Link} to="/datamodel">CTDC</NavDropdownItem>
+            <NavDropdownItem as={Link} to="/datamodel">ICDC</NavDropdownItem>
           </NavDropdownStyled>
           <Nav.Link as={Link} to="/about">About</Nav.Link>
         </Nav>

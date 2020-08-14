@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import CrossValuesTable from './CrossValuesTable';
 import PropsTable from './PropsTable';
-import DictTable from './DictTable';
 
 const TabNavsCol = styled(Col)`
   display: flex;
