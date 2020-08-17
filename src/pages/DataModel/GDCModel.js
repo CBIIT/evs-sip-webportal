@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import Graph_View from '../Search/GraphicalView_D3';
 
 const ContentBox =  styled.div`
-  padding: 2.5rem;
+  padding: 3rem 4rem;
   margin-bottom: 2.5rem;
   background-color: var(--white-bkgd);
 `;
@@ -14,24 +15,30 @@ const ContentBoxAbout = styled(ContentBox)`
 `;
 
 const ContentBoxTitle = styled.h2`
-  font-family: 'Raleway-Bold', sans-serif;
-  font-size: 1.5rem;
-  color: var(--sub-title);
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  color: #00C6FF;
   text-transform: uppercase;
+`;
 
-  &&::after {
-    content: " ";
-    border: 1px solid var(--black);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: block;
-    max-width: 24rem;
-  }
+const ContentBoxHr = styled.hr`
+  border-top: 1px solid #77B7CD;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 `;
 
 const ContentBoxText = styled.div`
-  margin-top: 2rem;
-  max-width: 34rem;
+  margin-bottom: 3rem;
+
+  && > h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1875rem;
+    font-weight: 500;
+    color: #00C6FF;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
 
   && > p {
     font-size: 1.0625rem;
@@ -48,10 +55,18 @@ const ContentBoxText = styled.div`
   }
 `;
 
+const GraphContent = styled.div`
+  margin: 2rem auto;
+  font-size: 1rem;
+  background-color: var(--white);
+  border-radius: 1rem;
+  border: 2px solid #1C87AC;
+`;
+
 const GDCModel = () => {
   return <ContentBoxAbout>
-    <ContentBoxTitle>Graph Representation of the GDC Data Model</ContentBoxTitle>
     <ContentBoxText>
+      <h2>Graph Representation of the GDC Data Model</h2>
       <p>
         The GDC data model is represented as a graph with nodes and edges, and this graph 
         is the store of record for the GDC. It maintains the critical relationship between 
@@ -72,6 +87,11 @@ const GDCModel = () => {
         is depicted below.
       </p>
     </ContentBoxText>
+    <ContentBoxHr/>
+    <ContentBoxTitle>The GDC Data Model</ContentBoxTitle>
+    <GraphContent>
+      <Graph_View type="gdc"/>
+    </GraphContent>
   </ContentBoxAbout>
 }
 
