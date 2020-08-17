@@ -36,8 +36,9 @@ const SearchTitle = styled.h1`
   font-size: 2.3125rem; 
   margin-bottom: 3rem;
   letter-spacing: 0.03125rem;
-  font-weight: normal;
-  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
 `;
 
 const SeachBoxContainer = styled.div`
