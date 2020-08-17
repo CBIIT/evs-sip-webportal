@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
 import logo from '../assets/img/nih-white-logo.png';
@@ -78,7 +79,7 @@ const Footer = () => {
         <Menu>
           <Row>
             <Col xs={5}>
-              <Logo src={logo} alt="logo-footer" />
+              <Link to="/"><Logo src={logo} alt="logo-footer" /></Link>
             </Col>
             <Col xs={7}>
               <Row>

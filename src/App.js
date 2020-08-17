@@ -14,6 +14,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Search from './pages/Search';
+import DataModel from './pages/DataModel';
 
 
 const MainContainer = styled.div`
@@ -31,6 +32,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/search" component={Search} />
+              <Route path="/datamodel" component={DataModel} />
               <Route path="/about" component={About} />
             </Switch>
           </Layout>
