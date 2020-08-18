@@ -16,6 +16,7 @@ const ContainerStyled = styled(Container)`
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
+  overflow: hidden;
 `;
 
 const TableThead = styled(Row)`
@@ -36,7 +37,7 @@ const TableTh = styled.div`
 
 const TableBody = styled(Row)`
   overflow-y: auto;
-  max-height: 40rem;
+  max-height: 42rem;
 `;
 
 const TableRow = styled(Row)`

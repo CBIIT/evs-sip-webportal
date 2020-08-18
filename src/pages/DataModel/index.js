@@ -27,9 +27,11 @@ const DataModel = (props) => {
   const [model, setModel] = useState('gdc');
   const [fromModel, setfromModel] = useState('gdc');
 
-  if(props.location.state.fromDataModel !== undefined && props.location.state.fromDataModel !== fromModel){
-    setfromModel(props.location.state.fromDataModel);
-    setModel(props.location.state.fromDataModel);
+  if(props.location.state !== undefined){
+    if(props.location.state.fromDataModel !== undefined && props.location.state.fromDataModel !== fromModel){
+      setfromModel(props.location.state.fromDataModel);
+      setModel(props.location.state.fromDataModel);
+    }
   }
 
   return <Page>

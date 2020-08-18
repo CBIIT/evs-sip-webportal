@@ -127,7 +127,6 @@ const MainTabsController = (props) => {
                     <GraphTabsController />
                   </Tab.Pane>
                 </TabContentStyled>
-
               </Col>
             </Row>
           </Container>

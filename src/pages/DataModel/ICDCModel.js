@@ -83,20 +83,3 @@ const ICDCModel = () => {
 }
 
 export default ICDCModel;
-
-
-// const ICDCModel = () => {
-//   return <ContentBoxAbout>
-//     <ContentBoxTitle>Graph Representation of the ICDC Data Model</ContentBoxTitle>
-//     <ContentBoxText>
-//       <p>
-//       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere sollicitudin augue, eget sodales diam tincidunt vel. Donec euismod orci neque, quis pulvinar est faucibus id. Praesent in rutrum risus. Nullam pretium placerat neque. Duis et arcu eget arcu semper cursus. Integer et volutpat urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras elit mauris, condimentum vitae erat a, feugiat ullamcorper orci. Vivamus a sem ut sapien porttitor congue dapibus quis quam. Nulla a tortor lacinia, sodales arcu a, consequat nisi. Praesent eros turpis, gravida vitae nisl sit amet, volutpat vehicula ipsum.
-//       </p>
-//       <p>
-//       Aenean vitae faucibus leo. Morbi nec lectus ligula. Quisque tristique in justo ac semper. Morbi nunc odio, viverra a accumsan non, porta nec sem. Cras condimentum lectus sed massa iaculis blandit. Nulla pharetra lacus risus, quis tincidunt ipsum rutrum in. Donec consectetur feugiat tincidunt. Nulla massa turpis, ullamcorper volutpat finibus sed, mollis at ligula. Vivamus sed lectus a quam dapibus fringilla. Praesent mollis urna non massa pretium pellentesque. Etiam vitae nunc quam. Vestibulum et ipsum eget purus elementum euismod id et eros. Donec sodales augue libero, vitae tristique magna fermentum non. Quisque vel lectus ut diam ultricies pulvinar. Sed imperdiet, purus eget venenatis tristique, risus justo pulvinar odio, ac ullamcorper tellus mi eget tortor.
-//       </p>
-//     </ContentBoxText>
-//   </ContentBoxAbout>
-// }
-
-// export default ICDCModel;
