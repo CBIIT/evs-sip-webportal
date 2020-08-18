@@ -1,5 +1,5 @@
-//const baseUrl = 'http://localhost:3000/api/search';
-const baseUrl = 'https://gdc-mvs-dev.nci.nih.gov/gdc/search';
+const baseUrl = 'http://localhost:3000/api/search';
+//const baseUrl = 'https://gdc-mvs-dev.nci.nih.gov/gdc/search';
 
 export const apiSuggest = async keyword => {
   const response = await fetch(`${baseUrl}/suggest?keyword=${keyword}`);
