@@ -134,6 +134,7 @@ const ToolTitle = styled.h3`
   inline-size: 10rem;
   font-size: 2.25rem;
   line-height: 2.8rem;
+  font-weight: 500;
 `;
 
 const Tools = () => {

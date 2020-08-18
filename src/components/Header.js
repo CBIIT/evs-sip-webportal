@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 import logo from '../assets/img/nih-evs-sip-logo-color.png';
 
 const LogoContainer = styled.div`
@@ -15,7 +15,7 @@ const Logo = styled.img`
 
 const Header = () => {
   return <LogoContainer>
-    <Logo src={logo} alt="logo" />
+    <Link to="/"><Logo src={logo} alt="logo"/></Link>
   </LogoContainer>;
 }
 

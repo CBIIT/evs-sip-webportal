@@ -69,6 +69,9 @@ const GraphTitle = styled.h3`
   inline-size: 22rem;
   font-size: 1.875rem;
   color: var(--white);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
 `;
 
 const GraphParagraph = styled.p`
