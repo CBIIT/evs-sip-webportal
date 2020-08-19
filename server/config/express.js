@@ -16,8 +16,7 @@ module.exports = function(app) {
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.resolve(config.root, 'build')));
-  console.log(path.resolve(config.root, 'build'));
-
+  
   app.use(function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');

@@ -1,10 +1,10 @@
 const express = require('express');
-const config = require('./config');
+const config = require('./server/config');
 
 // Setup server
 const app = express();
 // var server = require('http').createServer(app);
-require('./config/express')(app);
+require('./server/config/express')(app);
 // require('./routes')(app);
 //require('./components/exchange');
 
