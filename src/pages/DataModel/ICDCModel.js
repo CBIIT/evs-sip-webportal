@@ -57,10 +57,6 @@ const ContentBoxText = styled.div`
 
 const GraphContent = styled.div`
   margin: 2rem auto;
-  font-size: 1rem;
-  background-color: var(--white);
-  border-radius: 1rem;
-  border: 2px solid #1C87AC;
 `;
 
 const ICDCModel = () => {
