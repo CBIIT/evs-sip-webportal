@@ -77,7 +77,7 @@ const CTDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The CTDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="ctdc"/>
+      <Graph_View type="ctdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

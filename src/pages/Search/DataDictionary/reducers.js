@@ -37,6 +37,9 @@ const ddgraphsInitialState = {};
 ddgraphsInitialState.gdc = ddgraphInitialState;
 ddgraphsInitialState.icdc = ddgraphInitialState;
 ddgraphsInitialState.ctdc = ddgraphInitialState;
+ddgraphsInitialState.gdc_readonly = ddgraphInitialState;
+ddgraphsInitialState.icdc_readonly = ddgraphInitialState;
+ddgraphsInitialState.ctdc_readonly = ddgraphInitialState;
 
 const generateState = (state, graphType, toUpdate) => {
   switch (graphType) {
@@ -50,6 +53,24 @@ const generateState = (state, graphType, toUpdate) => {
       return {
         ...state,
         ctdc: {...state.ctdc, ...toUpdate}
+      };
+    }
+    case 'gdc_readonly': {
+      return {
+        ...state,
+        gdc_readonly: {...state.gdc_readonly, ...toUpdate}
+      };
+    }
+    case 'icdc_readonly': {
+      return {
+        ...state,
+        icdc_readonly: {...state.icdc_readonly, ...toUpdate}
+      };
+    }
+    case 'ctdc_readonly': {
+      return {
+        ...state,
+        ctdc_readonly: {...state.ctdc_readonly, ...toUpdate}
       };
     }
     default:

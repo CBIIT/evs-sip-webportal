@@ -233,6 +233,18 @@ async function init() {
         data: newDataList_ctdc
       }),
       store.dispatch({
+        type: 'RECEIVE_DICTIONARY_GDC_READONLY',
+        data: newDict
+      }),
+      store.dispatch({
+        type: 'RECEIVE_DICTIONARY_ICDC_READONLY',
+        data: newDataList_icdc
+      }),
+      store.dispatch({
+        type: 'RECEIVE_DICTIONARY_CTDC_READONLY',
+        data: newDataList_ctdc
+      }),
+      store.dispatch({
         type: 'RECEIVE_VERSION_INFO',
         data: version
       })

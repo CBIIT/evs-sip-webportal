@@ -22,7 +22,7 @@ class NodePopup extends React.Component {
       ? highlightingNodeSVGElement.getBoundingClientRect()
       : { top: 0, left: 0, width: 0, bottom: 0 };
     const popupLeft = (svgBoundingBox.left - this.props.canvasBoundingRect.left)
-      + (svgBoundingBox.width / 2);
+      + (svgBoundingBox.width / 2) + 50;
     const popupTop = svgBoundingBox.bottom - this.props.canvasBoundingRect.top;
     return (
       <div

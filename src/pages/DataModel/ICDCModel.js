@@ -77,7 +77,7 @@ const ICDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The ICDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="icdc"/>
+      <Graph_View type="icdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

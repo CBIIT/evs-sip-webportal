@@ -90,7 +90,7 @@ const GDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The GDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="gdc"/>
+      <Graph_View type="gdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }
