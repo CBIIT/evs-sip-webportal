@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Graph_View from '../Search/GraphicalView_D3';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -48,6 +49,10 @@ const ContentBoxText = styled.div`
   }
 `;
 
+const Content = styled.div`
+  margin-top: 2rem;
+`;
+
 const ICDCModel = () => {
   return <ContentBoxAbout>
     <ContentBoxTitle>Graph Representation of the ICDC Data Model</ContentBoxTitle>
@@ -59,6 +64,9 @@ const ICDCModel = () => {
       Aenean vitae faucibus leo. Morbi nec lectus ligula. Quisque tristique in justo ac semper. Morbi nunc odio, viverra a accumsan non, porta nec sem. Cras condimentum lectus sed massa iaculis blandit. Nulla pharetra lacus risus, quis tincidunt ipsum rutrum in. Donec consectetur feugiat tincidunt. Nulla massa turpis, ullamcorper volutpat finibus sed, mollis at ligula. Vivamus sed lectus a quam dapibus fringilla. Praesent mollis urna non massa pretium pellentesque. Etiam vitae nunc quam. Vestibulum et ipsum eget purus elementum euismod id et eros. Donec sodales augue libero, vitae tristique magna fermentum non. Quisque vel lectus ut diam ultricies pulvinar. Sed imperdiet, purus eget venenatis tristique, risus justo pulvinar odio, ac ullamcorper tellus mi eget tortor.
       </p>
     </ContentBoxText>
+    <Content>
+      <Graph_View type="icdc_readonly"/>
+    </Content>
   </ContentBoxAbout>
 }
 

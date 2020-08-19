@@ -112,7 +112,7 @@ export const calculateGraphLayout = (dictionary, countsSearch, linksSearch) => {
         });
 
       // draw edges
-      console.log(renderedJSON);
+      
       const renderedEdges = renderedJSON.edges
         .map((edge) => {
           const controlPoints = edge._draw_[1].points;

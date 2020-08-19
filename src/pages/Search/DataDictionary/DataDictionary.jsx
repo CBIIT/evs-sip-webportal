@@ -30,7 +30,7 @@ class DataDictionary extends React.Component {
         <div
           className='data-dictionary__main'
         >
-          <div className={`data-dictionary__graph ${this.props.isGraphView ? '' : 'data-dictionary__graph--hidden'}`}>
+          <div className='data-dictionary__graph'>
             <DataDictionaryGraph
               onClearSearchResult={this.handleClearSearchResult} 
               graphType={this.props.graphType}

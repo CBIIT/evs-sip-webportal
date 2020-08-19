@@ -127,17 +127,9 @@ class Canvas extends React.Component {
     const overlayID = "canvas__overlay_" + this.props.graphType;
     const markerArrowID = "markerArrow_" + this.props.graphType;
     return (
-      <div className='canvas' ref={this.canvasElement} style={{ width: '100%', height: '100%' }}>
+      <div className='canvas' ref={this.canvasElement} style={{ height: '100%', width: 'calc(100% - 50px)' , marginLeft: '50px', border: '4px solid #1588ae', borderRadius: '15px', background: 'white'}}>
         <div className='canvas__zoom-button-group'>
-          <div
-            className='canvas__zoom-button canvas__zoom-button--reset'
-            onClick={this.handleReset}
-            onKeyPress={this.handleReset}
-            role='button'
-            tabIndex={-1}
-          >
-            <i className='canvas__zoom-icon g3-icon g3-icon--reset' />
-          </div>
+          
           <div
             className='canvas__zoom-button canvas__zoom-button--zoom-in'
             onClick={this.handleZoomIn}
@@ -145,7 +137,7 @@ class Canvas extends React.Component {
             role='button'
             tabIndex={-1}
           >
-            <i className='canvas__zoom-icon g3-icon g3-icon--plus' />
+            <i class="fa fa-search-plus canvas-button-icon"></i>
           </div>
           <div
             className='canvas__zoom-button canvas__zoom-button--zoom-out'
@@ -154,7 +146,16 @@ class Canvas extends React.Component {
             role='button'
             tabIndex={-1}
           >
-            <i className='canvas__zoom-icon canvas__zoom-icon--zoom-in g3-icon g3-icon--minus' />
+            <i class="fa fa-search-minus canvas-button-icon"></i>
+          </div>
+          <div
+            className='canvas__zoom-button canvas__zoom-button--reset'
+            onClick={this.handleReset}
+            onKeyPress={this.handleReset}
+            role='button'
+            tabIndex={-1}
+          >
+            <i class="fas fa-compress canvas-button-icon"></i>
           </div>
         </div>
         <svg

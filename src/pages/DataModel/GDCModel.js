@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Graph_View from '../Search/GraphicalView_D3';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -48,6 +49,10 @@ const ContentBoxText = styled.div`
   }
 `;
 
+const Content = styled.div`
+  margin-top: 2rem;
+`;
+
 const GDCModel = () => {
   return <ContentBoxAbout>
     <ContentBoxTitle>Graph Representation of the GDC Data Model</ContentBoxTitle>
@@ -72,6 +77,9 @@ const GDCModel = () => {
         is depicted below.
       </p>
     </ContentBoxText>
+    <Content>
+      <Graph_View type="gdc_readonly"/>
+    </Content>
   </ContentBoxAbout>
 }
 

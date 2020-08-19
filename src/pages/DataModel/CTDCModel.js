@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Graph_View from '../Search/GraphicalView_D3';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -48,6 +49,10 @@ const ContentBoxText = styled.div`
   }
 `;
 
+const Content = styled.div`
+  margin-top: 2rem;
+`;
+
 const CTDCModel = () => {
   return <ContentBoxAbout>
     <ContentBoxTitle>Graph Representation of the CTDC Data Model</ContentBoxTitle>
@@ -59,6 +64,9 @@ const CTDCModel = () => {
         Quisque ut lectus aliquet, feugiat nunc a, venenatis mi. Ut id consectetur lorem, nec sagittis libero. Maecenas fermentum vitae nunc in euismod. Aliquam erat volutpat. Sed ullamcorper, est sit amet mollis laoreet, enim nisl mattis risus, vitae tincidunt lacus nibh non sapien. Sed tristique molestie odio. Integer tempus metus congue lectus varius, ac consectetur elit varius. Mauris vel egestas urna, vel molestie turpis. Praesent odio arcu, porta vel justo sit amet, mattis accumsan ipsum. Praesent ipsum tortor, mattis at neque nec, sagittis lacinia metus. Praesent id ligula in odio gravida dictum at quis ligula. Nullam molestie id justo rhoncus lacinia. Aenean ligula odio, luctus in libero a, lobortis luctus diam. Suspendisse elit justo, tincidunt eu lacinia in, egestas consequat arcu. Integer consectetur ante eget risus tempus ultrices.
       </p>
     </ContentBoxText>
+    <Content>
+      <Graph_View type="ctdc_readonly"/>
+    </Content>
   </ContentBoxAbout>
 }
 

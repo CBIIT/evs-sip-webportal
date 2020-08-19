@@ -1,5 +1,5 @@
-//const baseUrl = 'http://localhost:3000/api/search';
-const baseUrl = 'https://gdc-mvs-dev.nci.nih.gov/gdc/search';
+const baseUrl = './api/search';
+//const baseUrl = 'https://gdc-mvs-dev.nci.nih.gov/gdc/search';
 
 export const apiSuggest = async keyword => {
   const response = await fetch(`${baseUrl}/suggest?keyword=${keyword}`);
@@ -18,16 +18,16 @@ export const apiGetGDCDataById = async(id) => {
 };
 
 export const apiGetGDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/gdc`);
+  const response = await fetch(`${baseUrl}/graph/gdc`);
   return response.json();
 };
 
 export const apiGetICDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/icdc`);
+  const response = await fetch(`${baseUrl}/graph/icdc`);
   return response.json();
 };
 
 export const apiGetCTDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/ctdc`);
+  const response = await fetch(`${baseUrl}/graph/ctdc`);
   return response.json();
 };

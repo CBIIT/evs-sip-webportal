@@ -68,7 +68,7 @@ const GraphTabsController = (props) => {
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
-              <Tab.Content transition="false" style={{"fontSize": "1rem","backgroundColor": "var(--white)","borderRadius": "1rem","border": "2px solid #535F74"}}>
+              <Tab.Content transition="false" style={{"fontSize": "1rem"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
                   <Graph_View type="gdc"/>
                 </Tab.Pane>
