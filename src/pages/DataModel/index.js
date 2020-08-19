@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TabsController from './TabsController'
 
@@ -22,11 +22,22 @@ const PageTitle = styled.h1`
   margin-bottom: 0;
 `;
 
-const DataModel = () => {
+const DataModel = (props) => {
+
+  const [model, setModel] = useState('gdc');
+  const [fromModel, setfromModel] = useState('gdc');
+
+  if(props.location.state !== undefined){
+    if(props.location.state.fromDataModel !== undefined && props.location.state.fromDataModel !== fromModel){
+      setfromModel(props.location.state.fromDataModel);
+      setModel(props.location.state.fromDataModel);
+    }
+  }
+
   return <Page>
     <PageContainer>
       <PageTitle>Data Model</PageTitle>
-      <TabsController/>
+      <TabsController dataModel={model} setDataModel={setModel}/>
     </PageContainer>
   </Page>
 }
