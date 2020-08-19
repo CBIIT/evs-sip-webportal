@@ -92,46 +92,49 @@ border-bottom: none;
 `;
 
 const MainTabsController = (props) => {
-  return (
-    <Result style={props.source.length !== 0 ? { display: 'block' } : { display: 'none' }}>
-      <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
-        <Container>
-          <Row className="clearfix">
-            <TabNavTextCol sm={12}>
-              <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
-            </TabNavTextCol>
-            <TabNavsCol sm={12}>
-              <NavStyled variant="tabs">
-                <NavItemStyled>
-                  <NavLinkStyled eventKey="cross">Cross Source View</NavLinkStyled>
-                </NavItemStyled>
-                <NavItemStyled>
-                  <NavLinkStyled eventKey="single">Single Source View</NavLinkStyled>
-                </NavItemStyled>
-                <NavItemStyled>
-                  <NavLinkStyled eventKey="graph">Graphical View</NavLinkStyled>
-                </NavItemStyled>
-              </NavStyled>
-            </TabNavsCol>
-            <Col sm={12}>
-              <TabContentStyled transition="false">
-                <Tab.Pane unmountOnExit={true} eventKey="cross">
-                  <TabsController source={props.source}/>
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="single">
-                  <SingleTabsController source={props.source}/>
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="graph">
-                  <GraphTabsController />
-                </Tab.Pane>
-              </TabContentStyled>
 
-            </Col>
-          </Row>
-        </Container>
-      </Tab.Container>
-    </Result>
-  );
+  if(props.source.length !== 0){
+    return (
+      <Result>
+        <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
+              </TabNavTextCol>
+              <TabNavsCol sm={12}>
+                <NavStyled variant="tabs">
+                  <NavItemStyled>
+                    <NavLinkStyled eventKey="cross">Cross Source View</NavLinkStyled>
+                  </NavItemStyled>
+                  <NavItemStyled>
+                    <NavLinkStyled eventKey="single">Single Source View</NavLinkStyled>
+                  </NavItemStyled>
+                  <NavItemStyled>
+                    <NavLinkStyled eventKey="graph">Graphical View</NavLinkStyled>
+                  </NavItemStyled>
+                </NavStyled>
+              </TabNavsCol>
+              <Col sm={12}>
+                <TabContentStyled transition="false">
+                  <Tab.Pane unmountOnExit={true} eventKey="cross">
+                    <TabsController source={props.source}/>
+                  </Tab.Pane>
+                  <Tab.Pane unmountOnExit={true} eventKey="single">
+                    <SingleTabsController source={props.source}/>
+                  </Tab.Pane>
+                  <Tab.Pane unmountOnExit={true} eventKey="graph">
+                    <GraphTabsController />
+                  </Tab.Pane>
+                </TabContentStyled>
+              </Col>
+            </Row>
+          </Container>
+        </Tab.Container>
+      </Result>
+    );
+  }
+  return(<div></div>);
 };
 
 export default MainTabsController;

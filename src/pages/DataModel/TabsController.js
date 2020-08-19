@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import GDCModel from './GDCModel';
@@ -9,7 +9,6 @@ const TabNavsCol = styled(Col)`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: -3rem;
 `;
 
 const NavSpan = styled.span`
@@ -71,6 +70,7 @@ const NavLinkStyled = styled(Nav.Link)`
 
 const NavStyled = styled(Nav)`
   flex-direction: row-reverse;
+  margin-left: -3rem;
 `;
 
 const NavItemStyled = styled(Nav.Item)`
@@ -78,10 +78,15 @@ const NavItemStyled = styled(Nav.Item)`
   margin-right: -4rem;
 `;
 
-const TabsController = () => {
+const TabsController = (props) => {
+
+  const selectHandler = (k) => {
+    props.setDataModel(k);
+  }
+
   return (
     <div>
-      <Tab.Container id="tabs-controller" defaultActiveKey="gdc">
+      <Tab.Container id="tabs-controller" defaultActiveKey="gdc"  activeKey={props.dataModel} onSelect={selectHandler}>
         <Container>
           <Row className="clearfix">
             <TabNavsCol sm={12}>
@@ -92,7 +97,7 @@ const TabsController = () => {
                   </NavLinkStyled>
                 </NavItemStyled>
                 <NavItemStyled>
-                  <NavLinkStyled eventKey="ctcd">
+                  <NavLinkStyled eventKey="ctdc">
                     <NavSpan>Clinical Trial <br/>Data Commons</NavSpan>
                   </NavLinkStyled>
                 </NavItemStyled>
@@ -108,7 +113,7 @@ const TabsController = () => {
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
                   <GDCModel/>
                 </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="ctcd">
+                <Tab.Pane unmountOnExit={true} eventKey="ctdc">
                   <CTDCModel/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">

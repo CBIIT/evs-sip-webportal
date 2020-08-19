@@ -16,6 +16,7 @@ const ContainerStyled = styled(Container)`
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
+  overflow: hidden;
 `;
 
 const TableThead = styled(Row)`
@@ -36,7 +37,7 @@ const TableTh = styled.div`
 
 const TableBody = styled(Row)`
   overflow-y: auto;
-  max-height: 40rem;
+  max-height: 42rem;
 `;
 
 const TableRow = styled(Row)`
@@ -48,11 +49,19 @@ const TableRowFlex = styled(TableRow)`
   align-items: stretch;
 `;
 
+const TableRowValue = styled(TableRowFlex)`
+  border-bottom: 1px solid #ecf0f1;
+`;
+
 const TableCol = styled(Col)`
   text-align: left;
   padding-top: 12px;
   padding-bottom: 12px;
   line-height: 1.428571;
+`;
+
+const TableColBorder = styled(TableCol)`
+  border-bottom: 1px solid #BBC5CD;
 `;
 
 const TableUl = styled.ul`
@@ -76,15 +85,6 @@ const SpanIcon = styled.span`
 
 const TableLiBreak = styled(TableLi)`
   word-wrap: break-word;
-`;
-
-
-const TableColValues = styled(Col)`
-  text-align: left;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  line-height: 1.428571;
-  border-left: 1px solid #BBC5CD;
 `;
 
 const TableValues = styled(Col)`
@@ -494,9 +494,9 @@ const CrossValuesTable = (props) => {
           </TableCol>
           <TableValues xs={9}>
             {props.item.vs.map((value, index) =>
-              <TableRowFlex key={index}>
+              <TableRowValue key={index}>
                 <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-              </TableRowFlex>
+              </TableRowValue>
             )}
           </TableValues>
         </Row>
@@ -507,14 +507,14 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-      <TableRowFlex key={index}>
-        <TableCol xs={2}>{cross.code}<br/>{cross.preferredTerm !== undefined && 
+      <Row key={index}>
+        <TableColBorder xs={2}>{cross.code}<br/>{cross.preferredTerm !== undefined && 
           <div>{cross.preferredTerm.termName} {cross.preferredTerm.termGroup}</div>
-        } </TableCol>
+        } </TableColBorder>
         <TableValues xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
             <Row>
-              <TableCol xs={2}>Genomic Data Commons</TableCol>
+              <TableColBorder xs={2}>Genomic Data Commons</TableColBorder>
               <TableValues xs={10}>
                 {cross.values.gdcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
@@ -526,7 +526,7 @@ const CrossValuesTable = (props) => {
           }
           {cross.values.idcvalues.length !== 0 &&
             <Row>
-              <TableCol xs={2}>Clinical Trials Data Commos</TableCol>
+              <TableColBorder xs={2}>Clinical Trials Data Commos</TableColBorder>
               <TableValues xs={10}>
                 {cross.values.idcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
@@ -537,7 +537,7 @@ const CrossValuesTable = (props) => {
             </Row>
           }
         </TableValues>
-    </TableRowFlex>
+    </Row>
     );
   });
 

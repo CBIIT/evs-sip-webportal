@@ -81,9 +81,24 @@ const NavigationBar = () => (
           <Nav.Link as={Link} to="/" >Home</Nav.Link>
           <Nav.Link as={Link} to="/search">Search</Nav.Link>
           <NavDropdownStyled title="Data Model">
-            <NavDropdownItem as={Link} to="/datamodel">GDC</NavDropdownItem>
-            <NavDropdownItem as={Link} to="/datamodel">CTDC</NavDropdownItem>
-            <NavDropdownItem as={Link} to="/datamodel">ICDC</NavDropdownItem>
+            <NavDropdownItem as={Link} to={{
+              pathname: '/datamodel',
+              state: {
+                fromDataModel: 'gdc'
+              }
+            }}>GDC</NavDropdownItem>
+            <NavDropdownItem as={Link} to={{
+              pathname: '/datamodel',
+              state: {
+                fromDataModel: 'ctdc'
+              }
+            }}>CTDC</NavDropdownItem>
+            <NavDropdownItem as={Link} to={{
+              pathname: '/datamodel',
+              state: {
+                fromDataModel: 'icdc'
+              }
+            }}>ICDC</NavDropdownItem>
           </NavDropdownStyled>
           <Nav.Link as={Link} to="/about">About</Nav.Link>
         </Nav>
