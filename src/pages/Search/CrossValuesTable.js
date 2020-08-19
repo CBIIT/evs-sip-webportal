@@ -129,6 +129,7 @@ const CrossValuesTable = (props) => {
   let values = [];
 
   let ncitMatchObj = {};
+  let icdo3MatchObj = {};
 
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
@@ -148,6 +149,7 @@ const CrossValuesTable = (props) => {
       // }
 
       let ncitMatch = [];
+      let icdo3Match = [];
 
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
@@ -219,8 +221,17 @@ const CrossValuesTable = (props) => {
           valueObj.i_c = {};
           valueObj.i_c.c = source.i_c ? highlightICObj[source.i_c.c] ? highlightICObj[source.i_c.c] : source.i_c.c : undefined;
           valueObj.i_c.id = source.i_c ? (obj.property + '-' + valueObj.src_n + '-' + source.i_c.c).replace(/[^a-zA-Z0-9-]+/gi, '') : undefined;
+          if(valueObj.i_c.c !== undefined && icdo3Match.indexOf(valueObj.i_c.c) === -1) {
+            icdo3Match.push(valueObj.i_c.c);
+
+            if(icdo3MatchObj[valueObj.i_c.c] === undefined) {
+              //icdo3MatchObj[valueObj.i_c.c] = {};
+              icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
+            };
+          };
           if (source.ic_enum !== undefined) {
             valueObj.ic_enum = source.ic_enum;
+            icdo3MatchObj[valueObj.i_c.c].enum = source.ic_enum;
             // source.ic_enum.forEach(ic => {
             //   if (ic.term_type === '*') termTypeNotAssigned = true;
             // });
@@ -230,8 +241,8 @@ const CrossValuesTable = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
 
-
       obj.n_match = ncitMatch;
+      obj.ic_match = icdo3Match;
       //obj.n_match_obj = ncitMatchObj;
       // valuesCount += obj.vs.length;
       values.push(obj);
@@ -239,6 +250,7 @@ const CrossValuesTable = (props) => {
   });
 
   let ncitObjs = {};
+  let icdo3Objs = {};
 
   values.forEach((value) => {
 
@@ -257,7 +269,15 @@ const CrossValuesTable = (props) => {
         ncitObjs[match] = [];
       }
       ncitObjs[match].push(value);
-    })
+    });
+
+    value.ic_match.forEach((match) => {
+
+      if(icdo3Objs[match] === undefined) {
+        icdo3Objs[match] = [];
+      }
+      icdo3Objs[match].push(value);
+    });
   });
 
   let crossValues = [];
@@ -272,6 +292,19 @@ const CrossValuesTable = (props) => {
       }
     })
   });
+
+  Object.entries(icdo3Objs).forEach((entry)=> {
+    crossValues.push({
+      code: entry[0],
+      icdo3: icdo3MatchObj[entry[0]],
+      values: {
+        gdcvalues: entry[1],
+        idcvalues: entry[1], 
+      }
+    })
+  });
+
+  debugger;
 
   console.log(crossValues);
 
