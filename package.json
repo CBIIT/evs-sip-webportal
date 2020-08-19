@@ -63,7 +63,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
-    "start-backend": "nodemon server/app.js",
+    "start-backend": "nodemon app.js",
     "start-frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
