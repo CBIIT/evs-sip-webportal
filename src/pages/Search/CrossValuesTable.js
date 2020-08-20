@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
 
@@ -118,6 +118,27 @@ const IndicatorContent = styled.div`
 
 const IndicatorTerm = styled.span`
   color: #2a72a4;
+`;
+
+const DivCenter = styled.div`
+  text-align: center;
+  padding-top: 1rem;
+`;
+
+const CodeSpan = styled.span`
+  color: #475162;
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
+
+const PreferredTerm = styled.div`
+  color: #475162;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const TableStyled = styled(Table)`
+  margin-bottom: 0;
 `;
 
 const CrossValuesTable = (props) => {
@@ -304,10 +325,6 @@ const CrossValuesTable = (props) => {
     })
   });
 
-  debugger;
-
-  console.log(crossValues);
-
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
@@ -346,7 +363,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -357,7 +374,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableSynonyms synonyms={props.synonym.s}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -378,7 +395,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -389,7 +406,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableSynonyms synonyms={item.s}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -451,7 +468,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -462,7 +479,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableICDO3Syns synonyms={props.icemun}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -488,23 +505,28 @@ const CrossValuesTable = (props) => {
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
               <a href="/#" onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faPlus}/>
+                {isToggleOn === true
+                  ? <FontAwesomeIcon icon={faMinus}/>
+                  : <FontAwesomeIcon icon={faPlus}/>
+                }
               </a>
             }
           </ColRight>
         </Row>
         {(props.nsyn !== undefined || props.icemun !== undefined) &&
-          <div className="ncit-values" style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
-            {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
-              <NcitValues ncit={props.nsyn} />
-            }
-            {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
-              <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
-            }
-            {(props.nsyn === undefined && props.icemun !== undefined) &&
-              <ICDO3Value ic={props.ic} icemun={props.icemun} />
-            }
-          </div>
+          <Collapse in={isToggleOn}>
+            <div className="ncit-values">
+              {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
+                <NcitValues ncit={props.nsyn} />
+              }
+              {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
+                <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
+              }
+              {(props.nsyn === undefined && props.icemun !== undefined) &&
+                <ICDO3Value ic={props.ic} icemun={props.icemun} />
+              }
+            </div>
+          </Collapse>
         }
       </TableCol>
     );
@@ -541,13 +563,17 @@ const CrossValuesTable = (props) => {
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
       <Row key={index}>
-        <TableColBorder xs={2}>{cross.code}<br/>{cross.preferredTerm !== undefined && 
-          <div>{cross.preferredTerm.termName} {cross.preferredTerm.termGroup}</div>
-        } </TableColBorder>
+        <TableColBorder xs={2}>
+          <DivCenter><CodeSpan>{cross.code}</CodeSpan><br/>{cross.preferredTerm !== undefined && 
+            <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>
+          } </DivCenter>
+        </TableColBorder>
         <TableValues xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
             <Row>
-              <TableColBorder xs={2}>Genomic Data Commons</TableColBorder>
+              <TableColBorder xs={2}>
+                <DivCenter>Genomic Data Commons</DivCenter>
+              </TableColBorder>
               <TableValues xs={10}>
                 {cross.values.gdcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
@@ -559,7 +585,9 @@ const CrossValuesTable = (props) => {
           }
           {cross.values.idcvalues.length !== 0 &&
             <Row>
-              <TableColBorder xs={2}>Clinical Trials Data Commos</TableColBorder>
+              <TableColBorder xs={2}>
+                <DivCenter>Clinical Trials Data Commons</DivCenter>
+              </TableColBorder>
               <TableValues xs={10}>
                 {cross.values.idcvalues.map((value, index) =>
                   <TableRowFlex key={index}>

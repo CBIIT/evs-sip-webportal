@@ -9,7 +9,7 @@ const Result = styled.div`
   display: 'none';
   border: 1px solid #dce4ec;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: var(--white);
   padding: 2rem 0;
 `;
 
