@@ -253,6 +253,12 @@ const CrossValuesTable = (props) => {
           if (source.ic_enum !== undefined) {
             valueObj.ic_enum = source.ic_enum;
             icdo3MatchObj[valueObj.i_c.c].enum = source.ic_enum;
+            source.ic_enum.forEach(ic => {
+              if (ic.term_type === 'PT') {
+                icdo3MatchObj[valueObj.i_c.c].preferredTerm = ic;
+              }
+            });
+
             // source.ic_enum.forEach(ic => {
             //   if (ic.term_type === '*') termTypeNotAssigned = true;
             // });
@@ -306,6 +312,7 @@ const CrossValuesTable = (props) => {
   Object.entries(ncitObjs).forEach((entry)=> {
     crossValues.push({
       code: entry[0] !== 'norelation'? entry[0]: 'No NCIT Relationship',
+      ref: 'NCit',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
         gdcvalues: entry[1],
@@ -317,6 +324,7 @@ const CrossValuesTable = (props) => {
   Object.entries(icdo3Objs).forEach((entry)=> {
     crossValues.push({
       code: entry[0],
+      ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
         gdcvalues: entry[1],
@@ -324,6 +332,8 @@ const CrossValuesTable = (props) => {
       }
     })
   });
+
+  console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -564,9 +574,11 @@ const CrossValuesTable = (props) => {
     return (
       <Row key={index}>
         <TableColBorder xs={2}>
-          <DivCenter><CodeSpan>{cross.code}</CodeSpan><br/>{cross.preferredTerm !== undefined && 
-            <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>
-          } </DivCenter>
+          <DivCenter>
+            <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
+            {cross.preferredTerm !== undefined && <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>}
+            {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.term_type})</PreferredTerm>}
+        </DivCenter>
         </TableColBorder>
         <TableValues xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
