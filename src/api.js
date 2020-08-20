@@ -31,3 +31,31 @@ export const apiGetCTDCDictionary = async(keyword) => {
   const response = await fetch(`${baseUrl}/graph/ctdc`);
   return response.json();
 };
+
+export const apiGetPropertyValues = async(type, node ,property) => {
+  const response = await fetch(`${baseUrl}/graph/p/vs?type=${type}&node=${node}&property=${property}`);
+  return response.json();
+};
+
+/*
+
+export const apiGetGDCDictionary = async(keyword) => {
+  const response = await fetch(`http://localhost:3000/api/search/graph/gdc`);
+  return response.json();
+};
+
+export const apiGetICDCDictionary = async(keyword) => {
+  const response = await fetch(`http://localhost:3000/api/search/graph/icdc`);
+  return response.json();
+};
+
+export const apiGetCTDCDictionary = async(keyword) => {
+  const response = await fetch(`http://localhost:3000/api/search/graph/ctdc`);
+  return response.json();
+};
+
+export const apiGetPropertyValues = async(type, node ,property) => {
+  const response = await fetch(`http://localhost:3000/api/search/graph/p/vs?type=${type}&node=${node}&property=${property}`);
+  return response.json();
+};
+*/

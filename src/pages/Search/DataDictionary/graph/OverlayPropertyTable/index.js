@@ -34,6 +34,7 @@ const ReduxOverlayPropertyTable = (() => {
     isSearchMode: state.ddgraph[ownProps.graphType].isSearchMode,
     matchedResult: getSearchResultItem(state, ownProps.graphType),
     isSearchResultNodeOpened: state.ddgraph[ownProps.graphType].highlightingMatchedNodeOpened,
+    graphType: ownProps.graphType
   });
 
   const mapDispatchToProps = (dispatch, ownProps) => ({

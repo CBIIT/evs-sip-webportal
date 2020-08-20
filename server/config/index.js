@@ -66,7 +66,10 @@ var all = {
     'https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=CTCAE&type=synonym&code=',
     'https://evsrestapi.nci.nih.gov/evsrestapi/api/v1/ctrp/concept/',
     'https://evsrestapi-stage.nci.nih.gov/evsrestapi/api/v1/conceptList?db=weekly&properties=Code,Preferred_Name,FULL_SYN,DEFINITION&concepts='
-  ]
+  ],
+
+  //in memory cache ttl
+  item_ttl: 24 * 60 * 60
 
 };
 
