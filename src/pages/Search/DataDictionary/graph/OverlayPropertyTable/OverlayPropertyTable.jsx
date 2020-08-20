@@ -8,6 +8,7 @@ import {
   getNodeTitleFragment,
 } from '../../highlightHelper';
 import DataDictionaryPropertyTable from '../../table/DataDictionaryPropertyTable/.';
+import { apiGetPropertyValues  } from '../../../../../api';
 import './OverlayPropertyTable.css';
 
 class OverlayPropertyTable extends React.Component {
@@ -58,6 +59,66 @@ class OverlayPropertyTable extends React.Component {
     this.props.onCloseMatchedProperties();
   };
 
+  /**
+   * Toggle the property table data row to display values for that property
+   */
+  async toggleValuesBox(e, type, node , property) {
+    e.stopPropagation();
+    let obj = e.target;
+    let tr = obj.closest(".data-dictionary-property-table__row");
+
+    let next_sibling = tr.nextSibling;
+
+    if(next_sibling && next_sibling.className == "values-row"){
+      next_sibling.remove();
+    }
+    else{
+      let values = await apiGetPropertyValues(type, node , property);
+      let vs_html = "";
+      values.forEach(function(v){
+        vs_html += '<tr>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  '<div class="data-dictionary-property-table__span">'+ v +'</div>'+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  'TODO...'+
+                '</td>'+
+              '</tr>';
+      });
+
+      let new_tr = document.createElement("tr");
+      new_tr.className = "values-row";
+      let new_td = document.createElement("td");
+      new_td.colSpan = "5";
+      new_td.className = "data-dictionary-property-table__data";
+
+      let content = '<div class="data-dictionary-node__property">'+
+        '<span class="data-dictionary-node__property-close" role="button" tabindex="0" onclick="this.closest(\'.values-row\').remove()">Close tab<i class="g3-icon g3-icon--cross data-dictionary-node__property-close-icon"></i></span>'+
+        '<div class="data-dictionary-node__property-summary">'+
+          '<span>' + property + ' has ' + values.length + ' values. </span>'+
+        '</div>'+
+        '<div class="data-dictionary-property-table ">'+
+          '<table class="data-dictionary-property-table__table">'+
+            '<thead class="data-dictionary-property-table__head">'+
+              '<tr class="data-dictionary-property-table__row">'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--property">Values</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">NCIt Code</th>'+
+              '</tr>'+
+            '</thead>'+
+            '<tbody>'+
+              vs_html +
+            '</tbody>'+
+          '</table>'+
+        '</div>'+
+      '</div>';
+
+      new_td.innerHTML = content;
+      new_tr.append(new_td);
+      tr.after(new_tr);
+    }
+    
+  }
+
   render() {
     if (!this.props.node || this.props.hidden) return (<React.Fragment />);
     const IconSVG = getCategoryIconSVG(this.props.node.category);
@@ -71,7 +132,7 @@ class OverlayPropertyTable extends React.Component {
             <div className='overlay-property-table__header'>
               <div className='overlay-property-table__category'>
                 <IconSVG className='overlay-property-table__category-icon' />
-                <h4 className='overlay-property-table__category-text'>{this.props.node.category}</h4>
+                <h4 className='overlay-property-table__category-text'>{this.props.node.category} / {this.props.node.id}</h4>
                 {
                   this.props.isSearchMode && (
                     <Button
@@ -93,20 +154,7 @@ class OverlayPropertyTable extends React.Component {
                   Close
                   <i className='overlay-property-table__close-icon g3-icon g3-icon--cross g3-icon--sm' />
                 </span>
-                <Button
-                  className='overlay-property-table__download-button'
-                  onClick={() => { downloadTemplate('tsv', this.props.node.id); }}
-                  label='TSV'
-                  buttonType='secondary'
-                  rightIcon='download'
-                />
-                <Button
-                  className='overlay-property-table__download-button'
-                  onClick={() => { downloadTemplate('json', this.props.node.id); }}
-                  label='JSON'
-                  buttonType='secondary'
-                  rightIcon='download'
-                />
+                
               </div>
               
             </div>
@@ -119,6 +167,9 @@ class OverlayPropertyTable extends React.Component {
                 needHighlightSearchResult={needHighlightSearchResult}
                 hideIsRequired={searchedNodeNotOpened}
                 matchedResult={this.props.matchedResult}
+                toggleValuesBox={this.toggleValuesBox}
+                nodeID={this.props.node.id}
+                source={this.props.graphType}
               />
             </div>
           </div>
@@ -137,6 +188,7 @@ OverlayPropertyTable.propTypes = {
   onOpenMatchedProperties: PropTypes.func,
   onCloseMatchedProperties: PropTypes.func,
   isSearchResultNodeOpened: PropTypes.bool,
+  graphType: PropTypes.string
 };
 
 OverlayPropertyTable.defaultProps = {
@@ -148,6 +200,7 @@ OverlayPropertyTable.defaultProps = {
   onOpenMatchedProperties: () => {},
   onCloseMatchedProperties: () => {},
   isSearchResultNodeOpened: false,
+  graphType: ''
 };
 
 export default OverlayPropertyTable;

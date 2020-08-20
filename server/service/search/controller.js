@@ -1,6 +1,7 @@
 const elastic = require('../../components/elasticsearch');
 const handleError = require('../../components/handleError');
 const logger = require('../../components/logger');
+const cache = require('../../components/cache');
 const config = require('../../config');
 const https = require('https');
 const fs = require('fs');
@@ -1242,38 +1243,46 @@ const gdcDictionaryVersion = (req, res) => {
 	res.json(shared.readGdcDictionaryVersion());
 }
 
-const getGraphicalGDCDictionary = (req, res) => {
-	let jsonData = {};
-	var termsJson = yaml.load(folderPath + '/_terms.yaml');
-	jsonData["_terms.yaml"] = termsJson;
-	var defJson = yaml.load(folderPath + '/_definitions.yaml');
-	jsonData["_definitions.yaml"] = defJson;
-	// let bulkBody = [];
-	fs.readdirSync(folderPath).forEach(file => {
-		if (file.indexOf('_') !== 0) {
-		  let fileJson = yaml.load(folderPath + '/' + file);
-		  jsonData[file] = fileJson;
-		}
-	});
+const getGraphicalGDCDictionary = async function(req, res) {
+	let jsonData = await shared.getGraphicalGDCDictionary();
 	res.json(jsonData);
 }
 
 const getGraphicalICDCDictionary = (req, res) => {
-	let jsonData = {};
-	var mpJson = yaml.load(dataFilesPath + '/ICDC/icdc-model-props.yml');
-	jsonData.mpData = mpJson;
-	var mJson = yaml.load(dataFilesPath + '/ICDC/icdc-model.yml');
-	jsonData.mData = mJson;
+
+	let jsonData = shared.getGraphicalICDCDictionary();
 	res.json(jsonData);
 }
 
 const getGraphicalCTDCDictionary = (req, res) => {
-	let jsonData = {};
-	var mpJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_properties_file.yaml');
-	jsonData.mpData = mpJson;
-	var mJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_file.yaml');
-	jsonData.mData = mJson;
+	
+	let jsonData = shared.getGraphicalCTDCDictionary();
 	res.json(jsonData);
+}
+
+const getValuesForGraphicalView = async function(req, res) {
+	const type = req.query.type;
+	const node = req.query.node;
+	const property = req.query.property;
+
+	let result = [];
+	if(type == 'icdc' || type == 'icdc_readonly'){
+		let jsonData = shared.getGraphicalICDCDictionary();
+		const props = jsonData[node].properties;
+		result = props ? (props[property] ? (props[property].type ? (Array.isArray(props[property].type) ? props[property].type : []) : []) : []) : [];
+	}
+	else if(type == 'ctdc' || type == 'ctdc_readonly'){
+		let jsonData = shared.getGraphicalCTDCDictionary();
+		const props = jsonData[node].properties;
+		result = props ? (props[property] ? (props[property].type ? (Array.isArray(props[property].type) ? props[property].type : []) : []) : []) : [];
+	}
+	else{
+		let jsonData = await shared.getGraphicalGDCDictionary();
+		const props = jsonData[node].properties;
+		result = props ? (props[property] ? (props[property].enum ? props[property].enum : []) : []) : [];
+	}
+
+	res.json(result);
 }
 
 module.exports = {
@@ -1300,5 +1309,6 @@ module.exports = {
 	gdcDictionaryVersion,
 	getGraphicalGDCDictionary,
 	getGraphicalICDCDictionary,
-	getGraphicalCTDCDictionary
+	getGraphicalCTDCDictionary,
+	getValuesForGraphicalView
 };

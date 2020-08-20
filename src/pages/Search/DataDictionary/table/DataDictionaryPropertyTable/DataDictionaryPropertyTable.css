@@ -31,6 +31,39 @@
   color: var(--g3-color__white);
 }
 
+.head-top-line{
+  border-top: 1px solid white;
+}
+
+.type-col-width{
+  width: 100px;
+  word-break: break-word;
+}
+
+.required-col-width{
+  width:120px;
+}
+
+.sticky-table__head{
+    position: sticky;
+    top: 40px;
+    background-color: var(--dictionary-header-color);
+    color: var(--g3-color__white);
+    z-index: 1;
+}
+
+.data-dictionary-property-table__row {
+  cursor: pointer;
+}
+
+.data-dictionary-property-table__row:hover {
+  background: #dcdcdc;
+}
+
+.values-row{
+  background-color:#4a4a4a80;
+}
+
 .data-dictionary-property-table__required {
   color: var(--g3-color__highlight-orange);
 }
@@ -50,4 +83,13 @@
 
 .data-dictionary-property-table__span--new-line {
   display: block;
+}
+
+.data-dictionary-property-table__button {
+  width: 80px;
+  min-width: unset;
+  height: 30px;
+  padding: unset;
+  font-weight: normal;
+  border: none;
 }

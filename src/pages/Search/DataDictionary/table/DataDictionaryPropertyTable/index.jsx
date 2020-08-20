@@ -7,6 +7,7 @@ import {
   getPropertyDescriptionFragment,
   getPropertyTypeFragment,
 } from '../../highlightHelper';
+import Button from '@gen3/ui-component/dist/components/Button';
 import './DataDictionaryPropertyTable.css';
 
 class DataDictionaryPropertyTable extends React.Component {
@@ -32,16 +33,16 @@ class DataDictionaryPropertyTable extends React.Component {
     return (
       <div className={`data-dictionary-property-table ${borderModifier}`}>
         <table className='data-dictionary-property-table__table'>
-          <thead className='data-dictionary-property-table__head'>
-            <tr className='data-dictionary-property-table__row'>
+          <thead className='data-dictionary-property-table__head head-top-line'>
+            <tr>
               <th
-                className='data-dictionary-property-table__data
+                className='data-dictionary-property-table__data sticky-table__head 
                 data-dictionary-property-table__data--property'
               >
                 Property
               </th>
               <th
-                className='data-dictionary-property-table__data
+                className='data-dictionary-property-table__data sticky-table__head type-col-width 
                 data-dictionary-property-table__data--type'
               >
                 Type
@@ -49,7 +50,7 @@ class DataDictionaryPropertyTable extends React.Component {
               {
                 !this.props.hideIsRequired && (
                   <th
-                    className='data-dictionary-property-table__data
+                    className='data-dictionary-property-table__data sticky-table__head required-col-width 
                     data-dictionary-property-table__data--required'
                   >
                     Required
@@ -57,16 +58,16 @@ class DataDictionaryPropertyTable extends React.Component {
                 )
               }
               <th
-                className='data-dictionary-property-table__data
+                className='data-dictionary-property-table__data sticky-table__head 
                 data-dictionary-property-table__data--description'
               >
                 Description
               </th>
               <th
-                className='data-dictionary-property-table__data
+                className='data-dictionary-property-table__data sticky-table__head 
                 data-dictionary-property-table__data--term'
               >
-                Src
+                
               </th>
             </tr>
           </thead>
@@ -114,11 +115,11 @@ class DataDictionaryPropertyTable extends React.Component {
                 );
                 const isRequired = this.props.requiredProperties.includes(propertyKey);
                 return (
-                  <tr key={propertyKey}>
+                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.nodeID, propertyKey)}>
                     <td className='data-dictionary-property-table__data'>
                       {propertyNameFragment}
                     </td>
-                    <td className='data-dictionary-property-table__data'>
+                    <td className='data-dictionary-property-table__data type-col-width'>
                     <p>{JSON.stringify(type)}</p>
                     </td>
                     {
@@ -139,7 +140,12 @@ class DataDictionaryPropertyTable extends React.Component {
                     <p>{propertyDescriptionFragment}</p>
                     </td>
                     <td className='data-dictionary-property-table__data'>
-                      <p>{JSON.stringify(termID)}</p>
+                      <Button
+                        className='data-dictionary-property-table__button'
+                        onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.nodeID, propertyKey)}
+                        label='All Values'
+                        buttonType='secondary'
+                      />
                     </td>
                   </tr>
                 );
@@ -158,6 +164,9 @@ DataDictionaryPropertyTable.propTypes = {
   hasBorder: PropTypes.bool,
   needHighlightSearchResult: PropTypes.bool,
   matchedResult: SearchResultItemShape,
+  toggleValuesBox: PropTypes.func,
+  nodeID: PropTypes.string,
+  source: PropTypes.string,
   hideIsRequired: PropTypes.bool,
   onlyShowMatchedProperties: PropTypes.bool,
 };
@@ -167,6 +176,9 @@ DataDictionaryPropertyTable.defaultProps = {
   hasBorder: true,
   needHighlightSearchResult: false,
   matchedResult: {},
+  toggleValuesBox: () => {},
+  nodeID: "",
+  source: "",
   hideIsRequired: false,
   onlyShowMatchedProperties: false,
 };

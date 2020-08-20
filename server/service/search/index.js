@@ -18,5 +18,6 @@ router.get('/p/local/vs', controller.getGDCData);
 router.get('/graph/gdc', controller.getGraphicalGDCDictionary);
 router.get('/graph/icdc', controller.getGraphicalICDCDictionary);
 router.get('/graph/ctdc', controller.getGraphicalCTDCDictionary);
+router.get('/graph/p/vs', controller.getValuesForGraphicalView);
 
 module.exports = router;
