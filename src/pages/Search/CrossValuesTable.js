@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
 
@@ -120,6 +120,27 @@ const IndicatorTerm = styled.span`
   color: #2a72a4;
 `;
 
+const DivCenter = styled.div`
+  text-align: center;
+  padding-top: 1rem;
+`;
+
+const CodeSpan = styled.span`
+  color: #475162;
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
+
+const PreferredTerm = styled.div`
+  color: #475162;
+  font-size: 1rem;
+  font-weight: bold;
+`;
+
+const TableStyled = styled(Table)`
+  margin-bottom: 0;
+`;
+
 const CrossValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
@@ -129,6 +150,7 @@ const CrossValuesTable = (props) => {
   let values = [];
 
   let ncitMatchObj = {};
+  let icdo3MatchObj = {};
 
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
@@ -148,6 +170,7 @@ const CrossValuesTable = (props) => {
       // }
 
       let ncitMatch = [];
+      let icdo3Match = [];
 
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
@@ -219,8 +242,23 @@ const CrossValuesTable = (props) => {
           valueObj.i_c = {};
           valueObj.i_c.c = source.i_c ? highlightICObj[source.i_c.c] ? highlightICObj[source.i_c.c] : source.i_c.c : undefined;
           valueObj.i_c.id = source.i_c ? (obj.property + '-' + valueObj.src_n + '-' + source.i_c.c).replace(/[^a-zA-Z0-9-]+/gi, '') : undefined;
+          if(valueObj.i_c.c !== undefined && icdo3Match.indexOf(valueObj.i_c.c) === -1) {
+            icdo3Match.push(valueObj.i_c.c);
+
+            if(icdo3MatchObj[valueObj.i_c.c] === undefined) {
+              //icdo3MatchObj[valueObj.i_c.c] = {};
+              icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
+            };
+          };
           if (source.ic_enum !== undefined) {
             valueObj.ic_enum = source.ic_enum;
+            icdo3MatchObj[valueObj.i_c.c].enum = source.ic_enum;
+            source.ic_enum.forEach(ic => {
+              if (ic.term_type === 'PT') {
+                icdo3MatchObj[valueObj.i_c.c].preferredTerm = ic;
+              }
+            });
+
             // source.ic_enum.forEach(ic => {
             //   if (ic.term_type === '*') termTypeNotAssigned = true;
             // });
@@ -230,8 +268,8 @@ const CrossValuesTable = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
 
-
       obj.n_match = ncitMatch;
+      obj.ic_match = icdo3Match;
       //obj.n_match_obj = ncitMatchObj;
       // valuesCount += obj.vs.length;
       values.push(obj);
@@ -239,6 +277,7 @@ const CrossValuesTable = (props) => {
   });
 
   let ncitObjs = {};
+  let icdo3Objs = {};
 
   values.forEach((value) => {
 
@@ -257,7 +296,15 @@ const CrossValuesTable = (props) => {
         ncitObjs[match] = [];
       }
       ncitObjs[match].push(value);
-    })
+    });
+
+    value.ic_match.forEach((match) => {
+
+      if(icdo3Objs[match] === undefined) {
+        icdo3Objs[match] = [];
+      }
+      icdo3Objs[match].push(value);
+    });
   });
 
   let crossValues = [];
@@ -265,7 +312,20 @@ const CrossValuesTable = (props) => {
   Object.entries(ncitObjs).forEach((entry)=> {
     crossValues.push({
       code: entry[0] !== 'norelation'? entry[0]: 'No NCIT Relationship',
+      ref: 'NCit',
       preferredTerm: ncitMatchObj[entry[0]],
+      values: {
+        gdcvalues: entry[1],
+        idcvalues: entry[1], 
+      }
+    })
+  });
+
+  Object.entries(icdo3Objs).forEach((entry)=> {
+    crossValues.push({
+      code: entry[0],
+      ref: 'ICD-O-3',
+      icdo3: icdo3MatchObj[entry[0]],
       values: {
         gdcvalues: entry[1],
         idcvalues: entry[1], 
@@ -313,7 +373,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -324,7 +384,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableSynonyms synonyms={props.synonym.s}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -345,7 +405,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -356,7 +416,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableSynonyms synonyms={item.s}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -418,7 +478,7 @@ const CrossValuesTable = (props) => {
           </Row>
           <Row>
             <TableCol xs={12}>
-              <Table striped bordered condensed="true" hover>
+              <TableStyled striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -429,7 +489,7 @@ const CrossValuesTable = (props) => {
                 <tbody>
                   <TableICDO3Syns synonyms={props.icemun}/>
                 </tbody>
-              </Table>
+              </TableStyled>
             </TableCol>
           </Row>
         </div>
@@ -455,23 +515,28 @@ const CrossValuesTable = (props) => {
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
               <a href="/#" onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faPlus}/>
+                {isToggleOn === true
+                  ? <FontAwesomeIcon icon={faMinus}/>
+                  : <FontAwesomeIcon icon={faPlus}/>
+                }
               </a>
             }
           </ColRight>
         </Row>
         {(props.nsyn !== undefined || props.icemun !== undefined) &&
-          <div className="ncit-values" style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
-            {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
-              <NcitValues ncit={props.nsyn} />
-            }
-            {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
-              <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
-            }
-            {(props.nsyn === undefined && props.icemun !== undefined) &&
-              <ICDO3Value ic={props.ic} icemun={props.icemun} />
-            }
-          </div>
+          <Collapse in={isToggleOn}>
+            <div className="ncit-values">
+              {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
+                <NcitValues ncit={props.nsyn} />
+              }
+              {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
+                <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
+              }
+              {(props.nsyn === undefined && props.icemun !== undefined) &&
+                <ICDO3Value ic={props.ic} icemun={props.icemun} />
+              }
+            </div>
+          </Collapse>
         }
       </TableCol>
     );
@@ -508,13 +573,19 @@ const CrossValuesTable = (props) => {
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
       <Row key={index}>
-        <TableColBorder xs={2}>{cross.code}<br/>{cross.preferredTerm !== undefined && 
-          <div>{cross.preferredTerm.termName} {cross.preferredTerm.termGroup}</div>
-        } </TableColBorder>
+        <TableColBorder xs={2}>
+          <DivCenter>
+            <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
+            {cross.preferredTerm !== undefined && <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>}
+            {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.term_type})</PreferredTerm>}
+        </DivCenter>
+        </TableColBorder>
         <TableValues xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
             <Row>
-              <TableColBorder xs={2}>Genomic Data Commons</TableColBorder>
+              <TableColBorder xs={2}>
+                <DivCenter>Genomic Data Commons</DivCenter>
+              </TableColBorder>
               <TableValues xs={10}>
                 {cross.values.gdcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
@@ -526,7 +597,9 @@ const CrossValuesTable = (props) => {
           }
           {cross.values.idcvalues.length !== 0 &&
             <Row>
-              <TableColBorder xs={2}>Clinical Trials Data Commos</TableColBorder>
+              <TableColBorder xs={2}>
+                <DivCenter>Clinical Trials Data Commons</DivCenter>
+              </TableColBorder>
               <TableValues xs={10}>
                 {cross.values.idcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
