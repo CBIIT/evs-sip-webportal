@@ -20,7 +20,7 @@ class GraphEdge extends React.Component {
           ${edgeFadedClassModifier} 
           ${edgeHalfFadedClassModifier} 
           ${edgeHighlightedClassModifier}`}
-          marker-end={markerArrowID}
+          markerEnd={markerArrowID}
          
         d={this.props.edge.pathString}
       />

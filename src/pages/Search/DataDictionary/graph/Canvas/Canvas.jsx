@@ -76,7 +76,6 @@ class Canvas extends React.Component {
       canvasWidth: this.canvasElement.current.clientWidth,
       canvasHeight: this.canvasElement.current.clientHeight,
     });
-    console.log(this.canvasElement.current.clientHeight);
     this.handleCanvasUpdate();
   }
 
@@ -137,7 +136,7 @@ class Canvas extends React.Component {
             role='button'
             tabIndex={-1}
           >
-            <i class="fa fa-search-plus canvas-button-icon"></i>
+            <i className="fa fa-search-plus canvas-button-icon"></i>
           </div>
           <div
             className='canvas__zoom-button canvas__zoom-button--zoom-out'
@@ -146,7 +145,7 @@ class Canvas extends React.Component {
             role='button'
             tabIndex={-1}
           >
-            <i class="fa fa-search-minus canvas-button-icon"></i>
+            <i className="fa fa-search-minus canvas-button-icon"></i>
           </div>
           <div
             className='canvas__zoom-button canvas__zoom-button--reset'
@@ -155,7 +154,7 @@ class Canvas extends React.Component {
             role='button'
             tabIndex={-1}
           >
-            <i class="fas fa-compress canvas-button-icon"></i>
+            <i className="fas fa-compress canvas-button-icon"></i>
           </div>
         </div>
         <svg

@@ -145,7 +145,23 @@ const generateGDCData = async function(schema) {
     }
   });
 
-  return newDict;
+  const result = Object.keys(newDict).reduce(function(filtered, key){
+    
+    console.log(newDict[key].id);
+    console.log(newDict[key].category);
+    let tmp = newDict[key].category;
+
+    if(tmp != undefined){
+      tmp = tmp.toLowerCase();
+    }
+    
+    if(tmp == undefined || (tmp !== 'tbd' && tmp !== 'data') ){
+      filtered[key] = newDict[key];
+    }
+    return filtered;
+  }, {});
+
+  return result;
 }
 
 const generateICDCorCTDCData = (dc) => {
@@ -259,7 +275,7 @@ const getGraphicalGDCDictionary = async function() {
         jsonData["_definitions.yaml"] = defJson;
         // let bulkBody = [];
         fs.readdirSync(folderPath).forEach(file => {
-            if (file.indexOf('_') !== 0) {
+            if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml') {
               let fileJson = yaml.load(folderPath + '/' + file);
               jsonData[file] = fileJson;
             }
