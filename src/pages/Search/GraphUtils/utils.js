@@ -367,8 +367,8 @@ export function assignNodePositions(nodes, edges, opts) {
 const buildGraphVizDOTString = (nodes, edges, treeLevel2Names) => {
   const whRatio = 1;
   const canvasSize = 5;
-  const nodeWidth = 1.2;
-  const nodeHeight = 0.8;
+  const nodeWidth = 1.5;
+  const nodeHeight = 1;
   let graphString = 'digraph dictionary {\n';
   graphString += `size="${canvasSize}, ${canvasSize}"\n`;
   graphString += `ratio=${whRatio}\n`;
