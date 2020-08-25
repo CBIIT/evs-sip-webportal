@@ -5,18 +5,6 @@ import ddgraph from './DataDictionary/reducers';
 export const getFileNodes = dictionary => Object.keys(dictionary).filter(node => dictionary[node].category === 'data_file');
 export const getNodeTypes = dictionary => Object.keys(dictionary).filter(node => node.charAt(0) !== '_');
 
-const versionInfo = (state = {}, action) => {
-    switch (action.type) {
-    case 'RECEIVE_VERSION_INFO':
-        return { ...state,
-        dictionaryVersion: action.data.dictionary.version || 'unknown',
-        apiVersion: action.data.version || 'unknown',
-        };
-    default:
-        return state;
-    }
-};
-
 const excludeSystemProperties = (node) => {
     const properties = node.properties && Object.keys(node.properties)
         .filter(key => (node.systemProperties ? !node.systemProperties.includes(key) : true))
@@ -77,8 +65,7 @@ const submission = (state = {}, action) => {
 
 const reducers = combineReducers({ 
    submission,
-   ddgraph,
-   versionInfo
+   ddgraph
 });
 
 export default reducers;

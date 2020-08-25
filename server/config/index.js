@@ -38,9 +38,6 @@ var all = {
   // index name for properties
   index_p: 'gdc-p',
 
-  // index name for values
-  index_v: 'gdc-v',
-
   // GDC searchable nodes
   searchable_nodes: ['case', 'demographic', 'diagnosis', 'exposure', 'family_history', 'follow_up', 'molecular_test',
     'treatment', 'slide', 'sample', 'read_group', 'portion', 'analyte', 'aliquot', 'slide_image', 'analysis_metadata',

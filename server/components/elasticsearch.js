@@ -11,7 +11,6 @@ const logger = require('./logger');
 const caDSR = require('./caDSR');
 const extend = require('util')._extend;
 const _ = require('lodash');
-const report = require('../service/search/report');
 const searchable_nodes = require('../config').searchable_nodes;
 const drugs_properties = require('../config').drugs_properties;
 const shared = require('../service/search/shared');
@@ -402,7 +401,7 @@ const bulkIndex = next => {
   fs.readdirSync(folderPath).forEach(file => {
     gdc_data[file.replace('.yaml', '')] = yaml.load(folderPath + '/' + file);
   });
-  gdc_data = report.preProcess(searchable_nodes, gdc_data);
+  gdc_data = shared.preProcess(searchable_nodes, gdc_data);
   // let gdc_drugs = report.preProcess(drugs_properties, gdc_data);
   // build suggestion index
   let suggestionBody = [];
@@ -746,21 +745,6 @@ const query = (index, dsl, highlight, next) => {
 
 exports.query = query;
 
-const ncitDetails = (index, dsl, next) => {
-  let body = {};
-  body.query = dsl;
-  esClient.search({index: index, "_source": true, body: body}, (err, data) => {
-    if (err) {
-      logger.error(err);
-      next(err);
-    } else {
-      next(data);
-    }
-  });
-}
-
-exports.ncitDetails = ncitDetails;
-
 const suggest = (index, suggest, next) => {
   let body = {};
   body.suggest = suggest;
@@ -796,85 +780,3 @@ const createIndexes = (params, next) => {
 }
 
 exports.createIndexes = createIndexes;
-
-const preloadDataFromCaDSR = next => {
-  let termsJson = yaml.load(folderPath + '/_terms.yaml');
-  let cdeDataJson = shared.readCDEData();
-
-  let ids = [];
-  for (var term in termsJson) {
-    let detail = termsJson[term];
-    if (detail.termDef !== undefined && detail.termDef.source !== undefined && detail.termDef.source === 'caDSR') {
-      if (!cdeDataJson && detail.termDef.cde_id !== undefined) {
-        ids.push(detail.termDef.cde_id);
-      } else if (detail.termDef.cde_id !== undefined && !(detail.termDef.cde_id in cdeDataJson)) {
-        ids.push(detail.termDef.cde_id);
-      }
-    }
-  }
-  logger.debug(ids);
-  if (ids.length > 0) {
-    caDSR.loadData(ids, data => {
-      return next(data);
-    });
-  } else {
-    return next('CDE data Refreshed!!');
-  }
-}
-
-exports.preloadDataFromCaDSR = preloadDataFromCaDSR;
-
-const preloadDataTypeFromCaDSR = next => {
-  let cdeDataJson = shared.readCDEData();
-  let ids = [];
-  for (var term in cdeDataJson) {
-    let detail = cdeDataJson[term];
-    if (detail.length == 0) {
-      ids.push(term);
-    }
-  }
-  if (ids.length > 0) {
-    fs.truncate('./server/data_files/cdeDataType.js', 0, () => {
-      console.log('cdeDataType.js truncated')
-    });
-    caDSR.loadDataType(ids, data => {
-      return next(data);
-    });
-  } else {
-    return next('CDE data Refreshed!!');
-  }
-}
-
-exports.preloadDataTypeFromCaDSR = preloadDataTypeFromCaDSR;
-
-const loadSynonyms = next => {
-  caDSR.loadSynonyms(data => {
-    return next(data);
-  });
-}
-
-exports.loadSynonyms = loadSynonyms;
-
-const loadSynonyms_continue = next => {
-  caDSR.loadNcitSynonyms_continue(data => {
-    return next(data);
-  });
-}
-
-exports.loadSynonyms_continue = loadSynonyms_continue;
-
-const loadSynonymsCtcae = next => {
-  caDSR.loadSynonymsCtcae(data => {
-    return next(data);
-  });
-}
-
-exports.loadSynonymsCtcae = loadSynonymsCtcae;
-
-const loadCtcaeSynonyms_continue = next => {
-  caDSR.loadCtcaeSynonyms_continue(data => {
-    return next(data);
-  });
-}
-
-exports.loadCtcaeSynonyms_continue = loadCtcaeSynonyms_continue;

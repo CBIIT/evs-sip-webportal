@@ -9,6 +9,252 @@ const folderPath = path.join(__dirname, '..', '..', 'data');
 const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
 const dataFilesDir = path.join(__dirname, '..', '..', 'data_files');
 
+const generateHighlightInnerHits = () => {
+  let highlight = {
+    "pre_tags": ["<b>"],
+    "post_tags": ["</b>"],
+    "fields": {
+      "enum.n.have": {"number_of_fragments": 0},
+      "enum.n": {"number_of_fragments": 0},
+      "enum.n_syn.n_c.have": {"number_of_fragments": 0},
+      "enum.n_syn.n_c": {"number_of_fragments": 0},
+      "enum.n_syn.s.termName.have": {"number_of_fragments": 0},
+      "enum.n_syn.s.termName": {"number_of_fragments": 0},
+      "enum.i_c.have": {"number_of_fragments": 0},
+      "enum.i_c.c": {"number_of_fragments": 0}
+    }
+  };
+  return highlight;
+}
+
+const generateHighlight = () => {
+  let highlight = {
+    "pre_tags": ["<b>"],
+    "post_tags": ["</b>"],
+    "fields": {
+      "property.have": {"number_of_fragments": 0},
+      "property": {"number_of_fragments": 0},
+      "property_desc": {"number_of_fragments": 0},
+      "cde.id": {"number_of_fragments": 0},
+      "id": {"number_of_fragments": 0}
+    }
+  };
+  return highlight;
+}
+
+const generateQuery = (keyword, option, isBoolean) => {
+  let query = {};
+  if(option.match === "exact"){ // Perform exact search
+    if (/[^\w\d\s]/g.test(keyword) === true && isBoolean === false) keyword = keyword.replace(/[^\w\d\s]/g, '\\$&') // Escape special characters
+    query.bool = {};
+    query.bool.should = [];
+    let m = {};
+    m.query_string = {};
+    m.query_string.query = keyword;
+    m.query_string.fields = [];
+    m.query_string.fields.push("cde.id");
+    m.query_string.fields.push("property");
+    if (option.desc) {
+      m.query_string.fields.push("property_desc");
+    }
+    query.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "enum"
+    m.nested.query = {};
+    m.nested.query.query_string = {};
+    m.nested.query.query_string.fields = [];
+    
+    if (option.syn) {
+      m.nested.query.query_string.fields.push("enum.n_syn.s.termName");
+    }
+    m.nested.query.query_string.fields.push("enum.n_syn.n_c");
+    m.nested.query.query_string.fields.push("enum.n");
+    m.nested.query.query_string.fields.push("enum.i_c.c");
+    m.nested.query.query_string.query = keyword;
+    
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.highlight = generateHighlightInnerHits();
+    query.bool.should.push(m);
+  }
+  else if(option.match !== "exact" && isBoolean === true){ // Perform boolean search
+    if (keyword.indexOf("/") !== -1) keyword = keyword.replace(/\//g, "\\/");
+    query.bool = {};
+    query.bool.should = [];
+    let m = {};
+    m.query_string = {};
+    m.query_string.default_operator = "AND";
+    m.query_string.query = keyword;
+    m.query_string.fields = [];
+    m.query_string.fields.push("cde.id");
+    m.query_string.fields.push("property.have");
+    if (option.desc) {
+      m.query_string.fields.push("property_desc");
+    }
+    query.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "enum"
+    m.nested.query = {};
+    m.nested.query.query_string = {};
+    m.nested.query.query_string.fields = [];
+    m.nested.query.query_string.default_operator = "AND";
+
+    if (option.syn) {
+      m.nested.query.query_string.fields.push("enum.n_syn.s.termName.have");
+    }
+    m.nested.query.query_string.fields.push("enum.n_syn.n_c.have");
+    m.nested.query.query_string.fields.push("enum.n.have");
+    m.nested.query.query_string.fields.push("enum.i_c.have");
+    m.nested.query.query_string.query = keyword;
+
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000000;
+    m.nested.inner_hits.highlight = generateHighlightInnerHits();
+    query.bool.should.push(m);
+  }
+  else{ // If it's partial and not a boolean search
+  if (keyword.indexOf("/") !== -1) keyword = keyword.replace(/\//g, "\\/");
+    query.bool = {};
+    query.bool.should = [];
+
+    let m = {};
+    m.match_phrase_prefix = {};
+    m.match_phrase_prefix["property.have"] = keyword;
+    query.bool.should.push(m);
+
+    m = {};
+    m.match_phrase_prefix = {};
+    m.match_phrase_prefix["cde.id"] = keyword;
+    query.bool.should.push(m);
+
+    if (option.desc) {
+      m = {};
+      m.match_phrase_prefix = {};
+      m.match_phrase_prefix["property_desc"] = keyword;
+      query.bool.should.push(m);
+    }
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "enum"
+    m.nested.query = {};
+    m.nested.query.bool = {};
+    m.nested.query.bool.should = [];
+
+    let n = {};
+    if (option.syn) {
+      n = {};
+      n.match_phrase_prefix = {};
+      n.match_phrase_prefix["enum.n_syn.s.termName.have"] = keyword;
+      m.nested.query.bool.should.push(n);
+    }
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["enum.n_syn.n_c.have"] = keyword;
+    m.nested.query.bool.should.push(n);
+    
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["enum.n.have"] = keyword;
+    m.nested.query.bool.should.push(n);
+
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["enum.i_c.have"] = {};
+    n.match_phrase_prefix["enum.i_c.have"].query = keyword;
+    n.match_phrase_prefix["enum.i_c.have"].analyzer = "my_standard";
+    m.nested.query.bool.should.push(n);
+
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.highlight = generateHighlightInnerHits();
+    query.bool.should.push(m);
+  }
+  return query;
+}
+
+const preProcess = (searchable_nodes, data) => {
+
+  // Remove deprecated properties and nodes
+  for (let key in data) {
+    if (searchable_nodes.indexOf(key) === -1) {
+      delete data[key];
+    } else if (searchable_nodes.indexOf(key) !== -1 && data[key].deprecated) {
+      let deprecated_p = data[key].deprecated;
+      deprecated_p.forEach(function (d_p) {
+        delete data[key].properties[d_p];
+      });
+    }
+  }
+  // get data from $ref: "analyte.yaml#/properties/analyte_type"
+  for (let key1 in data) {
+    if (data[key1].properties) {
+      let p = data[key1].properties;
+      for (let key in p) {
+        if (key !== '$ref') {
+          let ref = Array.isArray(p[key].$ref) ? p[key].$ref[0] : p[key].$ref;
+          if (ref && ref.indexOf("_terms.yaml") === -1 && ref.indexOf("_definitions.yaml") === -1) {
+            let node = ref.split('#/')[0].replace('.yaml', '');
+            let remaining = ref.split('#/')[1];
+            let type = remaining.split('/')[0];
+            let prop = remaining.split('/')[1];
+            if (data[node] && data[node][type] && data[node][type][prop]) {
+              p[key] = data[node][type][prop];
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // remove deprecated_enum from enums
+  for (let key1 in data) {
+    if (data[key1].properties) {
+      let p = data[key1].properties;
+      for (let key in p) {
+        if (p[key].deprecated_enum && p[key].enum) {
+          p[key].new_enum = _.differenceWith(p[key].enum, p[key].deprecated_enum, _.isEqual);
+        }
+      }
+    }
+  }
+
+  // get all terms definition 
+  let term_definition = yaml.load(folderPath + '/_terms.yaml');
+
+  // get $ref for Property
+  for (let key1 in data) {
+    if (data[key1].properties) {
+      let p = data[key1].properties;
+      for (let key in p) {
+        let property_data = p[key];
+        if (property_data.$ref) {
+          let ref = Array.isArray(property_data.$ref) ? property_data.$ref[0] : property_data.$ref;
+          if (ref.indexOf('_terms.yaml') !== -1) {
+            if (ref.indexOf('#/') !== -1) {
+              // let file_name = ref.split('#/')[0];
+              let ref_property = ref.split('#/')[1];
+              let prop = ref_property.split('/')[0];
+              // let term_definition = yaml.load(folderPath + '/' + file_name);
+              if (term_definition[prop]) {
+                property_data.relation = term_definition[prop].common !== undefined ? term_definition[prop].common : term_definition[prop];
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return data;
+}
+
 const readNCItDetails = () => {
     let content = fs.readFileSync(dataFilesDir + "/ncit_details.js").toString();
 	content = content.replace(/}{/g, ",");
@@ -29,42 +275,6 @@ const readCDEData = () => {
     let content = fs.readFileSync(dataFilesDir + "/cdeData.js").toString();
 	content = content.replace(/}{/g, ",");
 	return JSON.parse(content);
-}
-
-const readCDEDataType = () => {
-    let content = fs.readFileSync(dataFilesDir + "/cdeDataType.js").toString();
-	content = content.replace(/}{/g, ",");
-	return JSON.parse(content);
-}
-
-const readSynonyms = () => {
-    let content = fs.readFileSync(dataFilesDir + "/synonyms.js").toString();
-	content = content.replace(/}{/g, ",");
-	return JSON.parse(content);
-}
-
-const readSynonymsCtcae = () => {
-    let content = fs.readFileSync(dataFilesDir + "/synonyms_ctcae.js").toString();
-    return content;
-}
-
-const readSynonymsNcit = () => {
-    let content = fs.readFileSync(dataFilesDir +  "/synonyms_ncit.js").toString();
-    return content;
-}
-
-const readGdcDictionaryVersion = () => {
-    let content = fs.readFileSync(dataFilesDir +  "/VERSION").toString();
-    return content;
-}
-
-const sortSynonyms = (synonyms) => {
-    const mapped = { PT: 1, BR: 2, FB: 3, CN: 4, AB: 5, SY: 6, SN: 7, AD: 8, AQ: 9, AQS: 10 };
-    synonyms.forEach((e, i) => {
-        if (e.termSource !== 'NCI') synonyms.splice(i, 1);
-    });
-    synonyms.sort((a, b) => (mapped[a.termGroup] > mapped[b.termGroup]) ? 1 : (a.termGroup === b.termGroup) ? ((a.termName.toLowerCase() > b.termName.toLowerCase()) ? 1 : -1) : -1);
-    return synonyms;
 }
 
 const findObjectWithRef = (obj, updateFn, root_key = '', level = 0) => {
@@ -318,16 +528,13 @@ const getGraphicalCTDCDictionary = () => {
 }
 
 module.exports = {
+    generateHighlight,
+    generateQuery,
     readNCItDetails,
+    preProcess,
     readGDCValues,
     readConceptCode,
     readCDEData,
-    readSynonyms,
-    readCDEDataType,
-    readSynonymsCtcae,
-    readSynonymsNcit,
-    readGdcDictionaryVersion,
-    sortSynonyms,
     getGraphicalGDCDictionary,
     getGraphicalICDCDictionary,
     getGraphicalCTDCDictionary
