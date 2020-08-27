@@ -58,7 +58,7 @@ const Description = () => {
       <p>
         The EVS Semantic Integration Platform (EVS-SIP) is a 
         service developed and maintained by the National Cancer 
-        Institute (NCI) Enterprise Vocabulary Service (EVS) (INSERT LINK). 
+        Institute (NCI) <a href="https://evs.nci.nih.gov/" target="_blank">Enterprise Vocabulary Service (EVS)</a>. 
         The EVS-SIP permits search and retrieval of terms contained in or 
         across the data dictionaries or data models of repositories participating 
         in the Cancer Research Data Commons (CDRC) and beyond.

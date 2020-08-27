@@ -147,6 +147,8 @@ const CrossValuesTable = (props) => {
 
   let items = JSON.parse(JSON.stringify(props.values));
 
+  let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
+
   let values = [];
 
   let ncitMatchObj = {};
@@ -154,25 +156,11 @@ const CrossValuesTable = (props) => {
 
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
-    if (enums.hits.total !== 0) { // If the searched term is cde id.
+    if (enums.hits.total !== 0) {
+
       let enumHits = enums.hits.hits;
-      let obj = {};
-      obj.category = data._source.category;
-      obj.node = data._source.node;
-      obj.property = data._source.property;
-      obj.id = data._source.id;
-      obj.cdeId = data._source.cde ? data._source.cde.id : undefined;
-      obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
-      obj.vs = [];
-      let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-      // if (highlightCdeId !== undefined) {
-      //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
-      // }
+      enumHits.forEach((hits) => {
 
-      let ncitMatch = [];
-      let icdo3Match = [];
-
-      enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
         let highlightValue = ('enum.n' in highlight) || ('enum.n.have' in highlight) ? highlight['enum.n'] || highlight['enum.n.have'] : undefined;
@@ -186,6 +174,23 @@ const CrossValuesTable = (props) => {
 
         let highlightIC = ('enum.i_c.c' in highlight) || ('enum.i_c.have' in highlight) ? highlight['enum.i_c.c'] || highlight['enum.i_c.have'] : undefined;
         let highlightICObj = getHighlightObj(highlightIC);
+
+        let obj = {};
+        obj.category = data._source.category;
+        obj.node = data._source.node;
+        obj.property = data._source.property;
+        obj.id = data._source.id;
+        obj.cdeId = data._source.cde ? data._source.cde.id : undefined;
+        obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
+        obj.vs = [];
+        let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
+        // if (highlightCdeId !== undefined) {
+        //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
+        // }
+
+        let ncitMatch = undefined;
+        let icdo3Match = undefined;
+
 
         if (highlightCdeId === undefined) {
           let valueObj = {};
@@ -211,14 +216,23 @@ const CrossValuesTable = (props) => {
                 newSyn.push(synObj);
               });
 
-
-              if(ncitMatch.indexOf(data.n_c) === -1) {
-                ncitMatch.push(data.n_c);
+              if(ncitMatch !== data.n_c) {
+                ncitMatch = data.n_c;
 
                 if(ncitMatchObj[data.n_c] === undefined) {
                   ncitMatchObj[data.n_c] = preferredTermObj;
                 };
               };
+
+              // if(ncitMatch.indexOf(data.n_c) === -1) {
+              //   ncitMatch.push(data.n_c);
+
+              //   if(ncitMatchObj[data.n_c] === undefined) {
+              //     ncitMatchObj[data.n_c] = preferredTermObj;
+              //     ncitMatchValues[data.n_c] = valueObj;
+              //     newValueObj = valueObj;
+              //   };
+              // };
 
               data.n_c = highlightNCObj[data.n_c] ? highlightNCObj[data.n_c] : data.n_c;
               data.id = (obj.property + '-' + valueObj.src_n + '-' + data.n_c).replace(/[^a-zA-Z0-9-]+/gi, '');
@@ -242,14 +256,23 @@ const CrossValuesTable = (props) => {
           valueObj.i_c = {};
           valueObj.i_c.c = source.i_c ? highlightICObj[source.i_c.c] ? highlightICObj[source.i_c.c] : source.i_c.c : undefined;
           valueObj.i_c.id = source.i_c ? (obj.property + '-' + valueObj.src_n + '-' + source.i_c.c).replace(/[^a-zA-Z0-9-]+/gi, '') : undefined;
-          if(valueObj.i_c.c !== undefined && icdo3Match.indexOf(valueObj.i_c.c) === -1) {
-            icdo3Match.push(valueObj.i_c.c);
+
+          if(valueObj.i_c.c !== undefined) {
+            icdo3Match = valueObj.i_c.c ;
 
             if(icdo3MatchObj[valueObj.i_c.c] === undefined) {
-              //icdo3MatchObj[valueObj.i_c.c] = {};
               icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
             };
           };
+
+          // if(valueObj.i_c.c !== undefined && icdo3Match.indexOf(valueObj.i_c.c) === -1) {
+          //   icdo3Match.push(valueObj.i_c.c);
+
+          //   if(icdo3MatchObj[valueObj.i_c.c] === undefined) {
+          //     //icdo3MatchObj[valueObj.i_c.c] = {};
+          //     icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
+          //   };
+          // };
           if (source.ic_enum !== undefined) {
             valueObj.ic_enum = source.ic_enum;
             icdo3MatchObj[valueObj.i_c.c].enum = source.ic_enum;
@@ -265,58 +288,59 @@ const CrossValuesTable = (props) => {
           }
           obj.vs.push(valueObj);
         }
+        obj.n_match = ncitMatch;
+        obj.ic_match = icdo3Match;
+        values.push(obj);
       });
-      obj.vs = sortAlphabetically(obj.vs);
+      //obj.vs = sortAlphabetically(obj.vs);
 
-      obj.n_match = ncitMatch;
-      obj.ic_match = icdo3Match;
+      //obj.n_match = ncitMatch;
+      //obj.ic_match = icdo3Match;
       //obj.n_match_obj = ncitMatchObj;
       // valuesCount += obj.vs.length;
-      values.push(obj);
+      //values.push(obj);
     }
   });
+
+  console.log(values);
 
   let ncitObjs = {};
   let icdo3Objs = {};
 
   values.forEach((value) => {
+    if (value.n_match !== undefined){
+      if(ncitObjs[value.n_match] === undefined) {
+        ncitObjs[value.n_match] = [];
+      }
+      ncitObjs[value.n_match].push(value);
+    }
 
-    if(value.n_match.length === 0){
+    if (value.ic_match !== undefined){
+      if(icdo3Objs[value.ic_match] === undefined) {
+        icdo3Objs[value.ic_match] = [];
+      }
+      icdo3Objs[value.ic_match].push(value);
+    }
 
+    if (value.n_match === undefined && value.ic_match === undefined){
       if(ncitObjs['norelationship'] === undefined) {
-        ncitObjs['norelationship'] = [];
-      }
-
+          ncitObjs['norelationship'] = [];
+        }
       ncitObjs['norelationship'].push(value);
-    } 
-
-    value.n_match.forEach((match) => {
-
-      if(ncitObjs[match] === undefined) {
-        ncitObjs[match] = [];
-      }
-      ncitObjs[match].push(value);
-    });
-
-    value.ic_match.forEach((match) => {
-
-      if(icdo3Objs[match] === undefined) {
-        icdo3Objs[match] = [];
-      }
-      icdo3Objs[match].push(value);
-    });
+    }
   });
 
   let crossValues = [];
 
   Object.entries(ncitObjs).forEach((entry)=> {
     crossValues.push({
-      code: entry[0] !== 'norelation'? entry[0]: 'No NCIT Relationship',
+      code: entry[0] !== 'norelationship'? entry[0]: 'No NCIT Relationship',
       ref: 'NCit',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
-        gdcvalues: entry[1],
-        idcvalues: entry[1], 
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
       }
     })
   });
@@ -327,8 +351,9 @@ const CrossValuesTable = (props) => {
       ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
-        gdcvalues: entry[1],
-        idcvalues: entry[1], 
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
       }
     })
   });
@@ -569,7 +594,6 @@ const CrossValuesTable = (props) => {
     )
   };
 
-
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
       <Row key={index}>
@@ -595,13 +619,13 @@ const CrossValuesTable = (props) => {
               </TableValues>
             </Row>
           }
-          {cross.values.idcvalues.length !== 0 &&
+          {cross.values.ctdcvalues.length !== 0 &&
             <Row>
               <TableColBorder xs={2}>
                 <DivCenter>Clinical Trials Data Commons</DivCenter>
               </TableColBorder>
               <TableValues xs={10}>
-                {cross.values.idcvalues.map((value, index) =>
+                {cross.values.ctdcvalues.map((value, index) =>
                   <TableRowFlex key={index}>
                     <ValuesItems item={value}/>
                   </TableRowFlex>
