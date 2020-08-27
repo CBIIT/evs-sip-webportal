@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Graph_View from '../Search/GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const ContentBox =  styled.div`
   padding: 3rem 4rem;
@@ -57,10 +57,6 @@ const ContentBoxText = styled.div`
 
 const GraphContent = styled.div`
   margin: 2rem auto;
-  font-size: 1rem;
-  background-color: var(--white);
-  border-radius: 1rem;
-  border: 2px solid #1C87AC;
 `;
 
 const CTDCModel = () => {
@@ -68,16 +64,25 @@ const CTDCModel = () => {
     <ContentBoxText>
       <h2>Graph Representation of the CTDC Data Model</h2>
       <p>
-        Donec ac ex ligula. Maecenas vel congue nibh. Phasellus gravida felis nec turpis feugiat fermentum. Suspendisse potenti. Mauris et magna posuere, imperdiet risus eget, pellentesque nibh. Vestibulum id quam sit amet dolor pulvinar cursus quis et metus. Duis consectetur lacus eu ornare consectetur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Ut bibendum viverra elit, sed rutrum neque sollicitudin id. Nullam ornare nisl lectus. Phasellus vitae sapien rhoncus, convallis neque sit amet, feugiat libero. Cras sit amet arcu vitae leo ullamcorper congue.
+        The CTDC data model is a representation of how all the constituent data are arranged relative to each other. Given the number of studies, the range of study types and the multiple data types that the CTDC needs to support, the data model will need to adapt to the needs of the science. The data model is not static and is expected to change as new needs are identified. The data dictionary can be found here (Github) XYS and is available here
       </p>
       <p>
-        Quisque ut lectus aliquet, feugiat nunc a, venenatis mi. Ut id consectetur lorem, nec sagittis libero. Maecenas fermentum vitae nunc in euismod. Aliquam erat volutpat. Sed ullamcorper, est sit amet mollis laoreet, enim nisl mattis risus, vitae tincidunt lacus nibh non sapien. Sed tristique molestie odio. Integer tempus metus congue lectus varius, ac consectetur elit varius. Mauris vel egestas urna, vel molestie turpis. Praesent odio arcu, porta vel justo sit amet, mattis accumsan ipsum. Praesent ipsum tortor, mattis at neque nec, sagittis lacinia metus. Praesent id ligula in odio gravida dictum at quis ligula. Nullam molestie id justo rhoncus lacinia. Aenean ligula odio, luctus in libero a, lobortis luctus diam. Suspendisse elit justo, tincidunt eu lacinia in, egestas consequat arcu. Integer consectetur ante eget risus tempus ultrices.
+        The graphic below represents the current CTDC data model consisting of data nodes, node properties, and relationships (edges). It provides a comprehensive mapping of the system data, part of which may be viewed in the application interface and UI. In other words, additional nodes and properties are available for inspection and querying beyond those presented on the front-end.
+      </p>
+      <p>
+        Additionally, the CTDC Data Model serves as a template for similar initiatives and data structures, including graph-based database schemas. The model will continue to evolve as data needs are further discerned.
+      </p>
+      <p>
+        The source of CTDC data model can be found on Github at: <a title="https://github.com/CBIIT/ctdc-model" target="_blank" href="https://github.com/CBIIT/ctdc-model">https://github.com/CBIIT/ctdc-model</a>.
+      </p>
+      <p>
+        The entire CTDC data model can be queried via API: <a title="https://trialcommons-dev.cancer.gov/v1/graphql/" target="_blank" href="https://trialcommons-dev.cancer.gov/v1/graphql/">https://trialcommons-dev.cancer.gov/v1/graphql/</a>.
       </p>
     </ContentBoxText>
     <ContentBoxHr/>
     <ContentBoxTitle>The CTDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="ctdc"/>
+      <GraphicalView type="ctdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Graph_View from '../Search/GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const ContentBox =  styled.div`
   padding: 3rem 4rem;
@@ -57,10 +57,6 @@ const ContentBoxText = styled.div`
 
 const GraphContent = styled.div`
   margin: 2rem auto;
-  font-size: 1rem;
-  background-color: var(--white);
-  border-radius: 1rem;
-  border: 2px solid #1C87AC;
 `;
 
 const GDCModel = () => {
@@ -90,7 +86,7 @@ const GDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The GDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="gdc"/>
+      <GraphicalView type="gdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

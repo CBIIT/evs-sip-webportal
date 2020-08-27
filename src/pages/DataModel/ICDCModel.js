@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Graph_View from '../Search/GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const ContentBox =  styled.div`
   padding: 3rem 4rem;
@@ -57,27 +57,33 @@ const ContentBoxText = styled.div`
 
 const GraphContent = styled.div`
   margin: 2rem auto;
-  font-size: 1rem;
-  background-color: var(--white);
-  border-radius: 1rem;
-  border: 2px solid #1C87AC;
 `;
 
 const ICDCModel = () => {
   return <ContentBoxAbout>
     <ContentBoxText>
       <h2>Graph Representation of the ICDC Data Model</h2>
+
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere sollicitudin augue, eget sodales diam tincidunt vel. Donec euismod orci neque, quis pulvinar est faucibus id. Praesent in rutrum risus. Nullam pretium placerat neque. Duis et arcu eget arcu semper cursus. Integer et volutpat urna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras elit mauris, condimentum vitae erat a, feugiat ullamcorper orci. Vivamus a sem ut sapien porttitor congue dapibus quis quam. Nulla a tortor lacinia, sodales arcu a, consequat nisi. Praesent eros turpis, gravida vitae nisl sit amet, volutpat vehicula ipsum.
+        The ICDC data model is a representation of how all the constituent data are arranged relative to each other. Given the number of studies, the range of study types and the multiple data types that the ICDC needs to support, the data model will need to adapt to the needs of the science. The data model is not static and is expected to change as new needs are identified.
       </p>
       <p>
-        Aenean vitae faucibus leo. Morbi nec lectus ligula. Quisque tristique in justo ac semper. Morbi nunc odio, viverra a accumsan non, porta nec sem. Cras condimentum lectus sed massa iaculis blandit. Nulla pharetra lacus risus, quis tincidunt ipsum rutrum in. Donec consectetur feugiat tincidunt. Nulla massa turpis, ullamcorper volutpat finibus sed, mollis at ligula. Vivamus sed lectus a quam dapibus fringilla. Praesent mollis urna non massa pretium pellentesque. Etiam vitae nunc quam. Vestibulum et ipsum eget purus elementum euismod id et eros. Donec sodales augue libero, vitae tristique magna fermentum non. Quisque vel lectus ut diam ultricies pulvinar. Sed imperdiet, purus eget venenatis tristique, risus justo pulvinar odio, ac ullamcorper tellus mi eget tortor.
+        The graphic below represents the current ICDC data model consisting of data nodes, node properties, and relationships (edges). It provides a comprehensive mapping of the system data, part of which may be viewed in the application interface and UI. In other words, additional nodes and properties are available for inspection and querying beyond those presented on the front-end.
+      </p>
+      <p>
+        Additionally, the ICDC Data Model serves as a template for similar initiatives and data structures, including graph-based database schemas. The model will continue to evolve as data needs are further discerned.
+      </p>
+      <p>
+        The source of ICDC data model can be found on Github at: <a title="https://github.com/CBIIT/icdc-model-tool" target="_blank" href="https://github.com/CBIIT/icdc-model-tool">https://github.com/CBIIT/icdc-model-tool</a>.
+      </p>
+      <p>
+        The model and associated files may be viewed here: <a title="https://cbiit.github.io/icdc-model-tool/" target="_blank" href="https://cbiit.github.io/icdc-model-tool/">https://cbiit.github.io/icdc-model-tool/</a>.
       </p>
     </ContentBoxText>
     <ContentBoxHr/>
     <ContentBoxTitle>The ICDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="icdc"/>
+      <GraphicalView type="icdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

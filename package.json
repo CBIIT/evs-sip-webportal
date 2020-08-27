@@ -39,6 +39,7 @@
     "http-errors": "^1.7.3",
     "lodash": "^4.17.19",
     "morgan": "^1.10.0",
+    "node-cache": "^4.1.1",
     "node-excel-export": "^1.4.4",
     "node-fetch": "^2.6.0",
     "node-xlsx": "^0.15.0",
@@ -63,7 +64,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
-    "start-backend": "nodemon server/app.js",
+    "start-backend": "nodemon app.js",
     "start-frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
