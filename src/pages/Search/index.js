@@ -17,15 +17,17 @@ const Page = styled.div`
 const Search = () => {
   let [keywordState, setKeywordState] = useState('');
   let [sourceState, setSourceState] = useState([]);
+  let [dataSource, setdataSource] = useState({});
 
-  const searchHandler = (keyword, options) => {
+  const searchHandler = (keyword, options, source) => {
     setKeywordState(keyword);
+    setdataSource(source)
     apiSearchAll(keyword, options).then(result => setSourceState(result));
   };
 
   return <Page>
         <SearchBox searchTrigger={searchHandler}/>
-        <MainTabsController keyword={keywordState} source={sourceState}/>
+        <MainTabsController keyword={keywordState} source={sourceState} dataOptions={dataSource}/>
     </Page>;
 }
 

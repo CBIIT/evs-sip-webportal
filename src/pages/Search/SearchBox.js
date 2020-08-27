@@ -223,24 +223,30 @@ const SearchBox = (props) => {
     syns: false
   });
 
+  let [selectDataSource, setSelectDataSource] = useState({
+    ctdc: false,
+    gdc: false,
+    icdc: false
+  });
+
   const searchInputRef = useRef();
 
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
     setSuggestState([]);
-    props.searchTrigger(id, optionsState);
+    props.searchTrigger(id, optionsState, selectDataSource);
   };
 
   const suggestKeyPressHandler = event => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       setSearchState(event.target.value);
       setSuggestState([]);
-      props.searchTrigger(event.target.value, optionsState);
+      props.searchTrigger(event.target.value, optionsState, selectDataSource);
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      props.searchTrigger(suggestState[selectIndexState].id, optionsState);
+      props.searchTrigger(suggestState[selectIndexState].id, optionsState, selectDataSource);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -278,11 +284,26 @@ const SearchBox = (props) => {
     });
   };
 
+  const selectDataToggleHandler = event => {
+    setSelectDataSource({
+      ...selectDataSource,
+      [event.target.name]: !event.target.checked
+    });
+  };
+
   const checkedAllToggleHandler = event => {
     setOptionsState({
       match: true,
       desc: true,
       syns: true
+    });
+  };
+
+  const selectDataAllToggleHandler = event => {
+    setSelectDataSource({
+      ctdc: true,
+      gdc: true,
+      icdc: true
     });
   };
 
@@ -300,7 +321,7 @@ const SearchBox = (props) => {
               ref={searchInputRef}
             />
             <DeleteBtn href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
-            <SearchButton onClick={() => props.searchTrigger(searchState, optionsState)}>
+            <SearchButton onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
           </InputGroup>
@@ -343,24 +364,24 @@ const SearchBox = (props) => {
           <SearchOptionsContainer>
             <SearchOptionsLabel>Choose your Data Source</SearchOptionsLabel>
             <SearchOptions>
-              <SelectBtn>Select All</SelectBtn>
+              <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
-                  <CheckboxInput  type="checkbox"/>
+                  <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Clinical Trial Data Commons <SpanNormal>(CTDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput type="checkbox"/>
+                  <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Genomic Data Commons <SpanNormal>(GDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabelSpace>
-                  <CheckboxInput type="checkbox"/>
+                  <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
