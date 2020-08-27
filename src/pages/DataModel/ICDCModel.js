@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Graph_View from '../Search/GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const ContentBox =  styled.div`
   padding: 3rem 4rem;
@@ -83,7 +83,7 @@ const ICDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The ICDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="icdc_readonly"/>
+      <GraphicalView type="icdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

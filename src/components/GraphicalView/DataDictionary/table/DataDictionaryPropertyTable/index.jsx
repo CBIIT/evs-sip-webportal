@@ -115,7 +115,7 @@ class DataDictionaryPropertyTable extends React.Component {
                 );
                 const isRequired = this.props.requiredProperties.includes(propertyKey);
                 return (
-                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.nodeID, propertyKey)}>
+                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey)}>
                     <td className='data-dictionary-property-table__data'>
                       {propertyNameFragment}
                     </td>
@@ -142,7 +142,7 @@ class DataDictionaryPropertyTable extends React.Component {
                     <td className='data-dictionary-property-table__data'>
                       <Button
                         className='data-dictionary-property-table__button'
-                        onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.nodeID, propertyKey)}
+                        onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey)}
                         label='All Values'
                         buttonType='secondary'
                       />
@@ -166,6 +166,7 @@ DataDictionaryPropertyTable.propTypes = {
   matchedResult: SearchResultItemShape,
   toggleValuesBox: PropTypes.func,
   nodeID: PropTypes.string,
+  category: PropTypes.string,
   source: PropTypes.string,
   hideIsRequired: PropTypes.bool,
   onlyShowMatchedProperties: PropTypes.bool,
@@ -178,6 +179,7 @@ DataDictionaryPropertyTable.defaultProps = {
   matchedResult: {},
   toggleValuesBox: () => {},
   nodeID: "",
+  category: "",
   source: "",
   hideIsRequired: false,
   onlyShowMatchedProperties: false,

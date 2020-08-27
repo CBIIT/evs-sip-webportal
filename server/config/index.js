@@ -32,17 +32,11 @@ var all = {
   // suggestion index name for typeahead
   suggestionName: 'gdc-suggestion',
 
-  // NCIT details index name;
-  ncitDetails: 'ncit-details',
-
   // index name for properties
   index_p: 'gdc-p',
 
-  // index name for values
-  index_v: 'gdc-v',
-
   // GDC searchable nodes
-  searchable_nodes: ['case', 'demographic', 'diagnosis', 'exposure', 'family_history', 'follow_up', 'molecular_test',
+  gdc_searchable_nodes: ['case', 'demographic', 'diagnosis', 'exposure', 'family_history', 'follow_up', 'molecular_test',
     'treatment', 'slide', 'sample', 'read_group', 'portion', 'analyte', 'aliquot', 'slide_image', 'analysis_metadata',
     'clinical_supplement', 'experiment_metadata', 'pathology_detail', 'pathology_report', 'run_metadata', 'biospecimen_supplement',
     'submitted_aligned_reads', 'submitted_genomic_profile', 'submitted_methylation_beta_value', 'submitted_tangent_copy_number',

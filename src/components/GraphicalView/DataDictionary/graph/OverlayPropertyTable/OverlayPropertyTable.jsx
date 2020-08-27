@@ -8,7 +8,7 @@ import {
   getNodeTitleFragment,
 } from '../../highlightHelper';
 import DataDictionaryPropertyTable from '../../table/DataDictionaryPropertyTable/.';
-import { apiGetPropertyValues  } from '../../../../../api';
+import { apiGetGDCDataById, apiGetPropertyValues  } from '../../../../../api';
 import './OverlayPropertyTable.css';
 
 class OverlayPropertyTable extends React.Component {
@@ -62,7 +62,7 @@ class OverlayPropertyTable extends React.Component {
   /**
    * Toggle the property table data row to display values for that property
    */
-  async toggleValuesBox(e, type, node , property) {
+  async toggleValuesBox(e, type, category, node , property) {
     e.stopPropagation();
     let obj = e.target;
     let tr = obj.closest(".data-dictionary-property-table__row");
@@ -73,18 +73,49 @@ class OverlayPropertyTable extends React.Component {
       next_sibling.remove();
     }
     else{
-      let values = await apiGetPropertyValues(type, node , property);
+      let values = [];
       let vs_html = "";
-      values.forEach(function(v){
-        vs_html += '<tr>'+
-                '<td class="data-dictionary-property-table__data">'+
-                  '<div class="data-dictionary-property-table__span">'+ v +'</div>'+
-                '</td>'+
-                '<td class="data-dictionary-property-table__data">'+
-                  'TODO...'+
-                '</td>'+
-              '</tr>';
-      });
+      if(type == 'gdc' || type == 'gdc_readonly'){
+        let rs = await apiGetGDCDataById(property + "/" + node + "/" + category);
+        if(rs[0]._source.enum){
+          rs[0]._source.enum.forEach(function(item){
+            let tmp = {};
+            tmp.name = item.n;
+            tmp.ncit = "";
+            if(item.n_syn){
+              item.n_syn.forEach(function(ncit){
+                tmp.ncit += ncit.n_c + "<br>";
+              });
+            }
+            values.push(tmp);
+          });
+        }
+        
+        values.forEach(function(v){
+          vs_html += '<tr>'+
+                  '<td class="data-dictionary-property-table__data">'+
+                    '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
+                  '</td>'+
+                  '<td class="data-dictionary-property-table__data">'+
+                    v.ncit+
+                  '</td>'+
+                '</tr>';
+        });
+
+      }
+      else{
+        values = await apiGetPropertyValues(type, node , property);
+        values.forEach(function(v){
+          vs_html += '<tr>'+
+                  '<td class="data-dictionary-property-table__data">'+
+                    '<div class="data-dictionary-property-table__span">'+ v +'</div>'+
+                  '</td>'+
+                  '<td class="data-dictionary-property-table__data">'+
+                    'TODO...'+
+                  '</td>'+
+                '</tr>';
+        });
+      }
 
       let new_tr = document.createElement("tr");
       new_tr.className = "values-row";
@@ -169,6 +200,7 @@ class OverlayPropertyTable extends React.Component {
                 matchedResult={this.props.matchedResult}
                 toggleValuesBox={this.toggleValuesBox}
                 nodeID={this.props.node.id}
+                category={this.props.node.category}
                 source={this.props.graphType}
               />
             </div>
