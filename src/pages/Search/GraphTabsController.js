@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
-import Graph_View from './GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -70,16 +70,16 @@ const GraphTabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false" style={{"fontSize": "1rem"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
-                  <Graph_View type="gdc"/>
+                  <GraphicalView type="gdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="pdc">
                   PDC content
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
-                  <Graph_View type="icdc"/>
+                  <GraphicalView type="icdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctdc">
-                  <Graph_View type="ctdc"/>
+                  <GraphicalView type="ctdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="idc">
                   IDC content

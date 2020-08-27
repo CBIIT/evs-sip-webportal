@@ -14,8 +14,9 @@ const _ = require('lodash');
 const searchable_nodes = require('../config').searchable_nodes;
 const drugs_properties = require('../config').drugs_properties;
 const shared = require('../service/search/shared');
-const folderPath = path.join(__dirname, '..', 'data');
+const folderPath = path.join(__dirname, '..', 'data_files','GDC', 'model');
 var allTerm = {};
+var icdo_mapping = shared.getICDOMapping();
 var cdeData = '';
 var gdc_values = {};
 var allProperties = [];
@@ -64,6 +65,629 @@ const parseRefYaml = (ref, termsJson, defJson) => {
     };
   }
 };
+
+const helper_new = (fileJson, termsJson, defJson, conceptCode, syns) => {
+  let properties = fileJson.properties;
+
+  for (var prop in properties) {
+    let entry = {};
+    let p = {};
+    let entryRaw = properties[prop];
+
+    p.category = fileJson.category;
+    p.node = fileJson.id;
+    p.node_desc = fileJson.description;
+    p.prop = prop;
+    p.prop_desc = entryRaw.description;
+    p.id = p.prop + "/" + p.node + "/" + p.category;
+    p.type = entryRaw.type;
+
+    entry.enum = extend([], entryRaw.enum);
+    entry.enumDef = JSON.parse(JSON.stringify(entryRaw.enumDef? entryRaw.enumDef : []));
+    entry.termDef = extend({}, entryRaw.termDef);
+
+    if (entry.termDef !== undefined && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
+      entry.termDef.cde_id = '' + entry.termDef.cde_id;
+      if (entry.termDef.source === 'caDSR') {
+        p.cde = {};
+        p.cde.id = entry.termDef.cde_id;
+        p.cde.v = entry.termDef.cde_version;
+        p.cde.url = entry.termDef.term_url;
+
+        entry.pvs = cdeData[entry.termDef.cde_id];
+      }
+      else if(entry.termDef.source === 'NCIt'){
+        p.cde = {};
+        p.cde.id = entry.termDef.cde_id;
+        p.cde.v = entry.termDef.cde_version;
+        p.cde.url = entry.termDef.term_url;
+      }
+    }
+
+    //generate p.enum, need to consolidate values in entry.enum, entry.pvs, conceptCode and gdc_values
+    //p.enum should have the following format:
+    //enum:[
+    //  {
+    //    n: "Abdomen, NOS",
+    //    icdo: {
+    //        c: "C76.2", 
+    //        have: ["C76", "C76.2"],
+    //        s: [
+    //          {n: "Abdomen, NOS", t: "PT"},
+    //          {n: "Abdominal wall, NOS", t: "RT"},
+    //          ...
+    //        ]
+    //      },
+    //    ncit: [
+    //      {
+    //        c: "C12664", 
+    //        s: [
+    //          {n: "ABDOMINAL CAVITY", t: "PT", src: "CDISC"},
+    //          ...
+    //        ]
+    //      },
+    //      ...
+    //    ]
+    //  },
+    //  ...
+    //]
+    let values = [];
+    let values_ncit_mapping = {};
+    let values_icdo_mapping = {};
+    // 1. work on entry.enum and entry.enumDef
+    entry.enum.forEach(v => {
+      values.push(v);
+      values_ncit_mapping[v.toLowerCase()] = [];
+    });
+
+    for(let key in entry.enumDef){
+      let obj = entry.enumDef[key];
+      let v = key.toLowerCase();
+      if(!(v in values_ncit_mapping)){
+        values.push(key);
+        values_ncit_mapping[v] = [];
+      }
+      values_ncit_mapping[v].push(obj.termDef.term_id);
+    }
+
+    // 2. work on entry.pvs to pull out Permissible Values from cde
+    if(entry.pvs){
+      entry.pvs.forEach(item => {
+        let v = item.pv.toLowerCase();
+        if(!(v in values_ncit_mapping)){
+          values.push(item.pv);
+          values_ncit_mapping[v] = [];
+        }
+        if(values_ncit_mapping[v].indexOf(item.pvc) == -1){
+          values_ncit_mapping[v].push(item.pvc);
+        }
+      });
+    }
+
+    // 3. work on conceptCode to further combind the ncit code
+    let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
+    if (prop_full_name in conceptCode) {
+      let cc = conceptCode[prop_full_name];
+      // add additionalProperties
+      for (var s in cc) {
+        let v = s.toLowerCase();
+        if(!(v in values_ncit_mapping)){
+          values.push(s);
+          values_ncit_mapping[v] = [];
+        }
+        
+        if (Array.isArray(cc[s])) {
+          cc[s].forEach(code => {
+            if(values_ncit_mapping[v].indexOf(code) == -1){
+              values_ncit_mapping[v].push(code);
+            }
+          });
+        } 
+        else {
+          if(values_ncit_mapping[v].indexOf(cc[s]) == -1){
+            values_ncit_mapping[v].push(cc[s]);
+          }
+        }
+      }
+    }
+
+    // 4. work on gdc_values to pull out icd-o-3 code and ncit code for all the values saved in the previous 3 steps
+    if(prop_full_name in gdc_values){
+      let enums = [];
+      let obj = gdc_values[prop_full_name];
+      obj.forEach(v => {
+        let pv = v.nm.toLowerCase();
+        let icdo = v.i_c;
+        let ncit = v.n_c;
+        if(pv in values_ncit_mapping){
+          if(values_ncit_mapping[pv].indexOf(ncit) == -1){
+            values_ncit_mapping[pv].push(ncit);
+          }
+          values_icdo_mapping[pv] = icdo;
+        }
+      });
+    }
+
+    //generate p.enum
+    if(values.length > 0){
+      p.enum = [];
+      values.forEach(function(v){
+        let tmp = {};
+        tmp.n = v;
+        let v_lowcase = v.toLowerCase();
+        if(v_lowcase in values_icdo_mapping){
+          tmp.icdo = {};
+          tmp.icdo.c = values_icdo_mapping[v_lowcase];
+          tmp.icdo.have = shared.generateICDOHaveWords(tmp.icdo.c),
+          tmp.icod.s = icdo_mapping[tmp.icdo.c];
+        }
+        if(v_lowcase in values_ncit_mapping){
+          tmp.ncit = [];
+          let ncits = values_ncit_mapping[v_lowcase];
+          ncits.forEach(n => {
+            let dict = {};
+            dict.c = n;
+            let synonyms = (n !== '' && syns[n] ? syns[n].synonyms : []);
+            if(synonyms.length > 0){
+              dict.s = [];
+              synonyms.forEach(s => {
+                dict.s.push({
+                  n: s.termName,
+                  t: s.termGroup,
+                  src: s.termSource
+                });
+              });
+            }
+            tmp.ncit.push(dict);
+          });
+        }
+        p.enum.push(tmp);
+      });
+    }
+
+    //building typeahead index
+
+
+    
+    
+/*
+    if (entry.property in allTerm) {
+      // if exist, then check if have the same type
+      let t = allTerm[entry.property];
+      if (t.indexOf('property') === -1) {
+        t.push('property');
+      }
+    } else {
+      let t = [];
+      t.push('property');
+      allTerm[entry.property] = t;
+    }
+
+    let enums = [];
+    if (entry.enum !== undefined) {
+      enums = entry.enum;
+    } else if (entry.oneOf !== undefined && Array.isArray(entry.oneOf)) {
+      entry.oneOf.forEach(em => {
+        if (em.enum !== undefined) {
+          enums = enums.concat(em.enum);
+        }
+      });
+    }
+
+    // build type ahead index for CDE ID
+    if (entry.termDef !== undefined && entry.termDef.source === 'caDSR' && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
+      let em = entry.termDef.cde_id.toString().trim().toLowerCase();
+      if (em in allTerm) {
+        // if exist, then check if have the same type
+        let t = allTerm[em];
+        if (t.indexOf('cde id') === -1) {
+          t.push('cde id');
+        }
+      } else {
+        let t = [];
+        t.push('cde id');
+        allTerm[em] = t;
+      }
+    }
+    // generate property index
+    p.property = entry.property;
+    p.node = fileJson.id;
+    p.node_desc = fileJson.description;
+    p.category = fileJson.category;
+    if (entry.description === undefined) {
+      if (entry.termDef !== undefined && entry.termDef.description !== undefined) {
+        p.property_desc = entry.termDef.description;
+      }
+    } else {
+      p.property_desc = entry.description;
+    }
+    if (entry.termDef !== undefined && entry.termDef.source === 'caDSR' && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
+      p.cde = {};
+      p.cde.id = entry.termDef.cde_id;
+      p.cde.v = entry.termDef.cde_version;
+      p.cde.url = entry.termDef.term_url;
+    }
+    // generate enum
+    if (entry.syns === undefined) {
+      // simple enumeration
+      if (entry.enum !== undefined && entry.enum.length > 0) {
+        p.enum = [];
+        entry.enum.forEach(item => {
+          let tmp = {};
+          tmp.n = item;
+          p.enum.push(tmp);
+        });
+      }
+    } else {
+      // has gdc synonyms
+      if ((prop_full_name in conceptCode) || (prop_full_name in gdc_values)) {
+        p.enum = [];
+        entry.syns.forEach(item => {
+          let tmp = {};
+          if (item.term_type) {
+            tmp.term_type = item.term_type;
+          }
+          tmp.n = item.pv;
+          if (item.code !== undefined) {
+            tmp.i_c = {};
+            tmp.i_c.c = item.code;
+            let ts = shared.generateICDOHaveWords(item.code);
+
+            tmp.i_c.have = ts;
+          }
+          tmp.n_c = item.pvc;
+          tmp.s = item.syn;
+          tmp.ap = item.aprop;
+          tmp.def = item.definitions;
+          p.enum.push(tmp);
+        });
+      } else {
+        if (entry.enum !== undefined && entry.enum.length > 0) {
+          p.enum = [];
+          entry.enum.forEach(item => {
+            let tmp = {};
+            tmp.n = item;
+            p.enum.push(tmp);
+          });
+        }
+      }
+    }
+    // property type
+    if (entry.enum !== undefined && entry.enum.length > 0) {
+      p.type = 'enum';
+    } else {
+      let type = typeof (entry.type);
+      let isArray = Array.isArray(entry.type);
+      p.type = '';
+      if (type === 'string') p.type = entry.type;
+      if (type === 'object' && !isArray) p.type = entry.type.type;
+      if (type === 'object' && isArray) p.type = entry.type;
+    }
+    allProperties.push(p);
+    */
+  }
+
+}
+
+const bulkIndex_new = async function(next){
+
+  let ccode = shared.readConceptCode();
+  gdc_values = shared.readGDCValues();
+  let syns = shared.readNCItDetails();
+  cdeData = shared.readCDEData();
+
+  let jsonData = await shared.getGraphicalGDCDictionary();
+
+  var termsJson = jsonData._definitions;
+  var defJson = jsonData._terms;
+
+  for(let node in jsonData){
+    if(node !== '_terms' || node !== '_definitions' ){
+      helper_new(jsonData[node], termsJson, defJson, ccode, syns);
+    }
+  }
+
+  /*
+  
+  
+  let gdc_data = {};
+  fs.readdirSync(folderPath).forEach(file => {
+    gdc_data[file.replace('.yaml', '')] = yaml.load(folderPath + '/' + file);
+  });
+  gdc_data = shared.preProcess(searchable_nodes, gdc_data);
+  // let gdc_drugs = report.preProcess(drugs_properties, gdc_data);
+  // build suggestion index
+  let suggestionBody = [];
+
+  // Type ahead suggestions for GDC Values
+  for (let node in gdc_data) {
+    if (gdc_data[node].properties !== undefined) {
+      for (let propperty in gdc_data[node].properties) {
+        let prop_data = gdc_data[node].properties[propperty];
+        if (prop_data.enum) {
+          if (prop_data.new_enum) {
+            prop_data.new_enum.forEach(enm => {
+              let em = enm.toString().trim().toLowerCase();
+              if (em in allTerm) {
+                // if exist, then check if have the same type
+                let t = allTerm[em];
+                if (t.indexOf("value") == -1) {
+                  t.push("value");
+                }
+              } else {
+                let t = [];
+                t.push("value");
+                allTerm[em] = t;
+              }
+            });
+          } else {
+            prop_data.enum.forEach(enm => {
+              let em = enm.toString().trim().toLowerCase();
+              if (em in allTerm) {
+                // if exist, then check if have the same type
+                let t = allTerm[em];
+                if (t.indexOf("value") == -1) {
+                  t.push("value");
+                }
+              } else {
+                let t = [];
+                t.push("value");
+                allTerm[em] = t;
+              }
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // type ahead suggestions for NCIt Codes.
+  if (ccode) {
+    for (let key in ccode) {
+      for (let ncit_value in ccode[key]) {
+        let ncit_code = ccode[key][ncit_value];
+        if (ncit_code !== "") {
+          let em = ncit_code.toString().trim().toLowerCase();
+          if (em in allTerm) {
+            //if exist, then check if have the same type
+            let t = allTerm[em];
+            if (t.indexOf("ncit code") == -1) {
+              t.push("ncit code");
+            }
+          } else {
+            let t = [];
+            t.push("ncit code");
+            allTerm[em] = t;
+          }
+        }
+      }
+    }
+  }
+  // type ahead for ICDO3 codes
+  if (gdc_values) {
+    for (let key in gdc_values) {
+      gdc_values[key].forEach(values => {
+        let icdo3_code = values.i_c;
+        let ncit_code = values.n_c;
+        if (icdo3_code !== "") {
+          let em = icdo3_code.toString().trim().toLowerCase();
+          if (em in allTerm) {
+            // if exist, then check if have the same type
+            let t = allTerm[em];
+            if (t.indexOf("icdo3 code") == -1) {
+              t.push("icdo3 code");
+            }
+          } else {
+            let t = [];
+            t.push("icdo3 code");
+            allTerm[em] = t;
+          }
+        }
+        if (ncit_code !== "") {
+          let em = ncit_code.toString().trim().toLowerCase();
+          if (em in allTerm) {
+            // if exist, then check if have the same type
+            let t = allTerm[em];
+            if (t.indexOf("ncit code") == -1) {
+              t.push("ncit code");
+            }
+          } else {
+            let t = [];
+            t.push("ncit code");
+            allTerm[em] = t;
+          }
+        }
+      });
+    }
+
+  }
+  for (var term in allTerm) {
+    let doc = {};
+    doc.id = term.toString();
+    doc.type = allTerm[term];
+    suggestionBody.push({
+      index: {
+        _index: config.suggestionName,
+        _type: '_doc',
+        _id: doc.id
+      }
+    });
+    suggestionBody.push(doc);
+  }
+
+  // build property index
+  let propertyBody = [];
+
+  allProperties.forEach(p => {
+    let node = p.node;
+    let property = p.property;
+    if (gdc_data[node] && gdc_data[node].properties && gdc_data[node].properties[property] && gdc_data[node].properties[property].enum) {
+      if (p.enum) {
+        let checker_enum = JSON.parse(JSON.stringify(gdc_data[node].properties[property].enum)).map(ems => {return ems.trim().toLowerCase()});
+        p.enum.forEach(em => {
+          em.gdc_d = checker_enum.indexOf(em.n.trim().toLowerCase()) !== -1 ? true : false;
+          // check if enum propeties is drug value
+          em.drug = drugs_properties.indexOf(property) !== -1 ? true : false;
+        });
+      }
+    }
+  });
+  let all_icdo3_syn = {};
+  let all_icdo3_enums = {};
+  // Collecting all enums ICDO3 code
+  allProperties.forEach(result => {
+    if (result.enum === undefined) return;
+    result.enum.forEach(item => {
+      if (item.i_c === undefined) return;
+      if (item.i_c.c && all_icdo3_enums[item.i_c.c] === undefined && item.n !== item.i_c.c) {
+        all_icdo3_enums[item.i_c.c] = { n: item.term_type !== undefined && item.term_type !== "" ? [item.n +" ("+item.term_type+")"] : [item.n +" (*)"], checker_n: [item.n] };
+        if (item.term_type !== undefined && item.term_type !== "") {
+          all_icdo3_enums[item.i_c.c].n = [{n: item.n, term_type: item.term_type}];
+        } else {
+          all_icdo3_enums[item.i_c.c].n = [{n: item.n, term_type: "*"}];
+        }
+      } else if (item.i_c.c && all_icdo3_enums[item.i_c.c] !== undefined && item.n !== item.i_c.c && all_icdo3_enums[item.i_c.c].checker_n.indexOf(item.n) === -1) {
+        if (item.term_type !== undefined && item.term_type !== "") {
+          if (item.term_type === "PT") all_icdo3_enums[item.i_c.c].n.unshift({n: item.n, term_type: item.term_type});
+          if (item.term_type !== "PT") all_icdo3_enums[item.i_c.c].n.push({n: item.n, term_type: item.term_type});
+        } else {
+          all_icdo3_enums[item.i_c.c].n.push({n: item.n, term_type: "*"});
+        }
+        all_icdo3_enums[item.i_c.c].checker_n.push(item.n);
+      }
+    });
+  });
+  // Collecting all synonyms and ncit in one array for particular ICDO3 code
+  allProperties.forEach(result => {
+    if (result.enum === undefined) return;
+    result.enum.forEach(item => {
+      if (item.i_c !== undefined) { // If it has icdo3 code.
+        if (item.i_c.c && all_icdo3_syn[item.i_c.c] === undefined) {
+          all_icdo3_syn[item.i_c.c] = { n_syn: [], checker_n_c: item.n_c !== "" ? [item.n_c] : [], all_syn: [] };
+          if (item.n_c !== "") all_icdo3_syn[item.i_c.c].n_syn.push({n_c: item.n_c, s: item.s});
+          if (item.n_c !== "" && item.s !== undefined) all_icdo3_syn[item.i_c.c].all_syn = all_icdo3_syn[item.i_c.c].all_syn.concat(item.s);
+        } else if (all_icdo3_syn[item.i_c.c] !== undefined && all_icdo3_syn[item.i_c.c].checker_n_c.indexOf(item.n_c) === -1) {
+          if (item.n_c !== "") all_icdo3_syn[item.i_c.c].n_syn.push({n_c: item.n_c, s: item.s});
+          if (item.n_c !== "" && item.s !== undefined) all_icdo3_syn[item.i_c.c].all_syn = all_icdo3_syn[item.i_c.c].all_syn.concat(item.s);
+          if (item.n_c !== "") all_icdo3_syn[item.i_c.c].checker_n_c.push(item.n_c);
+        }
+      } else { // If it doesn't have icdo3 code
+        if (item.n_c !== undefined && item.n_c !== "") {
+          item.n_syn = [];
+          if (Array.isArray(item.n_c) && Array.isArray(item.s)) {
+            item.n_c.forEach((nc, i) => {
+              item.n_syn.push({n_c: item.n_c[i], s: item.s[i], ap: item.ap[i], def: item.def[i]});
+            });
+          } else {
+            item.n_syn.push({n_c: item.n_c, s: item.s, ap: item.ap, def: item.def});
+          }
+          delete item.n_c;
+          delete item.s;
+          delete item.ap;
+          delete item.def;
+        } else if (item.n_c !== undefined && item.n_c === "") {
+          delete item.n_c;
+          delete item.s;
+          delete item.ap;
+          delete item.def;
+        }
+      }
+    });
+  });
+  allProperties.forEach(result => {
+    if (result.enum === undefined) return;
+    result.enum.forEach(item => {
+      if (item.i_c === undefined) return;
+      if (all_icdo3_syn[item.i_c.c]) {
+        item.n_syn = [];
+        item.n_syn = all_icdo3_syn[item.i_c.c].n_syn.length > 0 ? all_icdo3_syn[item.i_c.c].n_syn : undefined;
+        delete item.n_c;
+        delete item.s;
+      }
+      if (all_icdo3_enums[item.i_c.c]) {
+        item.ic_enum = [];
+        item.ic_enum = all_icdo3_enums[item.i_c.c].n.length > 0 ? all_icdo3_enums[item.i_c.c].n : undefined;
+      }
+    });
+  });
+
+  // Removing redundant values
+  let check_enums = {};
+  allProperties.forEach(result => {
+    if(result.enum === undefined) return;
+    let id = result.property+"@"+result.node+"@"+result.category;
+    let new_enum = [];
+    result.enum.forEach(item => {
+      if (check_enums[id] === undefined) {
+        check_enums[id] = [];
+        check_enums[id].push(item.n);
+        new_enum.push(item);
+      } else if (check_enums[id] !== undefined && check_enums[id].indexOf(item.n) === -1) {
+        check_enums[id].push(item.n);
+        new_enum.push(item);
+      }
+    });
+    result.enum = new_enum;
+  });
+
+  // Remove non-gdc values
+  allProperties.forEach(result => {
+    if(result.enum === undefined) return;
+    let new_enum = [];
+    result.enum.forEach(item => {
+      if(item.gdc_d === true) new_enum.push(item);
+    });
+    result.enum = new_enum;
+  });
+
+  allProperties.forEach(ap => {
+    if (ap.cde && ap.property_desc) { // ADD CDE ID to all property description.
+      ap.property_desc = ap.property_desc + " (CDE ID - " + ap.cde.id + ")"
+    }
+    let doc = extend(ap, {});
+    doc.id = ap.property + "/" + ap.node + "/" + ap.category;
+    propertyBody.push({
+      index: {
+        _index: config.index_p,
+        _type: '_doc',
+        _id: doc.id
+      }
+    });
+    propertyBody.push(doc);
+  });
+
+  esClient.bulk({body: propertyBody}, (err_p, data_p) => {
+    if (err_p) {
+      return next(err_p);
+    }
+    let errorCount_p = 0;
+    data_p.items.forEach(item => {
+      if (item.index && item.index.error) {
+        logger.error(++errorCount_p, item.index.error);
+      }
+    });
+    esClient.bulk({body: suggestionBody}, (err_s, data_s) => {
+      if (err_s) {
+        return next(err_s);
+      }
+      let errorCount_s = 0;
+      data_s.items.forEach(itm => {
+        if (itm.index && itm.index.error) {
+          logger.error(++errorCount_s, itm.index.error);
+        }
+      });
+      next({
+        property_indexed: (propertyBody.length - errorCount_p),
+        property_total: propertyBody.length,
+        suggestion_indexed: (suggestionBody.length - errorCount_s),
+        suggestion_total: suggestionBody.length
+      });
+    });
+  });
+  */
+  return next(jsonData);
+}
+exports.bulkIndex_new = bulkIndex_new;
 
 const helper = (fileJson, termsJson, defJson, conceptCode, syns) => {
   let doc = {};
@@ -341,6 +965,7 @@ const extendDef = (termsJson, defJson) => {
 }
 
 const bulkIndex = next => {
+
   let deprecated_properties = [];
   let deprecated_enum = [];
   fs.readdirSync(folderPath).forEach(file => {
@@ -515,27 +1140,13 @@ const bulkIndex = next => {
     suggestionBody.push({
       index: {
         _index: config.suggestionName,
-        _type: 'suggestions',
+        _type: '_doc',
         _id: doc.id
       }
     });
     suggestionBody.push(doc);
   }
 
-  let ncitDetail = [];
-  for (let conceptCode in syns) {
-    let doc = {};
-    doc.id = conceptCode.toString();
-    doc.data = syns[conceptCode];
-    ncitDetail.push({
-      index: {
-        _index: config.ncitDetails,
-        _type: 'props',
-        _id: doc.id
-      }
-    });
-    ncitDetail.push(doc);
-  }
   // build property index
   let propertyBody = [];
 
@@ -670,12 +1281,13 @@ const bulkIndex = next => {
     propertyBody.push({
       index: {
         _index: config.index_p,
-        _type: 'props',
+        _type: '_doc',
         _id: doc.id
       }
     });
     propertyBody.push(doc);
   });
+
   esClient.bulk({body: propertyBody}, (err_p, data_p) => {
     if (err_p) {
       return next(err_p);
@@ -696,23 +1308,11 @@ const bulkIndex = next => {
           logger.error(++errorCount_s, itm.index.error);
         }
       });
-      esClient.bulk({body: ncitDetail}, (err_s, data_s) => {
-        if (err_s) {
-          return next(err_s);
-        }
-        let errorCount_s = 0;
-        data_s.items.forEach(itm => {
-          if (itm.index && itm.index.error) {
-            logger.error(++errorCount_s, itm.index.error);
-          }
-        });
-        next({
-          property_indexed: (propertyBody.length - errorCount_p),
-          property_total: propertyBody.length,
-          suggestion_indexed: (suggestionBody.length - errorCount_s),
-          suggestion_total: suggestionBody.length,
-          ncit_details: ncitDetail.length
-        });
+      next({
+        property_indexed: (propertyBody.length - errorCount_p),
+        property_total: propertyBody.length,
+        suggestion_indexed: (suggestionBody.length - errorCount_s),
+        suggestion_total: suggestionBody.length
       });
     });
   });

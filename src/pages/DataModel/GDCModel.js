@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Graph_View from '../Search/GraphicalView_D3';
+import GraphicalView from '../../components/GraphicalView';
 
 const ContentBox =  styled.div`
   padding: 3rem 4rem;
@@ -86,7 +86,7 @@ const GDCModel = () => {
     <ContentBoxHr/>
     <ContentBoxTitle>The GDC Data Model</ContentBoxTitle>
     <GraphContent>
-      <Graph_View type="gdc_readonly"/>
+      <GraphicalView type="gdc_readonly"/>
     </GraphContent>
   </ContentBoxAbout>
 }

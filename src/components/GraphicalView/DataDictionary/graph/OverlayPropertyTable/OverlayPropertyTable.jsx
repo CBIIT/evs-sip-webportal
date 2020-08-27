@@ -77,7 +77,6 @@ class OverlayPropertyTable extends React.Component {
       let vs_html = "";
       if(type == 'gdc' || type == 'gdc_readonly'){
         let rs = await apiGetGDCDataById(property + "/" + node + "/" + category);
-        console.log(rs);
         if(rs[0]._source.enum){
           rs[0]._source.enum.forEach(function(item){
             let tmp = {};

@@ -10,11 +10,16 @@ const yaml = require('yamljs');
 const xlsx = require('node-xlsx');
 const _ = require('lodash');
 const shared = require('./shared');
-const folderPath = path.join(__dirname, '..', '..', 'data');
-const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
 // const git = require('nodegit');
 var cdeData = {};
 var gdcData = {};
+
+const indexing_new = (req, res) => {
+	let configs = [];
+	elastic.bulkIndex_new(data => {
+		return res.status(200).json(data);
+	});
+};
 
 const indexing = (req, res) => {
 	let configs = [];
@@ -66,78 +71,76 @@ const indexing = (req, res) => {
 			}
 		},
 		"mappings": {
-			"props": {
-				"properties": {
-					"id": {
-						"type": "keyword"
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"category": {
+					"type": "keyword"
+				},
+				"node": {
+					"type": "keyword"
+				},
+				"property": {
+					"type": "text",
+					"fields": {
+						"have": {
+							"type": "text",
+							"analyzer": "my_standard"
+						}
 					},
-					"category": {
-						"type": "keyword"
-					},
-					"node": {
-						"type": "keyword"
-					},
-					"property": {
-						"type": "text",
-						"fields": {
-							"have": {
-								"type": "text",
-								"analyzer": "my_standard"
-							}
+					"analyzer": "case_insensitive"
+				},
+				"enum":{
+					"type": "nested",
+					"properties": {
+						"n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_standard"
+								}
+							},
+							"analyzer": "case_insensitive"
 						},
-						"analyzer": "case_insensitive"
-					},
-					"enum":{
-						"type": "nested",
-						"properties": {
-							"n": {
-								"type": "text",
-								"fields": {
-									"have": {
-										"type": "text",
-										"analyzer": "my_standard"
-									}
-								},
-								"analyzer": "case_insensitive"
+						"n_syn.s.termName": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_standard"
+								}
 							},
-							"n_syn.s.termName": {
-								"type": "text",
-								"fields": {
-									"have": {
-										"type": "text",
-										"analyzer": "my_standard"
-									}
-								},
-								"analyzer": "case_insensitive"
+							"analyzer": "case_insensitive"
+						},
+						"n_syn.n_c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_standard"
+								}
 							},
-							"n_syn.n_c": {
-								"type": "text",
-								"fields": {
-									"have": {
-										"type": "text",
-										"analyzer": "my_standard"
-									}
+							"analyzer": "case_insensitive"
+						},
+						"i_c":{
+							"properties": {
+								"c": {
+									"type": "text",
+									"analyzer": "case_insensitive"
 								},
-								"analyzer": "case_insensitive"
-							},
-							"i_c":{
-								"properties": {
-									"c": {
-										"type": "text",
-										"analyzer": "case_insensitive"
-									},
-									"have": {
-										"type": "text",
-										"analyzer": "my_standard"
-									}
+								"have": {
+									"type": "text",
+									"analyzer": "my_standard"
 								}
 							}
 						}
-					},
-					"cde.id": {
-						"type": "text",
-						"analyzer": "case_insensitive"
 					}
+				},
+				"cde.id": {
+					"type": "text",
+					"analyzer": "case_insensitive"
 				}
 			}
 		}
@@ -148,46 +151,18 @@ const indexing = (req, res) => {
 	config_suggestion.index = config.suggestionName;
 	config_suggestion.body = {
 		"mappings": {
-			"suggestions": {
-				"properties": {
-					"id": {
-						"type": "completion",
-						"max_input_length": 100,
-						"analyzer": "standard",
-						"search_analyzer": "standard",
-						"preserve_separators": false
-					}
+			"properties": {
+				"id": {
+					"type": "completion",
+					"max_input_length": 100,
+					"analyzer": "standard",
+					"search_analyzer": "standard",
+					"preserve_separators": false
 				}
 			}
 		}
 	};
 	configs.push(config_suggestion);
-	let config_ncitDetails = {};
-	config_ncitDetails.index = config.ncitDetails;
-	config_ncitDetails.body = {
-		"mappings": {
-			"props": {
-				"properties": {
-					"id": {
-						"type": "keyword"
-					},
-					"preferred_name": {
-						"type": "text"
-					},
-					"code": {
-						"type": "text"
-					},
-					"synonyms": {
-						"type": "text"
-					},
-					"definitions": {
-						"type": "text"
-					}
-				}
-			}
-		}
-	};
-	configs.push(config_ncitDetails);
 	elastic.createIndexes(configs, result => {
 		if (result.acknowledged === undefined) {
 			return handleError.error(res, result);
@@ -322,6 +297,7 @@ const getValuesForGraphicalView = async function(req, res) {
 }
 
 module.exports = {
+	indexing_new,
 	indexing,
 	suggestion,
 	searchP,

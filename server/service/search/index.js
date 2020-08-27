@@ -3,6 +3,7 @@ const controller = require('./controller');
 
 const router = express.Router();
 
+router.get('/buildIndex_new', controller.indexing_new);
 router.get('/buildIndex', controller.indexing);
 router.get('/suggest', controller.suggestion);
 

@@ -3,11 +3,13 @@ const config = require('../../config');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('yamljs');
+const gdc_searchable_nodes = require('../../config').gdc_searchable_nodes;
+const _ = require('lodash');
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 
-const folderPath = path.join(__dirname, '..', '..', 'data');
+const folderPath = path.join(__dirname, '..', '..', 'data_files','GDC', 'model');
 const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
-const dataFilesDir = path.join(__dirname, '..', '..', 'data_files');
+const dataFilesDir = path.join(__dirname, '..', '..', 'data_files','GDC');
 
 const generateHighlightInnerHits = () => {
   let highlight = {
@@ -277,6 +279,84 @@ const readCDEData = () => {
 	return JSON.parse(content);
 }
 
+const getICDOMapping = () => {
+  let data = readGDCValues();
+  let result = {};
+  for(let key in data){
+    let obj = data[key];
+    obj.forEach(item => {
+      if(item.nm != item.i_c){
+        if(!(item.i_c in result)){
+          result[item.i_c] = [];
+        }
+        let entry = {n: item.nm, t: item.term_type == "" ? '*' : item.term_type};
+        let idx = result[item.i_c].map(function(element){
+          return element.n + "&" + element.t;
+        }).indexOf(entry.n + "&" + entry.t);
+        if(idx == -1){
+          result[item.i_c].push(entry);
+        }
+      }
+    });
+  }
+  return result;
+}
+
+const generateICDOHaveWords = (code) => {
+  let ts = [];
+
+  if (code.indexOf('C') >= 0) {
+    // ICD-O-3 code with C
+    // check if it's a range in level 2
+    if (code.indexOf('-') >= 0) {
+      let r = code.split('-');
+      let start = parseInt(r[0].substr(1));
+      let end = parseInt(r[1].substr(1));
+      for (let i = start; i <= end; i++) {
+        if (i < 10) {
+          ts.push('C0' + i);
+        } else {
+          ts.push('C' + i);
+        }
+      }
+    } else if (code.indexOf('.') >= 0) {
+      // check if it has '/' in the code
+      let idx = code.indexOf('.');
+      let l2 = code.substr(0, idx);
+      let l3 = code;
+      ts.push(l2);
+      ts.push(l3);
+    } else {
+      ts.push(code);
+    }
+  } else {
+    // regular ICD-O-3 code
+    // check if it's a range in level 2
+    if (code.indexOf('-') >= 0) {
+      let r = code.split('-');
+      let start = parseInt(r[0]);
+      let end = parseInt(r[1]);
+      for (let i = start; i <= end; i++) {
+        ts.push(i);
+      }
+
+    } else if (code.indexOf('/') >= 0) {
+      // check if it has '/' in the code
+      let idx = code.indexOf('/');
+      let l3 = code.substr(0, idx);
+      let l4 = code;
+      let l2 = l3.substr(0, l3.length - 1);
+      ts.push(l2);
+      ts.push(l3);
+      ts.push(l4);
+    } else {
+      ts.push(code);
+    }
+  }
+
+  return ts;
+}
+
 const findObjectWithRef = (obj, updateFn, root_key = '', level = 0) => {
   // iterate over the properties
   for (var propertyName in obj) {
@@ -300,8 +380,17 @@ const findObjectWithRef = (obj, updateFn, root_key = '', level = 0) => {
 const generateGDCData = async function(schema) {
   let dict = {};  
   for (let [key, value] of Object.entries(schema)) {
+    delete value['$schema'];
+    delete value['namespace'];
+    delete value['project'];
+    delete value['program'];
+    delete value['submittable'];
+    delete value['downloadable'];
+    delete value['previous_version_downloadable'];
+    delete value['validators'];
+    delete value['uniqueKeys'];
+
     dict[key.slice(0, -5)] = value;
-    
   }
   
   // Recursivly fix references
@@ -341,10 +430,6 @@ const generateGDCData = async function(schema) {
     return tmp;
   });
 
-  // Append metaschema TODO?? Doesn't seem to matter anymore
-
-  // This is a HACK FIX ME!!@!!!
-  
   dict['_terms']['file_format'] = {description: 'wut'};
 
 
@@ -356,18 +441,26 @@ const generateGDCData = async function(schema) {
   });
 
   const result = Object.keys(newDict).reduce(function(filtered, key){
-    
-    console.log(newDict[key].id);
-    console.log(newDict[key].category);
-    let tmp = newDict[key].category;
 
-    if(tmp != undefined){
-      tmp = tmp.toLowerCase();
+    
+    let obj = newDict[key];
+    let deprecated_properties = obj.deprecated ? obj.deprecated : [];
+    let deprecated_enum = [];
+
+    if(obj.properties){
+      deprecated_properties.forEach(d_p => {
+        delete obj.properties[d_p];
+      });
+      delete obj['deprecated'];
+      for (let p in obj.properties) {
+        if (obj.properties[p].deprecated_enum) {
+          obj.properties[p].enum = _.differenceWith(obj.properties[p].enum, obj.properties[p].deprecated_enum, _.isEqual);
+        }
+        delete obj.properties[p].deprecated_enum;
+      }
     }
     
-    if(tmp == undefined || (tmp !== 'tbd' && tmp !== 'data') ){
-      filtered[key] = newDict[key];
-    }
+    filtered[key] = newDict[key];
     return filtered;
   }, {});
 
@@ -485,8 +578,12 @@ const getGraphicalGDCDictionary = async function() {
         jsonData["_definitions.yaml"] = defJson;
         // let bulkBody = [];
         fs.readdirSync(folderPath).forEach(file => {
-            if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml') {
-              let fileJson = yaml.load(folderPath + '/' + file);
+            let fileJson = yaml.load(folderPath + '/' + file);
+            // Do not include annotation.yaml, metaschema.yaml
+            // Only include node in the gdc_searchable_nodes
+            // Do not include node in category "TBD" and "data" 
+            if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
+              && gdc_searchable_nodes.indexOf(fileJson.id) !== -1 && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
               jsonData[file] = fileJson;
             }
         });
@@ -535,6 +632,8 @@ module.exports = {
     readGDCValues,
     readConceptCode,
     readCDEData,
+    getICDOMapping,
+    generateICDOHaveWords,
     getGraphicalGDCDictionary,
     getGraphicalICDCDictionary,
     getGraphicalCTDCDictionary

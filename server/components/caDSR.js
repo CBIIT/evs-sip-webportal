@@ -99,56 +99,6 @@ const loadData = (ids, next) => {
 
 };
 
-const loadDataType = (ids, next)  => {
-	let count = 0;
-	if (ids.length > 0) {
-		logger.debug(ids.length);
-		ids.forEach(uid => {
-			https.get(config.caDSR_url[0] + uid, (response) => {
-				let info = '';
-				response.on('data', (d) => {
-					info += d;
-				});
-				response.on('end', () => {
-					let parsed = JSON.parse(info);
-					if (parsed.length > 0) {
-						https.get(config.caDSR_url[1] + parsed[0].deIdseq, (result) => {
-							let body = '';
-							result.on('data', (r) => {
-								body += r;
-							});
-							result.on('end', () => {
-								let b = JSON.parse(body);
-								let dataType = b.valueDomain.valueDomainDetails.dataType;
-								let str = {};
-								str[uid] = dataType;
-								logger.debug("save to file:" + uid);
-								fs.appendFile("./server/data_files/cdeDataType.js", JSON.stringify(str), err => {
-									if (err) return logger.error(err);
-									logger.debug(" dataType for caDSR (" + uid + ") :" + dataType);
-								});
-								count++;
-								if (count == ids.length) {
-									next('CDE data Refreshed!!');
-								} else {
-									next("finished number: " + count + " of " + ids.length + "\n");
-								}
-							});
-						}).on('error', (e) => {
-							logger.error(e);
-						});
-					}
-
-				});
-
-			}).on('error', (e) => {
-				logger.error(e);
-			});
-
-		});
-	}
-};
-
 const loadSynonyms = next => {
 	let ncitids = [];
 	//load concept codes
@@ -532,7 +482,6 @@ const getSynonyms = () => {
 
 module.exports = {
 	loadData,
-	loadDataType,
 	loadSynonyms,
 	loadSynonymsCtcae,
 	loadNcitSynonyms_continue,
