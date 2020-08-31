@@ -54,16 +54,10 @@ const SingleTabsController = (props) => {
                   <NavLinkStyled eventKey="gdc">GDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="pdc">PDC</NavLinkStyled>
-                </Nav.Item>
-                <Nav.Item>
                   <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="ctcd">CTDC</NavLinkStyled>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLinkStyled eventKey="idc">IDC</NavLinkStyled>
+                  <NavLinkStyled eventKey="ctdc">CTDC</NavLinkStyled>
                 </Nav.Item>
               </NavStyled>
             </TabNavsCol>
@@ -72,17 +66,11 @@ const SingleTabsController = (props) => {
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
                   <ValuesTable values={props.source}/>
                 </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="pdc">
-                  PDC content
-                </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
                   ICDC content
                 </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="ctcd">
+                <Tab.Pane unmountOnExit={true} eventKey="ctdc">
                   CTDC content
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="idc">
-                  IDC content
                 </Tab.Pane>
               </Tab.Content>
             </Col>

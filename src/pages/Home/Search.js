@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import { Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -185,6 +186,21 @@ const CheckboxInput = styled.input`
 
 
 const Search = () => {
+  let [searchState, setSearchState] = useState('');
+
+  const history = useHistory();
+  const routeChange = () =>{ 
+    history.push({
+      pathname: './search',
+      state: { keyword: searchState }
+    });
+  }
+
+  const suggestHandler = event => {
+    setSearchState(event.target.value);
+    //apiSuggest(event.target.value).then(result => setSuggestState(result));
+  };
+
   return <SearchSection>
     <ContainerStyled>
       <RowStyled>
@@ -202,9 +218,12 @@ const Search = () => {
               <InputBox
                 placeholder="Search EVS-SIP"
                 aria-label="Search EVS-SIP"
+                type="text"
+                value={searchState}
+                onChange={suggestHandler}
               />
               <InputBoxBtnContainer>
-                <InputBoxButton>
+                <InputBoxButton onClick={routeChange}>
                   <InputBoxIcon icon={faArrowRight}/>
                 </InputBoxButton>
               </InputBoxBtnContainer>

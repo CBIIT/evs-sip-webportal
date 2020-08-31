@@ -54,16 +54,10 @@ const GraphTabsController = (props) => {
                   <NavLinkStyled eventKey="gdc">GDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="pdc">PDC</NavLinkStyled>
-                </Nav.Item>
-                <Nav.Item>
                   <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
                   <NavLinkStyled eventKey="ctdc">CTDC</NavLinkStyled>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLinkStyled eventKey="idc">IDC</NavLinkStyled>
                 </Nav.Item>
               </NavStyled>
             </TabNavsCol>
@@ -72,17 +66,11 @@ const GraphTabsController = (props) => {
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
                   <GraphicalView type="gdc"/>
                 </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="pdc">
-                  PDC content
-                </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
                   <GraphicalView type="icdc"/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctdc">
                   <GraphicalView type="ctdc"/>
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="idc">
-                  IDC content
                 </Tab.Pane>
               </Tab.Content>
             </Col>
