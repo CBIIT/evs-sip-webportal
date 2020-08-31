@@ -14,10 +14,158 @@ const shared = require('./shared');
 var cdeData = {};
 var gdcData = {};
 
-const indexing_new = (req, res) => {
+const indexing_old = (req, res) => {
 	let configs = [];
-	elastic.bulkIndex_new(data => {
-		return res.status(200).json(data);
+	//config property index
+	let config_property = {};
+	config_property.index = config.index_p;
+	config_property.body = {
+		"settings": {
+			"number_of_shards": 10, 
+			"max_inner_result_window": 10000000,
+			"max_result_window": 10000000,
+			"analysis": {
+				"analyzer": {
+					"case_insensitive": {
+						"tokenizer": "keyword",
+						"filter": ["lowercase", "whitespace_remove"]
+					},
+					"my_standard": {
+						"tokenizer": "standard",
+						"char_filter": ["my_filter"],
+						"filter": ["lowercase","whitespace_remove"]
+					},
+					"my_ngram": {
+						"tokenizer": "ngram_tokenizer",
+						"char_filter": ["my_filter"],
+						"filter": ["lowercase","whitespace_remove"]
+					}
+				},
+				"char_filter": {
+					"my_filter": {
+						"type": "mapping",
+						"mappings": ["_=>-"]
+					}
+				},
+				"filter": {
+					"whitespace_remove": {
+						"type": "pattern_replace",
+						"pattern": "[_-]",
+						"replacement": " "
+					}
+				},
+				"tokenizer": {
+					"ngram_tokenizer": {
+						"type": "nGram",
+						"min_gram": "2",
+						"token_chars": ["letter", "digit", "symbol"]
+					}
+				}
+			}
+		},
+		"mappings": {
+				"properties": {
+					"id": {
+						"type": "keyword"
+					},
+					"category": {
+						"type": "keyword"
+					},
+					"node": {
+						"type": "keyword"
+					},
+					"property": {
+						"type": "text",
+						"fields": {
+							"have": {
+								"type": "text",
+								"analyzer": "my_standard"
+							}
+						},
+						"analyzer": "case_insensitive"
+					},
+					"enum":{
+						"type": "nested",
+						"properties": {
+							"n": {
+								"type": "text",
+								"fields": {
+									"have": {
+										"type": "text",
+										"analyzer": "my_standard"
+									}
+								},
+								"analyzer": "case_insensitive"
+							},
+							"n_syn.s.termName": {
+								"type": "text",
+								"fields": {
+									"have": {
+										"type": "text",
+										"analyzer": "my_standard"
+									}
+								},
+								"analyzer": "case_insensitive"
+							},
+							"n_syn.n_c": {
+								"type": "text",
+								"fields": {
+									"have": {
+										"type": "text",
+										"analyzer": "my_standard"
+									}
+								},
+								"analyzer": "case_insensitive"
+							},
+							"i_c":{
+								"properties": {
+									"c": {
+										"type": "text",
+										"analyzer": "case_insensitive"
+									},
+									"have": {
+										"type": "text",
+										"analyzer": "my_standard"
+									}
+								}
+							}
+						}
+					},
+					"cde.id": {
+						"type": "text",
+						"analyzer": "case_insensitive"
+					}
+				}
+		}
+	};
+	configs.push(config_property);
+	//config suggestion index
+	let config_suggestion = {};
+	config_suggestion.index = config.suggestionName;
+	config_suggestion.body = {
+		"mappings": {
+				"properties": {
+					"id": {
+						"type": "completion",
+						"max_input_length": 100,
+						"analyzer": "standard",
+						"search_analyzer": "standard",
+						"preserve_separators": false
+					}
+				}
+		}
+	};
+	configs.push(config_suggestion);
+	elastic.createIndexes(configs, result => {
+		if (result.acknowledged === undefined) {
+			return handleError.error(res, result);
+		}
+		elastic.bulkIndex_old(data => {
+			if (data.property_indexed === undefined) {
+				return handleError.error(res, data);
+			}
+			return res.status(200).json(data);
+		});
 	});
 };
 
@@ -81,7 +229,7 @@ const indexing = (req, res) => {
 				"node": {
 					"type": "keyword"
 				},
-				"property": {
+				"prop": {
 					"type": "text",
 					"fields": {
 						"have": {
@@ -104,7 +252,7 @@ const indexing = (req, res) => {
 							},
 							"analyzer": "case_insensitive"
 						},
-						"n_syn.s.termName": {
+						"ncit.s.n": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -114,7 +262,7 @@ const indexing = (req, res) => {
 							},
 							"analyzer": "case_insensitive"
 						},
-						"n_syn.n_c": {
+						"ncit.c": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -124,7 +272,7 @@ const indexing = (req, res) => {
 							},
 							"analyzer": "case_insensitive"
 						},
-						"i_c":{
+						"icdo":{
 							"properties": {
 								"c": {
 									"type": "text",
@@ -297,7 +445,7 @@ const getValuesForGraphicalView = async function(req, res) {
 }
 
 module.exports = {
-	indexing_new,
+	indexing_old,
 	indexing,
 	suggestion,
 	searchP,

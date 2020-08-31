@@ -3,12 +3,14 @@ var _ = require('lodash');
 
 if (process.env.NODE_ENV !== 'prod') {
   const cfg = require('dotenv').config();
-  if (cfg.error) {
-    throw cfg.error
+  if (!cfg.error) {
+    let tmp = cfg.parsed;
+    process.env = {...process.env, NODE_ENV: tmp.NODE_ENV, PORT: tmp.PORT, LOGDIR: tmp.LOGDIR};
+    //process.env.NODE_ENV = tmp.NODE_ENV;
   }
-
-  let tmp = cfg.parsed;
-  process.env.NODE_ENV = tmp.NODE_ENV;
+  else{
+    process.env.NODE_ENV = 'dev';
+  }
 };
 
 // All configurations will extend these options
@@ -21,19 +23,19 @@ var all = {
   port: process.env.PORT || 3000,
 
   // Server port
-  logDir: process.env.LOGDIR || '/local/content/mvs/logs',
+  logDir: process.env.LOGDIR || '/local/content/evssip/logs',
 
   // Node environment (dev, test, stage, prod), must select one.
   env: process.env.NODE_ENV || 'prod',
 
-  // general gdc index name
-  indexName: 'gdc',
+  // general evssip index name
+  indexName: 'evssip',
 
-  // suggestion index name for typeahead
-  suggestionName: 'gdc-suggestion',
+  // suggestion evssip name for typeahead
+  suggestionName: 'evssip-suggestion',
 
   // index name for properties
-  index_p: 'gdc-p',
+  index_p: 'evssip-p',
 
   // GDC searchable nodes
   gdc_searchable_nodes: ['case', 'demographic', 'diagnosis', 'exposure', 'family_history', 'follow_up', 'molecular_test',

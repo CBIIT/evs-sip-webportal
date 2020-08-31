@@ -159,7 +159,7 @@ const CrossValuesTable = (props) => {
 
   items.forEach((data) => {
     let enums = data.inner_hits.enum;
-    if (enums.hits.total !== 0) {
+    if (enums.hits.hits.length !== 0) {
 
       let enumHits = enums.hits.hits;
       enumHits.forEach((hits) => {
@@ -169,19 +169,19 @@ const CrossValuesTable = (props) => {
         let highlightValue = ('enum.n' in highlight) || ('enum.n.have' in highlight) ? highlight['enum.n'] || highlight['enum.n.have'] : undefined;
         let highlightValueObj = getHighlightObj(highlightValue);
 
-        let highlightSyn = ('enum.n_syn.s.termName' in highlight) || ('enum.n_syn.s.termName.have' in highlight) ? highlight['enum.n_syn.s.termName'] || highlight['enum.n_syn.s.termName.have'] : undefined;
+        let highlightSyn = ('enum.ncit.s.n' in highlight) || ('enum.ncit.s.n.have' in highlight) ? highlight['enum.ncit.s.n'] || highlight['enum.ncit.s.n.have'] : undefined;
         let highlightSynObj = getHighlightObj(highlightSyn);
 
-        let highlightNC = ('enum.n_syn.n_c' in highlight) || ('enum.n_syn.n_c.have' in highlight) ? highlight['enum.n_syn.n_c'] || highlight['enum.n_syn.n_c.have'] : undefined;
+        let highlightNC = ('enum.ncit.c' in highlight) || ('enum.ncit.c.have' in highlight) ? highlight['enum.ncit.c'] || highlight['enum.ncit.c.have'] : undefined;
         let highlightNCObj = getHighlightObj(highlightNC);
 
-        let highlightIC = ('enum.i_c.c' in highlight) || ('enum.i_c.have' in highlight) ? highlight['enum.i_c.c'] || highlight['enum.i_c.have'] : undefined;
+        let highlightIC = ('enum.icdo.c' in highlight) || ('enum.icdo.have' in highlight) ? highlight['enum.icdo.c'] || highlight['enum.icdo.have'] : undefined;
         let highlightICObj = getHighlightObj(highlightIC);
 
         let obj = {};
         obj.category = data._source.category;
         obj.node = data._source.node;
-        obj.property = data._source.property;
+        obj.property = data._source.prop;
         obj.id = data._source.id;
         obj.cdeId = data._source.cde ? data._source.cde.id : undefined;
         obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
@@ -200,30 +200,30 @@ const CrossValuesTable = (props) => {
           let source = hits._source;
           valueObj.n = highlightValueObj[source.n] !== undefined ? highlightValueObj[source.n] : source.n;
           valueObj.src_n = source.n;
-          valueObj.drug = source.drug;
-          if (source.n_syn !== undefined) {
-            source.n_syn.forEach(data => {
+          //valueObj.drug = source.drug;
+          if (source.ncit !== undefined) {
+            source.ncit.forEach(data => {
               let newSyn = [];
               let preferredTerm;
               let preferredTermObj;
               data.s.forEach(s => {
-                if (s.termSource !== 'NCI') return;
+                if (s.src !== 'NCI') return;
                 let synObj = {};
-                synObj.termName = highlightSynObj[s.termName] ? highlightSynObj[s.termName] : s.termName;
-                synObj.termSource = s.termSource;
-                synObj.termGroup = s.termGroup;
-                if (s.termGroup === 'PT' && preferredTerm === undefined) {
-                  preferredTerm = s.termName;
+                synObj.termName = highlightSynObj[s.n] ? highlightSynObj[s.n] : s.n;
+                synObj.termSource = s.src;
+                synObj.termGroup = s.t;
+                if (s.t === 'PT' && preferredTerm === undefined) {
+                  preferredTerm = s.n;
                   preferredTermObj = synObj;
                 }
                 newSyn.push(synObj);
               });
 
-              if(ncitMatch !== data.n_c) {
-                ncitMatch = data.n_c;
+              if(ncitMatch !== data.c) {
+                ncitMatch = data.c;
 
-                if(ncitMatchObj[data.n_c] === undefined) {
-                  ncitMatchObj[data.n_c] = preferredTermObj;
+                if(ncitMatchObj[data.c] === undefined) {
+                  ncitMatchObj[data.c] = preferredTermObj;
                 };
               };
 
@@ -237,7 +237,7 @@ const CrossValuesTable = (props) => {
               //   };
               // };
 
-              data.n_c = highlightNCObj[data.n_c] ? highlightNCObj[data.n_c] : data.n_c;
+              data.n_c = highlightNCObj[data.c] ? highlightNCObj[data.c] : data.c;
               data.id = (obj.property + '-' + valueObj.src_n + '-' + data.n_c).replace(/[^a-zA-Z0-9-]+/gi, '');
               data.pt = preferredTerm;
               data.s = sortSynonyms(newSyn);
@@ -253,12 +253,15 @@ const CrossValuesTable = (props) => {
                   return aps.name === 'CAS_Registry' || aps.name === 'FDA_UNII_Code' || aps.name === 'NSC_Code';
                 });
               }
+              else{
+                data.ap = undefined;
+              }
             });
-            valueObj.n_syn = source.n_syn;
+            valueObj.n_syn = source.ncit;
           }
           valueObj.i_c = {};
-          valueObj.i_c.c = source.i_c ? highlightICObj[source.i_c.c] ? highlightICObj[source.i_c.c] : source.i_c.c : undefined;
-          valueObj.i_c.id = source.i_c ? (obj.property + '-' + valueObj.src_n + '-' + source.i_c.c).replace(/[^a-zA-Z0-9-]+/gi, '') : undefined;
+          valueObj.i_c.c = source.icdo ? highlightICObj[source.icdo.c] ? highlightICObj[source.icdo.c] : source.icdo.c : undefined;
+          valueObj.i_c.id = source.icdo ? (obj.property + '-' + valueObj.src_n + '-' + source.icdo.c).replace(/[^a-zA-Z0-9-]+/gi, '') : undefined;
 
           if(valueObj.i_c.c !== undefined) {
             icdo3Match = valueObj.i_c.c ;
@@ -276,11 +279,11 @@ const CrossValuesTable = (props) => {
           //     icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
           //   };
           // };
-          if (source.ic_enum !== undefined) {
-            valueObj.ic_enum = source.ic_enum;
-            icdo3MatchObj[valueObj.i_c.c].enum = source.ic_enum;
-            source.ic_enum.forEach(ic => {
-              if (ic.term_type === 'PT') {
+          if (source.icdo && source.icdo.s !== undefined) {
+            valueObj.ic_enum = source.icdo.s;
+            icdo3MatchObj[valueObj.i_c.c].enum = source.icdo.s;
+            source.icdo.s.forEach(ic => {
+              if (ic.t === 'PT') {
                 icdo3MatchObj[valueObj.i_c.c].preferredTerm = ic;
               }
             });
@@ -305,7 +308,7 @@ const CrossValuesTable = (props) => {
     }
   });
 
-  console.log(values);
+  //console.log(values);
 
   let ncitObjs = {};
   let icdo3Objs = {};
@@ -350,7 +353,7 @@ const CrossValuesTable = (props) => {
 
   Object.entries(icdo3Objs).forEach((entry)=> {
     crossValues.push({
-      code: entry[0],
+      code: entry[0].replace(/<b>/g, '').replace(/<\/b>/g, ''),
       ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
@@ -361,7 +364,7 @@ const CrossValuesTable = (props) => {
     })
   });
 
-  console.log(crossValues);
+  //console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -382,7 +385,7 @@ const CrossValuesTable = (props) => {
         <tr key={index}>
           <td>{item.n}</td>
           <td>(ICD-O-3)</td>
-          <td>{item.term_type}</td>
+          <td>{item.t}</td>
         </tr>
       );
     }
@@ -604,7 +607,7 @@ const CrossValuesTable = (props) => {
           <DivCenter>
             <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
             {cross.preferredTerm !== undefined && <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>}
-            {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.term_type})</PreferredTerm>}
+            {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.t})</PreferredTerm>}
         </DivCenter>
         </TableColLeft>
         <TableColRight data-class="TableColRight" xs={10}>

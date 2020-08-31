@@ -134,7 +134,9 @@ const MainTabsController = (props) => {
       </Result>
     );
   }
-  return(<div></div>);
+  else{
+    return(<div></div>);
+  }
 };
 
 export default MainTabsController;

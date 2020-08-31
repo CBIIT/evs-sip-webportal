@@ -9,9 +9,9 @@ const config = require('./index');
 // const indexRouter = require('./routes/index')
 
 module.exports = function(app) {
-  if (config.env !== 'prod') { 
-    app.use(logger('dev')) 
-  };
+  // if (config.env !== 'prod') { 
+  //   app.use(logger('dev')) 
+  // };
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());

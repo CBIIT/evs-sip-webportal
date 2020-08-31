@@ -84,6 +84,7 @@ export const getCategoryColor = (category) => {
     data_file: '#7EC500',
     metadata_file: '#F4B940',
     analysis: '#FF7ABC',
+    case: '#AD91FF',
     administrative: '#AD91FF',
     notation: '#E74C3C',
     index_file: '#26D9B1',
