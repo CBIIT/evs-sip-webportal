@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/no-webpack-loader-syntax
+import IconCase from '-!react-svg-loader!./icons/icon_case.svg';
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import IconAdministrative from '-!react-svg-loader!./icons/icon_administrative.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import IconAnalysis from '-!react-svg-loader!./icons/icon_analysis.svg';
@@ -49,6 +51,10 @@ const nodeCategoryList = {
   analysis: {
     icon: IconAnalysis,
     color: '#FF7ABC',
+  },
+  case: {
+    icon: IconCase,
+    color: '#AD91FF',
   },
   administrative: {
     icon: IconAdministrative,
