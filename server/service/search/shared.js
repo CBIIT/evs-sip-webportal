@@ -18,12 +18,12 @@ const generateHighlightInnerHits = () => {
     "fields": {
       "enum.n.have": {"number_of_fragments": 0},
       "enum.n": {"number_of_fragments": 0},
-      "enum.n_syn.n_c.have": {"number_of_fragments": 0},
-      "enum.n_syn.n_c": {"number_of_fragments": 0},
-      "enum.n_syn.s.termName.have": {"number_of_fragments": 0},
-      "enum.n_syn.s.termName": {"number_of_fragments": 0},
-      "enum.i_c.have": {"number_of_fragments": 0},
-      "enum.i_c.c": {"number_of_fragments": 0}
+      "enum.ncit.c.have": {"number_of_fragments": 0},
+      "enum.ncit.c": {"number_of_fragments": 0},
+      "enum.ncit.s.n.have": {"number_of_fragments": 0},
+      "enum.ncit.s.n": {"number_of_fragments": 0},
+      "enum.icdo.have": {"number_of_fragments": 0},
+      "enum.icdo.c": {"number_of_fragments": 0}
     }
   };
   return highlight;
@@ -34,9 +34,9 @@ const generateHighlight = () => {
     "pre_tags": ["<b>"],
     "post_tags": ["</b>"],
     "fields": {
-      "property.have": {"number_of_fragments": 0},
-      "property": {"number_of_fragments": 0},
-      "property_desc": {"number_of_fragments": 0},
+      "prop.have": {"number_of_fragments": 0},
+      "prop": {"number_of_fragments": 0},
+      "prop_desc": {"number_of_fragments": 0},
       "cde.id": {"number_of_fragments": 0},
       "id": {"number_of_fragments": 0}
     }
@@ -55,9 +55,9 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.query_string.query = keyword;
     m.query_string.fields = [];
     m.query_string.fields.push("cde.id");
-    m.query_string.fields.push("property");
+    m.query_string.fields.push("prop");
     if (option.desc) {
-      m.query_string.fields.push("property_desc");
+      m.query_string.fields.push("prop_desc");
     }
     query.bool.should.push(m);
 
@@ -69,11 +69,11 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.nested.query.query_string.fields = [];
     
     if (option.syn) {
-      m.nested.query.query_string.fields.push("enum.n_syn.s.termName");
+      m.nested.query.query_string.fields.push("enum.ncit.s.n");
     }
-    m.nested.query.query_string.fields.push("enum.n_syn.n_c");
+    m.nested.query.query_string.fields.push("enum.ncit.c");
     m.nested.query.query_string.fields.push("enum.n");
-    m.nested.query.query_string.fields.push("enum.i_c.c");
+    m.nested.query.query_string.fields.push("enum.icdo.c");
     m.nested.query.query_string.query = keyword;
     
     m.nested.inner_hits = {};
@@ -92,9 +92,9 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.query_string.query = keyword;
     m.query_string.fields = [];
     m.query_string.fields.push("cde.id");
-    m.query_string.fields.push("property.have");
+    m.query_string.fields.push("prop.have");
     if (option.desc) {
-      m.query_string.fields.push("property_desc");
+      m.query_string.fields.push("prop_desc");
     }
     query.bool.should.push(m);
 
@@ -107,11 +107,11 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.nested.query.query_string.default_operator = "AND";
 
     if (option.syn) {
-      m.nested.query.query_string.fields.push("enum.n_syn.s.termName.have");
+      m.nested.query.query_string.fields.push("enum.ncit.s.n.have");
     }
-    m.nested.query.query_string.fields.push("enum.n_syn.n_c.have");
+    m.nested.query.query_string.fields.push("enum.ncit.c.have");
     m.nested.query.query_string.fields.push("enum.n.have");
-    m.nested.query.query_string.fields.push("enum.i_c.have");
+    m.nested.query.query_string.fields.push("enum.icdo.have");
     m.nested.query.query_string.query = keyword;
 
     m.nested.inner_hits = {};
@@ -127,7 +127,7 @@ const generateQuery = (keyword, option, isBoolean) => {
 
     let m = {};
     m.match_phrase_prefix = {};
-    m.match_phrase_prefix["property.have"] = keyword;
+    m.match_phrase_prefix["prop.have"] = keyword;
     query.bool.should.push(m);
 
     m = {};
@@ -138,7 +138,7 @@ const generateQuery = (keyword, option, isBoolean) => {
     if (option.desc) {
       m = {};
       m.match_phrase_prefix = {};
-      m.match_phrase_prefix["property_desc"] = keyword;
+      m.match_phrase_prefix["prop_desc"] = keyword;
       query.bool.should.push(m);
     }
 
@@ -153,12 +153,12 @@ const generateQuery = (keyword, option, isBoolean) => {
     if (option.syn) {
       n = {};
       n.match_phrase_prefix = {};
-      n.match_phrase_prefix["enum.n_syn.s.termName.have"] = keyword;
+      n.match_phrase_prefix["enum.ncit.s.n.have"] = keyword;
       m.nested.query.bool.should.push(n);
     }
     n = {};
     n.match_phrase_prefix = {};
-    n.match_phrase_prefix["enum.n_syn.n_c.have"] = keyword;
+    n.match_phrase_prefix["enum.ncit.c.have"] = keyword;
     m.nested.query.bool.should.push(n);
     
     n = {};
@@ -168,9 +168,9 @@ const generateQuery = (keyword, option, isBoolean) => {
 
     n = {};
     n.match_phrase_prefix = {};
-    n.match_phrase_prefix["enum.i_c.have"] = {};
-    n.match_phrase_prefix["enum.i_c.have"].query = keyword;
-    n.match_phrase_prefix["enum.i_c.have"].analyzer = "my_standard";
+    n.match_phrase_prefix["enum.icdo.have"] = {};
+    n.match_phrase_prefix["enum.icdo.have"].query = keyword;
+    n.match_phrase_prefix["enum.icdo.have"].analyzer = "my_standard";
     m.nested.query.bool.should.push(n);
 
     m.nested.inner_hits = {};
@@ -287,14 +287,19 @@ const getICDOMapping = () => {
     obj.forEach(item => {
       if(item.nm != item.i_c){
         if(!(item.i_c in result)){
-          result[item.i_c] = [];
+          result[item.i_c] = {};
+          result[item.i_c].s = [];
+          result[item.i_c].ncits = [];
         }
         let entry = {n: item.nm, t: item.term_type == "" ? '*' : item.term_type};
-        let idx = result[item.i_c].map(function(element){
+        let idx = result[item.i_c].s.map(function(element){
           return element.n + "&" + element.t;
         }).indexOf(entry.n + "&" + entry.t);
         if(idx == -1){
-          result[item.i_c].push(entry);
+          result[item.i_c].s.push(entry);
+        }
+        if(result[item.i_c].ncits.indexOf(item.n_c) == -1){
+          result[item.i_c].ncits.push(item.n_c);
         }
       }
     });
@@ -377,6 +382,16 @@ const findObjectWithRef = (obj, updateFn, root_key = '', level = 0) => {
   return obj;
 };
 
+const excludeSystemProperties = (node) => {
+    const properties = node.properties && Object.keys(node.properties)
+        .filter(key => (node.systemProperties ? !node.systemProperties.includes(key) : true))
+        .reduce((acc, key) => {
+        acc[key] = node.properties[key];
+        return acc;
+        }, {});
+    return properties;
+};
+
 const generateGDCData = async function(schema) {
   let dict = {};  
   for (let [key, value] of Object.entries(schema)) {
@@ -431,7 +446,7 @@ const generateGDCData = async function(schema) {
   });
 
   dict['_terms']['file_format'] = {description: 'wut'};
-
+  dict['case'].category = 'case';
 
   let newDict = await $RefParser.dereference(dict, {
     continueOnError: false,            // Don't throw on the first error
@@ -458,7 +473,10 @@ const generateGDCData = async function(schema) {
         }
         delete obj.properties[p].deprecated_enum;
       }
+      obj.properties = excludeSystemProperties(obj);
     }
+
+    delete obj.systemProperties;
     
     filtered[key] = newDict[key];
     return filtered;
