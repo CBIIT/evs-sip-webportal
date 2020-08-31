@@ -40,19 +40,6 @@ const TableBody = styled(Row)`
   max-height: 42rem;
 `;
 
-const TableRow = styled(Row)`
-  border-bottom: 1px solid #BBC5CD;
-`;
-
-const TableRowFlex = styled(TableRow)`
-  display: flex;
-  align-items: stretch;
-`;
-
-const TableRowValue = styled(TableRowFlex)`
-  border-bottom: 1px solid #ecf0f1;
-`;
-
 const TableCol = styled(Col)`
   text-align: left;
   padding-top: 12px;
@@ -60,8 +47,28 @@ const TableCol = styled(Col)`
   line-height: 1.428571;
 `;
 
-const TableColBorder = styled(TableCol)`
+const TableColLeft = styled(TableCol)`
   border-bottom: 1px solid #BBC5CD;
+`;
+
+const TableColRight = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-left: 1px solid #BBC5CD;
+`;
+
+const TableRow = styled(Row)`
+  height: 100%;
+`;
+
+const TableRowValues = styled(Row)`
+  height: 100%;
+  border-bottom: 1px solid #BBC5CD;
+`;
+
+const TableRowValue = styled(Row)`
+  border-bottom: 1px solid #ecf0f1;
 `;
 
 const TableUl = styled.ul`
@@ -77,7 +84,7 @@ const SpanIcon = styled.span`
   left: -0.8rem;
   top: 0.2rem;
   position: absolute;
-  width: 1rem;
+  width: 1rem;    
   line-height: inherit;
   color: var(--checkbox-green);
   transform: rotate(45deg);
@@ -85,10 +92,6 @@ const SpanIcon = styled.span`
 
 const TableLiBreak = styled(TableLi)`
   word-wrap: break-word;
-`;
-
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
 `;
 
 const ColRight = styled(Col)`
@@ -122,7 +125,7 @@ const IndicatorTerm = styled.span`
 
 const DivCenter = styled.div`
   text-align: center;
-  padding-top: 1rem;
+  padding: 1rem 0;
 `;
 
 const CodeSpan = styled.span`
@@ -338,7 +341,7 @@ const CrossValuesTable = (props) => {
   Object.entries(ncitObjs).forEach((entry)=> {
     crossValues.push({
       code: entry[0] !== 'norelationship'? entry[0]: 'No NCIT Relationship',
-      ref: 'NCit',
+      ref: 'NCIt',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
         gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
@@ -428,7 +431,7 @@ const CrossValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href="/#">{item.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c} rel="noopener noreferrer" target="_blank">{item.n_c}</a>
             </TableCol>
           </Row>
           <Row>
@@ -535,7 +538,7 @@ const CrossValuesTable = (props) => {
     };
 
     return (
-      <TableCol xs={12}>
+      <TableCol data-class="TableCol" xs={12}>
         <Row>
           <Col xs={10}>
             <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
@@ -573,8 +576,8 @@ const CrossValuesTable = (props) => {
   const ValuesItems = (props) => {
     return (
       <Col sx={12}>
-        <Row>
-          <TableCol xs={3}>
+        <TableRow>
+          <TableCol data-class="TableCol" xs={3}>
             {props.item.category}
             <TableUl>
               <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
@@ -585,14 +588,14 @@ const CrossValuesTable = (props) => {
             </TableUl>
             {/* <GDCTerms idterm={item.id}/> */}
           </TableCol>
-          <TableValues xs={9}>
+          <TableColRight data-class="TableColRight" xs={9}>
             {props.item.vs.map((value, index) =>
-              <TableRowValue key={index}>
+              <TableRowValue data-class="TableRowValue" key={index}>
                 <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
               </TableRowValue>
             )}
-          </TableValues>
-        </Row>
+          </TableColRight>
+        </TableRow>
       </Col>
     )
   };
@@ -600,43 +603,43 @@ const CrossValuesTable = (props) => {
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
       <Row key={index}>
-        <TableColBorder xs={2}>
+        <TableColLeft data-class="TableColLeft" xs={2}>
           <DivCenter>
             <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
             {cross.preferredTerm !== undefined && <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>}
             {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.t})</PreferredTerm>}
         </DivCenter>
-        </TableColBorder>
-        <TableValues xs={10}>
+        </TableColLeft>
+        <TableColRight data-class="TableColRight" xs={10}>
           {cross.values.gdcvalues.length !== 0 &&
-            <Row>
-              <TableColBorder xs={2}>
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
                 <DivCenter>Genomic Data Commons</DivCenter>
-              </TableColBorder>
-              <TableValues xs={10}>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
                 {cross.values.gdcvalues.map((value, index) =>
-                  <TableRowFlex key={index}>
+                  <TableRowValues data-class="TableRowValues" key={index}>
                     <ValuesItems item={value}/>
-                  </TableRowFlex>
+                  </TableRowValues>
                 )}
-              </TableValues>
-            </Row>
+              </TableColRight>
+            </TableRow>
           }
           {cross.values.ctdcvalues.length !== 0 &&
-            <Row>
-              <TableColBorder xs={2}>
+            <TableRow>
+              <TableColLeft data-class="TableColLeft"  xs={2}>
                 <DivCenter>Clinical Trials Data Commons</DivCenter>
-              </TableColBorder>
-              <TableValues xs={10}>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
                 {cross.values.ctdcvalues.map((value, index) =>
-                  <TableRowFlex key={index}>
+                  <TableRowValues data-class="TableRowValues" key={index}>
                     <ValuesItems item={value}/>
-                  </TableRowFlex>
+                  </TableRowValues>
                 )}
-              </TableValues>
-            </Row>
+              </TableColRight>
+            </TableRow>
           }
-        </TableValues>
+        </TableColRight>
     </Row>
     );
   });
