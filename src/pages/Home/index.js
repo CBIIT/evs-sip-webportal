@@ -11,18 +11,8 @@ const Page = styled.div`
 `;
 
 const Home = () => {
-  let [keywordState, setKeywordState] = useState('');
-  let [sourceState, setSourceState] = useState([]);
-
-  const searchHandler = (keyword, options, source) => {
-    setKeywordState(keyword);
-    apiSearchAll(keyword, options).then(result => {
-      setSourceState(result);
-    });
-  };
-
   return <Page>
-      <Search searchTrigger={searchHandler}></Search>
+      <Search></Search>
       <Graph></Graph>
       <Tools></Tools>
     </Page>;
