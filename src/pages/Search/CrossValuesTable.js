@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { getHighlightObj, sortSynonyms } from '../../shared';
 
 
 // import GDCTerms from './dialogs/GDCTerms';

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
+import { apiSuggest } from '../../api';
 import styled from 'styled-components';
 import { Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
+import SuggestBox from '../Search/SuggestBox';
 
 import bkgd from '../../assets/img/search-bkgd.jpg';
 
@@ -54,9 +56,9 @@ const SearchBox = styled.div`
   width: 100%;
 `;
 
-const InputBoxContainer = styled(InputGroup)`
-  margin-bottom: 3rem;
-`;
+// const InputBoxContainer = styled(InputGroup)`
+//   margin-bottom: 3rem;
+// `;
 
 const InputBox = styled(FormControl)`
   font-family: 'Lato-Bold', sans-serif;
@@ -103,11 +105,16 @@ const InputBoxIcon = styled(FontAwesomeIcon)`
   vertical-align: 0;
 `;
 
+
+const OptionsContainer = styled(Row)`
+  margin-top: 3rem;
+`;
+
 const SelectContainer = styled(Col)`
   text-align: right;
   border-right: 1px solid #898989;
   padding-right: 2rem;
-`
+`;
 
 const SelectTitle = styled.p`
   font-family: 'Lato-Bold', sans-serif;
@@ -187,18 +194,56 @@ const CheckboxInput = styled.input`
 
 const Search = () => {
   let [searchState, setSearchState] = useState('');
+  let [suggestState, setSuggestState] = useState([]);
+  let [selectIndexState, setSelectIndexState] = useState(-1);
 
   const history = useHistory();
-  const routeChange = () =>{ 
+
+  const searchTriggerRoute = (id) =>{ 
     history.push({
       pathname: './search',
-      state: { keyword: searchState }
+      state: { keyword: id }
     });
   }
 
   const suggestHandler = event => {
     setSearchState(event.target.value);
-    //apiSuggest(event.target.value).then(result => setSuggestState(result));
+    apiSuggest(event.target.value).then(result => setSuggestState(result));
+  };
+
+  const suggestKeyPressHandler = event => {
+    if (event.keyCode === 13 && selectIndexState === -1) {
+      setSearchState(event.target.value);
+      setSuggestState([]);
+      searchTriggerRoute(event.target.value);
+    }
+    if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
+      setSearchState(suggestState[selectIndexState].id);
+      setSuggestState([]);
+      searchTriggerRoute(suggestState[selectIndexState].id);
+    }
+    if (event.keyCode === 38 || event.keyCode === 40) {
+      let index = selectIndexState;
+      index += event.keyCode === 40 ? 1 : -1;
+      if (index >= suggestState.length) {
+        index = 0;
+      }
+      if (index < 0) {
+        index = suggestState.length - 1;
+      }
+      setSelectIndexState(index);
+    }
+  };
+
+  const suggestClickHandler = (id, event) => {
+    setSearchState(id);
+    setSuggestState([]);
+    searchTriggerRoute(id);
+  };
+
+  const cleanSuggestHandler = () => {
+    setSuggestState([]);
+    setSelectIndexState(-1);
   };
 
   return <SearchSection>
@@ -214,21 +259,28 @@ const Search = () => {
         <Col xs={7}>
           <SeachBoxContainer>
             <SearchBox>
-            <InputBoxContainer>
+            <InputGroup>
               <InputBox
                 placeholder="Search EVS-SIP"
                 aria-label="Search EVS-SIP"
                 type="text"
                 value={searchState}
                 onChange={suggestHandler}
+                onKeyDown={suggestKeyPressHandler}
               />
               <InputBoxBtnContainer>
-                <InputBoxButton onClick={routeChange}>
+                <InputBoxButton onClick={searchTriggerRoute}>
                   <InputBoxIcon icon={faArrowRight}/>
                 </InputBoxButton>
               </InputBoxBtnContainer>
-            </InputBoxContainer>
-            <Row>
+            </InputGroup>
+            <SuggestBox
+              suggest={suggestState}
+              suggestClick={suggestClickHandler}
+              suggestSelected={selectIndexState}
+              cleanSuggest={cleanSuggestHandler}
+            />
+            <OptionsContainer>
               <SelectContainer xs={3}>
                 <SelectTitle>Choose your<br/>Data Commons</SelectTitle>
                 <SelectBtn>Select All</SelectBtn>
@@ -306,7 +358,7 @@ const Search = () => {
                   </Col>
                 </Row>
               </Col>
-            </Row>
+            </OptionsContainer>
             </SearchBox>
           </SeachBoxContainer>
         </Col>
