@@ -3,7 +3,6 @@ const controller = require('./controller');
 
 const router = express.Router();
 
-router.get('/buildIndex_old', controller.indexing_old);
 router.get('/buildIndex', controller.indexing);
 router.get('/suggest', controller.suggestion);
 
@@ -17,5 +16,9 @@ router.get('/graph/icdc', controller.getGraphicalICDCDictionary);
 router.get('/graph/ctdc', controller.getGraphicalCTDCDictionary);
 router.get('/graph/p/vs', controller.getValuesForGraphicalView);
 router.get('/p/local/vs', controller.getGDCData);
+
+
+//for preload only
+router.get('/preloadNCItSynonyms', controller.preloadNCItSynonyms);
 
 module.exports = router;
