@@ -279,6 +279,18 @@ const readCDEData = () => {
 	return JSON.parse(content);
 }
 
+const readCTDCMapping = () => {
+    let content = fs.readFileSync(dataFilesPath + "/CTDC/CTDC_Mappings.json").toString();
+  content = content.replace(/}{/g, ",");
+  return JSON.parse(content);
+}
+
+const readICDCMapping = () => {
+    let content = fs.readFileSync(dataFilesPath + "/ICDC/ICDC_Mappings.json").toString();
+  content = content.replace(/}{/g, ",");
+  return JSON.parse(content);
+}
+
 const getICDOMapping = () => {
   let data = readGDCValues();
   let result = {};
@@ -637,6 +649,9 @@ const getGraphicalCTDCDictionary = () => {
         var mJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_file.yaml');
         jsonData.mData = mJson;
         result = generateICDCorCTDCData(jsonData);
+        for(let node in result){
+          result[node].category = "Clinical";
+        }
         cache.setValue("ctdc_dict", result, config.item_ttl);
     }
     return result;
@@ -650,6 +665,8 @@ module.exports = {
     readGDCValues,
     readConceptCode,
     readCDEData,
+    readCTDCMapping,
+    readICDCMapping,
     getICDOMapping,
     generateICDOHaveWords,
     getGraphicalGDCDictionary,
