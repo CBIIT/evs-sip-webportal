@@ -267,28 +267,30 @@ const getGraphicalCTDCDictionary = (req, res) => {
 }
 
 const getValuesForGraphicalView = async function(req, res) {
-	const type = req.query.type;
-	const node = req.query.node;
-	const property = req.query.property;
-
-	let result = [];
-	if(type == 'icdc' || type == 'icdc_readonly'){
-		let jsonData = shared.getGraphicalICDCDictionary();
-		const props = jsonData[node].properties;
-		result = props ? (props[property] ? (props[property].type ? (Array.isArray(props[property].type) ? props[property].type : []) : []) : []) : [];
-	}
-	else if(type == 'ctdc' || type == 'ctdc_readonly'){
-		let jsonData = shared.getGraphicalCTDCDictionary();
-		const props = jsonData[node].properties;
-		result = props ? (props[property] ? (props[property].type ? (Array.isArray(props[property].type) ? props[property].type : []) : []) : []) : [];
+	let uid = req.query.id;
+	let result = cache.getValue("values:"+uid);
+	if(result == undefined){
+		let query = {};
+		query.terms = {};
+		query.terms.id = [];
+		query.terms.id.push(uid);
+		elastic.query(config.index_p, query, null, data => {
+			if (data.hits === undefined) {
+				return handleError.error(res, data);
+			}
+			let rs = data.hits.hits;
+			result = [];
+			if(rs.length > 0 && rs[0]._source.enum){
+				result = rs[0]._source.enum;
+			}
+			cache.setValue("values:"+uid, result, config.item_ttl);
+			res.json(result);
+		});
 	}
 	else{
-		let jsonData = await shared.getGraphicalGDCDictionary();
-		const props = jsonData[node].properties;
-		result = props ? (props[property] ? (props[property].enum ? props[property].enum : []) : []) : [];
+		res.json(result);
 	}
-
-	res.json(result);
+	
 }
 
 const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {

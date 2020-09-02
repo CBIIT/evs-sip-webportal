@@ -62,7 +62,10 @@ class OverlayPropertyTable extends React.Component {
   /**
    * Toggle the property table data row to display values for that property
    */
-  async toggleValuesBox(e, type, category, node , property) {
+  async toggleValuesBox(e, source, category, node , property, open) {
+    if(!open) {
+      return;
+    }
     e.stopPropagation();
     let obj = e.target;
     let tr = obj.closest(".data-dictionary-property-table__row");
@@ -75,47 +78,39 @@ class OverlayPropertyTable extends React.Component {
     else{
       let values = [];
       let vs_html = "";
-      if(type == 'gdc' || type == 'gdc_readonly'){
-        let rs = await apiGetGDCDataById(property + "/" + node + "/" + category);
-        if(rs.length > 0 && rs[0]._source.enum){
-          rs[0]._source.enum.forEach(function(item){
-            let tmp = {};
-            tmp.name = item.n;
-            tmp.ncit = "";
-            if(item.n_syn){
-              item.n_syn.forEach(function(ncit){
-                tmp.ncit += ncit.n_c + "<br>";
-              });
-            }
-            values.push(tmp);
+      let original_source = source.replace("_readonly","");
+      let rs = await apiGetPropertyValues(property + "/" + node + "/" + category + "/" + original_source);
+      rs.forEach(function(item){
+        let tmp = {};
+        tmp.name = item.n;
+        tmp.ncit = "";
+        tmp.pt = "";
+        if(item.ncit){
+          item.ncit.forEach(function(nc){
+            tmp.ncit += "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c + "\">" + nc.c + "</a><br>";
+            nc.s.forEach(function(syn){
+              if(syn.t == 'PT' && syn.src == "NCI"){
+                tmp.pt += syn.n + "<br>";
+              }
+            });
           });
         }
-        
-        values.forEach(function(v){
-          vs_html += '<tr>'+
-                  '<td class="data-dictionary-property-table__data">'+
-                    '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
-                  '</td>'+
-                  '<td class="data-dictionary-property-table__data">'+
-                    v.ncit+
-                  '</td>'+
-                '</tr>';
-        });
-
-      }
-      else{
-        values = await apiGetPropertyValues(type, node , property);
-        values.forEach(function(v){
-          vs_html += '<tr>'+
-                  '<td class="data-dictionary-property-table__data">'+
-                    '<div class="data-dictionary-property-table__span">'+ v +'</div>'+
-                  '</td>'+
-                  '<td class="data-dictionary-property-table__data">'+
-                    'TODO...'+
-                  '</td>'+
-                '</tr>';
-        });
-      }
+        values.push(tmp);
+      });
+      
+      values.forEach(function(v){
+        vs_html += '<tr>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.ncit+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.pt+
+                '</td>'+
+              '</tr>';
+      });
 
       let new_tr = document.createElement("tr");
       new_tr.className = "values-row";
@@ -133,7 +128,8 @@ class OverlayPropertyTable extends React.Component {
             '<thead class="data-dictionary-property-table__head">'+
               '<tr class="data-dictionary-property-table__row">'+
                 '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--property">Values</th>'+
-                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">NCIt Code</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">Mapped NCIt Code</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">NCIt Preferred Term</th>'+
               '</tr>'+
             '</thead>'+
             '<tbody>'+
