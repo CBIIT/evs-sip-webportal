@@ -30,6 +30,9 @@ class DataDictionaryPropertyTable extends React.Component {
         this.props.properties,
         this.props.matchedResult.matches,
       ) : [];
+
+    const original_source = this.props.source.replace("_readonly","");
+
     return (
       <div className={`data-dictionary-property-table ${borderModifier}`}>
         <table className='data-dictionary-property-table__table'>
@@ -75,9 +78,19 @@ class DataDictionaryPropertyTable extends React.Component {
             {
               propertyKeysList.map((propertyKey) => {
                 const property = this.props.properties[propertyKey];
+                let hasValues = false;
                 let nameMatch = null;
                 let descriptionMatch = null;
                 let typeMatchList = null;
+                if(original_source == 'gdc'){
+                  hasValues = property.enum && property.enum.length > 0;
+                }
+                else if(original_source == 'ctdc' || original_source == 'icdc'){
+                  hasValues = property.type && Array.isArray(property.type);
+                }
+                else{
+                  hasValues = false;
+                }
                 if (this.props.needHighlightSearchResult) {
                   const matchedSummaryItem = matchedPropertiesSummary
                     .find(item => item.propertyKey === propertyKey);
@@ -115,7 +128,7 @@ class DataDictionaryPropertyTable extends React.Component {
                 );
                 const isRequired = this.props.requiredProperties.includes(propertyKey);
                 return (
-                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey)}>
+                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}>
                     <td className='data-dictionary-property-table__data'>
                       {propertyNameFragment}
                     </td>
@@ -140,12 +153,16 @@ class DataDictionaryPropertyTable extends React.Component {
                     <p>{propertyDescriptionFragment}</p>
                     </td>
                     <td className='data-dictionary-property-table__data'>
-                      <Button
-                        className='data-dictionary-property-table__button'
-                        onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey)}
-                        label='All Values'
-                        buttonType='secondary'
-                      />
+                      {
+                        hasValues ? (
+                          <Button
+                            className='data-dictionary-property-table__button'
+                            onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}
+                            label='All Values'
+                            buttonType='secondary'
+                          />
+                        ) : ""
+                      }
                     </td>
                   </tr>
                 );
