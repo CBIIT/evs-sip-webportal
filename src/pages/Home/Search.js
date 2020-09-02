@@ -196,13 +196,21 @@ const Search = () => {
   let [searchState, setSearchState] = useState('');
   let [suggestState, setSuggestState] = useState([]);
   let [selectIndexState, setSelectIndexState] = useState(-1);
+  let [selectDataSource, setSelectDataSource] = useState({
+    ctdc: false,
+    gdc: false,
+    icdc: false
+  });
 
   const history = useHistory();
 
-  const searchTriggerRoute = (id) =>{ 
+  const searchTriggerRoute = (id, source) => { 
     history.push({
       pathname: './search',
-      state: { keyword: id }
+      state: { 
+        keyword: id, 
+        dataSource: source 
+      }
     });
   }
 
@@ -215,12 +223,12 @@ const Search = () => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       setSearchState(event.target.value);
       setSuggestState([]);
-      searchTriggerRoute(event.target.value);
+      searchTriggerRoute(event.target.value, selectDataSource);
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      searchTriggerRoute(suggestState[selectIndexState].id);
+      searchTriggerRoute(suggestState[selectIndexState].id, selectDataSource);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -238,12 +246,27 @@ const Search = () => {
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
     setSuggestState([]);
-    searchTriggerRoute(id);
+    searchTriggerRoute(id, selectDataSource);
   };
 
   const cleanSuggestHandler = () => {
     setSuggestState([]);
     setSelectIndexState(-1);
+  };
+
+  const selectDataToggleHandler = event => {
+    setSelectDataSource({
+      ...selectDataSource,
+      [event.target.name]: !event.target.checked
+    });
+  };
+
+  const selectDataAllToggleHandler = event => {
+    setSelectDataSource({
+      ctdc: true,
+      gdc: true,
+      icdc: true
+    });
   };
 
   return <SearchSection>
@@ -269,7 +292,7 @@ const Search = () => {
                 onKeyDown={suggestKeyPressHandler}
               />
               <InputBoxBtnContainer>
-                <InputBoxButton onClick={searchTriggerRoute}>
+                <InputBoxButton onClick={() => searchTriggerRoute(searchState, selectDataSource)}>
                   <InputBoxIcon icon={faArrowRight}/>
                 </InputBoxButton>
               </InputBoxBtnContainer>
@@ -282,28 +305,14 @@ const Search = () => {
             />
             <OptionsContainer>
               <SelectContainer xs={3}>
-                <SelectTitle>Choose your<br/>Data Commons</SelectTitle>
-                <SelectBtn>Select All</SelectBtn>
+                <SelectTitle>Choose your <br/> Data Source</SelectTitle>
+                <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               </SelectContainer>
               <Col xs={9}>
                 <Row>
                   <Col xs={4}>
                     <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                      <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>
@@ -311,22 +320,8 @@ const Search = () => {
                     </CheckboxLabel>
                   </Col>
                   <Col xs={4}>
-                  <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Genomic Data Commons
-                    </CheckboxLabel>
                     <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Genomic Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                      <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>
@@ -334,22 +329,8 @@ const Search = () => {
                     </CheckboxLabel>
                   </Col>
                   <Col xs={4}>
-                  <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Integrated Canine<br/>Data Commons
-                    </CheckboxLabel>
                     <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Integrated Canine<br/>Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                      <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>

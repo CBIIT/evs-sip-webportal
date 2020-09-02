@@ -150,6 +150,8 @@ const CrossValuesTable = (props) => {
 
   let items = JSON.parse(JSON.stringify(props.values));
 
+  console.log(items);
+
   let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
 
   let values = [];
@@ -183,6 +185,7 @@ const CrossValuesTable = (props) => {
         obj.node = data._source.node;
         obj.property = data._source.prop;
         obj.id = data._source.id;
+        obj.source = data._source.source;
         obj.cdeId = data._source.cde ? data._source.cde.id : undefined;
         obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
         obj.vs = [];
@@ -339,27 +342,55 @@ const CrossValuesTable = (props) => {
   let crossValues = [];
 
   Object.entries(ncitObjs).forEach((entry)=> {
+    let ctdcValues = [];
+    let gdcValues = [];
+
+    if(entry[1] !== undefined && entry[1].length !== 0){
+      entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'ctdc'){
+          ctdcValues.push(value);
+        }
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
+      });
+    }
+
     crossValues.push({
       code: entry[0] !== 'norelationship'? entry[0]: 'No NCIT Relationship',
       ref: 'NCIt',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
-        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
+        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
       }
     })
   });
 
   Object.entries(icdo3Objs).forEach((entry)=> {
+    let ctdcValues = [];
+    let gdcValues = [];
+
+    if(entry[1] !== undefined && entry[1].length !== 0){
+      entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'ctdc'){
+          ctdcValues.push(value);
+        }
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
+      });
+    }
+
     crossValues.push({
       code: entry[0].replace(/<b>/g, '').replace(/<\/b>/g, ''),
       ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
-        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
+        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
       }
     })
   });
@@ -627,7 +658,7 @@ const CrossValuesTable = (props) => {
           }
           {cross.values.ctdcvalues.length !== 0 &&
             <TableRow>
-              <TableColLeft data-class="TableColLeft"  xs={2}>
+              <TableColLeft data-class="TableColLeft" xs={2}>
                 <DivCenter>Clinical Trials Data Commons</DivCenter>
               </TableColLeft>
               <TableColRight data-class="TableColRight" xs={10}>
