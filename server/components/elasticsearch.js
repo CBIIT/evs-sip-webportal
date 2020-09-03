@@ -110,7 +110,9 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         values.push(key);
         values_ncit_mapping[v] = [];
       }
-      values_ncit_mapping[v].push(obj.termDef.term_id);
+      if(obj && obj.termDef && obj.termDef.term_id){
+        values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+      }
     }
 
     // 2. work on conceptCode to further combind the ncit code
@@ -127,14 +129,14 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         
         if (Array.isArray(cc[s])) {
           cc[s].forEach(code => {
-            if(values_ncit_mapping[v].indexOf(code) == -1){
-              values_ncit_mapping[v].push(code);
+            if(values_ncit_mapping[v].indexOf(code.trim()) == -1){
+              values_ncit_mapping[v].push(code.trim());
             }
           });
         } 
         else {
-          if(values_ncit_mapping[v].indexOf(cc[s]) == -1){
-            values_ncit_mapping[v].push(cc[s]);
+          if(values_ncit_mapping[v].indexOf(cc[s].trim()) == -1){
+            values_ncit_mapping[v].push(cc[s].trim());
           }
         }
       }
@@ -150,8 +152,8 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         if(pv in values_ncit_mapping){
           values_icdo_mapping[pv] = icdo;
           icdo_mapping[icdo].ncits.forEach(n => {
-            if(values_ncit_mapping[pv].indexOf(n) == -1){
-              values_ncit_mapping[pv].push(n);
+            if(values_ncit_mapping[pv].indexOf(n.trim()) == -1){
+              values_ncit_mapping[pv].push(n.trim());
             }
           });
         }
@@ -181,7 +183,9 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
             let synonyms = (n !== '' && syns[dict.c] ? syns[dict.c].synonyms : []);
             if(syns[dict.c] == undefined){
               console.log("Don't have the ncit data for:" + dict.c);
-              unloaded_ncits.push(dict.c);
+              if(unloaded_ncits.indexOf(dict.c) == -1){
+                unloaded_ncits.push(dict.c);
+              }
             }
             if(synonyms.length > 0){
               dict.s = [];
@@ -416,13 +420,15 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
           tmp.n = v;
           let v_lowcase = v.toLowerCase();
           tmp.ncit = [];
-          if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code != ""){
+          if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
             let dict = {};
-            dict.c = values_dict[v_lowcase].v_n_code;
+            dict.c = values_dict[v_lowcase].v_n_code.trim();
             let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
             if(syns[values_dict[v_lowcase].v_n_code] == undefined){
               console.log("Don't have the ncit data for:" + dict.c);
-              unloaded_ncits.push(dict.c);
+              if(unloaded_ncits.indexOf(dict.c) == -1){
+                unloaded_ncits.push(dict.c);
+              }
             }
             if(synonyms.length > 0){
               dict.s = [];

@@ -44,12 +44,27 @@ const generateHighlight = () => {
   return highlight;
 }
 
-const generateQuery = (keyword, option, isBoolean) => {
+const generateQuery = (keyword, option) => {
   let query = {};
+  query.bool = {};
+  query.bool.must = [];
+  //check if need to filter out sources
+  if(option.sources.length > 0){
+    let m = {};
+    m.bool = {};
+    m.bool.should = [];
+    option.sources.forEach(source => {
+      let tmp = {};
+      tmp.term = {};
+      tmp.term.source = source;
+      m.bool.should.push(tmp);
+    });
+    query.bool.must.push(m);
+  }
+  let clause = {};
+  clause.bool = {};
+  clause.bool.should = [];
   if(option.match === "exact"){ // Perform exact search
-    if (/[^\w\d\s]/g.test(keyword) === true && isBoolean === false) keyword = keyword.replace(/[^\w\d\s]/g, '\\$&') // Escape special characters
-    query.bool = {};
-    query.bool.should = [];
     let m = {};
     m.query_string = {};
     m.query_string.query = keyword;
@@ -59,7 +74,7 @@ const generateQuery = (keyword, option, isBoolean) => {
     if (option.desc) {
       m.query_string.fields.push("prop_desc");
     }
-    query.bool.should.push(m);
+    clause.bool.should.push(m);
 
     m = {};
     m.nested = {};
@@ -80,66 +95,24 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.nested.inner_hits.from = 0;
     m.nested.inner_hits.size = 1000000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
-    query.bool.should.push(m);
+    clause.bool.should.push(m);
   }
-  else if(option.match !== "exact" && isBoolean === true){ // Perform boolean search
-    if (keyword.indexOf("/") !== -1) keyword = keyword.replace(/\//g, "\\/");
-    query.bool = {};
-    query.bool.should = [];
-    let m = {};
-    m.query_string = {};
-    m.query_string.default_operator = "AND";
-    m.query_string.query = keyword;
-    m.query_string.fields = [];
-    m.query_string.fields.push("cde.id");
-    m.query_string.fields.push("prop.have");
-    if (option.desc) {
-      m.query_string.fields.push("prop_desc");
-    }
-    query.bool.should.push(m);
-
-    m = {};
-    m.nested = {};
-    m.nested.path = "enum"
-    m.nested.query = {};
-    m.nested.query.query_string = {};
-    m.nested.query.query_string.fields = [];
-    m.nested.query.query_string.default_operator = "AND";
-
-    if (option.syn) {
-      m.nested.query.query_string.fields.push("enum.ncit.s.n.have");
-    }
-    m.nested.query.query_string.fields.push("enum.ncit.c.have");
-    m.nested.query.query_string.fields.push("enum.n.have");
-    m.nested.query.query_string.fields.push("enum.icdo.have");
-    m.nested.query.query_string.query = keyword;
-
-    m.nested.inner_hits = {};
-    m.nested.inner_hits.from = 0;
-    m.nested.inner_hits.size = 10000000;
-    m.nested.inner_hits.highlight = generateHighlightInnerHits();
-    query.bool.should.push(m);
-  }
-  else{ // If it's partial and not a boolean search
-  if (keyword.indexOf("/") !== -1) keyword = keyword.replace(/\//g, "\\/");
-    query.bool = {};
-    query.bool.should = [];
-
+  else{
     let m = {};
     m.match_phrase_prefix = {};
     m.match_phrase_prefix["prop.have"] = keyword;
-    query.bool.should.push(m);
+    clause.bool.should.push(m);
 
     m = {};
     m.match_phrase_prefix = {};
     m.match_phrase_prefix["cde.id"] = keyword;
-    query.bool.should.push(m);
+    clause.bool.should.push(m);
 
     if (option.desc) {
       m = {};
       m.match_phrase_prefix = {};
       m.match_phrase_prefix["prop_desc"] = keyword;
-      query.bool.should.push(m);
+      clause.bool.should.push(m);
     }
 
     m = {};
@@ -177,8 +150,9 @@ const generateQuery = (keyword, option, isBoolean) => {
     m.nested.inner_hits.from = 0;
     m.nested.inner_hits.size = 1000000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
-    query.bool.should.push(m);
+    clause.bool.should.push(m);
   }
+  query.bool.must.push(clause);
   return query;
 }
 
