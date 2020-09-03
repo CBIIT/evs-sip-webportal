@@ -100,12 +100,6 @@ const SearchOptionsLabel = styled.h4`
   margin-bottom: 1.5rem;
 `;
 
-
-// const FormGroupStyled = styled(InputGroup)`
-//   position:r
-// `;
-
-
 const FormGroupStyled = styled(Form.Group)`
   width: 30rem;
   display: flex;
