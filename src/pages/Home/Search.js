@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { apiSuggest } from '../../api';
 import styled from 'styled-components';
-import { Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, Button, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import SuggestBox from '../Search/SuggestBox';
@@ -60,7 +60,7 @@ const SearchBox = styled.div`
 //   margin-bottom: 3rem;
 // `;
 
-const InputBox = styled(FormControl)`
+const InputBox = styled(Form.Control)`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1.125rem;
   padding: 0.5rem 1rem;
@@ -119,7 +119,7 @@ const SelectContainer = styled(Col)`
 const SelectTitle = styled.p`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 0.875rem;
-`
+`;
 
 const SelectBtn = styled(Button)`
   font-family: 'Lato-Regular', sans-serif;
@@ -137,7 +137,16 @@ const SelectBtn = styled(Button)`
     border: 1px solid #154C5E;
     color: #154C5E;
   }
-`
+`;
+
+const FormGroupStyled = styled(Form.Group)`
+  width: 30rem;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+`;
 
 const CheckboxLabel = styled.label`
   font-family: 'Lato-Regular', sans-serif;
@@ -145,7 +154,6 @@ const CheckboxLabel = styled.label`
   font-size: 0.75rem;
   color: #154C5E;
   inline-size: 8rem;
-  margin-bottom: 1rem;
   line-height: 1rem;
 `;
 
@@ -309,7 +317,30 @@ const Search = () => {
                 <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               </SelectContainer>
               <Col xs={9}>
-                <Row>
+                <FormGroupStyled>
+                  <CheckboxLabel>
+                    <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Clinical Trial Data Commons
+                  </CheckboxLabel>
+                  <CheckboxLabel>
+                    <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Genomic Data Commons
+                  </CheckboxLabel>
+                  <CheckboxLabel>
+                    <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Integrated Canine<br/>Data Commons
+                  </CheckboxLabel>
+                </FormGroupStyled>
+                {/* <Row>
                   <Col xs={4}>
                     <CheckboxLabel>
                       <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
@@ -337,7 +368,7 @@ const Search = () => {
                       Integrated Canine<br/>Data Commons
                     </CheckboxLabel>
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
             </OptionsContainer>
             </SearchBox>

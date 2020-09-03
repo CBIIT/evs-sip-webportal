@@ -150,7 +150,7 @@ const CrossValuesTable = (props) => {
 
   let items = JSON.parse(JSON.stringify(props.values));
 
-  console.log(items);
+ // console.log(items);
 
   let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
 
@@ -298,6 +298,7 @@ const CrossValuesTable = (props) => {
           obj.vs.push(valueObj);
         }
         obj.n_match = ncitMatch;
+        obj.ncitIdMatch = obj.id + '-' + ncitMatch;
         obj.ic_match = icdo3Match;
         values.push(obj);
       });
@@ -311,31 +312,45 @@ const CrossValuesTable = (props) => {
     }
   });
 
-  //console.log(values);
+  let idValueObj = {};
+  let idValuesObj = {};
+
+  values.forEach((value) => {
+    if (value.ncitIdMatch !== undefined){
+      if(idValueObj[value.ncitIdMatch] === undefined) {
+        idValueObj[value.ncitIdMatch] = [];
+        idValuesObj[value.ncitIdMatch] = value;
+      }
+      idValueObj[value.ncitIdMatch].push(value.vs[0]);
+    }
+  });
 
   let ncitObjs = {};
   let icdo3Objs = {};
 
-  values.forEach((value) => {
-    if (value.n_match !== undefined){
-      if(ncitObjs[value.n_match] === undefined) {
-        ncitObjs[value.n_match] = [];
+  Object.entries(idValuesObj).forEach((entry) => {
+    if (entry[1].n_match !== undefined){
+      if(ncitObjs[entry[1].n_match] === undefined) {
+        ncitObjs[entry[1].n_match] = [];
       }
-      ncitObjs[value.n_match].push(value);
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      ncitObjs[entry[1].n_match].push(entry[1]);
     }
 
-    if (value.ic_match !== undefined){
-      if(icdo3Objs[value.ic_match] === undefined) {
-        icdo3Objs[value.ic_match] = [];
+    if (entry[1].ic_match !== undefined){
+      if(icdo3Objs[entry[1].ic_match] === undefined) {
+        icdo3Objs[entry[1].ic_match] = [];
       }
-      icdo3Objs[value.ic_match].push(value);
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      icdo3Objs[entry[1].ic_match].push(entry[1]);
     }
 
-    if (value.n_match === undefined && value.ic_match === undefined){
+    if (entry[1].n_match === undefined && entry[1].ic_match === undefined){
       if(ncitObjs['norelationship'] === undefined) {
-          ncitObjs['norelationship'] = [];
-        }
-      ncitObjs['norelationship'].push(value);
+        ncitObjs['norelationship'] = [];
+      }
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      ncitObjs['norelationship'].push(entry[1]);
     }
   });
 
@@ -394,8 +409,6 @@ const CrossValuesTable = (props) => {
       }
     })
   });
-
-  //console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
