@@ -316,7 +316,7 @@ const ValuesTable = (props) => {
                 {props.ncit !== undefined &&
                   props.ncit.map((syn, index) =>
                     <Nav.Item>
-                      <Nav.Link key={index} eventKey={syn.id}>{syn.n_c} (NCIt)</Nav.Link>
+                      <Nav.Link key={index} eventKey={syn.id} dangerouslySetInnerHTML={{ __html: syn.n_c + ' (NCIt)' }}></Nav.Link>
                     </Nav.Item>
                   )
                 }
