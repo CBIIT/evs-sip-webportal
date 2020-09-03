@@ -20,6 +20,7 @@ var allTerm = {};
 var icdo_mapping = shared.getICDOMapping();
 var gdc_values = {};
 var allProperties = [];
+var unloaded_ncits = [];
 
 var esClient = new elasticsearch.Client({
   host: config_dev.elasticsearch.host,
@@ -178,6 +179,10 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
             let dict = {};
             dict.c = n.toUpperCase();
             let synonyms = (n !== '' && syns[dict.c] ? syns[dict.c].synonyms : []);
+            if(syns[dict.c] == undefined){
+              console.log("Don't have the ncit data for:" + dict.c);
+              unloaded_ncits.push(dict.c);
+            }
             if(synonyms.length > 0){
               dict.s = [];
               synonyms.forEach(s => {
@@ -339,7 +344,6 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
 }
 
 const helper_ctdc = (dict, ctdc_mapping, syns) => {
-  let unloaded_ncits = [];
   for(let node_name in dict){
     let properties = dict[node_name].properties;
 
@@ -503,7 +507,6 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
       allProperties.push(p);
     }
   }
-  cache.setValue("unloaded_ncits", unloaded_ncits, config.item_ttl);
 }
 
 const bulkIndex = async function(next){
@@ -533,6 +536,8 @@ const bulkIndex = async function(next){
   let ctdcData = shared.getGraphicalCTDCDictionary();
   let ctdc_mapping = shared.readCTDCMapping();
   helper_ctdc(ctdcData, ctdc_mapping, syns);
+
+  cache.setValue("unloaded_ncits", unloaded_ncits, config.item_ttl);
 
   // build suggestion index
   let suggestionBody = [];
