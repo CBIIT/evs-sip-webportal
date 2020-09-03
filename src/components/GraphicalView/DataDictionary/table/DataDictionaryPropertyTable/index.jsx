@@ -104,7 +104,7 @@ class DataDictionaryPropertyTable extends React.Component {
                 }
                 let termID = '';
                 let termLink = '';
-                let type='';
+                let type='enum';
                 if ('src' in property) {
                   try{termID = property.src;
                     termLink = property.term.termDef && property.term.termDef.term_url;}catch(err){}
@@ -117,7 +117,16 @@ class DataDictionaryPropertyTable extends React.Component {
                 );
                 if('type' in property){
                   try{
-                    type = property.type;}catch(err){}
+                    if(Array.isArray(property.type)){
+                      type = "enum";
+                    }
+                    else if(typeof property.type == 'object'){
+                      type = 'object';
+                    }
+                    else{
+                      type = property.type;
+                    }
+                  }catch(err){}
                   
                 }
                

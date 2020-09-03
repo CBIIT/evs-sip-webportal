@@ -70,6 +70,9 @@ const indexing = (req, res) => {
 				"id": {
 					"type": "keyword"
 				},
+				"source":{
+					"type": "keyword"
+				},
 				"category": {
 					"type": "keyword"
 				},
@@ -361,7 +364,6 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
 const preloadNCItSynonyms = (req, res) => {
 	let unloaded_ncits = cache.getValue("unloaded_ncits");
 	if(unloaded_ncits && unloaded_ncits.length > 0){
-		console.log(unloaded_ncits);
 		synchronziedLoadSynonmysfromNCIT(unloaded_ncits, 0, data => {
 			if (data === "Success") {
 				unloaded_ncits = [];
