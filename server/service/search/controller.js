@@ -199,13 +199,13 @@ const suggestion = (req, res) => {
 };
 
 const searchP = (req, res) => {
-	let isBoolean = false;
 	let keyword = req.query.keyword.trim().replace(/[\ ]+/g, " ");
 	let option = {};
 	if(req.query.options){
 		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
 		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
 		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
+		option.sources = req.query.sources? req.query.sources.split(',') : [];
 	}
 	else{
 		option = {
@@ -213,12 +213,12 @@ const searchP = (req, res) => {
 			syn: false,
 			desc: false
 		};
+		option.sources = [];
 	}
 	if (keyword.trim() === '') {
 		res.json([]);
 	} else {
-		if(keyword.indexOf(" AND ") !== -1 || keyword.indexOf(" OR ") !== -1 || keyword.indexOf(" NOT ") !== -1) isBoolean = true;
-		let query = shared.generateQuery(keyword, option, isBoolean);
+		let query = shared.generateQuery(keyword, option);
 		let highlight = shared.generateHighlight();
 		elastic.query(config.index_p, query, highlight, result => {
 			if (result.hits === undefined) {

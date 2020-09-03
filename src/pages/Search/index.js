@@ -22,7 +22,7 @@ const Search = (props) => {
   const searchHandler = (keyword, options, source) => {
     setKeywordState(keyword);
     setDataSource(source);
-    apiSearchAll(keyword, options).then(result => setSourceState(result));
+    apiSearchAll(keyword, options, source).then(result => setSourceState(result));
   };
 
   useEffect(() => {
