@@ -351,7 +351,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
 			if (ncitids.length == idx) {
 				return next('Success');
 			} else {
-				return next("NCIT finished number: " + idx + " of " + ncitids.length + "\n");
+				return next("NCIT finished number: " + idx + " of " + ncitids.length + " : " + ncitids[idx]+ "!\n");
 			}
 
 		});
