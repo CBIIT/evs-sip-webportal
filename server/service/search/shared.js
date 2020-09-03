@@ -497,6 +497,16 @@ const generateGDCData = async function(schema) {
   return result;
 }
 
+const convert2Title = (name) => {
+  let tmp = name.split('_');
+  let result = [];
+  tmp.forEach(term => {
+    let char = term.charAt(0);
+    result.push(char.toUpperCase() + term.substring(1));
+  });
+  return result.join(" ");
+}
+
 const generateICDCorCTDCData = (dc) => {
   const dcMData = dc.mData;
   const dcMPData = dc.mpData;
@@ -509,7 +519,7 @@ const generateICDCorCTDCData = (dc) => {
     const item = {}
     item["$schema"] = "http://json-schema.org/draft-06/schema#";
     item["id"] = key;
-    item["title"]=key;
+    item["title"] = convert2Title(key);
     if("Category" in value){
       item["category"]=value.Category;
     }
@@ -650,7 +660,7 @@ const getGraphicalCTDCDictionary = () => {
         jsonData.mData = mJson;
         result = generateICDCorCTDCData(jsonData);
         for(let node in result){
-          result[node].category = "Clinical";
+          result[node].category = "clinical";
         }
         cache.setValue("ctdc_dict", result, config.item_ttl);
     }

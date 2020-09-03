@@ -70,6 +70,9 @@ const indexing = (req, res) => {
 				"id": {
 					"type": "keyword"
 				},
+				"source":{
+					"type": "keyword"
+				},
 				"category": {
 					"type": "keyword"
 				},
