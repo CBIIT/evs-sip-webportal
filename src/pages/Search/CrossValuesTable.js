@@ -150,6 +150,8 @@ const CrossValuesTable = (props) => {
 
   let items = JSON.parse(JSON.stringify(props.values));
 
+ // console.log(items);
+
   let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
 
   let values = [];
@@ -183,6 +185,7 @@ const CrossValuesTable = (props) => {
         obj.node = data._source.node;
         obj.property = data._source.prop;
         obj.id = data._source.id;
+        obj.source = data._source.source;
         obj.cdeId = data._source.cde ? data._source.cde.id : undefined;
         obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
         obj.vs = [];
@@ -295,6 +298,7 @@ const CrossValuesTable = (props) => {
           obj.vs.push(valueObj);
         }
         obj.n_match = ncitMatch;
+        obj.ncitIdMatch = obj.id + '-' + ncitMatch;
         obj.ic_match = icdo3Match;
         values.push(obj);
       });
@@ -308,63 +312,103 @@ const CrossValuesTable = (props) => {
     }
   });
 
-  //console.log(values);
+  let idValueObj = {};
+  let idValuesObj = {};
+
+  values.forEach((value) => {
+    if (value.ncitIdMatch !== undefined){
+      if(idValueObj[value.ncitIdMatch] === undefined) {
+        idValueObj[value.ncitIdMatch] = [];
+        idValuesObj[value.ncitIdMatch] = value;
+      }
+      idValueObj[value.ncitIdMatch].push(value.vs[0]);
+    }
+  });
 
   let ncitObjs = {};
   let icdo3Objs = {};
 
-  values.forEach((value) => {
-    if (value.n_match !== undefined){
-      if(ncitObjs[value.n_match] === undefined) {
-        ncitObjs[value.n_match] = [];
+  Object.entries(idValuesObj).forEach((entry) => {
+    if (entry[1].n_match !== undefined){
+      if(ncitObjs[entry[1].n_match] === undefined) {
+        ncitObjs[entry[1].n_match] = [];
       }
-      ncitObjs[value.n_match].push(value);
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      ncitObjs[entry[1].n_match].push(entry[1]);
     }
 
-    if (value.ic_match !== undefined){
-      if(icdo3Objs[value.ic_match] === undefined) {
-        icdo3Objs[value.ic_match] = [];
+    if (entry[1].ic_match !== undefined){
+      if(icdo3Objs[entry[1].ic_match] === undefined) {
+        icdo3Objs[entry[1].ic_match] = [];
       }
-      icdo3Objs[value.ic_match].push(value);
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      icdo3Objs[entry[1].ic_match].push(entry[1]);
     }
 
-    if (value.n_match === undefined && value.ic_match === undefined){
+    if (entry[1].n_match === undefined && entry[1].ic_match === undefined){
       if(ncitObjs['norelationship'] === undefined) {
-          ncitObjs['norelationship'] = [];
-        }
-      ncitObjs['norelationship'].push(value);
+        ncitObjs['norelationship'] = [];
+      }
+      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      ncitObjs['norelationship'].push(entry[1]);
     }
   });
 
   let crossValues = [];
 
   Object.entries(ncitObjs).forEach((entry)=> {
+    let ctdcValues = [];
+    let gdcValues = [];
+
+    if(entry[1] !== undefined && entry[1].length !== 0){
+      entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'ctdc'){
+          ctdcValues.push(value);
+        }
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
+      });
+    }
+
     crossValues.push({
       code: entry[0] !== 'norelationship'? entry[0]: 'No NCIT Relationship',
       ref: 'NCIt',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
-        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
+        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
       }
     })
   });
 
   Object.entries(icdo3Objs).forEach((entry)=> {
+    let ctdcValues = [];
+    let gdcValues = [];
+
+    if(entry[1] !== undefined && entry[1].length !== 0){
+      entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'ctdc'){
+          ctdcValues.push(value);
+        }
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
+      });
+    }
+
     crossValues.push({
       code: entry[0].replace(/<b>/g, '').replace(/<\/b>/g, ''),
       ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? entry[1] : [],
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
-        icdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? entry[1] : [],
+        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
+        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
+        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
       }
     })
   });
-
-  //console.log(crossValues);
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -627,7 +671,7 @@ const CrossValuesTable = (props) => {
           }
           {cross.values.ctdcvalues.length !== 0 &&
             <TableRow>
-              <TableColLeft data-class="TableColLeft"  xs={2}>
+              <TableColLeft data-class="TableColLeft" xs={2}>
                 <DivCenter>Clinical Trials Data Commons</DivCenter>
               </TableColLeft>
               <TableColRight data-class="TableColRight" xs={10}>

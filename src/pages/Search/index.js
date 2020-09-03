@@ -17,11 +17,7 @@ const Page = styled.div`
 const Search = (props) => {
   let [keywordState, setKeywordState] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? props.location.state.keyword : '');
   let [sourceState, setSourceState] = useState([]);
-  let [dataSource, setDataSource] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? {
-    ctdc: false,
-    gdc: false,
-    icdc: false
-  } : {});
+  let [dataSource, setDataSource] = useState(props.location.state !== undefined && props.location.state.dataSource !== undefined ? props.location.state.dataSource : {});
 
   const searchHandler = (keyword, options, source) => {
     setKeywordState(keyword);
@@ -32,16 +28,13 @@ const Search = (props) => {
   useEffect(() => {
     if(props.location.state !== undefined && props.location.state.keyword !== undefined){
       setKeywordState(props.location.state.keyword);
-      searchHandler(props.location.state.keyword, {
+      searchHandler(props.location.state.keyword, 
+      {
         match: false,
         desc: false,
         syns: false
       },
-      {
-        ctdc: false,
-        gdc: false,
-        icdc: false
-      })
+      props.location.state.dataSource);
     }
   },[props.location.state]);
 

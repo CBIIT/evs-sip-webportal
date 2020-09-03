@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { apiSuggest } from '../../api';
 import styled from 'styled-components';
-import { Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, Button, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import SuggestBox from '../Search/SuggestBox';
@@ -60,7 +60,7 @@ const SearchBox = styled.div`
 //   margin-bottom: 3rem;
 // `;
 
-const InputBox = styled(FormControl)`
+const InputBox = styled(Form.Control)`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1.125rem;
   padding: 0.5rem 1rem;
@@ -119,7 +119,7 @@ const SelectContainer = styled(Col)`
 const SelectTitle = styled.p`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 0.875rem;
-`
+`;
 
 const SelectBtn = styled(Button)`
   font-family: 'Lato-Regular', sans-serif;
@@ -137,7 +137,16 @@ const SelectBtn = styled(Button)`
     border: 1px solid #154C5E;
     color: #154C5E;
   }
-`
+`;
+
+const FormGroupStyled = styled(Form.Group)`
+  width: 30rem;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+`;
 
 const CheckboxLabel = styled.label`
   font-family: 'Lato-Regular', sans-serif;
@@ -145,7 +154,6 @@ const CheckboxLabel = styled.label`
   font-size: 0.75rem;
   color: #154C5E;
   inline-size: 8rem;
-  margin-bottom: 1rem;
   line-height: 1rem;
 `;
 
@@ -196,13 +204,21 @@ const Search = () => {
   let [searchState, setSearchState] = useState('');
   let [suggestState, setSuggestState] = useState([]);
   let [selectIndexState, setSelectIndexState] = useState(-1);
+  let [selectDataSource, setSelectDataSource] = useState({
+    ctdc: false,
+    gdc: false,
+    icdc: false
+  });
 
   const history = useHistory();
 
-  const searchTriggerRoute = (id) =>{ 
+  const searchTriggerRoute = (id, source) => { 
     history.push({
       pathname: './search',
-      state: { keyword: id }
+      state: { 
+        keyword: id, 
+        dataSource: source 
+      }
     });
   }
 
@@ -215,12 +231,12 @@ const Search = () => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       setSearchState(event.target.value);
       setSuggestState([]);
-      searchTriggerRoute(event.target.value);
+      searchTriggerRoute(event.target.value, selectDataSource);
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      searchTriggerRoute(suggestState[selectIndexState].id);
+      searchTriggerRoute(suggestState[selectIndexState].id, selectDataSource);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -238,12 +254,27 @@ const Search = () => {
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
     setSuggestState([]);
-    searchTriggerRoute(id);
+    searchTriggerRoute(id, selectDataSource);
   };
 
   const cleanSuggestHandler = () => {
     setSuggestState([]);
     setSelectIndexState(-1);
+  };
+
+  const selectDataToggleHandler = event => {
+    setSelectDataSource({
+      ...selectDataSource,
+      [event.target.name]: !event.target.checked
+    });
+  };
+
+  const selectDataAllToggleHandler = event => {
+    setSelectDataSource({
+      ctdc: true,
+      gdc: true,
+      icdc: true
+    });
   };
 
   return <SearchSection>
@@ -269,7 +300,7 @@ const Search = () => {
                 onKeyDown={suggestKeyPressHandler}
               />
               <InputBoxBtnContainer>
-                <InputBoxButton onClick={searchTriggerRoute}>
+                <InputBoxButton onClick={() => searchTriggerRoute(searchState, selectDataSource)}>
                   <InputBoxIcon icon={faArrowRight}/>
                 </InputBoxButton>
               </InputBoxBtnContainer>
@@ -282,51 +313,46 @@ const Search = () => {
             />
             <OptionsContainer>
               <SelectContainer xs={3}>
-                <SelectTitle>Choose your<br/>Data Commons</SelectTitle>
-                <SelectBtn>Select All</SelectBtn>
+                <SelectTitle>Choose your <br/> Data Source</SelectTitle>
+                <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               </SelectContainer>
               <Col xs={9}>
-                <Row>
-                  <Col xs={4}>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                  </Col>
-                  <Col xs={4}>
+                <FormGroupStyled>
                   <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                    <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Clinical Trial Data Commons
+                  </CheckboxLabel>
+                  <CheckboxLabel>
+                    <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Genomic Data Commons
+                  </CheckboxLabel>
+                  <CheckboxLabel>
+                    <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Integrated Canine<br/>Data Commons
+                  </CheckboxLabel>
+                </FormGroupStyled>
+                {/* <Row>
+                  <Col xs={4}>
+                    <CheckboxLabel>
+                      <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>
-                      Genomic Data Commons
+                      Clinical Trial Data Commons
                     </CheckboxLabel>
+                  </Col>
+                  <Col xs={4}>
                     <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Genomic Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                      <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>
@@ -334,29 +360,15 @@ const Search = () => {
                     </CheckboxLabel>
                   </Col>
                   <Col xs={4}>
-                  <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Integrated Canine<br/>Data Commons
-                    </CheckboxLabel>
                     <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Integrated Canine<br/>Data Commons
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <CheckboxInput type="checkbox"/>
+                      <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
                       <CheckboxBtn>
                         <CheckboxIcon icon={faCheck}/>
                       </CheckboxBtn>
                       Integrated Canine<br/>Data Commons
                     </CheckboxLabel>
                   </Col>
-                </Row>
+                </Row> */}
               </Col>
             </OptionsContainer>
             </SearchBox>
