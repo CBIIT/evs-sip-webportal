@@ -6,9 +6,10 @@ export const apiSuggest = async keyword => {
   return response.json();
 };
 
-export const apiSearchAll = async(keyword, options) => {
+export const apiSearchAll = async(keyword, options, sources) => {
   const opts = `${options.match === true ? `exact` : `partial`}${options.syns === true ? `,syn` : ``}${options.desc === true ? `,desc` : ``}`;
-  const response = await fetch(`${baseUrl}/all/p?keyword=${keyword}&options=${opts}`);
+  const srcs = `${sources.ctdc === true ? `ctdc,` : ``}${sources.gdc === true ? `gdc,` : ``}${options.icdc === true ? `icdc,` : ``}`;
+  const response = await fetch(`${baseUrl}/all/p?keyword=${keyword}&options=${opts}&sources=${srcs}`);
   return response.json();
 };
 

@@ -152,7 +152,7 @@ const CrossValuesTable = (props) => {
 
  // console.log(items);
 
-  let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
+  //let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
 
   let values = [];
 
@@ -194,7 +194,7 @@ const CrossValuesTable = (props) => {
         //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
         // }
 
-        let ncitMatch = undefined;
+        let ncitMatch = [];
         let icdo3Match = undefined;
 
 
@@ -222,23 +222,21 @@ const CrossValuesTable = (props) => {
                 newSyn.push(synObj);
               });
 
-              if(ncitMatch !== data.c) {
-                ncitMatch = data.c;
+              // if(ncitMatch !== data.c) {
+              //   ncitMatch = data.c;
+
+              //   if(ncitMatchObj[data.c] === undefined) {
+              //     ncitMatchObj[data.c] = preferredTermObj;
+              //   };
+              // };
+
+              if(ncitMatch.indexOf(data.c) === -1) {
+                ncitMatch.push(data.c);
 
                 if(ncitMatchObj[data.c] === undefined) {
                   ncitMatchObj[data.c] = preferredTermObj;
                 };
               };
-
-              // if(ncitMatch.indexOf(data.n_c) === -1) {
-              //   ncitMatch.push(data.n_c);
-
-              //   if(ncitMatchObj[data.n_c] === undefined) {
-              //     ncitMatchObj[data.n_c] = preferredTermObj;
-              //     ncitMatchValues[data.n_c] = valueObj;
-              //     newValueObj = valueObj;
-              //   };
-              // };
 
               data.n_c = highlightNCObj[data.c] ? highlightNCObj[data.c] : data.c;
               data.id = (obj.property + '-' + valueObj.src_n + '-' + data.n_c).replace(/[^a-zA-Z0-9-]+/gi, '');
@@ -298,7 +296,7 @@ const CrossValuesTable = (props) => {
           obj.vs.push(valueObj);
         }
         obj.n_match = ncitMatch;
-        obj.ncitIdMatch = obj.id + '-' + ncitMatch;
+        //obj.ncitIdMatch = obj.id + '-' + ncitMatch;
         obj.ic_match = icdo3Match;
         values.push(obj);
       });
@@ -316,12 +314,33 @@ const CrossValuesTable = (props) => {
   let idValuesObj = {};
 
   values.forEach((value) => {
-    if (value.ncitIdMatch !== undefined){
-      if(idValueObj[value.ncitIdMatch] === undefined) {
-        idValueObj[value.ncitIdMatch] = [];
-        idValuesObj[value.ncitIdMatch] = value;
+    if(value.n_match !== undefined && value.n_match.length !== 0 && value.id !== undefined){
+      value.n_match.forEach(match => {
+          let idMatch = `${match}-${value.id}`; 
+          if(idValueObj[idMatch] === undefined) {
+            idValueObj[idMatch] = [];
+            idValuesObj[idMatch] = value;
+          }
+          idValueObj[idMatch].push(value.vs[0]);
+      });
+    }
+
+    if(value.ic_match !== undefined && value.id !== undefined){
+      let idMatch = `${value.ic_match}-${value.id}`; 
+      if(idValueObj[idMatch] === undefined) {
+        idValueObj[idMatch] = [];
+        idValuesObj[idMatch] = value;
       }
-      idValueObj[value.ncitIdMatch].push(value.vs[0]);
+      idValueObj[idMatch].push(value.vs[0]);
+    }
+
+    if(value.n_match === undefined && value.ic_match === undefined && value.id !== undefined){
+      let idMatch = `no-mapping-${value.id}`; 
+      if(idValueObj[idMatch] === undefined) {
+        idValueObj[idMatch] = [];
+        idValuesObj[idMatch] = value;
+      }
+      idValueObj[idMatch].push(value.vs[0]);
     }
   });
 
@@ -329,29 +348,36 @@ const CrossValuesTable = (props) => {
   let icdo3Objs = {};
 
   Object.entries(idValuesObj).forEach((entry) => {
-    if (entry[1].n_match !== undefined){
-      if(ncitObjs[entry[1].n_match] === undefined) {
-        ncitObjs[entry[1].n_match] = [];
-      }
-      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
-      ncitObjs[entry[1].n_match].push(entry[1]);
+
+    if(entry[1].n_match !== undefined && entry[1].n_match.length !== 0){
+      entry[1].n_match.forEach(match => {
+
+        if(entry[0] === `${match}-${entry[1].id}`){
+          if(ncitObjs[match] === undefined) {
+            ncitObjs[match] = [];
+          }
+
+          entry[1].vs = idValueObj[`${match}-${entry[1].id}`];
+          ncitObjs[match].push(entry[1]);
+        }
+      });
     }
 
-    if (entry[1].ic_match !== undefined){
+    if (entry[1].ic_match !== undefined && entry[0] === `${entry[1].ic_match}-${entry[1].id}`){
       if(icdo3Objs[entry[1].ic_match] === undefined) {
         icdo3Objs[entry[1].ic_match] = [];
       }
-      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
+      entry[1].vs = idValueObj[`${entry[1].ic_match}-${entry[1].id}`];
       icdo3Objs[entry[1].ic_match].push(entry[1]);
-    }
+    };
 
-    if (entry[1].n_match === undefined && entry[1].ic_match === undefined){
-      if(ncitObjs['norelationship'] === undefined) {
-        ncitObjs['norelationship'] = [];
+    if (entry[1].n_match === undefined && entry[1].ic_match === undefined && entry[0] === `no-mapping-${entry[1].id}`){
+      if(ncitObjs['no-mapping'] === undefined) {
+        ncitObjs['no-mapping'] = [];
       }
-      entry[1].vs = idValueObj[entry[1].ncitIdMatch];
-      ncitObjs['norelationship'].push(entry[1]);
-    }
+      entry[1].vs = idValueObj[`no-mapping-${entry[1].id}`];
+      ncitObjs['no-mapping'].push(entry[1]);
+    };
   });
 
   let crossValues = [];
@@ -372,13 +398,13 @@ const CrossValuesTable = (props) => {
     }
 
     crossValues.push({
-      code: entry[0] !== 'norelationship'? entry[0]: 'No NCIT Relationship',
+      code: entry[0] !== 'no-mapping'? entry[0]: 'No NCIT Mapping',
       ref: 'NCIt',
       preferredTerm: ncitMatchObj[entry[0]],
       values: {
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
-        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
+        ctdcvalues: ctdcValues,
+        gdcvalues: gdcValues,
+        icdcvalues: [],
       }
     })
   });
@@ -403,9 +429,9 @@ const CrossValuesTable = (props) => {
       ref: 'ICD-O-3',
       icdo3: icdo3MatchObj[entry[0]],
       values: {
-        ctdcvalues: allDataOptions || props.dataOptions['ctdc'] === true ? ctdcValues : [],
-        gdcvalues: allDataOptions || props.dataOptions['gdc'] === true ? gdcValues : [],
-        icdcvalues: allDataOptions || props.dataOptions['icdc'] === true ? entry[1] : [],
+        ctdcvalues: ctdcValues,
+        gdcvalues: gdcValues,
+        icdcvalues: [],
       }
     })
   });

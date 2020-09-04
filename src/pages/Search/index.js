@@ -17,12 +17,12 @@ const Page = styled.div`
 const Search = (props) => {
   let [keywordState, setKeywordState] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? props.location.state.keyword : '');
   let [sourceState, setSourceState] = useState([]);
-  let [dataSource, setDataSource] = useState(props.location.state !== undefined && props.location.state.dataSource !== undefined ? props.location.state.dataSource : {});
+  //let [dataSource, setDataSource] = useState(props.location.state !== undefined && props.location.state.dataSource !== undefined ? props.location.state.dataSource : {});
 
-  const searchHandler = (keyword, options, source) => {
+  const searchHandler = (keyword, options, sources) => {
     setKeywordState(keyword);
-    setDataSource(source);
-    apiSearchAll(keyword, options, source).then(result => setSourceState(result));
+    //setDataSource(sources);
+    apiSearchAll(keyword, options, sources).then(result => setSourceState(result));
   };
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Search = (props) => {
 
   return <Page>
         <SearchBox searchTrigger={searchHandler}/>
-        <MainTabsController keyword={keywordState} source={sourceState} dataOptions={dataSource}/>
+        <MainTabsController keyword={keywordState} source={sourceState} />
     </Page>;
 }
 
