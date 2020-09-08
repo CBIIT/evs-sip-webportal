@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
-// import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -112,7 +111,7 @@ const IndicatorTerm = styled.span`
 `;
 
 
-const ValuesTable = (props) => {
+const CTDCValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
 
@@ -121,6 +120,7 @@ const ValuesTable = (props) => {
   let values = [];
 
   items.forEach((data) => {
+    if(data._source.source !== 'ctdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -466,4 +466,4 @@ const ValuesTable = (props) => {
   }
 };
 
-export default ValuesTable;
+export default CTDCValuesTable;
