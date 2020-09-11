@@ -12,11 +12,15 @@ const NavbarStyled = styled(Navbar)`
 
   && .navbar-nav .nav-link {
     color: var(--white);
-  }
-
-  && .navbar-nav .nav-link {
     padding-right: 1.5rem;
     padding-left: 1.5rem;
+    border-radius: 0.3125rem;
+  }
+
+
+  && .navbar-nav .nav-link:focus, 
+  && .navbar-nav .nav-link:hover {
+    background-color: #195d9c;
   }
 `;
 

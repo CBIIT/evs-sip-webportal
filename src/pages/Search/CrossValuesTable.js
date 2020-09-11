@@ -222,14 +222,6 @@ const CrossValuesTable = (props) => {
                 newSyn.push(synObj);
               });
 
-              // if(ncitMatch !== data.c) {
-              //   ncitMatch = data.c;
-
-              //   if(ncitMatchObj[data.c] === undefined) {
-              //     ncitMatchObj[data.c] = preferredTermObj;
-              //   };
-              // };
-
               if(ncitMatch.indexOf(data.c) === -1) {
                 ncitMatch.push(data.c);
 
@@ -272,14 +264,6 @@ const CrossValuesTable = (props) => {
             };
           };
 
-          // if(valueObj.i_c.c !== undefined && icdo3Match.indexOf(valueObj.i_c.c) === -1) {
-          //   icdo3Match.push(valueObj.i_c.c);
-
-          //   if(icdo3MatchObj[valueObj.i_c.c] === undefined) {
-          //     //icdo3MatchObj[valueObj.i_c.c] = {};
-          //     icdo3MatchObj[valueObj.i_c.c] = valueObj.i_c;
-          //   };
-          // };
           if (source.icdo && source.icdo.s !== undefined) {
             valueObj.ic_enum = source.icdo.s;
             icdo3MatchObj[valueObj.i_c.c].enum = source.icdo.s;
@@ -289,24 +273,13 @@ const CrossValuesTable = (props) => {
               }
             });
 
-            // source.ic_enum.forEach(ic => {
-            //   if (ic.term_type === '*') termTypeNotAssigned = true;
-            // });
           }
           obj.vs.push(valueObj);
         }
         obj.n_match = ncitMatch;
-        //obj.ncitIdMatch = obj.id + '-' + ncitMatch;
         obj.ic_match = icdo3Match;
         values.push(obj);
       });
-      //obj.vs = sortAlphabetically(obj.vs);
-
-      //obj.n_match = ncitMatch;
-      //obj.ic_match = icdo3Match;
-      //obj.n_match_obj = ncitMatchObj;
-      // valuesCount += obj.vs.length;
-      //values.push(obj);
     }
   });
 
@@ -440,7 +413,7 @@ const CrossValuesTable = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
         <tr key={index}>
-          <td>{item.termName}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.termName }}></td>
           <td>{item.termSource}</td>
           <td>{item.termGroup}</td>
         </tr>
@@ -676,7 +649,7 @@ const CrossValuesTable = (props) => {
         <TableColLeft data-class="TableColLeft" xs={2}>
           <DivCenter>
             <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-            {cross.preferredTerm !== undefined && <PreferredTerm>{cross.preferredTerm.termName} ({cross.preferredTerm.termGroup})</PreferredTerm>}
+            {cross.preferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.preferredTerm.termName} (${cross.preferredTerm.termGroup})` }}></PreferredTerm>}
             {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.t})</PreferredTerm>}
         </DivCenter>
         </TableColLeft>

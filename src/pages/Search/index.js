@@ -39,7 +39,7 @@ const Search = (props) => {
   },[props.location.state]);
 
   return <Page>
-        <SearchBox searchTrigger={searchHandler}/>
+        <SearchBox searchTrigger={searchHandler} keyword={keywordState}/>
         <MainTabsController keyword={keywordState} source={sourceState} />
     </Page>;
 }

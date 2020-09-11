@@ -217,7 +217,7 @@ const GDCValuesTable = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
         <tr key={index}>
-          <td>{item.termName}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.termName }}></td>
           <td>{item.termSource}</td>
           <td>{item.termGroup}</td>
         </tr>
