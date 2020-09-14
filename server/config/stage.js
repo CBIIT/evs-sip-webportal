@@ -1,5 +1,5 @@
 /**
- * dev environment
+ * stage environment
  */
 
 module.exports = {

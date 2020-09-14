@@ -1,5 +1,5 @@
 /**
- * dev environment
+ * qa environment
  */
 
 module.exports = {
