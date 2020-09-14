@@ -160,17 +160,6 @@ class OverlayPropertyTable extends React.Component {
               <div className='overlay-property-table__category'>
                 <IconSVG className='overlay-property-table__category-icon' />
                 <h4 className='overlay-property-table__category-text'>{this.props.node.category} / {this.props.node.id}</h4>
-                {
-                  this.props.isSearchMode && (
-                    <Button
-                      className='overlay-property-table__toggle-node'
-                      onClick={searchedNodeNotOpened
-                        ? this.handleOpenAllProperties : this.handleDisplayOnlyMatchedProperties}
-                      label={searchedNodeNotOpened ? 'See All' : 'See Only Matched'}
-                      buttonType='secondary'
-                    />
-                  )
-                }
                 <span
                   className='overlay-property-table__close'
                   onClick={this.handleClose}

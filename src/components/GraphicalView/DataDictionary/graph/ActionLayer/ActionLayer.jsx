@@ -15,15 +15,6 @@ class ActionLayer extends React.Component {
   render() {
     return (
       <div className='action-layer'>
-        {
-          this.props.isSearchMode && (
-            <Button
-              className='action-layer__clear-search'
-              onClick={this.handleClearSearch}
-              label='Clear Search Result'
-            />
-          )
-        }
       </div>
     );
   }

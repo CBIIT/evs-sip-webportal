@@ -64,13 +64,13 @@ const GraphTabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false" style={{"fontSize": "1rem"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
-                  <GraphicalView type="gdc"/>
+                  <GraphicalView type="gdc" keyword={props.keyword} source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
-                  <GraphicalView type="icdc"/>
+                  <GraphicalView type="icdc" keyword={props.keyword} source={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctdc">
-                  <GraphicalView type="ctdc"/>
+                  <GraphicalView type="ctdc" keyword={props.keyword} source={props.source}/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

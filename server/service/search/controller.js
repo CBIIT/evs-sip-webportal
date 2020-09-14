@@ -237,6 +237,47 @@ const searchP = (req, res) => {
 	}
 };
 
+const graphSearch = async function(req, res){
+	let jsonData = await shared.getGraphicalGDCDictionary();
+	let keyword = req.query.keyword.trim().replace(/[\ ]+/g, " ");
+	let option = {};
+	if(req.query.options){
+		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
+		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
+		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
+		option.sources = req.query.sources? req.query.sources.split(',') : [];
+	}
+	else{
+		option = {
+			match: "partial",
+			syn: false,
+			desc: false
+		};
+		option.sources = [];
+	}
+	if (keyword.trim() === '') {
+		res.json([]);
+	} else {
+		let query = shared.generateQuery(keyword, option);
+		let highlight = shared.generateHighlight();
+		elastic.query(config.index_p, query, highlight, result => {
+			if (result.hits === undefined) {
+				return handleError.error(res, result);
+			}
+			let data = result.hits.hits;
+			data.forEach(entry => {
+				delete entry.sort;
+				delete entry._index;
+				delete entry._score;
+				delete entry._type;
+				delete entry._id;
+			});
+			//res.json(data);
+			res.json(jsonData);
+		});
+	}
+};
+
 const getGDCData = (req, res) => {
 	let uid = req.query.id;
 	let query = {};
@@ -384,6 +425,7 @@ module.exports = {
 	indexing,
 	suggestion,
 	searchP,
+	graphSearch,
 	getGDCData,
 	getGraphicalGDCDictionary,
 	getGraphicalICDCDictionary,

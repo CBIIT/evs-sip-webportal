@@ -36,27 +36,27 @@ const submission = (state = {}, action) => {
   switch (action.type) {
   case 'RECEIVE_DICTIONARY_GDC':
     return { ...state,
-      dictionary_gdc: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_gdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   case 'RECEIVE_DICTIONARY_ICDC':
     return { ...state,
-      dictionary_icdc: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_icdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   case 'RECEIVE_DICTIONARY_CTDC':
     return { ...state,
-      dictionary_ctdc: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_ctdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   case 'RECEIVE_DICTIONARY_GDC_READONLY':
     return { ...state,
-      dictionary_gdc_readonly: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_gdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   case 'RECEIVE_DICTIONARY_ICDC_READONLY':
     return { ...state,
-      dictionary_icdc_readonly: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_icdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   case 'RECEIVE_DICTIONARY_CTDC_READONLY':
     return { ...state,
-      dictionary_ctdc_readonly: getDictionaryWithExcludeSystemProperties(action.data),
+      dictionary_ctdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
     };
   default:
     return state;
