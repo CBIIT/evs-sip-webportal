@@ -319,13 +319,6 @@ const Search = () => {
               <Col xs={9}>
                 <FormGroupStyled>
                   <CheckboxLabel>
-                    <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
-                    <CheckboxBtn>
-                      <CheckboxIcon icon={faCheck}/>
-                    </CheckboxBtn>
-                    Clinical Trial Data Commons
-                  </CheckboxLabel>
-                  <CheckboxLabel>
                     <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
                     <CheckboxBtn>
                       <CheckboxIcon icon={faCheck}/>
@@ -333,42 +326,20 @@ const Search = () => {
                     Genomic Data Commons
                   </CheckboxLabel>
                   <CheckboxLabel>
+                    <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Clinical Trial Data Commons
+                  </CheckboxLabel>
+                  <CheckboxLabel>
                     <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
                     <CheckboxBtn>
                       <CheckboxIcon icon={faCheck}/>
                     </CheckboxBtn>
-                    Integrated Canine<br/>Data Commons
+                    Integrated Canine Data Commons
                   </CheckboxLabel>
                 </FormGroupStyled>
-                {/* <Row>
-                  <Col xs={4}>
-                    <CheckboxLabel>
-                      <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Clinical Trial Data Commons
-                    </CheckboxLabel>
-                  </Col>
-                  <Col xs={4}>
-                    <CheckboxLabel>
-                      <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Genomic Data Commons
-                    </CheckboxLabel>
-                  </Col>
-                  <Col xs={4}>
-                    <CheckboxLabel>
-                      <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
-                      <CheckboxBtn>
-                        <CheckboxIcon icon={faCheck}/>
-                      </CheckboxBtn>
-                      Integrated Canine<br/>Data Commons
-                    </CheckboxLabel>
-                  </Col>
-                </Row> */}
               </Col>
             </OptionsContainer>
             </SearchBox>
