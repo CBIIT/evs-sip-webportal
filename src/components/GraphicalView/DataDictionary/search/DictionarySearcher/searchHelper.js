@@ -106,49 +106,56 @@ export const searchKeyword = (searchData, keyword) => {
 };
 
 /**
- * Prepare search items for Fuse.io library, call Fuse constructor
- * and return a search instance handler.
- * @params [SearchResultItemShape[]] search result (SearchResultItemShape from '../../utils')
+ * Filter out and reorgnize search result
+ * @params [string] graph type 
+ * @params [Object] searchData - see elasticsearch search API returns
+ * @returns [SearchResultItemShape[]] (see ../../utils).
+ */
+export const getSearchResult = (graphType, searchData) => {
+  let result = {};
+  if(searchData.length > 0){
+    searchData.forEach((entry) => {
+      let dt = entry._source;
+      if(dt.source == graphType){
+        if(!(dt.node in result)){
+          result[dt.node] = {};
+          result[dt.node].props = {};
+        }
+        result[dt.node].props[dt.prop] = {};
+        if(entry.highlight){
+          result[dt.node].props[dt.prop].title = entry.highlight["prop.have"] ? entry.highlight["prop.have"][0] : dt.prop;
+          result[dt.node].props[dt.prop].desc = entry.highlight["prop_desc"] ? entry.highlight["prop_desc"][0] : dt.prop_desc;
+          if(entry.highlight["cde.id"]){
+            let icdo = entry.highlight["cde.id"][0];
+            result[dt.node].props[dt.prop].desc = result[dt.node].props[dt.prop].desc.replace(icdo.replace(/<b>/g,'').replace(/<\/b>/g, ''), icdo);
+          }
+        }
+        else{
+          result[dt.node].props[dt.prop].title = dt.prop;
+          result[dt.node].props[dt.prop].desc = dt.prop_desc;
+        }
+        
+        result[dt.node].props[dt.prop].type = dt.type;
+        result[dt.node].props[dt.prop].enum = dt.enum ? dt.enum : [];
+        result[dt.node].props[dt.prop].hits = entry.inner_hits.enum.hits.hits;
+      }
+    });
+  }
+  return result;
+};
+
+/**
+ * Prepare summary information for graphical display
+ * @params elasticsearch result
  * @returns [Object] summary
  */
 export const getSearchSummary = (result) => {
+  const matchedNodeIDsInProperties = Object.keys(result);
+  const generalMatchedNodeIDs = Object.keys(result);
+
   const matchedNodeIDsInNameAndDescription = [];
-  const matchedNodeIDsInProperties = [];
-  const generalMatchedNodeIDs = [];
-  let matchedPropertiesCount = 0;
   let matchedNodeNameAndDescriptionsCount = 0;
-  result.forEach((resItem) => {
-    const nodeID = resItem.item.id;
-    resItem.matches.forEach((matchedItem) => {
-      switch (matchedItem.key) {
-      case 'properties.type':
-      case 'properties.name':
-      case 'properties.description':
-        matchedPropertiesCount += 1;
-        if (!matchedNodeIDsInProperties.includes(nodeID)) {
-          matchedNodeIDsInProperties.push(nodeID);
-        }
-        if (!generalMatchedNodeIDs.includes(nodeID)) {
-          generalMatchedNodeIDs.push(nodeID);
-        }
-        break;
-      case 'title':
-      case 'description':
-        matchedNodeNameAndDescriptionsCount += 1;
-        if (!matchedNodeIDsInNameAndDescription.includes(nodeID)) {
-          matchedNodeIDsInNameAndDescription.push(nodeID);
-        }
-        if (!generalMatchedNodeIDs.includes(nodeID)) {
-          generalMatchedNodeIDs.push(nodeID);
-        }
-        break;
-      default:
-        break;
-      }
-    });
-  });
   return {
-    matchedPropertiesCount,
     matchedNodeNameAndDescriptionsCount,
     matchedNodeIDsInNameAndDescription,
     matchedNodeIDsInProperties,

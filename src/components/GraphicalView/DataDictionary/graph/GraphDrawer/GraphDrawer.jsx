@@ -97,6 +97,7 @@ class GraphDrawer extends React.Component {
               }
             }
             let matchedNodeNameIndices = [];
+            /*
             this.props.searchResult.forEach((item) => {
               if (item.item.id === node.id) {
                 item.matches.forEach((matchItem) => {
@@ -106,6 +107,7 @@ class GraphDrawer extends React.Component {
                 });
               }
             });
+            */
             return (
               <GraphNode
                 key={node.id}
@@ -189,7 +191,7 @@ GraphDrawer.propTypes = {
   matchedNodeIDs: PropTypes.arrayOf(PropTypes.string),
   matchedNodeIDsInNameAndDescription: PropTypes.arrayOf(PropTypes.string),
   onGraphNodesSVGElementsUpdated: PropTypes.func,
-  searchResult: PropTypes.arrayOf(SearchResultItemShape),
+  searchResult: PropTypes.object,
   graphType: PropTypes.string,
 };
 
@@ -213,7 +215,7 @@ GraphDrawer.defaultProps = {
   matchedNodeIDs: [],
   matchedNodeIDsInNameAndDescription: [],
   onGraphNodesSVGElementsUpdated: () => {},
-  searchResult: [],
+  searchResult: {},
   graphType: "gdc",
 };
 

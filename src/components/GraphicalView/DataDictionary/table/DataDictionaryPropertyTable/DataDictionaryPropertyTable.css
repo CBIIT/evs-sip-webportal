@@ -93,3 +93,22 @@
   font-weight: normal;
   border: none;
 }
+
+.data-dictionary-values-table__toggle-button {
+  width: 150px;
+  min-width: unset;
+  height: 30px;
+  padding: unset;
+  font-weight: normal;
+  border: none;
+}
+
+tr.matched-row{
+  background-color:white;
+}
+tr.hidden-row{
+  display: none;
+}
+tr.display-row{
+  display: table-row;
+}

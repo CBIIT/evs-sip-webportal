@@ -25,13 +25,14 @@ class DataDictionaryPropertyTable extends React.Component {
         });
     const needHighlightSearchResult = this.props.onlyShowMatchedProperties
       || this.props.needHighlightSearchResult;
+
     const matchedPropertiesSummary = needHighlightSearchResult
-      ? getMatchesSummaryForProperties(
-        this.props.properties,
-        this.props.matchedResult.matches,
-      ) : [];
+      ? this.props.matchedResult[this.props.nodeID]: {};
 
     const original_source = this.props.source.replace("_readonly","");
+    const properties = matchedPropertiesSummary.props;
+    const spanClassName = 'data-dictionary-property-table__span';
+    
 
     return (
       <div className={`data-dictionary-property-table ${borderModifier}`}>
@@ -76,114 +77,174 @@ class DataDictionaryPropertyTable extends React.Component {
           </thead>
           <tbody>
             {
-              propertyKeysList.map((propertyKey) => {
-                const property = this.props.properties[propertyKey];
-                let hasValues = false;
-                let nameMatch = null;
-                let descriptionMatch = null;
-                let typeMatchList = null;
-                if(original_source == 'gdc'){
-                  hasValues = property.enum && property.enum.length > 0;
-                }
-                else if(original_source == 'ctdc' || original_source == 'icdc'){
-                  hasValues = property.type && Array.isArray(property.type);
-                }
-                else{
-                  hasValues = false;
-                }
-                if (this.props.needHighlightSearchResult) {
-                  const matchedSummaryItem = matchedPropertiesSummary
-                    .find(item => item.propertyKey === propertyKey);
-                  if (matchedSummaryItem) {
-                    nameMatch = matchedSummaryItem.nameMatch;
-                    descriptionMatch = matchedSummaryItem.descriptionMatch;
-                    typeMatchList = matchedSummaryItem.typeMatchList;
-                  } else if (this.props.onlyShowMatchedProperties) {
-                    return null;
+              this.props.onlyShowMatchedProperties? (
+                
+                Object.keys(properties).map((pKey) => {
+                  let propertyNameFragment = [];
+                  propertyNameFragment.push(
+                    (
+                      <div
+                        key={pKey}
+                        className={spanClassName} 
+                        dangerouslySetInnerHTML={{__html: properties[pKey].title}}
+                      >
+                      </div>
+                    ),
+                  );
+
+                  let hasValues = properties[pKey].enum.length > 0;
+
+                  let type = properties[pKey].type;
+
+                  let propertyDescriptionFragment = [];
+                  propertyDescriptionFragment.push(
+                    (
+                      <div
+                        key={pKey}
+                        className={spanClassName} 
+                        dangerouslySetInnerHTML={{__html: properties[pKey].desc}}
+                      >
+                      </div>
+                    ),
+                  );
+
+                  const isRequired = this.props.requiredProperties.includes(pKey);
+                  
+                  return (
+                    <tr key={pKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleMatchedValuesBox(e, properties[pKey].enum, properties[pKey].hits, hasValues)}>
+                      <td className='data-dictionary-property-table__data'>
+                        {propertyNameFragment}
+                      </td>
+                      <td className='data-dictionary-property-table__data type-col-width'>
+                      <p>{type}</p>
+                      </td>
+                      {
+                        !this.props.hideIsRequired && (
+                          <td className='data-dictionary-property-table__data'>
+                            { isRequired ? (
+                              <span className='data-dictionary-property-table__required'>
+                                <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
+                              </span>
+                            ) : (
+                              <span>No</span>
+                            )
+                            }
+                          </td>
+                        )
+                      }
+                      <td className='data-dictionary-property-table__data'>
+                        {propertyDescriptionFragment}
+                      </td>
+                      <td className='data-dictionary-property-table__data' style={{textAlign: "center"}}>
+                        {
+                          hasValues ? (
+                            <a href="javascript: void(0);" onClick={(e) => this.props.toggleMatchedValuesBox(e, properties[pKey].enum, properties[pKey].hits, hasValues)} >
+                              {properties[pKey].hits.length + ' Values Matched'}
+                            </a>
+                            
+                          ) : ""
+                        }
+                      </td>
+                    </tr>
+                  );
+
+                })
+              ): (
+                propertyKeysList.map((propertyKey) => {
+                  const property = this.props.properties[propertyKey];
+                  let hasValues = false;
+                  let nameMatch = null;
+                  let descriptionMatch = null;
+                  let typeMatchList = null;
+
+                  if(original_source == 'gdc'){
+                    hasValues = property.enum && property.enum.length > 0;
                   }
-                }
-                let termID = '';
-                let termLink = '';
-                let type='';
-                if ('src' in property) {
-                  try{termID = property.src;
-                    termLink = property.term.termDef && property.term.termDef.term_url;}catch(err){}
-                  
-                }
-                const propertyNameFragment = getPropertyNameFragment(
-                  propertyKey,
-                  nameMatch,
-                  'data-dictionary-property-table__span',
-                );
-                if('type' in property){
-                  try{
-                    if(Array.isArray(property.type)){
-                      type = "enum";
-                    }
-                    else if(typeof property.type == 'object'){
-                      type = 'object';
-                    }
-                    else{
-                      type = property.type;
-                    }
-                  }catch(err){}
-                  
-                }
-                else{
-                  if(property.enum && property.enum.length > 0){
-                    type = 'enum';
+                  else if(original_source == 'ctdc' || original_source == 'icdc'){
+                    hasValues = property.type && Array.isArray(property.type);
                   }
                   else{
-                    type = "";
+                    hasValues = false;
                   }
-                }
-               
-                const propertyDescriptionFragment = getPropertyDescriptionFragment(
-                  property,
-                  descriptionMatch,
-                  'data-dictionary-property-table__span',
-                );
-                const isRequired = this.props.requiredProperties.includes(propertyKey);
-                return (
-                  <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}>
-                    <td className='data-dictionary-property-table__data'>
-                      {propertyNameFragment}
-                    </td>
-                    <td className='data-dictionary-property-table__data type-col-width'>
-                    <p>{JSON.stringify(type)}</p>
-                    </td>
-                    {
-                      !this.props.hideIsRequired && (
-                        <td className='data-dictionary-property-table__data'>
-                          { isRequired ? (
-                            <span className='data-dictionary-property-table__required'>
-                              <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
-                            </span>
-                          ) : (
-                            <span>No</span>
-                          )
-                          }
-                        </td>
-                      )
-                    }
-                    <td className='data-dictionary-property-table__data'>
-                    <p>{propertyDescriptionFragment}</p>
-                    </td>
-                    <td className='data-dictionary-property-table__data'>
-                      {
-                        hasValues ? (
-                          <Button
-                            className='data-dictionary-property-table__button'
-                            onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}
-                            label='All Values'
-                            buttonType='secondary'
-                          />
-                        ) : ""
+
+                  let type='';
+
+                  const propertyNameFragment = getPropertyNameFragment(
+                    propertyKey,
+                    nameMatch,
+                    'data-dictionary-property-table__span',
+                  );
+
+                  if('type' in property){
+                    try{
+                      if(Array.isArray(property.type)){
+                        type = "enum";
                       }
-                    </td>
-                  </tr>
-                );
-              })
+                      else if(typeof property.type == 'object'){
+                        type = 'object';
+                      }
+                      else{
+                        type = property.type;
+                      }
+                    }catch(err){}
+                    
+                  }
+                  else{
+                    if(property.enum && property.enum.length > 0){
+                      type = 'enum';
+                    }
+                    else{
+                      type = "";
+                    }
+                  }
+                 
+                  const propertyDescriptionFragment = getPropertyDescriptionFragment(
+                    property,
+                    descriptionMatch,
+                    'data-dictionary-property-table__span',
+                  );
+                  const isRequired = this.props.requiredProperties.includes(propertyKey);
+                  return (
+                    <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}>
+                      <td className='data-dictionary-property-table__data'>
+                        {propertyNameFragment}
+                      </td>
+                      <td className='data-dictionary-property-table__data type-col-width'>
+                      <p>{JSON.stringify(type)}</p>
+                      </td>
+                      {
+                        !this.props.hideIsRequired && (
+                          <td className='data-dictionary-property-table__data'>
+                            { isRequired ? (
+                              <span className='data-dictionary-property-table__required'>
+                                <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
+                              </span>
+                            ) : (
+                              <span>No</span>
+                            )
+                            }
+                          </td>
+                        )
+                      }
+                      <td className='data-dictionary-property-table__data'>
+                      <p>{propertyDescriptionFragment}</p>
+                      </td>
+                      <td className='data-dictionary-property-table__data'>
+                        {
+                          hasValues ? (
+                            <Button
+                              className='data-dictionary-property-table__button'
+                              onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}
+                              label='All Values'
+                              buttonType='secondary'
+                            />
+                          ) : ""
+                        }
+                      </td>
+                    </tr>
+                  );
+                })
+              )
             }
           </tbody>
         </table>
@@ -197,8 +258,9 @@ DataDictionaryPropertyTable.propTypes = {
   requiredProperties: PropTypes.array,
   hasBorder: PropTypes.bool,
   needHighlightSearchResult: PropTypes.bool,
-  matchedResult: SearchResultItemShape,
+  matchedResult: PropTypes.object,
   toggleValuesBox: PropTypes.func,
+  toggleMatchedValuesBox: PropTypes.func,
   nodeID: PropTypes.string,
   category: PropTypes.string,
   source: PropTypes.string,
@@ -212,6 +274,7 @@ DataDictionaryPropertyTable.defaultProps = {
   needHighlightSearchResult: false,
   matchedResult: {},
   toggleValuesBox: () => {},
+  toggleMatchedValuesBox: () => {},
   nodeID: "",
   category: "",
   source: "",

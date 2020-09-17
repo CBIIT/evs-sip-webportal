@@ -7,6 +7,10 @@
   z-index: 3;
 }
 
+.overlay-property-table b{
+  color: #ef8523;
+}
+
 .overlay-property-table__background {
   position: absolute;
   top: 0;
@@ -127,3 +131,5 @@
   position: relative;
   top: -2px;
 }
+
+

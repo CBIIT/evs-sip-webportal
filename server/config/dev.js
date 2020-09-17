@@ -1,5 +1,5 @@
 /**
- * local environment
+ * dev environment
  */
 
 module.exports = {
