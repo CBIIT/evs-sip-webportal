@@ -82,8 +82,8 @@ class OverlayPropertyTable extends React.Component {
         if(tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"]){
           tmp.name = tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"];
         }
-        if(tmp.matched_fields["enum.icdo"] || tmp.matched_fields["enum.icdo.have"]){
-          tmp.icdo = tmp.matched_fields["enum.icdo"] || tmp.matched_fields["enum.icdo.have"];
+        if(tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"]){
+          tmp.icdo = tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"][tmp.matched_fields["enum.icdo.have"].length -1];
         }
         if(tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"]){
           let ncits = tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"];
