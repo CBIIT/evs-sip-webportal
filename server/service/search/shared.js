@@ -64,6 +64,8 @@ const generateQuery = (keyword, option) => {
   let clause = {};
   clause.bool = {};
   clause.bool.should = [];
+  //adding double escaping
+  keyword = keyword.replace(/\//g, '\\/');
   if(option.match === "exact"){ // Perform exact search
     let m = {};
     m.query_string = {};
