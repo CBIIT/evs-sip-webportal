@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
-// import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -14,6 +13,7 @@ const ContainerStyled = styled(Container)`
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
+  overflow: hidden;
 `;
 
 const TableThead = styled(Row)`
@@ -34,7 +34,7 @@ const TableTh = styled.div`
 
 const TableBody = styled(Row)`
   overflow-y: auto;
-  max-height: 40rem;
+  max-height: 42rem;
 `;
 
 const TableRow = styled(Row)`
@@ -111,7 +111,7 @@ const IndicatorTerm = styled.span`
 `;
 
 
-const ValuesTable = (props) => {
+const CTDCValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
 
@@ -120,6 +120,7 @@ const ValuesTable = (props) => {
   let values = [];
 
   items.forEach((data) => {
+    if(data._source.source !== 'ctdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -215,7 +216,7 @@ const ValuesTable = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
         <tr key={index}>
-          <td>{item.termName}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.termName }}></td>
           <td>{item.termSource}</td>
           <td>{item.termGroup}</td>
         </tr>
@@ -465,4 +466,4 @@ const ValuesTable = (props) => {
   }
 };
 
-export default ValuesTable;
+export default CTDCValuesTable;

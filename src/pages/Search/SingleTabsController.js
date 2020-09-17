@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
-import ValuesTable from './ValuesTable';
+import GDCValuesTable from './GDCValuesTable';
+import CTDCValuesTable from './CTDCValuesTable';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -54,23 +55,23 @@ const SingleTabsController = (props) => {
                   <NavLinkStyled eventKey="gdc">GDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
+                  <NavLinkStyled eventKey="ctdc">CTDC</NavLinkStyled>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="ctdc">CTDC</NavLinkStyled>
+                  <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
                 </Nav.Item>
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
               <Tab.Content transition="false">
                 <Tab.Pane unmountOnExit={true} eventKey="gdc">
-                  <ValuesTable values={props.source}/>
+                  <GDCValuesTable values={props.source}/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="ctdc">
+                  <CTDCValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
                   ICDC content
-                </Tab.Pane>
-                <Tab.Pane unmountOnExit={true} eventKey="ctdc">
-                  CTDC content
                 </Tab.Pane>
               </Tab.Content>
             </Col>

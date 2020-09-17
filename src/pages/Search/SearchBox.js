@@ -77,7 +77,7 @@ const SearchOptionsContainer = styled.div`
 `;
 
 const SearchAllOptions = styled.div`
-  width: 42rem;
+  width: 45rem;
   margin: 0 auto;
   padding: 2rem 0;
 
@@ -101,7 +101,6 @@ const SearchOptionsLabel = styled.h4`
 `;
 
 const FormGroupStyled = styled(Form.Group)`
-  width: 30rem;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -133,15 +132,15 @@ const CheckboxLabel = styled.label`
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
-  inline-size: 9rem;
+  inline-size: 11rem;
   font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 `;
 
-const CheckboxLabelSpace = styled(CheckboxLabel)`
-  inline-size: 11rem;
-`;
+// const CheckboxLabelSpace = styled(CheckboxLabel)`
+//   inline-size: 11rem;
+// `;
 
 const SpanNormal = styled.span`
   font-weight: normal;
@@ -209,7 +208,7 @@ const DeleteBtn = styled.a`
 
 const SearchBox = (props) => {
   let [suggestState, setSuggestState] = useState([]);
-  let [searchState, setSearchState] = useState('');
+  let [searchState, setSearchState] = useState(props.keyword);
   let [selectIndexState, setSelectIndexState] = useState(-1);
   let [optionsState, setOptionsState] = useState({
     match: false,
@@ -361,6 +360,13 @@ const SearchBox = (props) => {
               <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
+                  <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Genomic Data Commons <SpanNormal>(GDC)</SpanNormal>
+                </CheckboxLabel>
+                <CheckboxLabel>
                   <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
@@ -368,19 +374,12 @@ const SearchBox = (props) => {
                   Clinical Trial Data Commons <SpanNormal>(CTDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
-                  <CheckboxSpan>
-                    <CheckboxIcon icon={faCheck}/>
-                  </CheckboxSpan>
-                  Genomic Data Commons <SpanNormal>(GDC)</SpanNormal>
-                </CheckboxLabel>
-                <CheckboxLabelSpace>
                   <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Integrated Canine Data Commons <SpanNormal>(ICDC)</SpanNormal>
-                </CheckboxLabelSpace>
+                </CheckboxLabel>
               </FormGroupStyled>
             </SearchOptions>
           </SearchOptionsContainer>
