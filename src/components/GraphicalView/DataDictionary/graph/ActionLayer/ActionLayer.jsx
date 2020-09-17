@@ -13,17 +13,10 @@ class ActionLayer extends React.Component {
   }
 
   render() {
+    const found_match = Object.keys(this.props.matchedResult).length === 0 && this.props.graphType.indexOf('readonly') == -1;
     return (
-      <div className='action-layer'>
-        {
-          this.props.isSearchMode && (
-            <Button
-              className='action-layer__clear-search'
-              onClick={this.handleClearSearch}
-              label='Clear Search Result'
-            />
-          )
-        }
+      <div className={found_match ? 'action-layer__empty' : 'action-layer'}>
+        {found_match? "Sorry, no results found." : ""}
       </div>
     );
   }

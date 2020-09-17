@@ -81,7 +81,6 @@ export const getPropertyNameFragment = (propertyName, matchedItem, spanClassName
 export const getPropertyTypeFragment = (property, typeMatchList, spanClassName) => {
   const type = getType(property);
   let propertyTypeFragment;
-  console.log(type);
   if (typeof type === 'string') {
     propertyTypeFragment = (
       <li>
@@ -201,7 +200,6 @@ export const getMatchInsideProperty = (propertyIndex, propertyKey, property, all
 
 export const getMatchesSummaryForProperties = (allProperties, allMatches) => {
   //console.log(allProperties);
-  console.log(allMatches);
   const matchedPropertiesSummary = [];
   Object.keys(allProperties).forEach((propertyKey, propertyIndex) => {
     const property = allProperties[propertyKey];

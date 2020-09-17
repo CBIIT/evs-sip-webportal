@@ -9,6 +9,8 @@ router.get('/suggest', controller.suggestion);
 // property based api
 router.get('/all/p', controller.searchP);
 
+//graphical search
+router.get('/graph/search', controller.graphSearch);
 
 //graphical view
 router.get('/graph/gdc', controller.getGraphicalGDCDictionary);

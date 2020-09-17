@@ -1,3 +1,9 @@
+export const initiateGraph = (graphType, dictionary) => ({
+  type: 'RECEIVE_DICTIONARY_' + graphType.toUpperCase(),
+  graphType: graphType,
+  dictionary: dictionary,
+});
+
 export const clickBlankSpace = (graphType) => ({
   type: 'GRAPH_CLICK_BLANK_SPACE',
   graphType: graphType,

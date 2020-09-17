@@ -124,7 +124,7 @@ const MainTabsController = (props) => {
                     <SingleTabsController source={props.source}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="graph">
-                    <GraphTabsController />
+                    <GraphTabsController keyword={props.keyword} source={props.source}/>
                   </Tab.Pane>
                 </TabContentStyled>
               </Col>
