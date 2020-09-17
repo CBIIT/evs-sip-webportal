@@ -84,10 +84,10 @@ const PropsTable = (props) => {
     let source = item._source;
     let highlight = item.highlight;
 
-    let highlightProperty = ('property' in highlight) || ('property.have' in highlight) ? highlight['property'] || highlight['property.have'] : undefined;
+    let highlightProperty = ('prop' in highlight) || ('prop.have' in highlight) ? highlight['prop'] || highlight['prop.have'] : undefined;
     let highlightPropertyObj = getHighlightObj(highlightProperty);
 
-    let highlightPropertyDesc = ('property_desc' in highlight) ? highlight['property_desc'] : undefined;
+    let highlightPropertyDesc = ('prop_desc' in highlight) ? highlight['prop_desc'] : undefined;
     let highlightPropertyDescObj = {};
     if (highlightPropertyDesc !== undefined) {
       highlightPropertyDesc.forEach(val => {
@@ -135,7 +135,7 @@ const PropsTable = (props) => {
         }
       </TableCol>
       <TableCol xs={2}>
-      <a href="/#" target="_blank">CDE ID - {item.cdeId}</a>
+      <a href="/#" target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
       </TableCol>
     </TableRow>
   );
