@@ -12,31 +12,6 @@ import { apiGetGDCDataById, apiGetPropertyValues  } from '../../../../../api';
 import './OverlayPropertyTable.css';
 
 class OverlayPropertyTable extends React.Component {
-  getTitle = () => {
-    if (this.props.isSearchMode) {
-      const nodeTitleFragment = getNodeTitleFragment(
-        this.props.matchedResult.matches,
-        this.props.node.title,
-        'overlay-property-table__span',
-      );
-      return nodeTitleFragment;
-    }
-
-    return this.props.node.title;
-  };
-
-  getDescription = () => {
-    if (this.props.isSearchMode) {
-      const nodeDescriptionFragment = getNodeDescriptionFragment(
-        this.props.matchedResult.matches,
-        this.props.node.description,
-        'overlay-property-table__span',
-      );
-      return nodeDescriptionFragment;
-    }
-
-    return this.props.node.description;
-  };
 
   /**
    * Close the whole overlay property table
@@ -58,6 +33,143 @@ class OverlayPropertyTable extends React.Component {
   handleDisplayOnlyMatchedProperties = () => {
     this.props.onCloseMatchedProperties();
   };
+
+  toggleMatchedValuesBox(e, enums, hits, open){
+    if(!open) {
+      return;
+    }
+    e.stopPropagation();
+    let obj = e.target;
+    let tr = obj.closest(".data-dictionary-property-table__row");
+
+    let next_sibling = tr.nextSibling;
+
+    if(next_sibling && next_sibling.className == "values-row"){
+      next_sibling.remove();
+    }
+    else{
+      let values = [];
+      let vs_html = "";
+      let count = 0;
+      enums.forEach(function(item){
+        let tmp = {};
+        tmp.name = item.n;
+        tmp.ncit = "";
+        tmp.pt = "";
+        tmp.icdo = "";
+        if(item.icdo){
+          tmp.icdo = item.icdo.c;
+        }
+        if(item.ncit){
+          item.ncit.forEach(function(nc){
+            tmp.ncit += "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c + "\">" + nc.c + "</a><br>";
+            nc.s.forEach(function(syn){
+              if(syn.t == 'PT' && syn.src == "NCI"){
+                tmp.pt += syn.n + "<br>";
+              }
+            });
+          });
+        }
+        tmp.matched = false;
+        values.push(tmp);
+      });
+
+      //consolidate matched values
+      hits.forEach((hit) => {
+        let tmp = values[hit._nested.offset];
+        tmp.matched = true;
+        tmp.matched_fields = hit.highlight;
+        if(tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"]){
+          tmp.name = tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"];
+        }
+        if(tmp.matched_fields["enum.icdo"] || tmp.matched_fields["enum.icdo.have"]){
+          tmp.icdo = tmp.matched_fields["enum.icdo"] || tmp.matched_fields["enum.icdo.have"];
+        }
+        if(tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"]){
+          let ncits = tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"];
+          ncits.forEach(function(nc){
+            tmp.ncit = tmp.ncit.replace('>' + nc.replace(/<b>/g, '').replace(/<\/b>/g, '') + '<',  '>' + nc + '<');
+          });
+          console.log(tmp.ncit);
+        }
+        if(tmp.matched_fields["enum.ncit.s.n"] || tmp.matched_fields["enum.ncit.s.n.have"]){
+          let syns = tmp.matched_fields["enum.ncit.s.n"] || tmp.matched_fields["enum.ncit.s.n.have"];
+          syns.forEach(function(syn){
+            tmp.pt = tmp.pt.replace(syn.replace(/<b>/g, '').replace(/<\/b>/g, ''),  syn);
+          });
+        }
+      });
+      
+      values.forEach(function(v){
+        if(v.matched){
+          vs_html += '<tr class="matched-row">';
+          vs_html += '<td class="data-dictionary-property-table__data">'+
+                  '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.icdo+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.ncit+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.pt+
+                '</td>'+
+              '</tr>';
+        }
+        else{
+          vs_html += '<tr class="hidden-row">';
+          vs_html += '<td class="data-dictionary-property-table__data">'+
+                  '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.icdo+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.ncit+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.pt+
+                '</td>'+
+              '</tr>';
+        }
+        
+      });
+
+      let new_tr = document.createElement("tr");
+      new_tr.className = "values-row";
+      let new_td = document.createElement("td");
+      new_td.colSpan = "5";
+      new_td.className = "data-dictionary-property-table__data";
+
+      let content = '<div class="data-dictionary-node__property">'+
+        '<span class="data-dictionary-node__property-close" role="button" tabindex="0" onclick="this.closest(\'.values-row\').remove()">Close tab<i class="g3-icon g3-icon--cross data-dictionary-node__property-close-icon"></i></span>'+
+        '<div class="data-dictionary-node__property-summary">'+
+          '<span>' + hits.length + ' Values Matched Out of ' + enums.length + ' . </span>'+
+          '<Button class="data-dictionary-values-table__toggle-button g3-button g3-button--secondary" value="all" onClick="javascript: window.switchValuesList(this);" buttonType="secondary">Show All Values</Button>' +
+        '</div>'+
+        '<div class="data-dictionary-property-table ">'+
+          '<table class="data-dictionary-property-table__table">'+
+            '<thead class="data-dictionary-property-table__head">'+
+              '<tr class="data-dictionary-property-table__row">'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--property">Values</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">ICD-O-3 Code</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">Mapped NCIt Code</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">NCIt Preferred Term</th>'+
+              '</tr>'+
+            '</thead>'+
+            '<tbody>'+
+              vs_html +
+            '</tbody>'+
+          '</table>'+
+        '</div>'+
+      '</div>';
+
+      new_td.innerHTML = content;
+      new_tr.append(new_td);
+      tr.after(new_tr);
+    }
+  }
 
   /**
    * Toggle the property table data row to display values for that property
@@ -85,6 +197,10 @@ class OverlayPropertyTable extends React.Component {
         tmp.name = item.n;
         tmp.ncit = "";
         tmp.pt = "";
+        tmp.icdo = "";
+        if(item.icdo){
+          tmp.icdo = item.icdo.c;
+        }
         if(item.ncit){
           item.ncit.forEach(function(nc){
             tmp.ncit += "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c + "\">" + nc.c + "</a><br>";
@@ -102,6 +218,9 @@ class OverlayPropertyTable extends React.Component {
         vs_html += '<tr>'+
                 '<td class="data-dictionary-property-table__data">'+
                   '<div class="data-dictionary-property-table__span">'+ v.name +'</div>'+
+                '</td>'+
+                '<td class="data-dictionary-property-table__data">'+
+                  v.icdo+
                 '</td>'+
                 '<td class="data-dictionary-property-table__data">'+
                   v.ncit+
@@ -128,6 +247,7 @@ class OverlayPropertyTable extends React.Component {
             '<thead class="data-dictionary-property-table__head">'+
               '<tr class="data-dictionary-property-table__row">'+
                 '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--property">Values</th>'+
+                '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">ICD-O-3 Code</th>'+
                 '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">Mapped NCIt Code</th>'+
                 '<th class="data-dictionary-property-table__data data-dictionary-property-table__data--type">NCIt Preferred Term</th>'+
               '</tr>'+
@@ -184,6 +304,7 @@ class OverlayPropertyTable extends React.Component {
                 hideIsRequired={searchedNodeNotOpened}
                 matchedResult={this.props.matchedResult}
                 toggleValuesBox={this.toggleValuesBox}
+                toggleMatchedValuesBox={this.toggleMatchedValuesBox}
                 nodeID={this.props.node.id}
                 category={this.props.node.category}
                 source={this.props.graphType}
@@ -201,7 +322,7 @@ OverlayPropertyTable.propTypes = {
   node: PropTypes.object,
   onCloseOverlayPropertyTable: PropTypes.func,
   isSearchMode: PropTypes.bool,
-  matchedResult: SearchResultItemShape,
+  matchedResult: PropTypes.object,
   onOpenMatchedProperties: PropTypes.func,
   onCloseMatchedProperties: PropTypes.func,
   isSearchResultNodeOpened: PropTypes.bool,

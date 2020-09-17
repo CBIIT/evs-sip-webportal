@@ -364,7 +364,10 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
 						obj.termName = data.termName;
 						obj.termGroup = data.termGroup;
 						obj.termSource = data.termSource;
-						tmp[ncitids[idx]].synonyms.push(obj);
+						//only keep NCI synonyms
+						if(obj.termSource == "NCI"){
+							tmp[ncitids[idx]].synonyms.push(obj);
+						}
 						checker_arr.push((data.termName+"@#$"+data.termGroup+"@#$"+data.termSource).trim().toLowerCase());
 					});
 					if (d.additionalProperties !== undefined) {

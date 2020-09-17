@@ -1,14 +1,20 @@
 const baseUrl = './api/search';
-//const baseUrl = 'https://gdc-mvs-dev.nci.nih.gov/gdc/search';
+//const baseUrl = 'http://localhost:3000/api/search';
 
 export const apiSuggest = async keyword => {
   const response = await fetch(`${baseUrl}/suggest?keyword=${keyword}`);
   return response.json();
 };
 
-export const apiSearchAll = async(keyword, options) => {
+export const apiSearchAll = async(keyword, options, dataSources) => {
   const opts = `${options.match === true ? `exact` : `partial`}${options.syns === true ? `,syn` : ``}${options.desc === true ? `,desc` : ``}`;
-  const response = await fetch(`${baseUrl}/all/p?keyword=${keyword}&options=${opts}`);
+  let sources = [];
+  for(let key in dataSources){
+    if(dataSources[key]){
+      sources.push(key);
+    }
+  }
+  const response = await fetch(`${baseUrl}/all/p?keyword=${keyword}&options=${opts}&sources=${sources.join()}`);
   return response.json();
 };
 
@@ -17,45 +23,35 @@ export const apiGetGDCDataById = async(id) => {
   return response.json();
 };
 
-export const apiGetGDCDictionary = async(keyword) => {
+export const apiGraphicalSearch = async(keyword, options, dataSources) => {
+  const opts = `${options.match === true ? `exact` : `partial`}${options.syns === true ? `,syn` : ``}${options.desc === true ? `,desc` : ``}`;
+  let sources = [];
+  for(let key in dataSources){
+    if(dataSources[key]){
+      sources.push(key);
+    }
+  }
+  const response = await fetch(`${baseUrl}/graph/search?keyword=${keyword}&options=${opts}&sources=${sources.join()}`);
+  return response.json();
+};
+
+export const apiGetGDCDictionary = async() => {
   const response = await fetch(`${baseUrl}/graph/gdc`);
   return response.json();
 };
 
-export const apiGetICDCDictionary = async(keyword) => {
+export const apiGetICDCDictionary = async() => {
   const response = await fetch(`${baseUrl}/graph/icdc`);
   return response.json();
 };
 
-export const apiGetCTDCDictionary = async(keyword) => {
+export const apiGetCTDCDictionary = async() => {
   const response = await fetch(`${baseUrl}/graph/ctdc`);
   return response.json();
 };
 
-export const apiGetPropertyValues = async(type, node ,property) => {
-  const response = await fetch(`${baseUrl}/graph/p/vs?type=${type}&node=${node}&property=${property}`);
+export const apiGetPropertyValues = async(id) => {
+  const response = await fetch(`${baseUrl}/graph/p/vs?id=${id}`);
   return response.json();
 };
 
-/*
-
-export const apiGetGDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/gdc`);
-  return response.json();
-};
-
-export const apiGetICDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/icdc`);
-  return response.json();
-};
-
-export const apiGetCTDCDictionary = async(keyword) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/ctdc`);
-  return response.json();
-};
-
-export const apiGetPropertyValues = async(type, node ,property) => {
-  const response = await fetch(`http://localhost:3000/api/search/graph/p/vs?type=${type}&node=${node}&property=${property}`);
-  return response.json();
-};
-*/

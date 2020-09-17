@@ -21,8 +21,7 @@ const getNode = (state, graphType) => {
 
 const getSearchResultItem = (state, graphType) => {
   if (state.ddgraph[graphType].isSearchMode) {
-    return state.ddgraph[graphType].searchResult
-      .find(resItem => resItem.item.id === state.ddgraph[graphType].highlightingMatchedNodeID);
+    return state.ddgraph[graphType].searchResult;
   }
   return null;
 };

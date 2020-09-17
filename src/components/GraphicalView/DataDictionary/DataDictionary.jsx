@@ -5,7 +5,7 @@ import DataDictionaryGraph from './graph/DataDictionaryGraph/.';
 import ReduxDictionarySearcher from './search/DictionarySearcher/.';
 import ReduxDictionarySearchHistory from './search/DictionarySearchHistory/.';
 import { apiGraphicalSearch, apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from '../../../api';
-import { prepareSearchData, searchKeyword, getSearchSummary, ZERO_RESULT_FOUND_MSG } from './search/DictionarySearcher/searchHelper'; 
+import { getSearchResult, getSearchSummary} from './search/DictionarySearcher/searchHelper'; 
 import './DataDictionary.css';
 
 class DataDictionary extends React.Component {
@@ -14,7 +14,6 @@ class DataDictionary extends React.Component {
     this.dictionarySearcherRef = React.createRef();
     this.state = {
       isSearchFinished: false,
-      oldKeyword: "",
     };
   }
 
@@ -54,45 +53,39 @@ class DataDictionary extends React.Component {
     }
 
     // resume search status after switching back from other pages
+    /*
     if (this.props.keyword && this.props.graphType.indexOf('readonly') == -1 ) {
       this.search(this.props.keyword);
     }
     else{
       this.setState({
         isSearchFinished: true,
-        oldKeyword: "",
       });
     }
+    */
+    this.setState({
+      isSearchFinished: true,
+    });
   }
 
   search = (str) => {
-    let searchData = prepareSearchData(this.props.dictionary);
-    const { result, errorMsg } = searchKeyword(searchData, str);
+    const result = getSearchResult(this.props.graphType , this.props.source);
     if (!result || result.length === 0) {
       this.props.onSearchResultUpdated([], []);
-      this.setState({
-        isSearchFinished: true,
-        oldKeyword: str,
-      });
       return;
     }
     const summary = getSearchSummary(result);
-    this.setState({
-      isSearchFinished: true,
-      oldKeyword: str,
-    });
-    console.log(this.props.source);
-    console.log(searchData);
-    console.log(result);
-    console.log(summary);
+    //console.log(result);
+    //console.log(summary);
     this.props.onSearchResultUpdated(result, summary);
   };
 
   render() {
     if(this.state.isSearchFinished){
-      if(this.state.oldKeyword !== this.props.keyword && this.props.graphType.indexOf('readonly') == -1){
+      if(this.props.keyword && this.props.graphType.indexOf('readonly') == -1){
         this.search(this.props.keyword);
       }
+
       return (
         <div className='data-dictionary'>
           <div
@@ -113,8 +106,14 @@ class DataDictionary extends React.Component {
           <div
             className='data-dictionary__main'
           >
-            <div className='data-dictionary__graph'>
-              Loading...
+            <div className='data-dictionary__graph graph-loading-info'>
+              <div class="lds-ellipsis">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              
             </div>
           </div>
         </div>
