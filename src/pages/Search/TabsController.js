@@ -129,7 +129,7 @@ const TabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false">
                 <Tab.Pane unmountOnExit={true} eventKey="values">
-                  <CrossValuesTable values={props.source} dataOptions={props.dataOptions}/>
+                  <CrossValuesTable values={props.source} />
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="properties">
                   <PropsTable properties={props.source}/>

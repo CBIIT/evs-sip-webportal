@@ -91,7 +91,7 @@ const PropsTable = (props) => {
     let highlightPropertyDescObj = {};
     if (highlightPropertyDesc !== undefined) {
       highlightPropertyDesc.forEach(val => {
-        if (highlightPropertyDescObj[source.property] === undefined) highlightPropertyDescObj[source.property] = val;
+        if (highlightPropertyDescObj[source.prop] === undefined) highlightPropertyDescObj[source.prop] = val;
       });
     }
 
@@ -102,8 +102,8 @@ const PropsTable = (props) => {
     propObj.category = source.category;
     propObj.node = source.node;
     propObj.id = source.id;
-    propObj.property = highlightPropertyObj[source.property] ? highlightPropertyObj[source.property] : source.property;
-    propObj.property_desc = highlightPropertyDescObj[source.property] ? highlightPropertyDescObj[source.property] : source.property_desc;
+    propObj.property = highlightPropertyObj[source.prop] ? highlightPropertyObj[source.prop] : source.prop;
+    propObj.property_desc = highlightPropertyDescObj[source.prop] ? highlightPropertyDescObj[source.prop] : source.prop_desc;
     if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
     if (source.enum !== undefined) propObj.enum = source.enum;
     if (source.cde !== undefined) {
