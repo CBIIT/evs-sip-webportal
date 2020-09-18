@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { apiSearchAll } from '../../api';
 import SearchBox from './SearchBox';
 import MainTabsController from './MainTabsController';
+import LoadingAnimation from '../../components/LoadingAnimation';
 
 // const Page = styled.div`
 //   background-color: var(--page-bkgd);
@@ -17,12 +18,16 @@ const Page = styled.div`
 const Search = (props) => {
   let [keywordState, setKeywordState] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? props.location.state.keyword : '');
   let [sourceState, setSourceState] = useState([]);
-  //let [dataSource, setDataSource] = useState(props.location.state !== undefined && props.location.state.dataSource !== undefined ? props.location.state.dataSource : {});
+  let [loadingState, setLoadingState] = useState(false);
 
   const searchHandler = (keyword, options, sources) => {
     setKeywordState(keyword);
-    //setDataSource(sources);
-    apiSearchAll(keyword, options, sources).then(result => setSourceState(result));
+    setLoadingState(true);
+    apiSearchAll(keyword, options, sources)
+      .then(result => {
+        setSourceState(result);
+        setLoadingState(false);
+      });
   };
 
   useEffect(() => {
@@ -41,6 +46,7 @@ const Search = (props) => {
   return <Page>
         <SearchBox searchTrigger={searchHandler} keyword={keywordState}/>
         <MainTabsController keyword={keywordState} source={sourceState} />
+        {loadingState && <LoadingAnimation/>}
     </Page>;
 }
 
