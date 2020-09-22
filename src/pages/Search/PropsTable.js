@@ -102,6 +102,7 @@ const PropsTable = (props) => {
     propObj.category = source.category;
     propObj.node = source.node;
     propObj.id = source.id;
+    propObj.source = source.source;
     propObj.property = highlightPropertyObj[source.prop] ? highlightPropertyObj[source.prop] : source.prop;
     propObj.property_desc = highlightPropertyDescObj[source.prop] ? highlightPropertyDescObj[source.prop] : source.prop_desc;
     if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
@@ -125,17 +126,18 @@ const PropsTable = (props) => {
         <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak>
       </TableCol>
       <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
+      <TableCol xs={1}>{item.source}</TableCol>
       <TableCol xs={2}>
         {item.enum !== undefined
           ? <div>
             <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
             <a id="toCompare" href="/#" data-ref=""> Compare with User List</a>
           </div>
-          : <div>{item.type}</div>
+          : <div>type: {item.type}</div>
         }
       </TableCol>
-      <TableCol xs={2}>
-      <a href="/#" target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      <TableCol xs={1}>
+      <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
       </TableCol>
     </TableRow>
   );
@@ -153,10 +155,13 @@ const PropsTable = (props) => {
           <Col xs={4}>
             <TableTh>Description</TableTh>
           </Col>
-          <Col xs={2}>
-            <TableTh>GDC Property Values</TableTh>
+          <Col xs={1}>
+            <TableTh>Source</TableTh>
           </Col>
           <Col xs={2}>
+            <TableTh>Property Values</TableTh>
+          </Col>
+          <Col xs={1}>
             <TableTh>caDSR CDE Reference</TableTh>
           </Col>
         </TableThead>
