@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -43,6 +45,25 @@ const TableCol = styled(Col)`
   padding-top: 12px;
   padding-bottom: 12px;
   line-height: 1.428571;
+`;
+
+const TableUl = styled.ul`
+  padding-left: 15px;
+  list-style: none;
+`;
+
+const TableLi = styled.li`
+  position: relative;
+`;
+
+const SpanIcon = styled.span`
+  left: -0.9rem;
+  top: 0.2rem;
+  position: absolute;
+  width: 1rem;
+  line-height: inherit;
+  color: var(--checkbox-green);
+  transform: rotate(45deg);
 `;
 
 const LinkBreak = styled.a`
@@ -118,9 +139,11 @@ const PropsTable = (props) => {
     <TableRow key={index}>
       <TableCol xs={2}>
         {item.category}
-        <ul>
-          <li>{item.node}</li>
-        </ul>
+        <TableUl>
+          <TableLi>
+            <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+          </TableLi>
+        </TableUl>
       </TableCol>
       <TableCol xs={2}>
         <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak>
