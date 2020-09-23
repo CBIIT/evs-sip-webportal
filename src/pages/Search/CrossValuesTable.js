@@ -691,17 +691,21 @@ const CrossValuesTable = (props) => {
     return (
       <ContainerStyled>
         <TableThead>
-        <Col xs={2}>
+          <Col xs={2}>
             <TableTh>Terminology Reference</TableTh>
           </Col>
-          <Col xs={2}>
-            <TableTh>Data Sources</TableTh>
-          </Col>
-          <Col xs={2}>
-            <TableTh>Node / Property</TableTh>
-          </Col>
-          <Col xs={6}>
-            <TableTh>Matched Values</TableTh>
+          <Col xs={10}>
+            <Row>
+              <Col xs={2}>
+                <TableTh>Data Sources</TableTh>
+              </Col>
+              <Col xs={2}>
+                <TableTh>Node / Property</TableTh>
+              </Col>
+              <Col xs={8}>
+                <TableTh>Matched Values</TableTh>
+              </Col>
+            </Row>
           </Col>
         </TableThead>
         <TableBody>

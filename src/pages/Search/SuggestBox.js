@@ -64,7 +64,7 @@ const SuggestBox = (props) => {
       onClick={e => props.suggestClick(item.id, e)}
       className={index === props.suggestSelected ? 'selected' : ''}>
       <SuggestName>{item.id}</SuggestName>
-      <SuggestType>{item.type}</SuggestType>
+      <SuggestType>{item.type.join(', ')}</SuggestType>
     </SuggestObject>
   );
 

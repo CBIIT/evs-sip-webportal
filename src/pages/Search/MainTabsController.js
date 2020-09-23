@@ -117,7 +117,7 @@ const MainTabsController = (props) => {
               </TabNavsCol>
               <Col sm={12}>
                 <TabContentStyled transition="false">
-                  <Tab.Pane unmountOnExit={true} eventKey="cross">
+                  <Tab.Pane unmountOnExit={false} eventKey="cross">
                     <TabsController source={props.source} />
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="single">
