@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -45,6 +47,25 @@ const TableCol = styled(Col)`
   line-height: 1.428571;
 `;
 
+const TableUl = styled.ul`
+  padding-left: 15px;
+  list-style: none;
+`;
+
+const TableLi = styled.li`
+  position: relative;
+`;
+
+const SpanIcon = styled.span`
+  left: -0.9rem;
+  top: 0.2rem;
+  position: absolute;
+  width: 1rem;
+  line-height: inherit;
+  color: var(--checkbox-green);
+  transform: rotate(45deg);
+`;
+
 const LinkBreak = styled.a`
   word-wrap: break-word;
 `;
@@ -84,10 +105,10 @@ const PropsTable = (props) => {
     let source = item._source;
     let highlight = item.highlight;
 
-    let highlightProperty = ('property' in highlight) || ('property.have' in highlight) ? highlight['property'] || highlight['property.have'] : undefined;
+    let highlightProperty = ('prop' in highlight) || ('prop.have' in highlight) ? highlight['prop'] || highlight['prop.have'] : undefined;
     let highlightPropertyObj = getHighlightObj(highlightProperty);
 
-    let highlightPropertyDesc = ('property_desc' in highlight) ? highlight['property_desc'] : undefined;
+    let highlightPropertyDesc = ('prop_desc' in highlight) ? highlight['prop_desc'] : undefined;
     let highlightPropertyDescObj = {};
     if (highlightPropertyDesc !== undefined) {
       highlightPropertyDesc.forEach(val => {
@@ -102,6 +123,7 @@ const PropsTable = (props) => {
     propObj.category = source.category;
     propObj.node = source.node;
     propObj.id = source.id;
+    propObj.source = source.source;
     propObj.property = highlightPropertyObj[source.prop] ? highlightPropertyObj[source.prop] : source.prop;
     propObj.property_desc = highlightPropertyDescObj[source.prop] ? highlightPropertyDescObj[source.prop] : source.prop_desc;
     if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
@@ -117,25 +139,28 @@ const PropsTable = (props) => {
     <TableRow key={index}>
       <TableCol xs={2}>
         {item.category}
-        <ul>
-          <li>{item.node}</li>
-        </ul>
+        <TableUl>
+          <TableLi>
+            <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+          </TableLi>
+        </TableUl>
       </TableCol>
       <TableCol xs={2}>
         <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak>
       </TableCol>
       <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
+      <TableCol xs={1}>{item.source}</TableCol>
       <TableCol xs={2}>
         {item.enum !== undefined
           ? <div>
             <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
             <a id="toCompare" href="/#" data-ref=""> Compare with User List</a>
           </div>
-          : <div>{item.type}</div>
+          : <div>type: {item.type}</div>
         }
       </TableCol>
-      <TableCol xs={2}>
-      <a href="/#" target="_blank">CDE ID - {item.cdeId}</a>
+      <TableCol xs={1}>
+      <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
       </TableCol>
     </TableRow>
   );
@@ -153,10 +178,13 @@ const PropsTable = (props) => {
           <Col xs={4}>
             <TableTh>Description</TableTh>
           </Col>
-          <Col xs={2}>
-            <TableTh>GDC Property Values</TableTh>
+          <Col xs={1}>
+            <TableTh>Source</TableTh>
           </Col>
           <Col xs={2}>
+            <TableTh>Property Values</TableTh>
+          </Col>
+          <Col xs={1}>
             <TableTh>caDSR CDE Reference</TableTh>
           </Col>
         </TableThead>
