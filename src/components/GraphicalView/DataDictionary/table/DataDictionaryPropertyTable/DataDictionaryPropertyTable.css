@@ -112,3 +112,16 @@ tr.hidden-row{
 tr.display-row{
   display: table-row;
 }
+
+.values-column{
+  width:20%;
+}
+.icdo-column{
+  width:10%;
+}
+.ncit-column{
+  width:10%;
+}
+.syns-column{
+  width:60%;
+}

@@ -1,0 +1,48 @@
+tr.matched-row{
+  background-color:white;
+}
+tr.hidden-row{
+  display: none;
+}
+tr.display-row{
+  display: table-row;
+}
+
+.values-column{
+  width:20%;
+}
+.icdo-column{
+  width:10%;
+}
+.ncit-column{
+  width:10%;
+}
+.syns-column{
+  width:60%;
+}
+
+.pt-row {
+	width:100%;
+	display: flex;
+}
+
+.pt-data {
+	width: 80%;
+}
+
+.pt-button {
+	width: 20%;
+    text-align: right;
+}
+
+.syns-area{
+	width: 100%;
+	padding: 12px;
+}
+
+.syns-table{
+	border: 1px solid #dee2e6;
+	width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
