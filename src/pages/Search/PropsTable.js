@@ -130,6 +130,7 @@ const PropsTable = (props) => {
     if (source.enum !== undefined) propObj.enum = source.enum;
     if (source.cde !== undefined) {
       propObj.cdeId = highlightCdeIdObj[source.cde.id] ? highlightCdeIdObj[source.cde.id] : source.cde.id;
+      propObj.cdeSrc =source.cde.src;
       propObj.cdeUrl = source.cde.url;
     }
     properties.push(propObj);
@@ -156,11 +157,15 @@ const PropsTable = (props) => {
             <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
             <a id="toCompare" href="/#" data-ref=""> Compare with User List</a>
           </div>
-          : <div>type: {item.type}</div>
+          : <div>
+            {item.type !== undefined && <span>type: {item.type}</span>}
+          </div>
         }
       </TableCol>
       <TableCol xs={1}>
-      <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      {(item.cdeId !== undefined && item.cdeSrc === 'CDE ID' ) && 
+        <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      }
       </TableCol>
     </TableRow>
   );
