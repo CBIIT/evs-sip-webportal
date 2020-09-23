@@ -30,35 +30,6 @@
     -->
     <base href="%PUBLIC_URL%/">
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
-    <script>
-      function switchValuesList(e) {
-        e = e || window.event;
-        var targ = e.target || e.srcElement || e;
-        if (targ.nodeType == 3) targ = targ.parentNode;
-        var val = targ.value;
-        if(val == "all"){
-          var els = document.getElementsByClassName('hidden-row');
-          targ.value = "less";
-          targ.innerHTML = "Show Matched Values";
-          while (els[0]) {
-              let obj = els[0];
-              obj.classList.remove('hidden-row');
-              obj.classList.add('display-row');
-          }
-        }
-        else{
-          var els = document.getElementsByClassName('display-row');
-          targ.value = "all";
-          targ.innerHTML = "Show All Values";
-          while (els[0]) {
-              let obj = els[0];
-              obj.classList.remove('display-row');
-              obj.classList.add('hidden-row');
-          }
-        }
-        
-      }
-    </script>
     <title>evs-sip</title>
   </head>
   <body>

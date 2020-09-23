@@ -8,9 +8,41 @@ import {
   getPropertyTypeFragment,
 } from '../../highlightHelper';
 import Button from '@gen3/ui-component/dist/components/Button';
+import DataDictionaryValuesTable from '../DataDictionaryValuesTable/.';
 import './DataDictionaryPropertyTable.css';
 
 class DataDictionaryPropertyTable extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      row_opened: {}
+    };
+  }
+
+  componentDidMount() {
+    let row_opened = {};
+    Object.keys(this.props.properties).forEach(function(prop){
+      row_opened[prop] = false;
+    });
+    this.setState({
+      row_opened: row_opened
+    });
+  }
+  
+  closeTab = (prop) => {
+    let row_opened = Object.assign({}, this.state.row_opened);
+    row_opened[prop] = false;
+    this.setState({row_opened});
+  }
+
+  openOrCloseValuesTable = (e, prop) => {
+    let row_opened = Object.assign({}, this.state.row_opened);
+    row_opened[prop] = !row_opened[prop];
+    this.setState({row_opened});
+  }
+  
+
   render() {
     const borderModifier = this.props.hasBorder ? ''
       : 'data-dictionary-property-table--without-border';
@@ -111,41 +143,52 @@ class DataDictionaryPropertyTable extends React.Component {
                   const isRequired = this.props.requiredProperties.includes(pKey);
                   
                   return (
-                    <tr key={pKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleMatchedValuesBox(e, properties[pKey].enum, properties[pKey].hits, hasValues)}>
-                      <td className='data-dictionary-property-table__data'>
-                        {propertyNameFragment}
-                      </td>
-                      <td className='data-dictionary-property-table__data type-col-width'>
-                      <p>{type}</p>
-                      </td>
-                      {
-                        !this.props.hideIsRequired && (
-                          <td className='data-dictionary-property-table__data'>
-                            { isRequired ? (
-                              <span className='data-dictionary-property-table__required'>
-                                <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
-                              </span>
-                            ) : (
-                              <span>No</span>
-                            )
-                            }
-                          </td>
-                        )
-                      }
-                      <td className='data-dictionary-property-table__data'>
-                        {propertyDescriptionFragment}
-                      </td>
-                      <td className='data-dictionary-property-table__data' style={{textAlign: "center"}}>
+                    <React.Fragment>
+                      <tr key={pKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, pKey)}>
+                        <td className='data-dictionary-property-table__data'>
+                          {propertyNameFragment}
+                        </td>
+                        <td className='data-dictionary-property-table__data type-col-width'>
+                        <p>{type}</p>
+                        </td>
                         {
-                          hasValues ? (
-                            <a href="javascript: void(0);" onClick={(e) => this.props.toggleMatchedValuesBox(e, properties[pKey].enum, properties[pKey].hits, hasValues)} >
-                              {properties[pKey].hits.length + ' Values Matched'}
-                            </a>
-                            
-                          ) : ""
+                          !this.props.hideIsRequired && (
+                            <td className='data-dictionary-property-table__data'>
+                              { isRequired ? (
+                                <span className='data-dictionary-property-table__required'>
+                                  <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
+                                </span>
+                              ) : (
+                                <span>No</span>
+                              )
+                              }
+                            </td>
+                          )
                         }
-                      </td>
-                    </tr>
+                        <td className='data-dictionary-property-table__data'>
+                          {propertyDescriptionFragment}
+                        </td>
+                        <td className='data-dictionary-property-table__data' style={{textAlign: "center"}}>
+                          {
+                            hasValues ? (
+                              <a href="javascript: void(0);" onClick={(e) => this.openOrCloseValuesTable(e, pKey)} >
+                                {properties[pKey].hits.length + ' Values Matched'}
+                              </a>
+                              
+                            ) : ""
+                          }
+                        </td>
+                      </tr>
+                      <DataDictionaryValuesTable
+                       open={this.state.row_opened[pKey]} 
+                       enum={properties[pKey].enum}
+                       hits={properties[pKey].hits}
+                       property={pKey}
+                       hasValues={hasValues}
+                       type="matched"
+                       closeTab={this.closeTab}
+                      />
+                    </React.Fragment>
                   );
 
                 })
@@ -205,43 +248,55 @@ class DataDictionaryPropertyTable extends React.Component {
                   );
                   const isRequired = this.props.requiredProperties.includes(propertyKey);
                   return (
-                    <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}>
-                      <td className='data-dictionary-property-table__data'>
-                        {propertyNameFragment}
-                      </td>
-                      <td className='data-dictionary-property-table__data type-col-width'>
-                      <p>{JSON.stringify(type)}</p>
-                      </td>
-                      {
-                        !this.props.hideIsRequired && (
-                          <td className='data-dictionary-property-table__data'>
-                            { isRequired ? (
-                              <span className='data-dictionary-property-table__required'>
-                                <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
-                              </span>
-                            ) : (
-                              <span>No</span>
-                            )
-                            }
-                          </td>
-                        )
-                      }
-                      <td className='data-dictionary-property-table__data'>
-                      <p>{propertyDescriptionFragment}</p>
-                      </td>
-                      <td className='data-dictionary-property-table__data'>
+                    <React.Fragment>
+                      <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, propertyKey)}>
+                        <td className='data-dictionary-property-table__data'>
+                          {propertyNameFragment}
+                        </td>
+                        <td className='data-dictionary-property-table__data type-col-width'>
+                        <p>{JSON.stringify(type)}</p>
+                        </td>
                         {
-                          hasValues ? (
-                            <Button
-                              className='data-dictionary-property-table__button'
-                              onClick={(e) => this.props.toggleValuesBox(e, this.props.source, this.props.category, this.props.nodeID, propertyKey, hasValues)}
-                              label='All Values'
-                              buttonType='secondary'
-                            />
-                          ) : ""
+                          !this.props.hideIsRequired && (
+                            <td className='data-dictionary-property-table__data'>
+                              { isRequired ? (
+                                <span className='data-dictionary-property-table__required'>
+                                  <i className='g3-icon g3-icon--star data-dictionary-property-table__required-icon' />Required
+                                </span>
+                              ) : (
+                                <span>No</span>
+                              )
+                              }
+                            </td>
+                          )
                         }
-                      </td>
-                    </tr>
+                        <td className='data-dictionary-property-table__data'>
+                        <p>{propertyDescriptionFragment}</p>
+                        </td>
+                        <td className='data-dictionary-property-table__data'>
+                          {
+                            hasValues ? (
+                              <Button
+                                className='data-dictionary-property-table__button'
+                                onClick={(e) => this.openOrCloseValuesTable(e, propertyKey)}
+                                label='All Values'
+                                buttonType='secondary'
+                              />
+                            ) : ""
+                          }
+                        </td>
+                      </tr>
+                      <DataDictionaryValuesTable 
+                       open={this.state.row_opened[propertyKey]} 
+                       source={this.props.source}
+                       category={this.props.category}
+                       node={this.props.nodeID}
+                       property={propertyKey}
+                       hasValues={hasValues}
+                       type="all"
+                       closeTab={this.closeTab}
+                      />
+                    </React.Fragment>
                   );
                 })
               )
