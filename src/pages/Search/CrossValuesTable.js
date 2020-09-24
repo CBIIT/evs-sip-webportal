@@ -718,7 +718,7 @@ const CrossValuesTable = (props) => {
       <ContainerStyled>
         <Indicator>
           <IndicatorContent>
-            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+            Sorry, no results found.
           </IndicatorContent>
         </Indicator>
       </ContainerStyled>
