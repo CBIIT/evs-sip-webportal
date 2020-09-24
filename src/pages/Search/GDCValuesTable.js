@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 // import GDCTerms from './dialogs/GDCTerms';
 
@@ -393,7 +393,10 @@ const GDCValuesTable = (props) => {
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
               <a href="/#" onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faPlus}/>
+                {isToggleOn === true
+                  ? <FontAwesomeIcon icon={faMinus}/>
+                  : <FontAwesomeIcon icon={faPlus}/>
+                }
               </a>
             }
           </ColRight>
@@ -459,7 +462,7 @@ const GDCValuesTable = (props) => {
       <ContainerStyled>
         <Indicator>
           <IndicatorContent>
-            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+            Sorry, no results found.
           </IndicatorContent>
         </Indicator>
       </ContainerStyled>

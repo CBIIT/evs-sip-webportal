@@ -13,6 +13,7 @@ const ContainerStyled = styled(Container)`
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
+  overflow: hidden;
 `;
 
 const TableThead = styled(Row)`
@@ -20,12 +21,13 @@ const TableThead = styled(Row)`
   display: flex;
   align-items: center;
   border-radius: 0.8rem 0.8rem 0 0;
+  padding-right: 0.5rem
 `;
 
 const TableTh = styled.div`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1rem;
-  text-align: center;
+  text-align: left;
   color: var(--white);
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
@@ -33,7 +35,7 @@ const TableTh = styled.div`
 
 const TableBody = styled(Row)`
   overflow-y: auto;
-  max-height: 40rem;
+  max-height: 39rem;
 `;
 
 const TableRow = styled(Row)`
@@ -67,6 +69,10 @@ const SpanIcon = styled.span`
 `;
 
 const LinkBreak = styled.a`
+  word-wrap: break-word;
+`;
+
+const SpanBreak = styled.span`
   word-wrap: break-word;
 `;
 
@@ -130,6 +136,7 @@ const PropsTable = (props) => {
     if (source.enum !== undefined) propObj.enum = source.enum;
     if (source.cde !== undefined) {
       propObj.cdeId = highlightCdeIdObj[source.cde.id] ? highlightCdeIdObj[source.cde.id] : source.cde.id;
+      propObj.cdeSrc =source.cde.src;
       propObj.cdeUrl = source.cde.url;
     }
     properties.push(propObj);
@@ -146,21 +153,28 @@ const PropsTable = (props) => {
         </TableUl>
       </TableCol>
       <TableCol xs={2}>
-        <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak>
+        <SpanBreak dangerouslySetInnerHTML={{ __html: item.property }}></SpanBreak>
+        {/* <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak> */}
       </TableCol>
       <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
-      <TableCol xs={1}>{item.source}</TableCol>
+      <TableCol xs={1}>{item.source.toUpperCase()}</TableCol>
       <TableCol xs={2}>
         {item.enum !== undefined
           ? <div>
-            <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
-            <a id="toCompare" href="/#" data-ref=""> Compare with User List</a>
+            <span>See All Values</span><br/>
+            <span>Compare with User List</span>
+            {/* <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
+            <a id="toCompare" href="/#" data-ref="">Compare with User List</a> */}
           </div>
-          : <div>type: {item.type}</div>
+          : <div>
+            {item.type !== undefined && <span>type: {item.type}</span>}
+          </div>
         }
       </TableCol>
       <TableCol xs={1}>
-      <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      {(item.cdeId !== undefined && item.cdeSrc === 'CDE ID' ) && 
+        <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      }
       </TableCol>
     </TableRow>
   );
@@ -198,7 +212,7 @@ const PropsTable = (props) => {
       <ContainerStyled>
         <Indicator>
           <IndicatorContent>
-            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+            Sorry, no results found.
           </IndicatorContent>
         </Indicator>
       </ContainerStyled>
