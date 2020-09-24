@@ -68,9 +68,9 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const LinkBreak = styled.a`
-  word-wrap: break-word;
-`;
+// const LinkBreak = styled.a`
+//   word-wrap: break-word;
+// `;
 
 const SpanBreak = styled.span`
   word-wrap: break-word;
@@ -97,9 +97,9 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const IndicatorTerm = styled.span`
-  color: #2a72a4;
-`;
+// const IndicatorTerm = styled.span`
+//   color: #2a72a4;
+// `;
 
 
 const PropsTable = (props) => {
@@ -172,8 +172,8 @@ const PropsTable = (props) => {
         }
       </TableCol>
       <TableCol xs={1}>
-      {(item.cdeId !== undefined && item.cdeSrc === 'CDE ID' ) && 
-        <a href={`https://cdebrowser.nci.nih.gov/cdebrowserClient/cdeBrowser.html#/search?publicId=${item._id}&version=1.0`} target="_blank" dangerouslySetInnerHTML={{ __html: 'CDE ID - ' + item.cdeId}}></a>
+      {item.cdeId !== undefined && 
+        <span dangerouslySetInnerHTML={{ __html: item.cdeSrc + ' - ' + item.cdeId}}></span>
       }
       </TableCol>
     </TableRow>

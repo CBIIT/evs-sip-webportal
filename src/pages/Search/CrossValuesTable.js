@@ -119,9 +119,9 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const IndicatorTerm = styled.span`
-  color: #2a72a4;
-`;
+// const IndicatorTerm = styled.span`
+//   color: #2a72a4;
+// `;
 
 const DivCenter = styled.div`
   text-align: center;
