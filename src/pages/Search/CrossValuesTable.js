@@ -119,9 +119,9 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const IndicatorTerm = styled.span`
-  color: #2a72a4;
-`;
+// const IndicatorTerm = styled.span`
+//   color: #2a72a4;
+// `;
 
 const DivCenter = styled.div`
   text-align: center;
@@ -718,7 +718,7 @@ const CrossValuesTable = (props) => {
       <ContainerStyled>
         <Indicator>
           <IndicatorContent>
-            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+            Sorry, no results found.
           </IndicatorContent>
         </Indicator>
       </ContainerStyled>

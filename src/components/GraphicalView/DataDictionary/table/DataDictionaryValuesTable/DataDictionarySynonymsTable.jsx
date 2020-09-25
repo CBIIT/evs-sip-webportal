@@ -13,7 +13,7 @@ class DataDictionarySynonymsTable extends React.Component {
     };
   }
 
-  toggleTableHandler = event => {
+  toggleTableHandler = (event) => {
     event.preventDefault();
     let show = this.state.show;
     this.setState({

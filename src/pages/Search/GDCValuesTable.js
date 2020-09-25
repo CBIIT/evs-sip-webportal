@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, NavItem } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 // import GDCTerms from './dialogs/GDCTerms';
 
@@ -40,11 +40,12 @@ const TableBody = styled(Row)`
 
 const TableRow = styled(Row)`
   border-bottom: 1px solid #BBC5CD;
-`;
-
-const TableRowFlex = styled(TableRow)`
   display: flex;
   align-items: stretch;
+`;
+
+const TableRowValue = styled(TableRow)`
+  border-bottom: 1px solid #ecf0f1;
 `;
 
 const TableCol = styled(Col)`
@@ -107,9 +108,9 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const IndicatorTerm = styled.span`
-  color: #2a72a4;
-`;
+// const IndicatorTerm = styled.span`
+//   color: #2a72a4;
+// `;
 
 
 const GDCValuesTable = (props) => {
@@ -393,7 +394,10 @@ const GDCValuesTable = (props) => {
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
               <a href="/#" onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faPlus}/>
+                {isToggleOn === true
+                  ? <FontAwesomeIcon icon={faMinus}/>
+                  : <FontAwesomeIcon icon={faPlus}/>
+                }
               </a>
             }
           </ColRight>
@@ -416,7 +420,7 @@ const GDCValuesTable = (props) => {
   };
 
   const valuesItems = values.map((item, index) =>
-    <TableRowFlex key={index}>
+    <TableRow key={index}>
       <TableCol xs={3}>
         {item.category}
         <TableUl>
@@ -430,12 +434,12 @@ const GDCValuesTable = (props) => {
       </TableCol>
       <TableValues xs={9}>
         {item.vs.map((value, index) =>
-          <TableRowFlex key={index}>
+          <TableRowValue key={index}>
             <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-          </TableRowFlex>
+          </TableRowValue>
         )}
       </TableValues>
-    </TableRowFlex>
+    </TableRow>
   );
 
   if (values.length !== 0) {
@@ -459,7 +463,7 @@ const GDCValuesTable = (props) => {
       <ContainerStyled>
         <Indicator>
           <IndicatorContent>
-            Sorry, no results found for keyword: <IndicatorTerm>Keyword</IndicatorTerm>
+            Sorry, no results found.
           </IndicatorContent>
         </Indicator>
       </ContainerStyled>
