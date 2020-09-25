@@ -598,8 +598,14 @@ const getGraphicalGDCDictionary = async function() {
             // Do not include annotation.yaml, metaschema.yaml
             // Only include node in the gdc_searchable_nodes
             // Do not include node in category "TBD" and "data" 
+            /*
             if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
               && gdc_searchable_nodes.indexOf(fileJson.id) !== -1 && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
+              jsonData[file] = fileJson;
+            }
+            */
+            if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
+              && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
               jsonData[file] = fileJson;
             }
         });
