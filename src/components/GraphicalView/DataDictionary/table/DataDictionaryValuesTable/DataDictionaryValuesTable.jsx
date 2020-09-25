@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@gen3/ui-component/dist/components/Button';
 import { apiGetGDCDataById, apiGetPropertyValues  } from '../../../../../api';
 import DataDictionaryValuesTableBody from './DataDictionaryValuesTableBody';
-import DataDictionarySynonymsTable from './DataDictionarySynonymsTable';
+import DataDictionaryValuesTableRows from './DataDictionaryValuesTableRows';
 import './DataDictionaryValuesTable.css';
 
 class DataDictionaryValuesTable extends React.Component {
@@ -27,22 +27,11 @@ class DataDictionaryValuesTable extends React.Component {
       enums.forEach(function(item){
         let tmp = {};
         tmp.name = item.n;
-        tmp.ncit = "";
+        tmp.ncit = item.ncit ? item.ncit : [];
         tmp.syns = [];
         tmp.icdo = "";
         if(item.icdo){
           tmp.icdo = item.icdo.c;
-        }
-        if(item.ncit){
-          item.ncit.forEach(function(nc){
-            tmp.ncit += "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c + "\">" + nc.c + "</a><br>";
-            tmp.syns.push(nc.s);
-            nc.s.forEach(function(syn){
-              if(syn.t == 'PT' && syn.src == "NCI"){
-                tmp.pt += syn.n + "<br>";
-              }
-            });
-          });
         }
         tmp.matched = false;
         values.push(tmp);
@@ -59,66 +48,19 @@ class DataDictionaryValuesTable extends React.Component {
         if(tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"]){
           tmp.icdo = tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"][tmp.matched_fields["enum.icdo.have"].length -1];
         }
-        if(tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"]){
-          let ncits = tmp.matched_fields["enum.ncit.c"] || tmp.matched_fields["enum.ncit.c.have"];
-          ncits.forEach(function(nc){
-            tmp.ncit = tmp.ncit.replace('>' + nc.replace(/<b>/g, '').replace(/<\/b>/g, '') + '<',  '>' + nc + '<');
-          });
-        }
-        /*
-        if(tmp.matched_fields["enum.ncit.s.n"] || tmp.matched_fields["enum.ncit.s.n.have"]){
-          let syns = tmp.matched_fields["enum.ncit.s.n"] || tmp.matched_fields["enum.ncit.s.n.have"];
-          syns.forEach(function(syn){
-            tmp.pt = tmp.pt.replace(syn.replace(/<b>/g, '').replace(/<\/b>/g, ''),  syn);
-          });
-        }
-        */
       });
       
       const vs_html = values.map((v, index) => {
+        let trClassName = "matched-row";
         if(v.matched){
-          let highlights = v.matched_fields["enum.ncit.s.n"] || v.matched_fields["enum.ncit.s.n.have"];
-          const pt_html = v.syns.map((syn, index) => {
-            return (
-              <DataDictionarySynonymsTable syns={syn} highlights={highlights}/>
-            );
-          });
           return (
-            <tr key={index} className="matched-row">
-              <td className="data-dictionary-property-table__data">
-                <div className="data-dictionary-property-table__span" dangerouslySetInnerHTML={{ __html: v.name }}>
-                </div>
-              </td>
-              <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.icdo }}>
-              </td>
-              <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.ncit }}>
-              </td>
-              <td className="data-dictionary-property-table__data">
-                {pt_html}
-              </td>
-            </tr>
+            <DataDictionaryValuesTableRows trClassName={trClassName} name={v.name} icdo={v.icdo} syns={v.ncit} highlights={v.matched_fields} />
           );
         }
         else{
-          const pt_html = v.syns.map((syn, index) => {
-            return (
-              <DataDictionarySynonymsTable syns={syn} />
-            );
-          });
+          trClassName = this.state.matched_show_all ? "display-row" : "hidden-row";
           return (
-            <tr key={index} className={this.state.matched_show_all ? "display-row" : "hidden-row"}>
-              <td className="data-dictionary-property-table__data">
-                <div className="data-dictionary-property-table__span" dangerouslySetInnerHTML={{ __html: v.name }}>
-                </div>
-              </td>
-              <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.icdo }}>
-              </td>
-              <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.ncit }}>
-              </td>
-              <td className="data-dictionary-property-table__data">
-                {pt_html}
-              </td>
-            </tr>
+            <DataDictionaryValuesTableRows trClassName={trClassName} name={v.name} icdo={v.icdo} syns={v.ncit} />
           );
         }
       });
