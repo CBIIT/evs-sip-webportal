@@ -36,7 +36,10 @@ class DataDictionaryPropertyTable extends React.Component {
     this.setState({row_opened});
   }
 
-  openOrCloseValuesTable = (e, prop) => {
+  openOrCloseValuesTable = (e, prop, hasValues) => {
+    if(!hasValues){
+      return;
+    }
     let row_opened = Object.assign({}, this.state.row_opened);
     row_opened[prop] = !row_opened[prop];
     this.setState({row_opened});
@@ -144,7 +147,7 @@ class DataDictionaryPropertyTable extends React.Component {
                   
                   return (
                     <React.Fragment>
-                      <tr key={pKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, pKey)}>
+                      <tr key={pKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, pKey, hasValues)}>
                         <td className='data-dictionary-property-table__data'>
                           {propertyNameFragment}
                         </td>
@@ -249,7 +252,7 @@ class DataDictionaryPropertyTable extends React.Component {
                   const isRequired = this.props.requiredProperties.includes(propertyKey);
                   return (
                     <React.Fragment>
-                      <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, propertyKey)}>
+                      <tr key={propertyKey} className="data-dictionary-property-table__row" onClick={(e) => this.openOrCloseValuesTable(e, propertyKey, hasValues)}>
                         <td className='data-dictionary-property-table__data'>
                           {propertyNameFragment}
                         </td>
