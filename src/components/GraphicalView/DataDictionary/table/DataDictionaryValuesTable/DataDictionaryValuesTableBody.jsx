@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { apiGetPropertyValues  } from '../../../../../api';
-import DataDictionarySynonymsTable from './DataDictionarySynonymsTable';
+import DataDictionaryValuesTableRows from './DataDictionaryValuesTableRows';
 import './DataDictionaryValuesTable.css';
 
 class DataDictionaryValuesTableBody extends React.Component {
@@ -20,17 +20,11 @@ class DataDictionaryValuesTableBody extends React.Component {
     rs.forEach(function(item){
       let tmp = {};
       tmp.name = item.n;
-      tmp.ncit = "";
+      tmp.ncit = item.ncit ? item.ncit : [];
       tmp.syns = [];
       tmp.icdo = "";
       if(item.icdo){
         tmp.icdo = item.icdo.c;
-      }
-      if(item.ncit){
-        item.ncit.forEach(function(nc){
-          tmp.ncit += "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c + "\">" + nc.c + "</a><br>";
-          tmp.syns.push(nc.s);
-        });
       }
       values.push(tmp);
     });
@@ -41,26 +35,12 @@ class DataDictionaryValuesTableBody extends React.Component {
   }
 
   render() {
+
+
     const body = this.state.values.map((v, index) => {
-      const pt_html = v.syns.map((syn, index) => {
-        return (
-          <DataDictionarySynonymsTable syns={syn} />
-        );
-      });
+      let trClassName = "display-row";
       return (
-        <tr>
-          <td className="data-dictionary-property-table__data">
-            <div className="data-dictionary-property-table__span" dangerouslySetInnerHTML={{ __html: v.name }}>
-            </div>
-          </td>
-          <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.icdo }}>
-          </td>
-          <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: v.ncit }}>
-          </td>
-          <td className="data-dictionary-property-table__data">
-            {pt_html}
-          </td>
-        </tr>
+        <DataDictionaryValuesTableRows trClassName={trClassName} name={v.name} icdo={v.icdo} syns={v.ncit} />
       );
     });
     return (

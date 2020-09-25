@@ -456,10 +456,18 @@ const generateGDCData = async function(schema) {
       });
       delete obj['deprecated'];
       for (let p in obj.properties) {
-        if (obj.properties[p].deprecated_enum) {
-          obj.properties[p].enum = _.differenceWith(obj.properties[p].enum, obj.properties[p].deprecated_enum, _.isEqual);
+        
+        if(obj.properties[p].anyOf){
+
+          //remove any reference properties
+          delete obj.properties[p];
         }
-        delete obj.properties[p].deprecated_enum;
+        else{
+          if (obj.properties[p].deprecated_enum) {
+            obj.properties[p].enum = _.differenceWith(obj.properties[p].enum, obj.properties[p].deprecated_enum, _.isEqual);
+          }
+          delete obj.properties[p].deprecated_enum;
+        }
       }
       obj.properties = excludeSystemProperties(obj);
     }
