@@ -12,7 +12,7 @@ const ContainerStyled = styled(Container)`
   font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: var(--white);
+  background-color: var(--white-bkgd);
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
@@ -373,7 +373,7 @@ const CrossValuesTable = (props) => {
     crossValues.push({
       code: entry[0] !== 'no-mapping'? entry[0]: 'No NCIT Mapping',
       ref: 'NCIt',
-      preferredTerm: ncitMatchObj[entry[0]],
+      ncitPreferredTerm: ncitMatchObj[entry[0]],
       values: {
         ctdcvalues: ctdcValues,
         gdcvalues: gdcValues,
@@ -400,7 +400,7 @@ const CrossValuesTable = (props) => {
     crossValues.push({
       code: entry[0].replace(/<b>/g, '').replace(/<\/b>/g, ''),
       ref: 'ICD-O-3',
-      icdo3: icdo3MatchObj[entry[0]],
+      icdo3PreferredTerm: icdo3MatchObj[entry[0]].preferredTerm,
       values: {
         ctdcvalues: ctdcValues,
         gdcvalues: gdcValues,
@@ -508,6 +508,7 @@ const CrossValuesTable = (props) => {
               <Nav variant="tabs">
                 {props.icemun !== undefined &&
                   <Nav.Item>
+                    {console.log(props.ic.id)}
                     <Nav.Link eventKey={props.ic.id} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></Nav.Link>
                   </Nav.Item>
                 }
@@ -588,7 +589,7 @@ const CrossValuesTable = (props) => {
           </Col>
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
-              <a href="/#" onClick={ToggleTableHandler}>
+              <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
@@ -649,8 +650,8 @@ const CrossValuesTable = (props) => {
         <TableColLeft data-class="TableColLeft" xs={2}>
           <DivCenter>
             <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-            {cross.preferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.preferredTerm.termName} (${cross.preferredTerm.termGroup})` }}></PreferredTerm>}
-            {(cross.icdo3 !== undefined && cross.icdo3.preferredTerm !== undefined) && <PreferredTerm>{cross.icdo3.preferredTerm.n} ({cross.icdo3.preferredTerm.t})</PreferredTerm>}
+            {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
+            {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
         </DivCenter>
         </TableColLeft>
         <TableColRight data-class="TableColRight" xs={10}>

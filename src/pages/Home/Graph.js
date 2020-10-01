@@ -64,7 +64,7 @@ const GraphTitleContainer = styled.div`
   flex-direction: column;
 `;
 
-const GraphTitle = styled.h3`
+const GraphTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
   inline-size: 22rem;
   font-size: 1.875rem;
@@ -93,7 +93,7 @@ const Graph = () => {
       <RowStyled>
         <Col xs={7}>
           <DiagramContainer>
-            <DiagramImg src={graphImg}/>
+            <DiagramImg alt="Graphic Background" src={graphImg}/>
           </DiagramContainer>
         </Col>
         <Col xs={5}>

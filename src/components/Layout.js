@@ -1,6 +1,6 @@
 import React from 'react';
 const Layout = (props) => (
-  <div>
+  <div role="main">
     {props.children}
   </div>
 )

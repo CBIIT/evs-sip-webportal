@@ -300,7 +300,7 @@ const Search = () => {
                 onKeyDown={suggestKeyPressHandler}
               />
               <InputBoxBtnContainer>
-                <InputBoxButton onClick={() => searchTriggerRoute(searchState, selectDataSource)}>
+                <InputBoxButton aria-label="search" onClick={() => searchTriggerRoute(searchState, selectDataSource)}>
                   <InputBoxIcon icon={faArrowRight}/>
                 </InputBoxButton>
               </InputBoxBtnContainer>
@@ -314,7 +314,7 @@ const Search = () => {
             <OptionsContainer>
               <SelectContainer xs={3}>
                 <SelectTitle>Choose your <br/> Data Source</SelectTitle>
-                <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
+                <SelectBtn aria-label="Select All" onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               </SelectContainer>
               <Col xs={9}>
                 <FormGroupStyled>

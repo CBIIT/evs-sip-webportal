@@ -146,7 +146,7 @@ const Tools = () => {
             <FourToolsContainer>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={dataCommonsImg}></ToolBoxImg>
+                  <ToolBoxImg alt="data commons" src={dataCommonsImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
@@ -156,7 +156,7 @@ const Tools = () => {
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={SemanticImg}></ToolBoxImg>
+                  <ToolBoxImg alt="semantic" src={SemanticImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
                   </ToolBoxTitleContainer>
@@ -166,7 +166,7 @@ const Tools = () => {
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={ToolsImg}></ToolBoxImg>
+                  <ToolBoxImg alt="tools" src={ToolsImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
@@ -176,7 +176,7 @@ const Tools = () => {
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={SupportImg}></ToolBoxImg>
+                  <ToolBoxImg alt="support" src={SupportImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>

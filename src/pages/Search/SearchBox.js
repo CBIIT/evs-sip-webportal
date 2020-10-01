@@ -92,9 +92,9 @@ const SearchOptions = styled.div`
   align-items: flex-start;
 `;
 
-const SearchOptionsLabel = styled.h4`
+const SearchOptionsLabel = styled.label`
   font-family: 'Lato-Regular',sans-serif;
-  color: #397DED;
+  color: #1162E9;
   font-size: 0.875rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
@@ -311,10 +311,11 @@ const SearchBox = (props) => {
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
               placeholder="Search EVS-SIP"
+              aria-label="Search EVS-SIP"
               ref={searchInputRef}
             />
-            <DeleteBtn href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
-            <SearchButton onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
+            <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
+            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
           </InputGroup>
@@ -328,7 +329,7 @@ const SearchBox = (props) => {
         <SearchAllOptions>
           <SearchOptionsContainer>
             <SearchOptions>
-              <SelectBtn onClick={checkedAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label="Select All" onClick={checkedAllToggleHandler}>Select All</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="match" type="checkbox" checked={optionsState['match']} onClick={checkedToggleHandler}/>
@@ -357,7 +358,7 @@ const SearchBox = (props) => {
           <SearchOptionsContainer>
             <SearchOptionsLabel>Choose your Data Source</SearchOptionsLabel>
             <SearchOptions>
-              <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label="Select All" onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>

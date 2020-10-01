@@ -74,7 +74,7 @@ const Copyright = styled.div`
 
 const Footer = () => {
   return (
-    <FooterStyled >
+    <FooterStyled role="contentinfo">
       <FooterContainer>
         <Menu>
           <Row>

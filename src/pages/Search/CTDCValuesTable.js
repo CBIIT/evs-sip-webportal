@@ -9,7 +9,7 @@ const ContainerStyled = styled(Container)`
   font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: var(--white);
+  background-color: var(--white-bkgd);
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
@@ -392,7 +392,7 @@ const CTDCValuesTable = (props) => {
           </Col>
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
-              <a href="/#" onClick={ToggleTableHandler}>
+              <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
