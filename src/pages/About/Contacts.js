@@ -44,9 +44,9 @@ const ContentBoxText = styled.div`
 
 const Contacts = () => {
   return <ContentBox>
-    <ContentBoxTitle>EVS Contacts</ContentBoxTitle>
+    <ContentBoxTitle>EVS-SIP Contacts</ContentBoxTitle>
     <ContentBoxText>
-      <p>If you have any questions, please contact us at <a href="/">evssip@mail.nih.gov</a>.</p>
+      <p>If you have any questions, please contact us at <a href="mailto:evssip@mail.nih.gov">evssip@mail.nih.gov</a>.</p>
     </ContentBoxText>
   </ContentBox>
 }

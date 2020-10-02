@@ -74,10 +74,10 @@ const ICDCModel = () => {
         Additionally, the ICDC Data Model serves as a template for similar initiatives and data structures, including graph-based database schemas. The model will continue to evolve as data needs are further discerned.
       </p>
       <p>
-        The source of ICDC data model can be found on Github at: <a title="https://github.com/CBIIT/icdc-model-tool" target="_blank" href="https://github.com/CBIIT/icdc-model-tool">https://github.com/CBIIT/icdc-model-tool</a>.
+        The source of ICDC data model can be found on Github at: <a title="ICDC Model Tool" target="_blank" href="https://github.com/CBIIT/icdc-model-tool" rel="noopener noreferrer">https://github.com/CBIIT/icdc-model-tool</a>.
       </p>
       <p>
-        The model and associated files may be viewed here: <a title="https://cbiit.github.io/icdc-model-tool/" target="_blank" href="https://cbiit.github.io/icdc-model-tool/">https://cbiit.github.io/icdc-model-tool/</a>.
+        The model and associated files may be viewed here: <a title="Associated ICDC Model Flies" target="_blank" href="https://cbiit.github.io/icdc-model-tool/" rel="noopener noreferrer">https://cbiit.github.io/icdc-model-tool/</a>.
       </p>
     </ContentBoxText>
     <ContentBoxHr/>

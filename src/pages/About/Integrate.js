@@ -52,7 +52,7 @@ const ContentBoxText = styled.div`
 
 const Integrate = () => {
   return <ContentBoxIntegrate>
-    <ContentBoxTitle>How to integrate into EVS</ContentBoxTitle>
+    <ContentBoxTitle>How to integrate into EVS-SIP</ContentBoxTitle>
     <ContentBoxText>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 

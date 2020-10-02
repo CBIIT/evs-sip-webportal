@@ -79,19 +79,6 @@ const ToolBoxTitle = styled.h4`
   line-height: 1rem;
   letter-spacing: 0.03125rem;
 `;
-
-const ToolBoxParagragh = styled.p`
-  font-family: 'Inter', sans-serif;
-  font-weight: normal;
-  font-size: 0.875rem;
-  color: var(--toolbox-paragraph);
-  text-align: left;
-  margin: auto;
-  padding: 0.7rem 0.7rem;
-  inline-size: 14.3rem;
-  line-height: 1.0625rem;
-`;
-
 const ToolBoxLink = styled(Link)`
   width: 100%;
   line-height: 2rem;
