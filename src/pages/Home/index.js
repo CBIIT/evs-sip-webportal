@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { apiSearchAll } from '../../api';
 import Search from './Search';
 import Graph from './Graph';
 import Tools from './Tools'
@@ -11,6 +10,10 @@ const Page = styled.div`
 `;
 
 const Home = () => {
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  });
+
   return <Page>
       <Search></Search>
       <Graph></Graph>

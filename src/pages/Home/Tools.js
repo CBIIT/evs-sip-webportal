@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Row, Col} from 'react-bootstrap';
 
@@ -55,7 +56,7 @@ const ToolBoxContainer = styled.div`
 
 const ToolBoxImg = styled.img`
   max-width: 5rem;
-  margin: 2rem auto 1.3rem;
+  margin: 3rem auto 1.5rem;
   display: block;
 `;
 
@@ -68,14 +69,14 @@ const ToolBoxTitleContainer = styled.div`
 
 const ToolBoxTitle = styled.h4`
   font-family: 'Inter', sans-serif;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--toolbox-title);
   text-transform: uppercase;
   inline-size: 8rem;
   margin: auto;
   text-align: center;
-  line-height: 0.9375rem;
+  line-height: 1rem;
   letter-spacing: 0.03125rem;
 `;
 
@@ -91,7 +92,7 @@ const ToolBoxParagragh = styled.p`
   line-height: 1.0625rem;
 `;
 
-const ToolBoxLink = styled.a`
+const ToolBoxLink = styled(Link)`
   width: 100%;
   line-height: 2rem;
   font-family: 'Raleway-ExtraBold', sans-serif;
@@ -150,9 +151,8 @@ const Tools = () => {
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/datamodel">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -160,9 +160,8 @@ const Tools = () => {
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -170,9 +169,8 @@ const Tools = () => {
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -180,9 +178,8 @@ const Tools = () => {
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about">Read More</ToolBoxLink>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>
