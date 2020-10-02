@@ -6,7 +6,7 @@ import MainTabsController from './MainTabsController';
 import LoadingAnimation from '../../components/LoadingAnimation';
 
 const Page = styled.div`
-  background-color: var(--white);
+  background-color: var(--white-bkgd);
   padding-bottom: 18rem;
 `;
 

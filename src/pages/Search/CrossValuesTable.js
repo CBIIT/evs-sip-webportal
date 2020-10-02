@@ -599,7 +599,7 @@ const CrossValuesTable = (props) => {
           </ColRight>
         </Row>
         {(props.nsyn !== undefined || props.icemun !== undefined) &&
-          <Collapse in={isToggleOn}>
+          <Collapse in={isToggleOn} mountOnEnter={true}>
             <div className="ncit-values">
               {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
                 <NcitValues ncit={props.nsyn} />

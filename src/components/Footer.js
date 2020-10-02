@@ -26,8 +26,9 @@ const Logo = styled.img`
   max-width: 15rem;
 `;
 
-const Title = styled.h5`
+const Title = styled.h2`
   font-size: 0.6875rem;
+  color: var(--white);
 `;
 
 const MenuLink = styled.a`

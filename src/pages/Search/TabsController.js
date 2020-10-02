@@ -82,8 +82,7 @@ const NavLinkStyled = styled(Nav.Link)`
   font-size: 1.125rem;
   text-align: center;
   color: #042A68;
-  padding: .2rem 2rem;
-  margin: 0.5rem auto;
+  adding: .6rem 2rem;
   inline-size: 14rem;
 
   &&.active {
@@ -128,7 +127,7 @@ const TabsController = (props) => {
             </TabNavsCol>
             <Col sm={12}>
               <Tab.Content transition="false">
-                <Tab.Pane unmountOnExit={true} eventKey="values">
+                <Tab.Pane unmountOnExit={false} eventKey="values">
                   <CrossValuesTable values={props.source} />
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="properties">

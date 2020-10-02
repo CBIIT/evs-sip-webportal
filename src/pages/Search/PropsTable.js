@@ -199,7 +199,7 @@ const PropsTable = (props) => {
             <TableTh>Property Values</TableTh>
           </Col>
           <Col xs={1}>
-            <TableTh>Reference</TableTh>
+            <TableTh>Mapped Code</TableTh>
           </Col>
         </TableThead>
         <TableBody>

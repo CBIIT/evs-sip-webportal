@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
@@ -402,17 +402,19 @@ const CTDCValuesTable = (props) => {
           </ColRight>
         </Row>
         {(props.nsyn !== undefined || props.icemun !== undefined) &&
-          <div className="ncit-values" style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
-            {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
-              <NcitValues ncit={props.nsyn} />
-            }
-            {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
-              <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
-            }
-            {(props.nsyn === undefined && props.icemun !== undefined) &&
-              <ICDO3Value ic={props.ic} icemun={props.icemun} />
-            }
-          </div>
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div className="ncit-values">
+              {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
+                <NcitValues ncit={props.nsyn} />
+              }
+              {((props.nsyn !== undefined && props.icemun !== undefined) || (props.nsyn !== undefined && props.nsyn.length > 1)) &&
+                <TabsContent ncit={props.nsyn} ic={props.ic} icemun={props.icemun} />
+              }
+              {(props.nsyn === undefined && props.icemun !== undefined) &&
+                <ICDO3Value ic={props.ic} icemun={props.icemun} />
+              }
+            </div>
+          </Collapse>
         }
       </TableCol>
     );
