@@ -451,7 +451,7 @@ const CTDCValuesTable = (props) => {
           <TableTh>Category / Node / Property</TableTh>
         </Col>
         <Col xs={9}>
-          <TableTh>Matched GDC Values</TableTh>
+          <TableTh>Matched CTDC Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>

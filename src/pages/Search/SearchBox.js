@@ -222,6 +222,14 @@ const SearchBox = (props) => {
     icdc: false
   });
 
+  let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
+
+  // const ToggleTableHandler = event => {
+  //   event.preventDefault();
+  //   setIsToggleOn(!isToggleOn);
+  // };
+
   const searchInputRef = useRef();
 
   const suggestClickHandler = (id, event) => {
@@ -285,19 +293,37 @@ const SearchBox = (props) => {
   };
 
   const checkedAllToggleHandler = event => {
-    setOptionsState({
-      match: true,
-      desc: true,
-      syns: true
-    });
+    if(isToggleOnOptions === false){
+      setOptionsState({
+        match: true,
+        desc: true,
+        syns: true
+      });
+    } else {
+      setOptionsState({
+        match: false,
+        desc: false,
+        syns: false
+      });
+    }
+    setIsToggleOnOptions(!isToggleOnOptions);
   };
 
   const selectDataAllToggleHandler = event => {
-    setSelectDataSource({
-      ctdc: true,
-      gdc: true,
-      icdc: true
-    });
+    if(isToggleOnSource === false){
+      setSelectDataSource({
+        ctdc: true,
+        gdc: true,
+        icdc: true
+      });
+    } else {
+      setSelectDataSource({
+        ctdc: false,
+        gdc: false,
+        icdc: false
+      });
+    }
+    setIsToggleOnSource(!isToggleOnSource);
   };
 
   return (
@@ -329,7 +355,7 @@ const SearchBox = (props) => {
         <SearchAllOptions>
           <SearchOptionsContainer>
             <SearchOptions>
-              <SelectBtn aria-label="Select All" onClick={checkedAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'} onClick={checkedAllToggleHandler}>{isToggleOnOptions === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="match" type="checkbox" checked={optionsState['match']} onClick={checkedToggleHandler}/>
@@ -358,7 +384,7 @@ const SearchBox = (props) => {
           <SearchOptionsContainer>
             <SearchOptionsLabel>Choose your Data Source</SearchOptionsLabel>
             <SearchOptions>
-              <SelectBtn aria-label="Select All" onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'} onClick={selectDataAllToggleHandler}>{isToggleOnSource === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>

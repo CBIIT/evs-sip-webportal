@@ -95,7 +95,18 @@ const TableLiBreak = styled(TableLi)`
 `;
 
 const ColRight = styled(Col)`
-  text-align: right;
+  display: flex; 
+  justify-content: flex-end;
+`;
+
+const CollapseButton = styled.div`
+  width: 1rem;
+  text-align: center;
+  color: #1B6BEE;
+
+  &&:focus {
+    outline: none;
+  }
 `;
 
 const Indicator = styled.div`
@@ -508,7 +519,6 @@ const CrossValuesTable = (props) => {
               <Nav variant="tabs">
                 {props.icemun !== undefined &&
                   <Nav.Item>
-                    {console.log(props.ic.id)}
                     <Nav.Link eventKey={props.ic.id} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></Nav.Link>
                   </Nav.Item>
                 }
@@ -589,12 +599,12 @@ const CrossValuesTable = (props) => {
           </Col>
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
-              <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+              <CollapseButton role="button" aria-label={isToggleOn === true ? 'collapse' : 'expand'}  tabIndex="0" onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
                 }
-              </a>
+              </CollapseButton>
             }
           </ColRight>
         </Row>

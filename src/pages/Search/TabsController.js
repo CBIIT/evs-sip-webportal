@@ -16,7 +16,7 @@ const NavLinkStyled = styled(Nav.Link)`
   font-size: 1.125rem;
   text-align: center;
   color: #042A68;
-  adding: .6rem 2rem;
+  padding: .6rem 2rem;
   inline-size: 14rem;
 
   &&.active {
