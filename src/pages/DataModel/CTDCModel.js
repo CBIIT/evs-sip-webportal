@@ -18,7 +18,7 @@ const ContentBoxTitle = styled.h2`
   font-family: 'Inter', sans-serif;
   font-size: 1.1875rem;
   font-weight: 500;
-  color: #00C6FF;
+  color: #009ECC;
   text-transform: uppercase;
 `;
 
@@ -35,7 +35,7 @@ const ContentBoxText = styled.div`
     font-family: 'Inter', sans-serif;
     font-size: 1.1875rem;
     font-weight: 500;
-    color: #00C6FF;
+    color: #009ECC;
     text-transform: uppercase;
     margin-bottom: 1rem;
   }

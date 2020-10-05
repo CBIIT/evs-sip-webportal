@@ -54,8 +54,8 @@ const ContentBoxTable = styled(Table)`
 
   && thead th {
     background-color: var(--table-th);
-    color: var(--white);
-    font-weight: normal;
+    color: #fff;
+    font-weight: bold;
     text-transform: uppercase;
     font-size: 0.8125rem;
     border: none;
@@ -88,7 +88,7 @@ const DataSources = () => {
           <tr>
             <th>Data source</th>
             <th>URL</th>
-            <th>inception date</th>
+            <th>Inception Date</th>
           </tr>
         </thead>
         <tbody>

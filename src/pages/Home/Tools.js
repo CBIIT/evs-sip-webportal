@@ -67,7 +67,7 @@ const ToolBoxTitleContainer = styled.div`
   align-items: center;
 `;
 
-const ToolBoxTitle = styled.h4`
+const ToolBoxTitle = styled.span`
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   font-weight: bold;
@@ -117,7 +117,7 @@ const ToolTitleContainer = styled.div`
   align-items: center;
 `;
 
-const ToolTitle = styled.h3`
+const ToolTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
   inline-size: 10rem;
   font-size: 2.25rem;
@@ -139,7 +139,7 @@ const Tools = () => {
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/datamodel">Read More</ToolBoxLink>
+                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -148,7 +148,7 @@ const Tools = () => {
                     <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integraction">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -157,7 +157,7 @@ const Tools = () => {
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Tools">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -166,7 +166,7 @@ const Tools = () => {
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Support">Read More</ToolBoxLink>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>
