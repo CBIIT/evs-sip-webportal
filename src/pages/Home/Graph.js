@@ -31,7 +31,7 @@ const GraphicBkgdLeft = styled.div`
 `;
 
 const GraphicBkgdRight = styled.div`
-  background-color: var(--graphic-blue-light);
+  background-color: var(--graphic-blue);
   width: 33.333333%;
 `;
 
@@ -56,7 +56,7 @@ const DiagramImg = styled.img`
 `;
 
 const GraphTitleContainer = styled.div`
-  background-color: var(--graphic-blue-light);
+  background-color: var(--graphic-blue);
   height: 100%;
   display: flex;
   justify-content: center;
@@ -68,7 +68,7 @@ const GraphTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
   inline-size: 22rem;
   font-size: 1.875rem;
-  color: var(--white);
+  color: #fff;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
@@ -78,6 +78,7 @@ const GraphParagraph = styled.p`
   font-family: 'Inter', sans-serif;
   inline-size: 22rem;
   font-size: 1.0625rem;
+  color: #b9fee6;
   margin-top: 1.5rem;
 `;
 
