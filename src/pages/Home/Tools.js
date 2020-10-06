@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Container, Row, Col} from 'react-bootstrap';
 
@@ -55,7 +56,7 @@ const ToolBoxContainer = styled.div`
 
 const ToolBoxImg = styled.img`
   max-width: 5rem;
-  margin: 2rem auto 1.3rem;
+  margin: 3rem auto 1.5rem;
   display: block;
 `;
 
@@ -66,32 +67,19 @@ const ToolBoxTitleContainer = styled.div`
   align-items: center;
 `;
 
-const ToolBoxTitle = styled.h4`
+const ToolBoxTitle = styled.span`
   font-family: 'Inter', sans-serif;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: bold;
   color: var(--toolbox-title);
   text-transform: uppercase;
   inline-size: 8rem;
   margin: auto;
   text-align: center;
-  line-height: 0.9375rem;
+  line-height: 1rem;
   letter-spacing: 0.03125rem;
 `;
-
-const ToolBoxParagragh = styled.p`
-  font-family: 'Inter', sans-serif;
-  font-weight: normal;
-  font-size: 0.875rem;
-  color: var(--toolbox-paragraph);
-  text-align: left;
-  margin: auto;
-  padding: 0.7rem 0.7rem;
-  inline-size: 14.3rem;
-  line-height: 1.0625rem;
-`;
-
-const ToolBoxLink = styled.a`
+const ToolBoxLink = styled(Link)`
   width: 100%;
   line-height: 2rem;
   font-family: 'Raleway-ExtraBold', sans-serif;
@@ -129,7 +117,7 @@ const ToolTitleContainer = styled.div`
   align-items: center;
 `;
 
-const ToolTitle = styled.h3`
+const ToolTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
   inline-size: 10rem;
   font-size: 2.25rem;
@@ -146,43 +134,39 @@ const Tools = () => {
             <FourToolsContainer>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={dataCommonsImg}></ToolBoxImg>
+                  <ToolBoxImg alt="data commons" src={dataCommonsImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={SemanticImg}></ToolBoxImg>
+                  <ToolBoxImg alt="semantic" src={SemanticImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integraction">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={ToolsImg}></ToolBoxImg>
+                  <ToolBoxImg alt="tools" src={ToolsImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Tools">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
-                  <ToolBoxImg src={SupportImg}></ToolBoxImg>
+                  <ToolBoxImg alt="support" src={SupportImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
-                  <ToolBoxParagragh>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</ToolBoxParagragh>
                 </ToolBoxContainer>
-                <ToolBoxLink href="/">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Support">Read More</ToolBoxLink>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>

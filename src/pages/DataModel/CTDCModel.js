@@ -18,7 +18,7 @@ const ContentBoxTitle = styled.h2`
   font-family: 'Inter', sans-serif;
   font-size: 1.1875rem;
   font-weight: 500;
-  color: #00C6FF;
+  color: #009ECC;
   text-transform: uppercase;
 `;
 
@@ -35,7 +35,7 @@ const ContentBoxText = styled.div`
     font-family: 'Inter', sans-serif;
     font-size: 1.1875rem;
     font-weight: 500;
-    color: #00C6FF;
+    color: #009ECC;
     text-transform: uppercase;
     margin-bottom: 1rem;
   }
@@ -73,10 +73,10 @@ const CTDCModel = () => {
         Additionally, the CTDC Data Model serves as a template for similar initiatives and data structures, including graph-based database schemas. The model will continue to evolve as data needs are further discerned.
       </p>
       <p>
-        The source of CTDC data model can be found on Github at: <a title="https://github.com/CBIIT/ctdc-model" target="_blank" href="https://github.com/CBIIT/ctdc-model">https://github.com/CBIIT/ctdc-model</a>.
+        The source of CTDC data model can be found on Github at: <a title="https://github.com/CBIIT/ctdc-model" target="_blank" href="https://github.com/CBIIT/ctdc-model" rel="noopener noreferrer">https://github.com/CBIIT/ctdc-model</a>.
       </p>
       <p>
-        The entire CTDC data model can be queried via API: <a title="https://trialcommons-dev.cancer.gov/v1/graphql/" target="_blank" href="https://trialcommons-dev.cancer.gov/v1/graphql/">https://trialcommons-dev.cancer.gov/v1/graphql/</a>.
+        The entire CTDC data model can be queried via API: <a title="https://trialcommons-dev.cancer.gov/v1/graphql/" target="_blank" href="https://trialcommons-dev.cancer.gov/v1/graphql/" rel="noopener noreferrer">https://trialcommons-dev.cancer.gov/v1/graphql/</a>.
       </p>
     </ContentBoxText>
     <ContentBoxHr/>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TabsController from './TabsController'
 
@@ -26,6 +26,10 @@ const DataModel = (props) => {
 
   const [model, setModel] = useState('gdc');
   const [fromModel, setfromModel] = useState('gdc');
+
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  });
 
   if(props.location.state !== undefined && props.location.state.fromDataModel !== undefined && props.location.state.fromDataModel !== fromModel){
     setfromModel(props.location.state.fromDataModel);

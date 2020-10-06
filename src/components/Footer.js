@@ -10,7 +10,7 @@ const FooterStyled = styled.footer`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 18rem; 
+  height: 19rem; 
 `;
 
 const FooterContainer = styled(Container)`
@@ -26,8 +26,9 @@ const Logo = styled.img`
   max-width: 15rem;
 `;
 
-const Title = styled.h5`
+const Title = styled.h2`
   font-size: 0.6875rem;
+  color: var(--white);
 `;
 
 const MenuLink = styled.a`
@@ -74,7 +75,7 @@ const Copyright = styled.div`
 
 const Footer = () => {
   return (
-    <FooterStyled >
+    <FooterStyled role="contentinfo">
       <FooterContainer>
         <Menu>
           <Row>

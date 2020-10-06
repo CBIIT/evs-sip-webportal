@@ -7,7 +7,6 @@ import SingleTabsController from './SingleTabsController';
 
 const Result = styled.div`
   display: 'none';
-  border: 1px solid #dce4ec;
   border-radius: 5px;
   background-color: var(--white);
   padding: 2rem 0;
@@ -23,7 +22,7 @@ const TabNavTextCol= styled(Col)`
   margin: 3rem 0;
 `;
 
-const TabNavText = styled.h3`
+const TabNavText = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
   font-size: 1.875rem;
   color: #042A68;

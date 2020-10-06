@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import { apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from './api';
 import * as serviceWorker from './serviceWorker';

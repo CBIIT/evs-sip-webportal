@@ -16,8 +16,7 @@ const NavLinkStyled = styled(Nav.Link)`
   font-size: 1.125rem;
   text-align: center;
   color: #042A68;
-  padding: .2rem 2rem;
-  margin: 0.5rem auto;
+  padding: 0.6rem 2rem;
   inline-size: 10rem;
 
   &&.active {
@@ -64,7 +63,7 @@ const SingleTabsController = (props) => {
             </TabNavsCol>
             <Col sm={12}>
               <Tab.Content transition="false">
-                <Tab.Pane unmountOnExit={true} eventKey="gdc">
+                <Tab.Pane unmountOnExit={false} eventKey="gdc">
                   <GDCValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctdc">

@@ -92,9 +92,9 @@ const SearchOptions = styled.div`
   align-items: flex-start;
 `;
 
-const SearchOptionsLabel = styled.h4`
+const SearchOptionsLabel = styled.label`
   font-family: 'Lato-Regular',sans-serif;
-  color: #397DED;
+  color: #1162E9;
   font-size: 0.875rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
@@ -222,6 +222,14 @@ const SearchBox = (props) => {
     icdc: false
   });
 
+  let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
+
+  // const ToggleTableHandler = event => {
+  //   event.preventDefault();
+  //   setIsToggleOn(!isToggleOn);
+  // };
+
   const searchInputRef = useRef();
 
   const suggestClickHandler = (id, event) => {
@@ -285,19 +293,37 @@ const SearchBox = (props) => {
   };
 
   const checkedAllToggleHandler = event => {
-    setOptionsState({
-      match: true,
-      desc: true,
-      syns: true
-    });
+    if(isToggleOnOptions === false){
+      setOptionsState({
+        match: true,
+        desc: true,
+        syns: true
+      });
+    } else {
+      setOptionsState({
+        match: false,
+        desc: false,
+        syns: false
+      });
+    }
+    setIsToggleOnOptions(!isToggleOnOptions);
   };
 
   const selectDataAllToggleHandler = event => {
-    setSelectDataSource({
-      ctdc: true,
-      gdc: true,
-      icdc: true
-    });
+    if(isToggleOnSource === false){
+      setSelectDataSource({
+        ctdc: true,
+        gdc: true,
+        icdc: true
+      });
+    } else {
+      setSelectDataSource({
+        ctdc: false,
+        gdc: false,
+        icdc: false
+      });
+    }
+    setIsToggleOnSource(!isToggleOnSource);
   };
 
   return (
@@ -311,10 +337,11 @@ const SearchBox = (props) => {
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
               placeholder="Search EVS-SIP"
+              aria-label="Search EVS-SIP"
               ref={searchInputRef}
             />
-            <DeleteBtn href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
-            <SearchButton onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
+            <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
+            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
           </InputGroup>
@@ -328,7 +355,7 @@ const SearchBox = (props) => {
         <SearchAllOptions>
           <SearchOptionsContainer>
             <SearchOptions>
-              <SelectBtn onClick={checkedAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'} onClick={checkedAllToggleHandler}>{isToggleOnOptions === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="match" type="checkbox" checked={optionsState['match']} onClick={checkedToggleHandler}/>
@@ -357,7 +384,7 @@ const SearchBox = (props) => {
           <SearchOptionsContainer>
             <SearchOptionsLabel>Choose your Data Source</SearchOptionsLabel>
             <SearchOptions>
-              <SelectBtn onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
+              <SelectBtn aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'} onClick={selectDataAllToggleHandler}>{isToggleOnSource === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
                   <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>

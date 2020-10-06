@@ -9,7 +9,7 @@ const ContainerStyled = styled(Container)`
   font-size: 1rem;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: var(--white);
+  background-color: var(--white-bkgd);
   border-radius: 1rem;
   height: 45rem;
   border: 2px solid #535F74;
@@ -200,7 +200,7 @@ const PropsTable = (props) => {
             <TableTh>Property Values</TableTh>
           </Col>
           <Col xs={1}>
-            <TableTh>caDSR CDE Reference</TableTh>
+            <TableTh>Mapped Code</TableTh>
           </Col>
         </TableThead>
         <TableBody>

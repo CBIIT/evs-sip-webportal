@@ -14,7 +14,7 @@ const Logo = styled.img`
 `;
 
 const Header = () => {
-  return <LogoContainer>
+  return <LogoContainer role="banner">
     <Link to="/"><Logo src={logo} alt="logo"/></Link>
   </LogoContainer>;
 }

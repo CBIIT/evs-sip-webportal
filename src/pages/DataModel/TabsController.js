@@ -29,10 +29,11 @@ const NavLinkStyled = styled(Nav.Link)`
   justify-content: center;
   align-items: center;
   z-index: 0;
+  border-color: transparent !important;
 
   &&.active {
     font-family: 'Raleway-Bold', sans-serif;
-    color: #00C6FF;
+    color: #009ECC;
     font-size: 1.3125rem;
     text-transform: uppercase;
     background-color: transparent;

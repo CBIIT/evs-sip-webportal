@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import styled from 'styled-components';
 
 import Description from './Description';
@@ -25,6 +25,10 @@ const PageTitle = styled.h1`
 `;
 
 const About = () => {
+  useEffect(()=> {
+    window.scrollTo(0, 0);
+  });
+
   return <Page>
     <PageContainer>
       <PageTitle>About</PageTitle>
