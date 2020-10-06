@@ -12,7 +12,9 @@ const caDSR = require('./caDSR');
 const cache = require('./cache');
 const extend = require('util')._extend;
 const _ = require('lodash');
-const gdc_searchable_nodes = require('../config').gdc_searchable_nodes;
+const {
+  performance
+} = require('perf_hooks');
 const drugs_properties = require('../config').drugs_properties;
 const shared = require('../service/search/shared');
 const folderPath = path.join(__dirname, '..', 'data_files','GDC', 'model');
@@ -25,7 +27,7 @@ var unloaded_ncits = [];
 var esClient = new elasticsearch.Client({
   host: config_dev.elasticsearch.host,
   log: config_dev.elasticsearch.log,
-  requestTimeout: config_dev.elasticsearch.timeout
+  requestTimeout: config_dev.elasticsearch.requestTimeout
 });
 
 const helper_gdc = (fileJson, conceptCode, syns) => {
@@ -180,6 +182,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
             if(n == undefined || n == '') return;
             let dict = {};
             dict.c = n.toUpperCase();
+            dict.l = (n !== '' && syns[dict.c] ? syns[dict.c].label : "");
             let synonyms = (n !== '' && syns[dict.c] ? syns[dict.c].synonyms : []);
             if(syns[dict.c] == undefined){
               console.log("Don't have the ncit data for:" + dict.c);
@@ -423,6 +426,7 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
           if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
             let dict = {};
             dict.c = values_dict[v_lowcase].v_n_code.trim();
+            dict.l = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].label : "");
             let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
             if(syns[values_dict[v_lowcase].v_n_code] == undefined){
               console.log("Don't have the ncit data for:" + dict.c);
@@ -616,28 +620,43 @@ const bulkIndex = async function(next){
 }
 exports.bulkIndex = bulkIndex;
 
-const query = (index, dsl, highlight, next) => {
+const query = (index, dsl, source_excludes, highlight, next) => {
   var body = {
-    size: 10000000,
+    size: config.search_result_limit,
     from: 0
   };
   body.query = dsl;
   if (highlight) {
     body.highlight = highlight;
   }
+  /*
   body.sort = [{
     "category": "asc"
   }, {
     "node": "asc"
   }];
-  esClient.search({index: index, body: body}, (err, data) => {
-    if (err) {
-      logger.error(err);
-      next(err);
-    } else {
-      next(data);
-    }
-  });
+  */
+  if(source_excludes == ""){
+    esClient.search({index: index, body: body}, (err, data) => {
+      if (err) {
+        logger.error(err);
+        next(err);
+      } else {
+        next(data);
+      }
+    });
+  }
+  else{
+    esClient.search({index: index, "_source_excludes": source_excludes, body: body}, (err, data) => {
+      if (err) {
+        logger.error(err);
+        next(err);
+      } else {
+        next(data);
+      }
+    });
+  }
+  
 }
 
 exports.query = query;

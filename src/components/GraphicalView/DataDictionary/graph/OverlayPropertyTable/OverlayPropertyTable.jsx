@@ -8,7 +8,7 @@ import {
   getNodeTitleFragment,
 } from '../../highlightHelper';
 import DataDictionaryPropertyTable from '../../table/DataDictionaryPropertyTable/.';
-import { apiGetGDCDataById, apiGetPropertyValues  } from '../../../../../api';
+import { apiGetPropertyValues  } from '../../../../../api';
 import './OverlayPropertyTable.css';
 
 class OverlayPropertyTable extends React.Component {

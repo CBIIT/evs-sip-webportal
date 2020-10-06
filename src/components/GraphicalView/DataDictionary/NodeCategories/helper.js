@@ -57,8 +57,8 @@ const nodeCategoryList = {
     color: '#AD91FF',
   },
   administrative: {
-    icon: IconAdministrative,
-    color: '#AD91FF',
+    icon: IconSubjectCharacteristics,
+    color: '#5d74f5',
   },
   notation: {
     icon: IconNotation,

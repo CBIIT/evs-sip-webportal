@@ -33,7 +33,7 @@ const Search = (props) => {
     setLoadingState(true);
     apiSearchAll(keyword, options, sources)
       .then(result => {
-        setSourceState(result);
+        setSourceState(result.returnList);
         setLoadingState(false);
       });
   };
