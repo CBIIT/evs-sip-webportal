@@ -65,7 +65,13 @@ var all = {
   ],
 
   //in memory cache ttl
-  item_ttl: 24 * 60 * 60
+  item_ttl: 24 * 60 * 60,
+
+  //Typeahead item size
+  suggestion_size: 10,
+
+  //search result limit
+  search_result_limit: 50
 
 };
 

@@ -127,7 +127,8 @@ class DataDictionaryPropertyTable extends React.Component {
                     ),
                   );
 
-                  let hasValues = properties[pKey].enum.length > 0;
+                  //let hasValues = properties[pKey].enum.length > 0;
+                  let hasValues = properties[pKey].type == "enum";
 
                   let type = properties[pKey].type;
 
@@ -184,7 +185,9 @@ class DataDictionaryPropertyTable extends React.Component {
                       </tr>
                       <DataDictionaryValuesTable
                        open={this.state.row_opened[pKey]} 
-                       enum={properties[pKey].enum}
+                       source={this.props.source}
+                       category={this.props.category}
+                       node={this.props.nodeID}
                        hits={properties[pKey].hits}
                        property={pKey}
                        hasValues={hasValues}

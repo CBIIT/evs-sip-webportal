@@ -4,7 +4,7 @@ import ReduxDataDictionaryTable from './table/DataDictionaryTable';
 import DataDictionaryGraph from './graph/DataDictionaryGraph/.';
 import ReduxDictionarySearcher from './search/DictionarySearcher/.';
 import ReduxDictionarySearchHistory from './search/DictionarySearchHistory/.';
-import { apiGraphicalSearch, apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from '../../../api';
+import { apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from '../../../api';
 import { getSearchResult, getSearchSummary} from './search/DictionarySearcher/searchHelper'; 
 import './DataDictionary.css';
 

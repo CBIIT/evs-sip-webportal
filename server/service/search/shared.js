@@ -38,7 +38,7 @@ const generateHighlight = () => {
       "prop": {"number_of_fragments": 0},
       "prop_desc": {"number_of_fragments": 0},
       "cde.id": {"number_of_fragments": 0},
-      "id": {"number_of_fragments": 0}
+      //"id": {"number_of_fragments": 0}
     }
   };
   return highlight;
@@ -95,7 +95,7 @@ const generateQuery = (keyword, option) => {
     
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
-    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.size = 10000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
@@ -150,11 +150,12 @@ const generateQuery = (keyword, option) => {
 
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
-    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.size = 10000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
   query.bool.must.push(clause);
+  
   return query;
 }
 
@@ -606,8 +607,14 @@ const getGraphicalGDCDictionary = async function() {
             // Do not include annotation.yaml, metaschema.yaml
             // Only include node in the gdc_searchable_nodes
             // Do not include node in category "TBD" and "data" 
+            /*
             if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
               && gdc_searchable_nodes.indexOf(fileJson.id) !== -1 && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
+              jsonData[file] = fileJson;
+            }
+            */
+            if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
+              && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
               jsonData[file] = fileJson;
             }
         });
