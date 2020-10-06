@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
@@ -422,26 +423,28 @@ const GDCValuesTable = (props) => {
   };
 
   const valuesItems = values.map((item, index) =>
-    <TableRow key={index}>
-      <TableCol xs={3}>
-        {item.category}
-        <TableUl>
-          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
-            <TableUl>
-              <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
-            </TableUl>
-          </TableLi>
-        </TableUl>
-        {/* <GDCTerms idterm={item.id}/> */}
-      </TableCol>
-      <TableValues xs={9}>
-        {item.vs.map((value, index) =>
-          <TableRowValue key={index}>
-            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-          </TableRowValue>
-        )}
-      </TableValues>
-    </TableRow>
+    <LazyLoad height={250} overflow={true} offset={700} key={index} classNamePrefix="lazyload-gdc">
+      <TableRow>
+        <TableCol xs={3}>
+          {item.category}
+          <TableUl>
+            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+              <TableUl>
+                <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
+              </TableUl>
+            </TableLi>
+          </TableUl>
+          {/* <GDCTerms idterm={item.id}/> */}
+        </TableCol>
+        <TableValues xs={9}>
+          {item.vs.map((value, index) =>
+            <TableRowValue key={index}>
+              <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+            </TableRowValue>
+          )}
+        </TableValues>
+      </TableRow>
+    </LazyLoad>
   );
 
   if (values.length !== 0) {

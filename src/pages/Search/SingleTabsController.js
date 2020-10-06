@@ -63,7 +63,7 @@ const SingleTabsController = (props) => {
             </TabNavsCol>
             <Col sm={12}>
               <Tab.Content transition="false">
-                <Tab.Pane unmountOnExit={false} eventKey="gdc">
+                <Tab.Pane unmountOnExit={true} eventKey="gdc">
                   <GDCValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="ctdc">

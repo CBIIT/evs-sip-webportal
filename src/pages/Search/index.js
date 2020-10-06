@@ -25,7 +25,7 @@ const PageTitle = styled.h1`
 
 const Search = (props) => {
   let [keywordState, setKeywordState] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? props.location.state.keyword : '');
-  let [sourceState, setSourceState] = useState([]);
+  let [resultState, setResultState] = useState({});
   let [loadingState, setLoadingState] = useState(false);
 
   const searchHandler = (keyword, options, sources) => {
@@ -33,7 +33,7 @@ const Search = (props) => {
     setLoadingState(true);
     apiSearchAll(keyword, options, sources)
       .then(result => {
-        setSourceState(result.returnList);
+        setResultState(result);
         setLoadingState(false);
       });
   };
@@ -54,7 +54,7 @@ const Search = (props) => {
   return <Page>
         <PageTitle>Search EVS-SIP</PageTitle>
         <SearchBox searchTrigger={searchHandler} keyword={keywordState}/>
-        <MainTabsController keyword={keywordState} source={sourceState} />
+        <MainTabsController keyword={keywordState} result={resultState} />
         {loadingState && <LoadingAnimation/>}
     </Page>;
 }

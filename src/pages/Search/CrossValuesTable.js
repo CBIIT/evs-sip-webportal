@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortSynonyms } from '../../shared';
@@ -656,45 +657,47 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-      <Row key={index}>
-        <TableColLeft data-class="TableColLeft" xs={2}>
-          <DivCenter>
-            <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-            {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
-            {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
-        </DivCenter>
-        </TableColLeft>
-        <TableColRight data-class="TableColRight" xs={10}>
-          {cross.values.gdcvalues.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Genomic Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
-                {cross.values.gdcvalues.map((value, index) =>
-                  <TableRowValues data-class="TableRowValues" key={index}>
-                    <ValuesItems item={value}/>
-                  </TableRowValues>
-                )}
-              </TableColRight>
-            </TableRow>
-          }
-          {cross.values.ctdcvalues.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Clinical Trials Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
-                {cross.values.ctdcvalues.map((value, index) =>
-                  <TableRowValues data-class="TableRowValues" key={index}>
-                    <ValuesItems item={value}/>
-                  </TableRowValues>
-                )}
-              </TableColRight>
-            </TableRow>
-          }
-        </TableColRight>
-    </Row>
+      <LazyLoad height={250} overflow={true} offset={700} key={index} classNamePrefix="lazyload-cross">
+        <Row>
+          <TableColLeft data-class="TableColLeft" xs={2}>
+            <DivCenter>
+              <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
+              {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
+              {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
+          </DivCenter>
+          </TableColLeft>
+          <TableColRight data-class="TableColRight" xs={10}>
+            {cross.values.gdcvalues.length !== 0 &&
+              <TableRow>
+                <TableColLeft data-class="TableColLeft" xs={2}>
+                  <DivCenter>Genomic Data Commons</DivCenter>
+                </TableColLeft>
+                <TableColRight data-class="TableColRight" xs={10}>
+                  {cross.values.gdcvalues.map((value, index) =>
+                    <TableRowValues data-class="TableRowValues" key={index}>
+                      <ValuesItems item={value}/>
+                    </TableRowValues>
+                  )}
+                </TableColRight>
+              </TableRow>
+            }
+            {cross.values.ctdcvalues.length !== 0 &&
+              <TableRow>
+                <TableColLeft data-class="TableColLeft" xs={2}>
+                  <DivCenter>Clinical Trials Data Commons</DivCenter>
+                </TableColLeft>
+                <TableColRight data-class="TableColRight" xs={10}>
+                  {cross.values.ctdcvalues.map((value, index) =>
+                    <TableRowValues data-class="TableRowValues" key={index}>
+                      <ValuesItems item={value}/>
+                    </TableRowValues>
+                  )}
+                </TableColRight>
+              </TableRow>
+            }
+          </TableColRight>
+      </Row>
+    </LazyLoad>
     );
   });
 
