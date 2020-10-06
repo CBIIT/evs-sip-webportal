@@ -55,7 +55,7 @@ class DataDictionaryValuesTableRows extends React.Component {
             <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: ncit }}>
             </td>
             <td className="data-dictionary-property-table__data">
-              <DataDictionarySynonymsTable syns={syn.s} highlights={highlights}/>
+              <DataDictionarySynonymsTable label={syn.l} syns={syn.s} highlights={highlights}/>
             </td>
           </tr>
         );
@@ -66,7 +66,7 @@ class DataDictionaryValuesTableRows extends React.Component {
             <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: ncit }}>
             </td>
             <td className="data-dictionary-property-table__data">
-              <DataDictionarySynonymsTable syns={syn.s} highlights={highlights}/>
+              <DataDictionarySynonymsTable label={syn.l}  syns={syn.s} highlights={highlights}/>
             </td>
           </tr>
         );

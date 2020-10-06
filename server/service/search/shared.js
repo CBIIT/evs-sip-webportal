@@ -38,7 +38,7 @@ const generateHighlight = () => {
       "prop": {"number_of_fragments": 0},
       "prop_desc": {"number_of_fragments": 0},
       "cde.id": {"number_of_fragments": 0},
-      "id": {"number_of_fragments": 0}
+      //"id": {"number_of_fragments": 0}
     }
   };
   return highlight;
@@ -95,7 +95,7 @@ const generateQuery = (keyword, option) => {
     
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
-    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.size = 10000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
@@ -150,11 +150,12 @@ const generateQuery = (keyword, option) => {
 
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
-    m.nested.inner_hits.size = 1000000;
+    m.nested.inner_hits.size = 10000;
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
   query.bool.must.push(clause);
+  
   return query;
 }
 

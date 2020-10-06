@@ -10,6 +10,9 @@ const yaml = require('yamljs');
 const xlsx = require('node-xlsx');
 const _ = require('lodash');
 const shared = require('./shared');
+const {
+  performance
+} = require('perf_hooks');
 // const git = require('nodegit');
 const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
 var cdeData = {};
@@ -24,8 +27,8 @@ const indexing = (req, res) => {
 	config_property.body = {
 		"settings": {
 			"number_of_shards": 10, 
-			"max_inner_result_window": 10000000,
-			"max_result_window": 10000000,
+			"max_inner_result_window": 10000,
+			"max_result_window": 10000,
 			"analysis": {
 				"analyzer": {
 					"case_insensitive": {
@@ -34,11 +37,6 @@ const indexing = (req, res) => {
 					},
 					"my_standard": {
 						"tokenizer": "standard",
-						"char_filter": ["my_filter"],
-						"filter": ["lowercase","whitespace_remove"]
-					},
-					"my_ngram": {
-						"tokenizer": "ngram_tokenizer",
 						"char_filter": ["my_filter"],
 						"filter": ["lowercase","whitespace_remove"]
 					}
@@ -54,13 +52,6 @@ const indexing = (req, res) => {
 						"type": "pattern_replace",
 						"pattern": "[_-]",
 						"replacement": " "
-					}
-				},
-				"tokenizer": {
-					"ngram_tokenizer": {
-						"type": "nGram",
-						"min_gram": "2",
-						"token_chars": ["letter", "digit", "symbol"]
 					}
 				}
 			}
@@ -181,7 +172,7 @@ const suggestion = (req, res) => {
       "prefix": term,
       "completion": {
         "field": "id",
-        "size": 10
+        "size": config.suggestion_size
       }
     }
   };
@@ -220,60 +211,24 @@ const searchP = (req, res) => {
 	} else {
 		let query = shared.generateQuery(keyword, option);
 		let highlight = shared.generateHighlight();
-		elastic.query(config.index_p, query, highlight, result => {
+		elastic.query(config.index_p, query, "enum", highlight, result => {
 			if (result.hits === undefined) {
-				return handleError.error(res, result);
+				res.json({total: 0, returnList: [], timedOut: true});
+				//return handleError.error(res, result);
 			}
-			let data = result.hits.hits;
-			data.forEach(entry => {
-				delete entry.sort;
-				delete entry._index;
-				delete entry._score;
-				delete entry._type;
-				delete entry._id;
-			});
-			res.json(data);
-		});
-	}
-};
-
-const graphSearch = async function(req, res){
-	let jsonData = await shared.getGraphicalGDCDictionary();
-	let keyword = req.query.keyword.trim().replace(/[\ ]+/g, " ");
-	let option = {};
-	if(req.query.options){
-		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
-		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
-		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
-		option.sources = req.query.sources? req.query.sources.split(',') : [];
-	}
-	else{
-		option = {
-			match: "partial",
-			syn: false,
-			desc: false
-		};
-		option.sources = [];
-	}
-	if (keyword.trim() === '') {
-		res.json([]);
-	} else {
-		let query = shared.generateQuery(keyword, option);
-		let highlight = shared.generateHighlight();
-		elastic.query(config.index_p, query, highlight, result => {
-			if (result.hits === undefined) {
-				return handleError.error(res, result);
+			else{
+				let total = result.hits.total.value;
+				let data = result.hits.hits;
+				data.forEach(entry => {
+					delete entry.sort;
+					delete entry._index;
+					delete entry._score;
+					delete entry._type;
+					delete entry._id;
+				});
+				res.json({total: total, returnList: data, timedOut: false});
 			}
-			let data = result.hits.hits;
-			data.forEach(entry => {
-				delete entry.sort;
-				delete entry._index;
-				delete entry._score;
-				delete entry._type;
-				delete entry._id;
-			});
-			//res.json(data);
-			res.json(jsonData);
+			
 		});
 	}
 };
@@ -284,7 +239,7 @@ const getGDCData = (req, res) => {
 	query.terms = {};
 	query.terms.id = [];
 	query.terms.id.push(uid);
-	elastic.query(config.index_p, query, null, result => {
+	elastic.query(config.index_p, query, "", null, result => {
 		if (result.hits === undefined) {
 			return handleError.error(res, result);
 		}
@@ -318,7 +273,7 @@ const getValuesForGraphicalView = async function(req, res) {
 		query.terms = {};
 		query.terms.id = [];
 		query.terms.id.push(uid);
-		elastic.query(config.index_p, query, null, data => {
+		elastic.query(config.index_p, query, "", null, data => {
 			if (data.hits === undefined) {
 				return handleError.error(res, data);
 			}
@@ -353,7 +308,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
 				if (d.synonyms !== undefined) {
 					let tmp = {}
 					tmp[ncitids[idx]] = {};
-					tmp[ncitids[idx]].preferredName = d.preferredName;
+					tmp[ncitids[idx]].label = d.label;
 					tmp[ncitids[idx]].code = d.code;
 					tmp[ncitids[idx]].definitions = d.definitions;
 					tmp[ncitids[idx]].synonyms = [];
@@ -433,7 +388,6 @@ module.exports = {
 	indexing,
 	suggestion,
 	searchP,
-	graphSearch,
 	getGDCData,
 	getGraphicalGDCDictionary,
 	getGraphicalICDCDictionary,

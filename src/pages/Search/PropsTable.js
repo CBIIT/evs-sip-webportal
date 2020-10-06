@@ -132,7 +132,8 @@ const PropsTable = (props) => {
     propObj.source = source.source;
     propObj.property = highlightPropertyObj[source.prop] ? highlightPropertyObj[source.prop] : source.prop;
     propObj.property_desc = highlightPropertyDescObj[source.prop] ? highlightPropertyDescObj[source.prop] : source.prop_desc;
-    if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
+    //if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
+    if (source.type !== undefined && source.type !== '') propObj.type = source.type;
     if (source.enum !== undefined) propObj.enum = source.enum;
     if (source.cde !== undefined) {
       propObj.cdeId = highlightCdeIdObj[source.cde.id] ? highlightCdeIdObj[source.cde.id] : source.cde.id;

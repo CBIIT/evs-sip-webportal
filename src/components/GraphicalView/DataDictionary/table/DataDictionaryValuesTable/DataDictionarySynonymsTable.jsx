@@ -27,20 +27,14 @@ class DataDictionarySynonymsTable extends React.Component {
 
   render() {
 
-    let pt = "";
+    let pt = this.props.label;
     let highlights = this.props.highlights;
 
-    this.props.syns.forEach(function(syn){
-      highlights.forEach(function(hl){
-        if(hl.replace(/<b>/g, '').replace(/<\/b>/g, '') == syn.n){
-          syn.n = hl;
-        }
-      });
-      if(syn.t == 'PT' && syn.src == "NCI"){
-        pt = syn.n;
+    highlights.forEach(function(hl){
+      if(hl.replace(/<b>/g, '').replace(/<\/b>/g, '') == pt){
+        pt = hl;
       }
     });
-    
 
     if(!this.state.show){
       return (
@@ -59,6 +53,14 @@ class DataDictionarySynonymsTable extends React.Component {
         </div>
       );
     }
+
+    this.props.syns.forEach(function(syn){
+      highlights.forEach(function(hl){
+        if(hl.replace(/<b>/g, '').replace(/<\/b>/g, '') == syn.n){
+          syn.n = hl;
+        }
+      });
+    });
 
     const tb = this.props.syns.map((syn, index) => {
       return (
@@ -107,11 +109,13 @@ class DataDictionarySynonymsTable extends React.Component {
 }
 
 DataDictionarySynonymsTable.propTypes = {
+  label: PropTypes.string,
   syns: PropTypes.array,
   highlights: PropTypes.array,
 };
 
 DataDictionarySynonymsTable.defaultProps = {
+  label: "",
   syns: [],
   highlights: [],
 };
