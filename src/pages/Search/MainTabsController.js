@@ -6,7 +6,6 @@ import GraphTabsController from './GraphTabsController';
 import SingleTabsController from './SingleTabsController';
 
 const Result = styled.div`
-  display: 'none';
   border-radius: 5px;
   background-color: var(--white);
   padding: 2rem 0;
@@ -162,6 +161,25 @@ const MainTabsController = (props) => {
                     <Alert.Heading>Error!</Alert.Heading>
                     <p>
                       Your Search term was too general and has timed out. Please modify your search to narrow the results.
+                    </p>
+                  </Alert>
+                </AlertContainer>
+              </TabNavTextCol>
+            </Row>
+          </Container>
+      </Result>
+    )
+  }
+  else if (Object.keys(props.result).length === 0 && props.errors !== undefined && props.errors === true) {
+    return(
+      <Result>
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                  <AlertContainer>
+                  <Alert variant="danger">
+                    <p className="mb-0">
+                      Please, enter a valid keyword!.
                     </p>
                   </Alert>
                 </AlertContainer>
