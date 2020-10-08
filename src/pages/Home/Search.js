@@ -204,6 +204,7 @@ const Search = () => {
   let [searchState, setSearchState] = useState('');
   let [suggestState, setSuggestState] = useState([]);
   let [selectIndexState, setSelectIndexState] = useState(-1);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
   let [selectDataSource, setSelectDataSource] = useState({
     ctdc: false,
     gdc: false,
@@ -269,13 +270,31 @@ const Search = () => {
     });
   };
 
+  // // const selectDataAllToggleHandler = event => {
+  //   setSelectDataSource({
+  //     ctdc: true,
+  //     gdc: true,
+  //     icdc: true
+  //   });
+  // // };
+
   const selectDataAllToggleHandler = event => {
-    setSelectDataSource({
-      ctdc: true,
-      gdc: true,
-      icdc: true
-    });
+    if(isToggleOnSource === false){
+      setSelectDataSource({
+        ctdc: true,
+        gdc: true,
+        icdc: true
+      });
+    } else {
+      setSelectDataSource({
+        ctdc: false,
+        gdc: false,
+        icdc: false
+      });
+    }
+    setIsToggleOnSource(!isToggleOnSource);
   };
+
 
   return <SearchSection>
     <ContainerStyled>
@@ -314,7 +333,7 @@ const Search = () => {
             <OptionsContainer>
               <SelectContainer xs={3}>
                 <SelectTitle>Choose your <br/> Data Source</SelectTitle>
-                <SelectBtn aria-label="Select All" onClick={selectDataAllToggleHandler}>Select All</SelectBtn>
+                <SelectBtn aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'} onClick={selectDataAllToggleHandler}>{isToggleOnSource === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               </SelectContainer>
               <Col xs={9}>
                 <FormGroupStyled>

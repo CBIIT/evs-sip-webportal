@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortSynonyms } from '../../shared';
 
 
@@ -95,18 +96,7 @@ const TableLiBreak = styled(TableLi)`
 `;
 
 const ColRight = styled(Col)`
-  display: flex; 
-  justify-content: flex-end;
-`;
-
-const CollapseButton = styled.div`
-  width: 1rem;
-  text-align: center;
-  color: #1B6BEE;
-
-  &&:focus {
-    outline: none;
-  }
+  text-align: right;
 `;
 
 const Indicator = styled.div`
@@ -599,12 +589,12 @@ const CrossValuesTable = (props) => {
           </Col>
           <ColRight xs={2}>
             {(props.nsyn !== undefined || props.icemun !== undefined) &&
-              <CollapseButton role="button" aria-label={isToggleOn === true ? 'collapse' : 'expand'}  tabIndex="0" onClick={ToggleTableHandler}>
+              <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
                 }
-              </CollapseButton>
+              </a>
             }
           </ColRight>
         </Row>
@@ -628,6 +618,13 @@ const CrossValuesTable = (props) => {
   };
 
   const ValuesItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
     return (
       <Col sx={12}>
         <TableRow>
@@ -643,11 +640,46 @@ const CrossValuesTable = (props) => {
             {/* <GDCTerms idterm={item.id}/> */}
           </TableCol>
           <TableColRight data-class="TableColRight" xs={9}>
-            {props.item.vs.map((value, index) =>
-              <TableRowValue data-class="TableRowValue" key={index}>
-                <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+              <div>
+                {props.item.vs.slice(0,5).map((value, index) => {
+                  return(
+                    <TableRowValue data-class="TableRowValue" key={index}>
+                      <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                    </TableRowValue>
+                  )
+                })}
+                {props.item.vs.length > 5 && 
+                <Collapse in={isToggleOn} mountOnEnter={true}>
+                  <div>
+                    {props.item.vs.map((value, index) => {
+                      if (index >= 5) {
+                        return(
+                          <TableRowValue data-class="TableRowValue" key={index}>
+                            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                          </TableRowValue>
+                        )
+                      }
+                      return null;
+                    })}
+                  </div>
+                </Collapse>
+                }
+              </div>
+            {props.item.vs.length > 5 && 
+              <TableRowValue data-class="TableRowValue">
+                <TableCol data-class="TableCol" xs={12}>
+                {isToggleOn === false ? (
+                  <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                    <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
+                  </a>
+                ) : (
+                  <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                    <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                  </a>
+                )}
+                </TableCol>
               </TableRowValue>
-            )}
+            }
           </TableColRight>
         </TableRow>
       </Col>
@@ -656,45 +688,47 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-      <Row key={index}>
-        <TableColLeft data-class="TableColLeft" xs={2}>
-          <DivCenter>
-            <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-            {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
-            {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
-        </DivCenter>
-        </TableColLeft>
-        <TableColRight data-class="TableColRight" xs={10}>
-          {cross.values.gdcvalues.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Genomic Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
-                {cross.values.gdcvalues.map((value, index) =>
-                  <TableRowValues data-class="TableRowValues" key={index}>
-                    <ValuesItems item={value}/>
-                  </TableRowValues>
-                )}
-              </TableColRight>
-            </TableRow>
-          }
-          {cross.values.ctdcvalues.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Clinical Trials Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
-                {cross.values.ctdcvalues.map((value, index) =>
-                  <TableRowValues data-class="TableRowValues" key={index}>
-                    <ValuesItems item={value}/>
-                  </TableRowValues>
-                )}
-              </TableColRight>
-            </TableRow>
-          }
-        </TableColRight>
-    </Row>
+      <LazyLoad height={250} once overflow={true} offset={700} key={index} classNamePrefix="lazyload-cross">
+        <Row>
+          <TableColLeft data-class="TableColLeft" xs={2}>
+            <DivCenter>
+              <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
+              {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
+              {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
+          </DivCenter>
+          </TableColLeft>
+          <TableColRight data-class="TableColRight" xs={10}>
+            {cross.values.gdcvalues.length !== 0 &&
+              <TableRow>
+                <TableColLeft data-class="TableColLeft" xs={2}>
+                  <DivCenter>Genomic Data Commons</DivCenter>
+                </TableColLeft>
+                <TableColRight data-class="TableColRight" xs={10}>
+                  {cross.values.gdcvalues.map((value, index) =>
+                    <TableRowValues data-class="TableRowValues" key={index}>
+                      <ValuesItems item={value}/>
+                    </TableRowValues>
+                  )}
+                </TableColRight>
+              </TableRow>
+            }
+            {cross.values.ctdcvalues.length !== 0 &&
+              <TableRow>
+                <TableColLeft data-class="TableColLeft" xs={2}>
+                  <DivCenter>Clinical Trials Data Commons</DivCenter>
+                </TableColLeft>
+                <TableColRight data-class="TableColRight" xs={10}>
+                  {cross.values.ctdcvalues.map((value, index) =>
+                    <TableRowValues data-class="TableRowValues" key={index}>
+                      <ValuesItems item={value}/>
+                    </TableRowValues>
+                  )}
+                </TableColRight>
+              </TableRow>
+            }
+          </TableColRight>
+      </Row>
+    </LazyLoad>
     );
   });
 

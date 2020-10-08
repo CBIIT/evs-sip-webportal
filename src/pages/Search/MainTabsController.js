@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
+import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap';
 import TabsController from './TabsController';
 import GraphTabsController from './GraphTabsController';
 import SingleTabsController from './SingleTabsController';
 
 const Result = styled.div`
-  display: 'none';
   border-radius: 5px;
   background-color: var(--white);
   padding: 2rem 0;
@@ -90,9 +89,12 @@ border-bottom: none;
 }
 `;
 
-const MainTabsController = (props) => {
+const AlertContainer = styled.div`
+  margin-top: 2rem;
+`;
 
-  if(props.source.length !== 0){
+const MainTabsController = (props) => {
+  if (Object.keys(props.result).length !== 0 && props.result.returnList !== undefined && props.result.returnList.length !== 0) {
     return (
       <Result>
         <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
@@ -100,6 +102,20 @@ const MainTabsController = (props) => {
             <Row className="clearfix">
               <TabNavTextCol sm={12}>
                 <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
+                {(props.result.total !== undefined && props.result.total >= 50) && 
+                  <AlertContainer>
+                  <Alert variant="warning">
+                    <Alert.Heading>Warning!</Alert.Heading>
+                    <p>
+                      Your Search term was too general - not all results are displayed.
+                    </p>
+                    <hr />
+                    <p className="mb-0">
+                      Please modify your search to narrow the results.
+                    </p>
+                  </Alert>
+                </AlertContainer>
+                }
               </TabNavTextCol>
               <TabNavsCol sm={12}>
                 <NavStyled variant="tabs">
@@ -117,13 +133,13 @@ const MainTabsController = (props) => {
               <Col sm={12}>
                 <TabContentStyled transition="false">
                   <Tab.Pane unmountOnExit={false} eventKey="cross">
-                    <TabsController source={props.source} />
+                    <TabsController source={props.result.returnList}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="single">
-                    <SingleTabsController source={props.source}/>
+                    <SingleTabsController source={props.result.returnList}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="graph">
-                    <GraphTabsController keyword={props.keyword} source={props.source}/>
+                    <GraphTabsController keyword={props.keyword} source={props.result.returnList}/>
                   </Tab.Pane>
                 </TabContentStyled>
               </Col>
@@ -132,6 +148,46 @@ const MainTabsController = (props) => {
         </Tab.Container>
       </Result>
     );
+  }
+  else if (Object.keys(props.result).length !== 0 && props.result.timedOut !== undefined && props.result.timedOut === true) {
+    return(
+      <Result>
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
+                  <AlertContainer>
+                  <Alert variant="danger">
+                    <Alert.Heading>Error!</Alert.Heading>
+                    <p>
+                      Your Search term was too general and has timed out. Please modify your search to narrow the results.
+                    </p>
+                  </Alert>
+                </AlertContainer>
+              </TabNavTextCol>
+            </Row>
+          </Container>
+      </Result>
+    )
+  }
+  else if (Object.keys(props.result).length === 0 && props.errors !== undefined && props.errors === true) {
+    return(
+      <Result>
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                  <AlertContainer>
+                  <Alert variant="danger">
+                    <p className="mb-0">
+                      Please, enter a valid keyword!.
+                    </p>
+                  </Alert>
+                </AlertContainer>
+              </TabNavTextCol>
+            </Row>
+          </Container>
+      </Result>
+    )
   }
   else{
     return(<div></div>);

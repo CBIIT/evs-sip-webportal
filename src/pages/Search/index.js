@@ -6,7 +6,7 @@ import MainTabsController from './MainTabsController';
 import LoadingAnimation from '../../components/LoadingAnimation';
 
 const Page = styled.div`
-  background-color: var(--white-bkgd);
+  background-color: var(--white);
   padding-bottom: 18rem;
 `;
 
@@ -25,16 +25,27 @@ const PageTitle = styled.h1`
 
 const Search = (props) => {
   let [keywordState, setKeywordState] = useState(props.location.state !== undefined && props.location.state.keyword !== undefined ? props.location.state.keyword : '');
-  let [sourceState, setSourceState] = useState([]);
+  let [resultState, setResultState] = useState({});
   let [loadingState, setLoadingState] = useState(false);
+  let [errorState, setErrorState] = useState(false);
 
   const searchHandler = (keyword, options, sources) => {
-    setKeywordState(keyword);
+    let keywordCase = keyword.trim();
+    setKeywordState(keywordCase);
     setLoadingState(true);
+
+    if (keywordCase === '') {
+      setErrorState(true);
+      setResultState({});
+      setLoadingState(false);
+      return;
+    }
+
     apiSearchAll(keyword, options, sources)
       .then(result => {
-        setSourceState(result.returnList);
+        setResultState(result);
         setLoadingState(false);
+        setErrorState(false);
       });
   };
 
@@ -53,8 +64,8 @@ const Search = (props) => {
 
   return <Page>
         <PageTitle>Search EVS-SIP</PageTitle>
-        <SearchBox searchTrigger={searchHandler} keyword={keywordState}/>
-        <MainTabsController keyword={keywordState} source={sourceState} />
+        <SearchBox searchTrigger={searchHandler} keyword={keywordState} errors={errorState} />
+        <MainTabsController keyword={keywordState} result={resultState} errors={errorState} />
         {loadingState && <LoadingAnimation/>}
     </Page>;
 }
