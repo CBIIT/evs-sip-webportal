@@ -101,6 +101,7 @@
   padding: unset;
   font-weight: normal;
   border: none;
+  background-color: #1B6BEE;
 }
 
 tr.matched-row{

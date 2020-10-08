@@ -66,6 +66,14 @@ tr.display-row{
     text-align: right;
 }
 
+.pt-toggle-icon{
+  color: #1B6BEE;
+}
+
+.pt-toggle-icon:focus{
+  outline: none;
+}
+
 .syns-area{
 	width: 100%;
 	padding: 12px;

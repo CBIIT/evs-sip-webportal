@@ -30,6 +30,7 @@ class Legend extends React.Component {
                   onClick={this.toggleLegend}
                   onKeyPress={this.toggleLegend}
                   role='button'
+                  title='close' 
                   tabIndex={0}
                 />
                 <div className='data-dictionary-graph-legend__item body'>
@@ -68,6 +69,7 @@ class Legend extends React.Component {
                 onClick={this.toggleLegend}
                 onKeyPress={this.toggleLegend}
                 role='button'
+                title='Show Legend' 
                 tabIndex={0}
               >
                 <i className='data-dictionary-graph-legend__info-icon g3-icon g3-icon--question-mark' />
