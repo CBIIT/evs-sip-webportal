@@ -10,7 +10,7 @@ const FooterStyled = styled.footer`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 19rem; 
+  height: 18rem;
 `;
 
 const FooterContainer = styled(Container)`
@@ -19,7 +19,7 @@ const FooterContainer = styled(Container)`
 `;
 
 const Menu = styled.div`
-  padding: 2rem 0;
+  padding: 2rem 0 1em;
 `;
 
 const Logo = styled.img`
@@ -27,12 +27,12 @@ const Logo = styled.img`
 `;
 
 const Title = styled.h2`
-  font-size: 0.6875rem;
+  font-size: 0.875rem;
   color: var(--white);
 `;
 
-const MenuLink = styled.a`
-  font-size: 0.625rem;
+const MenuLink = styled(Link)`
+  font-size: 0.75rem;
   color: var(--white);
 `;
 
@@ -42,7 +42,13 @@ const MenuUl = styled.ul`
 `;
 
 const MenuLi = styled.li`
-  line-height: 1.3;
+  line-height: 1.5;
+
+  && a {
+    color: var(--white);
+    font-size: 0.75rem;
+  }
+
 `;
 
 const Hr = styled.hr`
@@ -57,7 +63,7 @@ const Caption = styled.div`
 
   && a {
     color: var(--white);
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     margin: 0 0.5rem;
   }
 `;
@@ -66,7 +72,7 @@ const Copyright = styled.div`
   text-align: center;
   padding: 0.625rem 0;
 
-  && a {
+  && span {
     color: var(--white);
     font-size: 0.75rem;
   }
@@ -84,37 +90,25 @@ const Footer = () => {
             </Col>
             <Col xs={7}>
               <Row>
-                <Col xs={3}>
-                  <Title>About ICDC</Title>
+                <Col xs={4}>
+                  <Title>Contact Information</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href="/">Steering Committee</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">FAQs</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Contact Us</MenuLink></MenuLi>
+                    <MenuLi><a href="mailto:evssip@mail.nih.gov">Contact Us</a></MenuLi>
                   </MenuUl>
                 </Col>
-                <Col xs={3}>
-                  <Title>About the Data</Title>
+                <Col xs={4}>
+                  <Title>More Information</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href="/">Data Access Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Data Analysis</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">REST APIs</MenuLink></MenuLi>
+                    <MenuLi><MenuLink to="/about" aria-label="About EVS-SIP">About EVS-SIP</MenuLink></MenuLi>
+                    <MenuLi><MenuLink to="/datamodel" aria-label="Data Models">Data Models</MenuLink></MenuLi>
                   </MenuUl>
                 </Col>
-                <Col xs={3}>
-                  <Title>About Data Submission</Title>
-                  <MenuUl>
-                    <MenuLi><MenuLink href="/">Data Governance Advisory Board</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Process and Tools</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Submission Guide</MenuLink></MenuLi>
-                  </MenuUl>
-                </Col>
-                <Col xs={3}>
+                <Col xs={4}>
                   <Title>NIH Policies</Title>
                   <MenuUl>
-                    <MenuLi><MenuLink href="/">Disclaimer Policies</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">Accessibility</MenuLink></MenuLi>
-                    <MenuLi><MenuLink href="/">FOIA</MenuLink></MenuLi>
+                    <MenuLi><a href="https://www.cancer.gov/policies/disclaimer" target="_blank" rel="noopener noreferrer">Disclaimer</a></MenuLi>
+                    <MenuLi><a href="https://www.cancer.gov/policies/accessibility" target="_blank" rel="noopener noreferrer">Accessibility</a></MenuLi>
+                    <MenuLi><a href="https://www.cancer.gov/policies/foia" target="_blank" rel="noopener noreferrer">FOIA</a></MenuLi>
                   </MenuUl>
                 </Col>
               </Row>
@@ -125,13 +119,13 @@ const Footer = () => {
         <Row>
           <Col xs={12}> 
             <Caption>
-              <a href="/">U.S. Department of Health and Human Services</a><span>|</span>
-              <a href="/">National Institutes of Health</a><span>|</span>
-              <a href="/">National Cancer Institute</a><span>|</span>
-              <a href="/">USA.gov</a>
+              <a href="http://www.hhs.gov/" target="_blank" rel="noopener noreferrer">U.S. Department of Health and Human Services</a><span>|</span>
+              <a href="http://www.nih.gov/" target="_blank" rel="noopener noreferrer">National Institutes of Health</a><span>|</span>
+              <a href="http://www.cancer.gov/" target="_blank" rel="noopener noreferrer">National Cancer Institute</a><span>|</span>
+              <a href="http://www.usa.gov/" target="_blank" rel="noopener noreferrer">USA.gov</a>
             </Caption>
             <Copyright>
-              <a href="/">NIH … Turning Discovery Into Health®</a>
+              <span>NIH … Turning Discovery Into Health®</span>
             </Copyright>
           </Col>
         </Row>
