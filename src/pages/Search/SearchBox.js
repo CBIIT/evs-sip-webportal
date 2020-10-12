@@ -27,7 +27,7 @@ const SearchFormControl = styled(Form.Control)`
   border-radius: 0;
   background-color: transparent;
   border: 1px solid transparent;
-  border-bottom: 3px solid ${props => props.error ? '#bf063b' : '#397ded'};
+  border-bottom: 3px solid ${props => props.error === 'true' ? '#bf063b' : '#397ded'};
   font-size: 1.875rem;
   font-family: 'Raleway-Light', sans-serif;
 
@@ -339,7 +339,7 @@ const SearchBox = (props) => {
               placeholder="Search EVS-SIP"
               aria-label="Search EVS-SIP"
               ref={searchInputRef}
-              error={props.errors}
+              error={props.errors.toString()}
             />
             <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
             <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
