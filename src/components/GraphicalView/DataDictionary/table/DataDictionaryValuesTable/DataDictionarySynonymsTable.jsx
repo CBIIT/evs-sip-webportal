@@ -42,12 +42,12 @@ class DataDictionarySynonymsTable extends React.Component {
           <div className="pt-row">
             <div className="pt-data" dangerouslySetInnerHTML={{ __html: pt }}></div>
             <div className="pt-button">
-              <a href="/#" onClick={this.toggleTableHandler}>
-                  {this.state.show
-                    ? <FontAwesomeIcon icon={faMinus}/>
-                    : <FontAwesomeIcon icon={faPlus}/>
-                  }
-                </a>
+              <div className="pt-toggle-icon" role="button" aria-label={this.state.show ? 'collapse' : 'expand'} tabIndex="0" onClick={this.toggleTableHandler}>
+                {this.state.show
+                  ? <FontAwesomeIcon icon={faMinus}/>
+                  : <FontAwesomeIcon icon={faPlus}/>
+                }
+              </div>
             </div>
           </div>
         </div>

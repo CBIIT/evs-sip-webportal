@@ -134,6 +134,7 @@ class Canvas extends React.Component {
             onClick={this.handleZoomIn}
             onKeyPress={this.handleZoomIn}
             role='button'
+            title='Zoom in' 
             tabIndex={-1}
           >
             <i className="fa fa-search-plus canvas-button-icon"></i>
@@ -143,6 +144,7 @@ class Canvas extends React.Component {
             onClick={this.handleZoomOut}
             onKeyPress={this.handleZoomOut}
             role='button'
+            title='Zoom out' 
             tabIndex={-1}
           >
             <i className="fa fa-search-minus canvas-button-icon"></i>
@@ -152,6 +154,7 @@ class Canvas extends React.Component {
             onClick={this.handleReset}
             onKeyPress={this.handleReset}
             role='button'
+            title='Reset' 
             tabIndex={-1}
           >
             <i className="fas fa-compress canvas-button-icon"></i>
