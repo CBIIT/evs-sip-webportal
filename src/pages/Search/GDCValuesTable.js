@@ -114,10 +114,10 @@ const IndicatorContent = styled.div`
 // `;
 
 const RowCenter = styled(Row)`
-    height: 150px;
+    height: 180px;
     align-content: center;
     justify-content: center;
-    color: #1B6BEE;
+    color: #888;
 `;
 
 
@@ -446,7 +446,7 @@ const GDCValuesTable = (props) => {
     };
 
     return(
-      <LazyLoad height={150} once overflow={true} offset={[-100, 0]} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
+      <LazyLoad height={180} once overflow={true} offset={[-80, 0]} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
         <TableRow>
           <TableCol xs={3}>
             {props.item.category}

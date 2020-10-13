@@ -149,7 +149,7 @@ const RowCenter = styled(Row)`
     height: 250px;
     align-content: center;
     justify-content: center;
-    color: #1B6BEE;
+    color: #888;
 `;
 
 const CrossValuesTable = (props) => {
@@ -703,7 +703,7 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-    <LazyLoad height={250} once overflow={true} offset={[-200, 0]} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
+    <LazyLoad height={250} once overflow={true} offset={[-150, 0]} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
         <Row>
           <TableColLeft data-class="TableColLeft" xs={2}>
             <DivCenter>
