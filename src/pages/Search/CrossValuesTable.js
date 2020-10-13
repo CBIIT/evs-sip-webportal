@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortSynonyms } from '../../shared';
 
 
@@ -143,6 +143,13 @@ const PreferredTerm = styled.div`
 
 const TableStyled = styled(Table)`
   margin-bottom: 0;
+`;
+
+const RowCenter = styled(Row)`
+    height: 250px;
+    align-content: center;
+    justify-content: center;
+    color: #888;
 `;
 
 const CrossValuesTable = (props) => {
@@ -409,6 +416,14 @@ const CrossValuesTable = (props) => {
       }
     })
   });
+
+  const PlaceholderComponent = () => {
+    return (<Col sm={12}>
+        <RowCenter>
+          <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
+        </RowCenter>
+      </Col>);
+  }
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -688,7 +703,7 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-      <LazyLoad height={250} once overflow={true} offset={700} key={index} classNamePrefix="lazyload-cross">
+    <LazyLoad height={250} once overflow={true} offset={[-150, 0]} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
         <Row>
           <TableColLeft data-class="TableColLeft" xs={2}>
             <DivCenter>

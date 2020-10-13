@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 // import GDCTerms from './dialogs/GDCTerms';
 
@@ -113,6 +113,13 @@ const IndicatorContent = styled.div`
 //   color: #2a72a4;
 // `;
 
+const RowCenter = styled(Row)`
+    height: 180px;
+    align-content: center;
+    justify-content: center;
+    color: #888;
+`;
+
 
 const GDCValuesTable = (props) => {
   // let termTypeNotAssigned = false;
@@ -214,6 +221,14 @@ const GDCValuesTable = (props) => {
       values.push(obj);
     }
   });
+
+  const PlaceholderComponent = () => {
+    return (<Col sm={12}>
+        <RowCenter>
+          <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
+        </RowCenter>
+      </Col>);
+  }
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -431,7 +446,7 @@ const GDCValuesTable = (props) => {
     };
 
     return(
-      <LazyLoad height={150} once overflow={true} offset={700} classNamePrefix="lazyload-gdc">
+      <LazyLoad height={180} once overflow={true} offset={[-80, 0]} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
         <TableRow>
           <TableCol xs={3}>
             {props.item.category}

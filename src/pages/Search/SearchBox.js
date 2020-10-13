@@ -27,7 +27,7 @@ const SearchFormControl = styled(Form.Control)`
   border-radius: 0;
   background-color: transparent;
   border: 1px solid transparent;
-  border-bottom: 3px solid ${props => props.error ? '#bf063b' : '#397ded'};
+  border-bottom: 3px solid ${props => props.error === 'true' ? '#bf063b' : '#397ded'};
   font-size: 1.875rem;
   font-family: 'Raleway-Light', sans-serif;
 
@@ -39,6 +39,7 @@ const SearchFormControl = styled(Form.Control)`
   }
 
   &&::placeholder {
+    font-size: 1.6875rem;
     color: #3A9CF7;
   }
 `;
@@ -336,10 +337,10 @@ const SearchBox = (props) => {
               value={searchState}
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
-              placeholder="Search EVS-SIP"
-              aria-label="Search EVS-SIP"
+              placeholder="Search Values, Properties, NCIt Terms or ICD-O-3"
+              aria-label="Search Values, Properties, NCIt Terms or ICD-O-3"
               ref={searchInputRef}
-              error={props.errors}
+              error={props.errors.toString()}
             />
             <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
             <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
@@ -363,21 +364,21 @@ const SearchBox = (props) => {
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
-                  Exact Match
+                  Exact Complete Values and Properties Names
                 </CheckboxLabel>
                 <CheckboxLabel>
                   <CheckboxInput name="desc" type="checkbox" checked={optionsState['desc']}  onClick={checkedToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
-                  Property Description
+                  Search Property Description
                 </CheckboxLabel>
                 <CheckboxLabel>
                   <CheckboxInput name="syns" type="checkbox" checked={optionsState['syns']} onClick={checkedToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
-                  Synonyms
+                  Search Synonyms of Values
                 </CheckboxLabel>
               </FormGroupStyled>
             </SearchOptions>
