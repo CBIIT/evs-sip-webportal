@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
-// import GDCTerms from './dialogs/GDCTerms';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -113,15 +111,8 @@ const IndicatorContent = styled.div`
 //   color: #2a72a4;
 // `;
 
-const RowCenter = styled(Row)`
-    height: 180px;
-    align-content: center;
-    justify-content: center;
-    color: #888;
-`;
 
-
-const GDCValuesTable = (props) => {
+const ICDCValuesTable = (props) => {
   // let termTypeNotAssigned = false;
   // let valuesCount = 0;
 
@@ -130,7 +121,7 @@ const GDCValuesTable = (props) => {
   let values = [];
 
   items.forEach((data) => {
-    if(data._source.source !== 'gdc') return;
+    if(data._source.source !== 'icdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -221,14 +212,6 @@ const GDCValuesTable = (props) => {
       values.push(obj);
     }
   });
-
-  const PlaceholderComponent = () => {
-    return (<Col sm={12}>
-        <RowCenter>
-          <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-        </RowCenter>
-      </Col>);
-  }
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -437,74 +420,28 @@ const GDCValuesTable = (props) => {
     );
   };
 
-  const ValueItem = (props) => {
-    let [isToggleOn, setIsToggleOn] = useState(false);
-
-    const ToggleTableHandler = event => {
-      event.preventDefault();
-      setIsToggleOn(!isToggleOn);
-    };
-
-    return(
-      <LazyLoad height={180} once overflow={true} offset={180} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
-        <TableRow>
-          <TableCol xs={3}>
-            {props.item.category}
+  const valuesItems = values.map((item, index) =>
+    <TableRow key={index}>
+      <TableCol xs={3}>
+        {item.category}
+        <TableUl>
+          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
-                <TableUl>
-                  <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
-                </TableUl>
-              </TableLi>
+              <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
             </TableUl>
-          </TableCol>
-  
-          <TableValues xs={9}>
-            <div>
-              {props.item.vs.slice(0,5).map((value, index) => {
-                return(
-                  <TableRowValue data-class="TableRowValue" key={index}>
-                    <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                  </TableRowValue>
-                )
-              })}
-              {props.item.vs.length > 5 && 
-              <Collapse in={isToggleOn} mountOnEnter={true}>
-                <div>
-                  {props.item.vs.map((value, index) => {
-                    if (index >= 5) {
-                      return(
-                        <TableRowValue data-class="TableRowValue" key={index}>
-                          <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                        </TableRowValue>
-                      )
-                    }
-                    return null;
-                  })}
-                </div>
-              </Collapse>
-              }
-            </div>
-            {props.item.vs.length > 5 && 
-              <TableRowValue data-class="TableRowValue">
-                <TableCol data-class="TableCol" xs={12}>
-                {isToggleOn === false ? (
-                  <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
-                  </a>
-                ) : (
-                  <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleUp}/> Show Less
-                  </a>
-                )}
-                </TableCol>
-              </TableRowValue>
-            }
-          </TableValues>
-        </TableRow>
-      </LazyLoad>
-    );
-  }
+          </TableLi>
+        </TableUl>
+        {/* <GDCTerms idterm={item.id}/> */}
+      </TableCol>
+      <TableValues xs={9}>
+        {item.vs.map((value, index) =>
+          <TableRowValue key={index}>
+            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+          </TableRowValue>
+        )}
+      </TableValues>
+    </TableRow>
+  );
 
   if (values.length !== 0) {
     return (
@@ -514,15 +451,11 @@ const GDCValuesTable = (props) => {
           <TableTh>Category / Node / Property</TableTh>
         </Col>
         <Col xs={9}>
-          <TableTh>Matched GDC Values</TableTh>
+          <TableTh>Matched CTDC Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>
-        <Col xs={12}>
-          {values.map((item, index) => 
-            <ValueItem item={item} key={index}/>
-          )}
-        </Col>
+        <Col xs={12}>{valuesItems}</Col>
       </TableBody>
     </ContainerStyled>
     );
@@ -539,4 +472,4 @@ const GDCValuesTable = (props) => {
   }
 };
 
-export default GDCValuesTable;
+export default ICDCValuesTable;

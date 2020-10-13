@@ -391,7 +391,7 @@ const CTDCValuesTable = (props) => {
             <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
           </Col>
           <ColRight xs={2}>
-            {(props.nsyn !== undefined || props.icemun !== undefined) &&
+            {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
@@ -401,7 +401,7 @@ const CTDCValuesTable = (props) => {
             }
           </ColRight>
         </Row>
-        {(props.nsyn !== undefined || props.icemun !== undefined) &&
+        {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
           <Collapse in={isToggleOn} mountOnEnter={true}>
             <div className="ncit-values">
               {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&

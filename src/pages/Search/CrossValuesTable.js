@@ -315,7 +315,7 @@ const CrossValuesTable = (props) => {
       idValueObj[idMatch].push(value.vs[0]);
     }
 
-    if(value.n_match === undefined && value.ic_match === undefined && value.id !== undefined){
+    if((value.n_match === undefined || value.n_match.length === 0) && value.ic_match === undefined && value.id !== undefined){
       let idMatch = `no-mapping-${value.id}`; 
       if(idValueObj[idMatch] === undefined) {
         idValueObj[idMatch] = [];
@@ -352,7 +352,7 @@ const CrossValuesTable = (props) => {
       icdo3Objs[entry[1].ic_match].push(entry[1]);
     };
 
-    if (entry[1].n_match === undefined && entry[1].ic_match === undefined && entry[0] === `no-mapping-${entry[1].id}`){
+    if ((entry[1].n_match === undefined || entry[1].n_match.length === 0) && entry[1].ic_match === undefined && entry[0] === `no-mapping-${entry[1].id}`){
       if(ncitObjs['no-mapping'] === undefined) {
         ncitObjs['no-mapping'] = [];
       }
@@ -366,14 +366,18 @@ const CrossValuesTable = (props) => {
   Object.entries(ncitObjs).forEach((entry)=> {
     let ctdcValues = [];
     let gdcValues = [];
+    let icdcValues = [];
 
     if(entry[1] !== undefined && entry[1].length !== 0){
       entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
         if(value.source !== undefined && value.source === 'ctdc'){
           ctdcValues.push(value);
         }
-        if(value.source !== undefined && value.source === 'gdc'){
-          gdcValues.push(value);
+        if(value.source !== undefined && value.source === 'icdc'){
+          icdcValues.push(value);
         }
       });
     }
@@ -385,22 +389,26 @@ const CrossValuesTable = (props) => {
       values: {
         ctdcvalues: ctdcValues,
         gdcvalues: gdcValues,
-        icdcvalues: [],
+        icdcvalues: icdcValues,
       }
     })
   });
 
   Object.entries(icdo3Objs).forEach((entry)=> {
-    let ctdcValues = [];
     let gdcValues = [];
+    let ctdcValues = [];
+    let icdcValues = [];
 
     if(entry[1] !== undefined && entry[1].length !== 0){
       entry[1].forEach(value => {
+        if(value.source !== undefined && value.source === 'gdc'){
+          gdcValues.push(value);
+        }
         if(value.source !== undefined && value.source === 'ctdc'){
           ctdcValues.push(value);
         }
-        if(value.source !== undefined && value.source === 'gdc'){
-          gdcValues.push(value);
+        if(value.source !== undefined && value.source === 'icdc'){
+          icdcValues.push(value);
         }
       });
     }
@@ -412,7 +420,7 @@ const CrossValuesTable = (props) => {
       values: {
         ctdcvalues: ctdcValues,
         gdcvalues: gdcValues,
-        icdcvalues: [],
+        icdcvalues: icdcValues,
       }
     })
   });
@@ -603,7 +611,7 @@ const CrossValuesTable = (props) => {
             <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
           </Col>
           <ColRight xs={2}>
-            {(props.nsyn !== undefined || props.icemun !== undefined) &&
+            {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
@@ -613,7 +621,7 @@ const CrossValuesTable = (props) => {
             }
           </ColRight>
         </Row>
-        {(props.nsyn !== undefined || props.icemun !== undefined) &&
+        {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
           <Collapse in={isToggleOn} mountOnEnter={true}>
             <div className="ncit-values">
               {(props.nsyn !== undefined && props.nsyn.length === 1 && props.icemun === undefined) &&
@@ -703,7 +711,7 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-    <LazyLoad height={250} once overflow={true} offset={[-150, 0]} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
+      <LazyLoad height={250} once overflow={true} offset={250} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
         <Row>
           <TableColLeft data-class="TableColLeft" xs={2}>
             <DivCenter>
@@ -734,6 +742,20 @@ const CrossValuesTable = (props) => {
                 </TableColLeft>
                 <TableColRight data-class="TableColRight" xs={10}>
                   {cross.values.ctdcvalues.map((value, index) =>
+                    <TableRowValues data-class="TableRowValues" key={index}>
+                      <ValuesItems item={value}/>
+                    </TableRowValues>
+                  )}
+                </TableColRight>
+              </TableRow>
+            }
+            {cross.values.icdcvalues.length !== 0 &&
+              <TableRow>
+                <TableColLeft data-class="TableColLeft" xs={2}>
+                  <DivCenter>Integrated Canine Data Commons</DivCenter>
+                </TableColLeft>
+                <TableColRight data-class="TableColRight" xs={10}>
+                  {cross.values.icdcvalues.map((value, index) =>
                     <TableRowValues data-class="TableRowValues" key={index}>
                       <ValuesItems item={value}/>
                     </TableRowValues>

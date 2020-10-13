@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import GDCValuesTable from './GDCValuesTable';
 import CTDCValuesTable from './CTDCValuesTable';
+import ICDCValuesTable from './ICDCValuesTable';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -70,7 +71,7 @@ const SingleTabsController = (props) => {
                   <CTDCValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
-                  ICDC content
+                  <ICDCValuesTable values={props.source}/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
