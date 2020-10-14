@@ -89,7 +89,7 @@ const SearchAllOptions = styled.div`
 
 const SearchOptions = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
 `;
 
@@ -101,10 +101,17 @@ const SearchOptionsLabel = styled.label`
   margin-bottom: 1.5rem;
 `;
 
+const FormGroupMatch = styled(Form.Group)`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+`;
+
 const FormGroupStyled = styled(Form.Group)`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  margin-left: 3rem;
   margin-bottom: 0;
 `;
 
@@ -211,8 +218,9 @@ const SearchBox = (props) => {
   let [suggestState, setSuggestState] = useState([]);
   let [searchState, setSearchState] = useState(props.keyword);
   let [selectIndexState, setSelectIndexState] = useState(-1);
+  let [matchOptionsState, setMatchOptionsState] = useState('partial');
+
   let [optionsState, setOptionsState] = useState({
-    match: false,
     desc: false,
     syns: false
   });
@@ -279,6 +287,10 @@ const SearchBox = (props) => {
     apiSuggest(event.target.value).then(result => setSuggestState(result));
   };
 
+  const matchOptionsHandler = event => {
+    setMatchOptionsState(event.target.value);
+  };
+
   const checkedToggleHandler = event => {
     setOptionsState({
       ...optionsState,
@@ -296,13 +308,11 @@ const SearchBox = (props) => {
   const checkedAllToggleHandler = event => {
     if(isToggleOnOptions === false){
       setOptionsState({
-        match: true,
         desc: true,
         syns: true
       });
     } else {
       setOptionsState({
-        match: false,
         desc: false,
         syns: false
       });
@@ -343,7 +353,7 @@ const SearchBox = (props) => {
               error={props.errors.toString()}
             />
             <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
-            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, optionsState, selectDataSource)}>
+            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, matchOptionsState, optionsState, selectDataSource)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
           </InputGroup>
@@ -356,16 +366,14 @@ const SearchBox = (props) => {
         </SearchBar>
         <SearchAllOptions>
           <SearchOptionsContainer>
+            <FormGroupMatch>
+              <Form.Check name="matched" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler}label="Match any part of values or properties" />
+              <Form.Check name="matched" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Match whole values or properties" />
+            </FormGroupMatch>
+            <SearchOptionsLabel>Search Include</SearchOptionsLabel>
             <SearchOptions>
               <SelectBtn aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'} onClick={checkedAllToggleHandler}>{isToggleOnOptions === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
-                <CheckboxLabel>
-                  <CheckboxInput name="match" type="checkbox" checked={optionsState['match']} onClick={checkedToggleHandler}/>
-                  <CheckboxSpan>
-                    <CheckboxIcon icon={faCheck}/>
-                  </CheckboxSpan>
-                  Exact Complete Values and Properties Names
-                </CheckboxLabel>
                 <CheckboxLabel>
                   <CheckboxInput name="desc" type="checkbox" checked={optionsState['desc']}  onClick={checkedToggleHandler}/>
                   <CheckboxSpan>
