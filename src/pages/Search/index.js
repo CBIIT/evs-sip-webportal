@@ -29,7 +29,7 @@ const Search = (props) => {
   let [loadingState, setLoadingState] = useState(false);
   let [errorState, setErrorState] = useState(false);
 
-  const searchHandler = (keyword, options, sources) => {
+  const searchHandler = (keyword, match, options, sources) => {
     let keywordCase = keyword.trim();
     setKeywordState(keywordCase);
     setLoadingState(true);
@@ -41,7 +41,7 @@ const Search = (props) => {
       return;
     }
 
-    apiSearchAll(keyword, options, sources)
+    apiSearchAll(keyword, match, options, sources)
       .then(result => {
         setResultState(result);
         setLoadingState(false);
@@ -52,9 +52,9 @@ const Search = (props) => {
   useEffect(() => {
     if(props.location.state !== undefined && props.location.state.keyword !== undefined){
       setKeywordState(props.location.state.keyword);
-      searchHandler(props.location.state.keyword, 
+      searchHandler(props.location.state.keyword,
+      'partial',
       {
-        match: false,
         desc: false,
         syns: false
       },
