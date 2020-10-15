@@ -712,66 +712,6 @@ const CrossValuesTable = (props) => {
     )
   };
 
-  // const mainValuesItems = crossValues.map((cross, index) => {
-  //   return (
-  //     <LazyLoad height={250} once overflow={true} offset={50} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
-  //       <Row>
-  //         <TableColLeft data-class="TableColLeft" xs={2}>
-  //           <DivCenter>
-  //             <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-  //             {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
-  //             {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
-  //         </DivCenter>
-  //         </TableColLeft>
-  //         <TableColRight data-class="TableColRight" xs={10}>
-  //           {cross.values.gdcvalues.length !== 0 &&
-  //             <TableRow>
-  //               <TableColLeft data-class="TableColLeft" xs={2}>
-  //                 <DivCenter>Genomic Data Commons</DivCenter>
-  //               </TableColLeft>
-  //               <TableColRight data-class="TableColRight" xs={10}>
-  //                 {cross.values.gdcvalues.map((value, index) =>
-  //                   <TableRowValues data-class="TableRowValues" key={index}>
-  //                     <ValuesItems item={value}/>
-  //                   </TableRowValues>
-  //                 )}
-  //               </TableColRight>
-  //             </TableRow>
-  //           }
-  //           {cross.values.ctdcvalues.length !== 0 &&
-  //             <TableRow>
-  //               <TableColLeft data-class="TableColLeft" xs={2}>
-  //                 <DivCenter>Clinical Trials Data Commons</DivCenter>
-  //               </TableColLeft>
-  //               <TableColRight data-class="TableColRight" xs={10}>
-  //                 {cross.values.ctdcvalues.map((value, index) =>
-  //                   <TableRowValues data-class="TableRowValues" key={index}>
-  //                     <ValuesItems item={value}/>
-  //                   </TableRowValues>
-  //                 )}
-  //               </TableColRight>
-  //             </TableRow>
-  //           }
-  //           {cross.values.icdcvalues.length !== 0 &&
-  //             <TableRow>
-  //               <TableColLeft data-class="TableColLeft" xs={2}>
-  //                 <DivCenter>Integrated Canine Data Commons</DivCenter>
-  //               </TableColLeft>
-  //               <TableColRight data-class="TableColRight" xs={10}>
-  //                 {cross.values.icdcvalues.map((value, index) =>
-  //                   <TableRowValues data-class="TableRowValues" key={index}>
-  //                     <ValuesItems item={value}/>
-  //                   </TableRowValues>
-  //                 )}
-  //               </TableColRight>
-  //             </TableRow>
-  //           }
-  //         </TableColRight>
-  //     </Row>
-  //   </LazyLoad>
-  //   );
-  // });
-
   const ValuesItemsContainer = (props) => {
     return (
       <Row key={props.index}>
