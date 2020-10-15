@@ -8,7 +8,7 @@ import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
-  padding: 4rem 0;
+  padding: 3rem 0;
   background-color: var(--gray-bkgd);
 `;
 
@@ -39,7 +39,7 @@ const SearchFormControl = styled(Form.Control)`
   }
 
   &&::placeholder {
-    font-size: 1.6875rem;
+    font-size: 1.5625rem;
     color: #3A9CF7;
   }
 `;
@@ -139,10 +139,6 @@ const CheckboxLabel = styled.label`
   cursor: pointer;
 `;
 
-// const CheckboxLabelSpace = styled(CheckboxLabel)`
-//   inline-size: 11rem;
-// `;
-
 const SpanNormal = styled.span`
   font-weight: normal;
 `; 
@@ -176,6 +172,13 @@ const CheckboxInput = styled.input`
     border: 1px solid #042A68;
     box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
   }
+`;
+
+const RadioInput = styled(Form.Check)`
+  font-family: 'Lato-Regular', sans-serif;
+  font-size: 0.875rem;
+  color: #1C1C1C;
+  font-weight: bold;
 `;
 
 const SelectBtn = styled(Button)`
@@ -226,11 +229,6 @@ const SearchBox = (props) => {
 
   let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
   let [isToggleOnSource, setIsToggleOnSource] = useState(false);
-
-  // const ToggleTableHandler = event => {
-  //   event.preventDefault();
-  //   setIsToggleOn(!isToggleOn);
-  // };
 
   const searchInputRef = useRef();
 
@@ -340,8 +338,8 @@ const SearchBox = (props) => {
               value={searchState}
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
-              placeholder="Search Values, Properties, NCIt Terms or ICD-O-3"
-              aria-label="Search Values, Properties, NCIt Terms or ICD-O-3"
+              placeholder="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
+              aria-label="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
               ref={searchInputRef}
               error={props.errors.toString()}
             />
@@ -361,8 +359,8 @@ const SearchBox = (props) => {
           <SearchOptionsContainer>
             <SearchOptions>
               <FormGroupStyled>
-                <Form.Check name="matched" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler} label="Match any part of values or properties" />
-                <Form.Check name="matched" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Match whole values or properties" />
+                <RadioInput name="match" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler} label="Partial Match of values or properties" />
+                <RadioInput name="match" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Exact match of values or properties" />
               </FormGroupStyled>
             </SearchOptions>
           </SearchOptionsContainer>

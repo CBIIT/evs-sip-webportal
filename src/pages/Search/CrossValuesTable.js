@@ -466,7 +466,7 @@ const CrossValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href="/#">{props.synonym.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + props.synonym.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: props.synonym.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -498,7 +498,7 @@ const CrossValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c} rel="noopener noreferrer" target="_blank">{item.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -608,7 +608,10 @@ const CrossValuesTable = (props) => {
       <TableCol data-class="TableCol" xs={12}>
         <Row>
           <Col xs={10}>
-            <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
+          {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) 
+            ? <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }} onClick={ToggleTableHandler}></a>
+            : <span dangerouslySetInnerHTML={{ __html: props.name }}></span>
+          }
           </Col>
           <ColRight xs={2}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
@@ -711,7 +714,7 @@ const CrossValuesTable = (props) => {
 
   const mainValuesItems = crossValues.map((cross, index) => {
     return (
-      <LazyLoad height={250} once overflow={true} offset={250} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
+      <LazyLoad height={250} once overflow={true} offset={50} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
         <Row>
           <TableColLeft data-class="TableColLeft" xs={2}>
             <DivCenter>
