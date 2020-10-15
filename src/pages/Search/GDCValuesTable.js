@@ -449,62 +449,68 @@ const GDCValuesTable = (props) => {
     };
 
     return(
-      <LazyLoad height={180} once overflow={true} offset={180} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
-        <TableRow>
-          <TableCol xs={3}>
-            {props.item.category}
-            <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
-                <TableUl>
-                  <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
-                </TableUl>
-              </TableLi>
-            </TableUl>
-          </TableCol>
-  
-          <TableValues xs={9}>
-            <div>
-              {props.item.vs.slice(0,5).map((value, index) => {
-                return(
-                  <TableRowValue data-class="TableRowValue" key={index}>
-                    <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                  </TableRowValue>
-                )
-              })}
-              {props.item.vs.length > 5 && 
-              <Collapse in={isToggleOn} mountOnEnter={true}>
-                <div>
-                  {props.item.vs.map((value, index) => {
-                    if (index >= 5) {
-                      return(
-                        <TableRowValue data-class="TableRowValue" key={index}>
-                          <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                        </TableRowValue>
-                      )
-                    }
-                    return null;
-                  })}
-                </div>
-              </Collapse>
-              }
-            </div>
+      <TableRow key={props.index}>
+        <TableCol xs={3}>
+          {props.item.category}
+          <TableUl>
+            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
+              <TableUl>
+                <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
+              </TableUl>
+            </TableLi>
+          </TableUl>
+        </TableCol>
+
+        <TableValues xs={9}>
+          <div>
+            {props.item.vs.slice(0,5).map((value, index) => {
+              return(
+                <TableRowValue data-class="TableRowValue" key={index}>
+                  <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                </TableRowValue>
+              )
+            })}
             {props.item.vs.length > 5 && 
-              <TableRowValue data-class="TableRowValue">
-                <TableCol data-class="TableCol" xs={12}>
-                {isToggleOn === false ? (
-                  <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
-                  </a>
-                ) : (
-                  <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleUp}/> Show Less
-                  </a>
-                )}
-                </TableCol>
-              </TableRowValue>
+            <Collapse in={isToggleOn} mountOnEnter={true}>
+              <div>
+                {props.item.vs.map((value, index) => {
+                  if (index >= 5) {
+                    return(
+                      <TableRowValue data-class="TableRowValue" key={index}>
+                        <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                      </TableRowValue>
+                    )
+                  }
+                  return null;
+                })}
+              </div>
+            </Collapse>
             }
-          </TableValues>
-        </TableRow>
+          </div>
+          {props.item.vs.length > 5 && 
+            <TableRowValue data-class="TableRowValue">
+              <TableCol data-class="TableCol" xs={12}>
+              {isToggleOn === false ? (
+                <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                  <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
+                </a>
+              ) : (
+                <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                  <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                </a>
+              )}
+              </TableCol>
+            </TableRowValue>
+          }
+        </TableValues>
+      </TableRow>
+    );
+  }
+
+  const LazyLoadContainer = (props) => {
+    return (
+      <LazyLoad height={180} once overflow={true} offset={200} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
+        {props.children}
       </LazyLoad>
     );
   }
@@ -521,11 +527,22 @@ const GDCValuesTable = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <Col xs={12}>
-          {values.map((item, index) => 
-            <ValueItem item={item} key={index}/>
-          )}
-        </Col>
+        {(values.length < 6) 
+          ? 
+          <Col xs={12}>
+            {values.map((item, index) => 
+              <ValueItem item={item} key={index} />
+            )}
+          </Col>
+          :
+          <Col xs={12}>
+            {values.map((item, index) => 
+              <LazyLoadContainer key={index}>
+                <ValueItem item={item} key={index}/>
+              </LazyLoadContainer>
+            )}
+          </Col>
+        }
       </TableBody>
     </ContainerStyled>
     );
