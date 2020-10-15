@@ -80,7 +80,6 @@ const SearchOptionsContainer = styled.div`
 const SearchAllOptions = styled.div`
   width: 45rem;
   margin: 0 auto;
-  padding: 2rem 0;
 
   && ${SearchOptionsContainer}:not(:last-child) {
     border-bottom: 1px solid #898989;
@@ -98,13 +97,7 @@ const SearchOptionsLabel = styled.label`
   color: #1162E9;
   font-size: 0.875rem;
   font-weight: bold;
-  margin-bottom: 1.5rem;
-`;
-
-const FormGroupMatch = styled(Form.Group)`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: flex-start;
+  margin-bottom: 0.7rem;
 `;
 
 const FormGroupStyled = styled(Form.Group)`
@@ -244,19 +237,19 @@ const SearchBox = (props) => {
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
     setSuggestState([]);
-    props.searchTrigger(id, optionsState, selectDataSource);
+    props.searchTrigger(id, matchOptionsState, optionsState, selectDataSource);
   };
 
   const suggestKeyPressHandler = event => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       setSearchState(event.target.value);
       setSuggestState([]);
-      props.searchTrigger(event.target.value, optionsState, selectDataSource);
+      props.searchTrigger(event.target.value, matchOptionsState, optionsState, selectDataSource);
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      props.searchTrigger(suggestState[selectIndexState].id, optionsState, selectDataSource);
+      props.searchTrigger(suggestState[selectIndexState].id, matchOptionsState, optionsState, selectDataSource);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -366,10 +359,14 @@ const SearchBox = (props) => {
         </SearchBar>
         <SearchAllOptions>
           <SearchOptionsContainer>
-            <FormGroupMatch>
-              <Form.Check name="matched" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler}label="Match any part of values or properties" />
-              <Form.Check name="matched" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Match whole values or properties" />
-            </FormGroupMatch>
+            <SearchOptions>
+              <FormGroupStyled>
+                <Form.Check name="matched" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler} label="Match any part of values or properties" />
+                <Form.Check name="matched" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Match whole values or properties" />
+              </FormGroupStyled>
+            </SearchOptions>
+          </SearchOptionsContainer>
+          <SearchOptionsContainer>
             <SearchOptionsLabel>Search Include</SearchOptionsLabel>
             <SearchOptions>
               <SelectBtn aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'} onClick={checkedAllToggleHandler}>{isToggleOnOptions === false ? 'Select All' : 'Unselect All'}</SelectBtn>
