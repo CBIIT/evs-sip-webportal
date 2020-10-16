@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { apiSuggest } from '../../api';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
@@ -108,6 +108,14 @@ const FormGroupStyled = styled(Form.Group)`
   margin-bottom: 0;
 `;
 
+const FormGroupRadio = styled(Form.Group)`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin-bottom: 0;
+  width: 100%;
+`;
+
 const CheckboxSpan = styled.span`
   position: relative;
   display: block;
@@ -174,11 +182,65 @@ const CheckboxInput = styled.input`
   }
 `;
 
-const RadioInput = styled(Form.Check)`
+const RadioLabel = styled.label`
   font-family: 'Lato-Regular', sans-serif;
+  position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
   font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+`;
+
+const RadioSpan = styled.span`
+  position: relative;
+  display: block;
+  border: 1px solid #dce4ec;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  float: left;
+  margin-right: .5rem;
+`;
+
+const RadioIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  font-size: .9rem;
+  line-height: 0;
+  top: 13%;
+  left: 13%;
+`;
+
+const RadioInput = styled.input`
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  &&:checked+${RadioSpan} {
+    background-color: var(--white);
+    border: 1px solid #042A68;
+  }
+  
+  &&+${RadioSpan}>${RadioIcon}{
+    opacity: 0;
+  }
+  
+  &&:checked+${RadioSpan}>${RadioIcon} {
+    opacity: 1;
+    color: var(--checkbox-green);
+  }
+
+  &&:focus+${RadioSpan} {
+    border: 1px solid #042A68;
+    box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  }
 `;
 
 const SelectBtn = styled(Button)`
@@ -358,10 +420,22 @@ const SearchBox = (props) => {
         <SearchAllOptions>
           <SearchOptionsContainer>
             <SearchOptions>
-              <FormGroupStyled>
-                <RadioInput name="match" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler} label="Partial Match of values or properties" />
-                <RadioInput name="match" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Exact match of values or properties" />
-              </FormGroupStyled>
+              <FormGroupRadio>
+                <RadioLabel>
+                  <RadioInput name="match" type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler}/>
+                  <RadioSpan>
+                    <RadioIcon icon={faCircle}/>
+                  </RadioSpan>
+                  <span>Partial Match of values or properties</span>
+                </RadioLabel>
+                <RadioLabel>
+                  <RadioInput name="match" type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} />
+                  <RadioSpan>
+                    <RadioIcon icon={faCircle}/>
+                  </RadioSpan>
+                  <span>Exact match of values or properties</span>
+                </RadioLabel>
+              </FormGroupRadio>
             </SearchOptions>
           </SearchOptionsContainer>
           <SearchOptionsContainer>
