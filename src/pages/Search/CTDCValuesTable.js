@@ -246,7 +246,7 @@ const CTDCValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href="/#">{props.synonym.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + props.synonym.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: props.synonym.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -278,7 +278,7 @@ const CTDCValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href="/#">{item.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -388,7 +388,10 @@ const CTDCValuesTable = (props) => {
       <TableCol xs={12}>
         <Row>
           <Col xs={10}>
-            <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
+            {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) 
+              ? <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }} onClick={ToggleTableHandler}></a>
+              : <span dangerouslySetInnerHTML={{ __html: props.name }}></span>
+            }
           </Col>
           <ColRight xs={2}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&

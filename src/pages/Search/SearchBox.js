@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { apiSuggest } from '../../api';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
-  padding: 4rem 0;
+  padding: 3rem 0;
   background-color: var(--gray-bkgd);
 `;
 
@@ -39,7 +39,7 @@ const SearchFormControl = styled(Form.Control)`
   }
 
   &&::placeholder {
-    font-size: 1.6875rem;
+    font-size: 1.5625rem;
     color: #3A9CF7;
   }
 `;
@@ -108,6 +108,14 @@ const FormGroupStyled = styled(Form.Group)`
   margin-bottom: 0;
 `;
 
+const FormGroupRadio = styled(Form.Group)`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin-bottom: 0;
+  width: 100%;
+`;
+
 const CheckboxSpan = styled.span`
   position: relative;
   display: block;
@@ -139,10 +147,6 @@ const CheckboxLabel = styled.label`
   cursor: pointer;
 `;
 
-// const CheckboxLabelSpace = styled(CheckboxLabel)`
-//   inline-size: 11rem;
-// `;
-
 const SpanNormal = styled.span`
   font-weight: normal;
 `; 
@@ -173,6 +177,67 @@ const CheckboxInput = styled.input`
   }
 
   &&:focus+${CheckboxSpan} {
+    border: 1px solid #042A68;
+    box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  }
+`;
+
+const RadioLabel = styled.label`
+  font-family: 'Lato-Regular', sans-serif;
+  position: relative;
+  font-size: 0.875rem;
+  color: #1C1C1C;
+  font-weight: bold;
+  margin-bottom: 0;
+  cursor: pointer;
+`;
+
+const RadioSpan = styled.span`
+  position: relative;
+  display: block;
+  border: 1px solid #dce4ec;
+  background-color: #fff;
+  border-radius: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  float: left;
+  margin-right: .5rem;
+`;
+
+const RadioIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  font-size: .9rem;
+  line-height: 0;
+  top: 13%;
+  left: 13%;
+`;
+
+const RadioInput = styled.input`
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  margin: 0!important;
+  position: absolute!important;
+  top: 0.5rem;
+  left: 0.35rem;
+
+  &&:checked+${RadioSpan} {
+    background-color: var(--white);
+    border: 1px solid #042A68;
+  }
+  
+  &&+${RadioSpan}>${RadioIcon}{
+    opacity: 0;
+  }
+  
+  &&:checked+${RadioSpan}>${RadioIcon} {
+    opacity: 1;
+    color: var(--checkbox-green);
+  }
+
+  &&:focus+${RadioSpan} {
     border: 1px solid #042A68;
     box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
   }
@@ -226,11 +291,6 @@ const SearchBox = (props) => {
 
   let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
   let [isToggleOnSource, setIsToggleOnSource] = useState(false);
-
-  // const ToggleTableHandler = event => {
-  //   event.preventDefault();
-  //   setIsToggleOn(!isToggleOn);
-  // };
 
   const searchInputRef = useRef();
 
@@ -340,8 +400,8 @@ const SearchBox = (props) => {
               value={searchState}
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
-              placeholder="Search Values, Properties, NCIt Terms or ICD-O-3"
-              aria-label="Search Values, Properties, NCIt Terms or ICD-O-3"
+              placeholder="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
+              aria-label="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
               ref={searchInputRef}
               error={props.errors.toString()}
             />
@@ -360,10 +420,22 @@ const SearchBox = (props) => {
         <SearchAllOptions>
           <SearchOptionsContainer>
             <SearchOptions>
-              <FormGroupStyled>
-                <Form.Check name="matched" inline type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler} label="Match any part of values or properties" />
-                <Form.Check name="matched" inline type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} label="Match whole values or properties" />
-              </FormGroupStyled>
+              <FormGroupRadio>
+                <RadioLabel>
+                  <RadioInput name="match" type="radio" value="partial" checked={matchOptionsState === 'partial'} onClick={matchOptionsHandler}/>
+                  <RadioSpan>
+                    <RadioIcon icon={faCircle}/>
+                  </RadioSpan>
+                  <span>Partial Match of values or properties</span>
+                </RadioLabel>
+                <RadioLabel>
+                  <RadioInput name="match" type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} />
+                  <RadioSpan>
+                    <RadioIcon icon={faCircle}/>
+                  </RadioSpan>
+                  <span>Exact match of values or properties</span>
+                </RadioLabel>
+              </FormGroupRadio>
             </SearchOptions>
           </SearchOptionsContainer>
           <SearchOptionsContainer>

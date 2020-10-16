@@ -18,7 +18,7 @@ const TabNavsCol = styled(Col)`
 `;
 
 const TabNavTextCol= styled(Col)`
-  margin: 3rem 0;
+  margin: 2rem 0;
 `;
 
 const TabNavText = styled.h2`

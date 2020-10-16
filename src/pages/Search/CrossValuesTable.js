@@ -466,7 +466,7 @@ const CrossValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href="/#">{props.synonym.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + props.synonym.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: props.synonym.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -498,7 +498,7 @@ const CrossValuesTable = (props) => {
           <Row>
             <TableCol xs={12}>
               <b>NCI Thesaurus Code: </b>
-              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c} rel="noopener noreferrer" target="_blank">{item.n_c}</a>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.n_c }}></a>
             </TableCol>
           </Row>
           <Row>
@@ -608,7 +608,10 @@ const CrossValuesTable = (props) => {
       <TableCol data-class="TableCol" xs={12}>
         <Row>
           <Col xs={10}>
-            <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }}></a>
+          {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) 
+            ? <a href="/#" dangerouslySetInnerHTML={{ __html: props.name }} onClick={ToggleTableHandler}></a>
+            : <span dangerouslySetInnerHTML={{ __html: props.name }}></span>
+          }
           </Col>
           <ColRight xs={2}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
@@ -709,65 +712,71 @@ const CrossValuesTable = (props) => {
     )
   };
 
-  const mainValuesItems = crossValues.map((cross, index) => {
+  const ValuesItemsContainer = (props) => {
     return (
-      <LazyLoad height={250} once overflow={true} offset={250} key={index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
-        <Row>
-          <TableColLeft data-class="TableColLeft" xs={2}>
-            <DivCenter>
-              <CodeSpan>{cross.code}<br/>({cross.ref})</CodeSpan><br/>
-              {cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${cross.ncitPreferredTerm.termName} (${cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
-              {(cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{cross.icdo3PreferredTerm.n} ({cross.icdo3PreferredTerm.t})</PreferredTerm>}
-          </DivCenter>
-          </TableColLeft>
-          <TableColRight data-class="TableColRight" xs={10}>
-            {cross.values.gdcvalues.length !== 0 &&
-              <TableRow>
-                <TableColLeft data-class="TableColLeft" xs={2}>
-                  <DivCenter>Genomic Data Commons</DivCenter>
-                </TableColLeft>
-                <TableColRight data-class="TableColRight" xs={10}>
-                  {cross.values.gdcvalues.map((value, index) =>
-                    <TableRowValues data-class="TableRowValues" key={index}>
-                      <ValuesItems item={value}/>
-                    </TableRowValues>
-                  )}
-                </TableColRight>
-              </TableRow>
-            }
-            {cross.values.ctdcvalues.length !== 0 &&
-              <TableRow>
-                <TableColLeft data-class="TableColLeft" xs={2}>
-                  <DivCenter>Clinical Trials Data Commons</DivCenter>
-                </TableColLeft>
-                <TableColRight data-class="TableColRight" xs={10}>
-                  {cross.values.ctdcvalues.map((value, index) =>
-                    <TableRowValues data-class="TableRowValues" key={index}>
-                      <ValuesItems item={value}/>
-                    </TableRowValues>
-                  )}
-                </TableColRight>
-              </TableRow>
-            }
-            {cross.values.icdcvalues.length !== 0 &&
-              <TableRow>
-                <TableColLeft data-class="TableColLeft" xs={2}>
-                  <DivCenter>Integrated Canine Data Commons</DivCenter>
-                </TableColLeft>
-                <TableColRight data-class="TableColRight" xs={10}>
-                  {cross.values.icdcvalues.map((value, index) =>
-                    <TableRowValues data-class="TableRowValues" key={index}>
-                      <ValuesItems item={value}/>
-                    </TableRowValues>
-                  )}
-                </TableColRight>
-              </TableRow>
-            }
-          </TableColRight>
-      </Row>
-    </LazyLoad>
+      <Row key={props.index}>
+        <TableColLeft data-class="TableColLeft" xs={2}>
+          <DivCenter>
+            <CodeSpan>{props.cross.code}<br/>({props.cross.ref})</CodeSpan><br/>
+            {props.cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${props.cross.ncitPreferredTerm.termName} (${props.cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
+            {(props.cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{props.cross.icdo3PreferredTerm.n} ({props.cross.icdo3PreferredTerm.t})</PreferredTerm>}
+        </DivCenter>
+        </TableColLeft>
+        <TableColRight data-class="TableColRight" xs={10}>
+          {props.cross.values.gdcvalues.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Genomic Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.values.gdcvalues.map((value, index) =>
+                  <TableRowValues data-class="TableRowValues" key={index}>
+                    <ValuesItems item={value}/>
+                  </TableRowValues>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+          {props.cross.values.ctdcvalues.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Clinical Trials Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.values.ctdcvalues.map((value, index) =>
+                  <TableRowValues data-class="TableRowValues" key={index}>
+                    <ValuesItems item={value}/>
+                  </TableRowValues>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+          {props.cross.values.icdcvalues.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Integrated Canine Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.values.icdcvalues.map((value, index) =>
+                  <TableRowValues data-class="TableRowValues" key={index}>
+                    <ValuesItems item={value}/>
+                  </TableRowValues>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+        </TableColRight>
+    </Row>
     );
-  });
+  }
+
+  const LazyLoadContainer = (props) => {
+    return (
+      <LazyLoad height={250} once overflow={true} offset={270} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
+        {props.children}
+      </LazyLoad>
+    );
+  }
 
   if (crossValues.length !== 0) {
     return (
@@ -791,7 +800,22 @@ const CrossValuesTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          <Col xs={12}>{mainValuesItems}</Col>
+          {(crossValues.length < 5) 
+          ? 
+          <Col xs={12}>
+            {crossValues.map((cross, index) => 
+              <ValuesItemsContainer cross={cross} key={index} />
+            )}
+          </Col>
+          :
+          <Col xs={12}>
+            {crossValues.map((cross, index) => 
+              <LazyLoadContainer key={index}>
+                <ValuesItemsContainer cross={cross} key={index}/>
+              </LazyLoadContainer>
+            )}
+          </Col>
+          }
         </TableBody>
       </ContainerStyled>
     );
