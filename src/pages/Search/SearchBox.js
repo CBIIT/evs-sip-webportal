@@ -426,7 +426,7 @@ const SearchBox = (props) => {
                   <RadioSpan>
                     <RadioIcon icon={faCircle}/>
                   </RadioSpan>
-                  <span>Partial Match of values or properties</span>
+                  <span>Partial match of values or properties</span>
                 </RadioLabel>
                 <RadioLabel>
                   <RadioInput name="match" type="radio" value="exact" checked={matchOptionsState === 'exact'} onClick={matchOptionsHandler} />
