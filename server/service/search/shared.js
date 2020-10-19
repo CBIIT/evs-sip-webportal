@@ -382,6 +382,7 @@ const excludeSystemProperties = (node) => {
 };
 
 const generateGDCData = async function(schema) {
+  console.log("Start...");
   let dict = {};  
   for (let [key, value] of Object.entries(schema)) {
     delete value['$schema'];
@@ -436,6 +437,8 @@ const generateGDCData = async function(schema) {
 
   dict['_terms']['file_format'] = {description: 'wut'};
   dict['case'].category = 'case';
+
+  console.log("End...");
 
   let newDict = await $RefParser.dereference(dict, {
     continueOnError: false,            // Don't throw on the first error
@@ -596,6 +599,7 @@ const generateICDCorCTDCData = (dc) => {
 const getGraphicalGDCDictionary = async function() {
     let result = cache.getValue("gdc_dict");
     if(result == undefined){
+        console.log("Start to generate GDC Dictionary Data and load to local cache.");
         let jsonData = {};
         var termsJson = yaml.load(folderPath + '/_terms.yaml');
         jsonData["_terms.yaml"] = termsJson;
@@ -619,6 +623,8 @@ const getGraphicalGDCDictionary = async function() {
             }
         });
         result = await generateGDCData(jsonData);
+        console.log("Cached:");
+        console.log(Object.keys(result).length);
         cache.setValue("gdc_dict", result, config.item_ttl);
     }
 
