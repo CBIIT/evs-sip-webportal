@@ -24,6 +24,7 @@ const indexing = (req, res) => {
 	//config property index
 	let config_property = {};
 	config_property.index = config.index_p;
+	/*
 	config_property.body = {
 		"settings": {
 			"number_of_shards": 10, 
@@ -39,6 +40,11 @@ const indexing = (req, res) => {
 						"tokenizer": "standard",
 						"char_filter": ["my_filter"],
 						"filter": ["lowercase","whitespace_remove"]
+					},
+					"my_ngram": {
+						"tokenizer": "ngram_tokenizer",
+						"char_filter": ["my_filter"],
+						"filter": ["lowercase","whitespace_remove"]
 					}
 				},
 				"char_filter": {
@@ -52,6 +58,13 @@ const indexing = (req, res) => {
 						"type": "pattern_replace",
 						"pattern": "[_-]",
 						"replacement": " "
+					}
+				},
+				"tokenizer": {
+					"ngram_tokenizer": {
+						"type": "nGram",
+						"min_gram": "2",
+						"token_chars": ["letter", "digit", "symbol"]
 					}
 				}
 			}
@@ -134,6 +147,126 @@ const indexing = (req, res) => {
 			}
 		}
 	};
+	*/
+	config_property.body = {
+		"settings": {
+			"number_of_shards": 10, 
+			"max_inner_result_window": 10000,
+			"max_result_window": 10000,
+			"analysis": {
+				"analyzer": {
+					"case_insensitive": {
+						"tokenizer": "keyword",
+						"filter": ["lowercase", "whitespace_remove"]
+					},
+					"my_standard": {
+						"tokenizer": "standard",
+						"char_filter": ["my_filter"],
+						"filter": ["lowercase","whitespace_remove"]
+					},
+					"my_whitespace": {
+						"tokenizer": "whitespace",
+						"char_filter": ["my_filter"],
+						"filter": ["lowercase","whitespace_remove"]
+					}
+				},
+				"char_filter": {
+					"my_filter": {
+						"type": "mapping",
+						"mappings": ["_=>-"]
+					}
+				},
+				"filter": {
+					"whitespace_remove": {
+						"type": "pattern_replace",
+						"pattern": "[_-]",
+						"replacement": " "
+					}
+				}
+			}
+		},
+		"mappings": {
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"source":{
+					"type": "keyword"
+				},
+				"category": {
+					"type": "keyword"
+				},
+				"node": {
+					"type": "keyword"
+				},
+				"prop_desc":{
+					"type": "text",
+					"analyzer": "my_whitespace"
+				},
+				"prop": {
+					"type": "text",
+					"fields": {
+						"have": {
+							"type": "text",
+							"analyzer": "my_whitespace"
+						}
+					},
+					"analyzer": "case_insensitive"
+				},
+				"enum":{
+					"type": "nested",
+					"properties": {
+						"n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"ncit.s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"ncit.c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"icdo":{
+							"properties": {
+								"c": {
+									"type": "text",
+									"analyzer": "case_insensitive"
+								},
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							}
+						}
+					}
+				},
+				"cde.id": {
+					"type": "text",
+					"analyzer": "case_insensitive"
+				}
+			}
+		}
+	};
 	configs.push(config_property);
 	//config suggestion index
 	let config_suggestion = {};
@@ -190,7 +323,9 @@ const suggestion = (req, res) => {
 };
 
 const searchP = (req, res) => {
-	let keyword = req.query.keyword.trim().replace(/[\ ]+/g, " ");
+	//let keyword = req.query.keyword.trim().replace(/\+/g, "\\+").replace(/-/g, "\\-").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+	let keyword = req.query.keyword.trim();
+	
 	let option = {};
 	if(req.query.options){
 		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
