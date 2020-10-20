@@ -65,18 +65,25 @@ const generateQuery = (keyword, option) => {
   clause.bool = {};
   clause.bool.should = [];
   //adding double escaping
-  keyword = keyword.replace(/\//g, '\\/');
   if(option.match === "exact"){ // Perform exact search
+    //The reserved characters in elasticsearch are: + - = && || > < ! ( ) { } [ ] ^ " ~ * ? : \ /
+    let exact_keyword = keyword.replace(/\//g, '\\/').replace(/\+/g, "\\+").replace(/-/g, "\\-").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
     let m = {};
     m.query_string = {};
-    m.query_string.query = keyword;
+    m.query_string.query = exact_keyword;
     m.query_string.fields = [];
     m.query_string.fields.push("cde.id");
     m.query_string.fields.push("prop");
-    if (option.desc) {
-      m.query_string.fields.push("prop_desc");
-    }
     clause.bool.should.push(m);
+    
+    if (option.desc) {
+      m = {};
+      m.match_phrase_prefix = {};
+      m.match_phrase_prefix["prop_desc"] = {};
+      m.match_phrase_prefix["prop_desc"].query = keyword;
+      m.match_phrase_prefix["prop_desc"].analyzer = "my_whitespace";
+      clause.bool.should.push(m);
+    }
 
     m = {};
     m.nested = {};
@@ -91,7 +98,7 @@ const generateQuery = (keyword, option) => {
     m.nested.query.query_string.fields.push("enum.ncit.c");
     m.nested.query.query_string.fields.push("enum.n");
     m.nested.query.query_string.fields.push("enum.icdo.c");
-    m.nested.query.query_string.query = keyword;
+    m.nested.query.query_string.query = exact_keyword;
     
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
@@ -99,6 +106,7 @@ const generateQuery = (keyword, option) => {
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
+  /*
   else{
     let m = {};
     m.match_phrase_prefix = {};
@@ -146,6 +154,73 @@ const generateQuery = (keyword, option) => {
     n.match_phrase_prefix["enum.icdo.have"] = {};
     n.match_phrase_prefix["enum.icdo.have"].query = keyword;
     n.match_phrase_prefix["enum.icdo.have"].analyzer = "my_standard";
+    m.nested.query.bool.should.push(n);
+
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.highlight = generateHighlightInnerHits();
+    clause.bool.should.push(m);
+  }
+  */
+  else{
+    let m = {};
+    m.match_phrase_prefix = {};
+    m.match_phrase_prefix["prop.have"] = {};
+    m.match_phrase_prefix["prop.have"].query = keyword;
+    m.match_phrase_prefix["prop.have"].analyzer = "my_whitespace";
+    clause.bool.should.push(m);
+
+    m = {};
+    m.match_phrase_prefix = {};
+    m.match_phrase_prefix["cde.id"] = keyword;
+    clause.bool.should.push(m);
+
+    if (option.desc) {
+      m = {};
+      m.match_phrase_prefix = {};
+      m.match_phrase_prefix["prop_desc"] = {};
+      m.match_phrase_prefix["prop_desc"].query = keyword;
+      m.match_phrase_prefix["prop_desc"].analyzer = "my_whitespace";
+      clause.bool.should.push(m);
+    }
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "enum"
+    m.nested.query = {};
+    m.nested.query.bool = {};
+    m.nested.query.bool.should = [];
+
+    let n = {};
+    if (option.syn) {
+      n = {};
+      n.match_phrase_prefix = {};
+      n.match_phrase_prefix["enum.ncit.s.n.have"] = {};
+      n.match_phrase_prefix["enum.ncit.s.n.have"].query = keyword;
+      n.match_phrase_prefix["enum.ncit.s.n.have"].analyzer = "my_whitespace";
+      m.nested.query.bool.should.push(n);
+    }
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["enum.ncit.c.have"] = {};
+    n.match_phrase_prefix["enum.ncit.c.have"].query = keyword;
+    n.match_phrase_prefix["enum.ncit.c.have"].analyzer = "my_whitespace";
+    m.nested.query.bool.should.push(n);
+    
+    n = {};
+    n.match_phrase_prefix = {};
+    
+    n.match_phrase_prefix["enum.n.have"] = {};
+    n.match_phrase_prefix["enum.n.have"].query = keyword;
+    n.match_phrase_prefix["enum.n.have"].analyzer = "my_whitespace";
+    m.nested.query.bool.should.push(n);
+
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["enum.icdo.have"] = {};
+    n.match_phrase_prefix["enum.icdo.have"].query = keyword;
+    n.match_phrase_prefix["enum.icdo.have"].analyzer = "my_whitespace";
     m.nested.query.bool.should.push(n);
 
     m.nested.inner_hits = {};
@@ -382,6 +457,7 @@ const excludeSystemProperties = (node) => {
 };
 
 const generateGDCData = async function(schema) {
+  console.log("Start...");
   let dict = {};  
   for (let [key, value] of Object.entries(schema)) {
     delete value['$schema'];
@@ -436,6 +512,8 @@ const generateGDCData = async function(schema) {
 
   dict['_terms']['file_format'] = {description: 'wut'};
   dict['case'].category = 'case';
+
+  console.log("End...");
 
   let newDict = await $RefParser.dereference(dict, {
     continueOnError: false,            // Don't throw on the first error
@@ -596,6 +674,7 @@ const generateICDCorCTDCData = (dc) => {
 const getGraphicalGDCDictionary = async function() {
     let result = cache.getValue("gdc_dict");
     if(result == undefined){
+        console.log("Start to generate GDC Dictionary Data and load to local cache.");
         let jsonData = {};
         var termsJson = yaml.load(folderPath + '/_terms.yaml');
         jsonData["_terms.yaml"] = termsJson;
@@ -619,6 +698,8 @@ const getGraphicalGDCDictionary = async function() {
             }
         });
         result = await generateGDCData(jsonData);
+        console.log("Cached:");
+        console.log(Object.keys(result).length);
         cache.setValue("gdc_dict", result, config.item_ttl);
     }
 
