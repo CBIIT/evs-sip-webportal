@@ -311,8 +311,8 @@ const Search = () => {
             <SearchBox>
             <InputGroup>
               <InputBox
-                placeholder="Search EVS-SIP"
-                aria-label="Search EVS-SIP"
+                placeholder="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
+                aria-label="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
                 type="text"
                 value={searchState}
                 onChange={suggestHandler}
