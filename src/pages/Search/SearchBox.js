@@ -208,8 +208,8 @@ const RadioIcon = styled(FontAwesomeIcon)`
   position: absolute;
   font-size: .9rem;
   line-height: 0;
-  top: 13%;
-  left: 13%;
+  top: 14%;
+  left: 14%;
 `;
 
 const RadioInput = styled.input`

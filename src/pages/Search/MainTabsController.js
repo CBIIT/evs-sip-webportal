@@ -149,6 +149,25 @@ const MainTabsController = (props) => {
       </Result>
     );
   }
+  else if (Object.keys(props.result).length !== 0 && props.result.returnList !== undefined && props.result.returnList.length === 0) {
+    return(
+      <Result>
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                  <AlertContainer>
+                  <Alert variant="warning">
+                    <p className="mb-0">
+                      Sorry, no results found for keyword: <span>{props.keyword}</span>
+                    </p>
+                  </Alert>
+                </AlertContainer>
+              </TabNavTextCol>
+            </Row>
+          </Container>
+      </Result>
+    )
+  }
   else if (Object.keys(props.result).length !== 0 && props.result.timedOut !== undefined && props.result.timedOut === true) {
     return(
       <Result>
