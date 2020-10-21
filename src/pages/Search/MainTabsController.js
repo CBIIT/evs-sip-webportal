@@ -32,7 +32,6 @@ const TabNavText = styled.h2`
 const TabNavSpan = styled.span`
   font-family: 'Raleway-ExtraBold', sans-serif;
   border-bottom: 0.375rem solid #397DED;
-  line-height: 0.85;
 `;
 
 const TabContentStyled = styled(Tab.Content)`
@@ -93,6 +92,23 @@ const AlertContainer = styled.div`
   margin-top: 2rem;
 `;
 
+const Indicator = styled.div`
+  && > h2 {
+    font-family: 'Raleway-Medium',sans-serif;
+    font-size: 1.563rem;
+    background-color: #fff;
+    padding: 3em 0;
+    color: ${props => props.variant === 'error' ? '#bf063b' : '#042A68'};
+    max-width: 100%;
+    text-align: center;
+  }
+
+  && > h2 > span {
+    font-family: 'Raleway-ExtraBold',sans-serif;
+    border-bottom: 0.25rem solid #397DED;
+  }
+ `;
+
 const MainTabsController = (props) => {
   if (Object.keys(props.result).length !== 0 && props.result.returnList !== undefined && props.result.returnList.length !== 0) {
     return (
@@ -149,6 +165,23 @@ const MainTabsController = (props) => {
       </Result>
     );
   }
+  else if (Object.keys(props.result).length !== 0 && props.result.returnList !== undefined && props.result.returnList.length === 0) {
+    return(
+      <Result>
+          <Container>
+            <Row className="clearfix">
+              <TabNavTextCol sm={12}>
+                <Indicator>
+                  <h2>
+                    Sorry, no results found for keyword: <span>{props.keyword}</span>
+                  </h2>
+                </Indicator>
+              </TabNavTextCol>
+            </Row>
+          </Container>
+      </Result>
+    )
+  }
   else if (Object.keys(props.result).length !== 0 && props.result.timedOut !== undefined && props.result.timedOut === true) {
     return(
       <Result>
@@ -176,13 +209,11 @@ const MainTabsController = (props) => {
           <Container>
             <Row className="clearfix">
               <TabNavTextCol sm={12}>
-                  <AlertContainer>
-                  <Alert variant="danger">
-                    <p className="mb-0">
-                      Please, enter a valid keyword!.
-                    </p>
-                  </Alert>
-                </AlertContainer>
+                <Indicator variant="error">
+                  <h2>
+                    Please, enter a valid keyword!.
+                  </h2>
+                </Indicator>
               </TabNavTextCol>
             </Row>
           </Container>
