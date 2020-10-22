@@ -13,9 +13,13 @@ import IconClinicalAssessment from '-!react-svg-loader!./icons/icon_clinical_ass
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import IconDataFile from '-!react-svg-loader!./icons/icon_data_file.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
+import IconGeneratedDataFile from '-!react-svg-loader!./icons/icon_generated_data_file.svg';
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import IconMetadata from '-!react-svg-loader!./icons/icon_metadata.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import IconNotation from '-!react-svg-loader!./icons/icon_notation.svg';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import IconNucleicAcidVariant from '-!react-svg-loader!./icons/icon_nucleic_acid_variant.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import IconIndexFile from '-!react-svg-loader!./icons/icon_index_file.svg';
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -44,6 +48,10 @@ const nodeCategoryList = {
     icon: IconDataFile,
     color: '#7EC500',
   },
+  generated_data_file: {
+    icon: IconGeneratedDataFile,
+    color: '#7EC500',
+  },
   metadata_file: {
     icon: IconMetadata,
     color: '#F4B940',
@@ -59,6 +67,10 @@ const nodeCategoryList = {
   administrative: {
     icon: IconSubjectCharacteristics,
     color: '#5d74f5',
+  },
+  nucleic_acid_variant: {
+    icon: IconNucleicAcidVariant,
+    color: '#E74C3C',
   },
   notation: {
     icon: IconNotation,
