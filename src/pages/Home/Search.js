@@ -174,8 +174,8 @@ const CheckboxIcon = styled(FontAwesomeIcon)`
   position: absolute;
   font-size: .7rem;
   line-height: 0;
-  top: 25%;
-  left: 25%;
+  top: 0.3125rem;
+  left: 0.3125rem;
 `;
 
 const CheckboxInput = styled.input`
