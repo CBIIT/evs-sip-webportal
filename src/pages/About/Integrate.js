@@ -13,6 +13,7 @@ const ContentBoxIntegrate = styled(ContentBox)`
   background-image: url(${bkgd});
   background-position: right;
   background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 const ContentBoxTitle = styled.h2`
