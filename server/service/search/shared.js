@@ -731,9 +731,11 @@ const getGraphicalCTDCDictionary = () => {
         var mJson = yaml.load(dataFilesPath + '/CTDC/ctdc_model_file.yaml');
         jsonData.mData = mJson;
         result = generateICDCorCTDCData(jsonData);
+        /*
         for(let node in result){
           result[node].category = "clinical";
         }
+        */
         cache.setValue("ctdc_dict", result, config.item_ttl);
     }
     return result;
