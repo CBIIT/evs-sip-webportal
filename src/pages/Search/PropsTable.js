@@ -56,6 +56,7 @@ const TableUl = styled.ul`
 
 const TableLi = styled.li`
   position: relative;
+  word-wrap: break-word;
 `;
 
 const SpanIcon = styled.span`

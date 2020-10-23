@@ -63,6 +63,7 @@ const TableUl = styled.ul`
 
 const TableLi = styled.li`
   position: relative;
+  word-wrap: break-word;
 `;
 
 const SpanIcon = styled.span`
@@ -73,10 +74,6 @@ const SpanIcon = styled.span`
   line-height: inherit;
   color: var(--checkbox-green);
   transform: rotate(45deg);
-`;
-
-const TableLiBreak = styled(TableLi)`
-  word-wrap: break-word;
 `;
 
 const TableValues = styled(Col)`
@@ -455,7 +452,7 @@ const GDCValuesTable = (props) => {
           <TableUl>
             <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
               <TableUl>
-                <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLiBreak>
+                <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
               </TableUl>
             </TableLi>
           </TableUl>
