@@ -522,6 +522,8 @@ const generateGDCData = async function(schema) {
     }
   });
 
+  console.log("End of Dereference...");
+
   const result = Object.keys(newDict).reduce(function(filtered, key){
 
     

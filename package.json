@@ -44,6 +44,7 @@
     "node-xlsx": "^0.15.0",
     "prop-types": "^15.6.0",
     "react": "^16.13.1",
+    "react-app-polyfill": "^2.0.0",
     "react-bootstrap": "^1.2.2",
     "react-dom": "^16.13.1",
     "react-lazyload": "^3.0.0",
@@ -78,10 +79,16 @@
     "concurrently": "^5.2.0",
     "nodemon": "^2.0.4"
   },
-  "browserslist": [
-    ">1%",
-    "last 4 versions",
-    "Firefox ESR",
-    "not ie < 9"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  }
 }
