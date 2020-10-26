@@ -35,6 +35,7 @@ const SeachTitleContainer = styled.div`
 
 const SearchTitle = styled.h1`
   font-family: 'Raleway-Medium', sans-serif;
+  width: 16rem;
   inline-size: 16rem;
   font-size: 2.3125rem; 
   margin-bottom: 3rem;
@@ -153,6 +154,7 @@ const CheckboxLabel = styled.label`
   position: relative;
   font-size: 0.75rem;
   color: #154C5E;
+  width: 8rem;
   inline-size: 8rem;
   line-height: 1rem;
 `;

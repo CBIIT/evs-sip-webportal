@@ -13,7 +13,7 @@ const Page = styled.div`
 `;
 
 const PageContainer = styled.div`
-  max-width: 65rem;
+  max-width: 75rem;
   margin: 0 auto;
 `;
 
