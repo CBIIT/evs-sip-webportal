@@ -61,6 +61,7 @@ const TableUl = styled.ul`
 
 const TableLi = styled.li`
   position: relative;
+  word-wrap: break-word;
 `;
 
 const SpanIcon = styled.span`
@@ -73,10 +74,6 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const TableLiBreak = styled(TableLi)`
-  word-wrap: break-word;
-`;
-
 const TableValues = styled(Col)`
   border-left: 1px solid #BBC5CD;
 `;
@@ -84,7 +81,6 @@ const TableValues = styled(Col)`
 const ColRight = styled(Col)`
   text-align: right;
 `;
-
 
 const Indicator = styled.div`
   position: relative;
@@ -430,7 +426,7 @@ const ICDCValuesTable = (props) => {
         <TableUl>
           <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
             <TableUl>
-              <TableLiBreak><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLiBreak>
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLi>
             </TableUl>
           </TableLi>
         </TableUl>

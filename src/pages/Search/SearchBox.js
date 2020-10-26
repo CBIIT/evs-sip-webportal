@@ -132,8 +132,8 @@ const CheckboxIcon = styled(FontAwesomeIcon)`
   position: absolute;
   font-size: .7rem;
   line-height: 0;
-  top: 25%;
-  left: 25%;
+  top: 0.3125rem;
+  left: 0.375rem;
 `;
 
 const CheckboxLabel = styled.label`
@@ -152,11 +152,6 @@ const SpanNormal = styled.span`
 `; 
 
 const CheckboxInput = styled.input`
-  margin: 0!important;
-  position: absolute!important;
-  top: 0.5rem;
-  left: 0.35rem;
-
   margin: 0!important;
   position: absolute!important;
   top: 0.5rem;
@@ -208,16 +203,11 @@ const RadioIcon = styled(FontAwesomeIcon)`
   position: absolute;
   font-size: .9rem;
   line-height: 0;
-  top: 14%;
-  left: 14%;
+  top: 0.1875rem;
+  left: 0.1875rem;
 `;
 
 const RadioInput = styled.input`
-  margin: 0!important;
-  position: absolute!important;
-  top: 0.5rem;
-  left: 0.35rem;
-
   margin: 0!important;
   position: absolute!important;
   top: 0.5rem;
