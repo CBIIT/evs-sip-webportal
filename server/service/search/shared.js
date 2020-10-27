@@ -353,7 +353,6 @@ const getICDOMapping = () => {
         if(!(item.i_c in result)){
           result[item.i_c] = {};
           result[item.i_c].s = [];
-          result[item.i_c].ncits = [];
         }
         let entry = {n: item.nm, t: item.term_type == "" ? '*' : item.term_type};
         let idx = result[item.i_c].s.map(function(element){
@@ -362,8 +361,22 @@ const getICDOMapping = () => {
         if(idx == -1){
           result[item.i_c].s.push(entry);
         }
-        if(result[item.i_c].ncits.indexOf(item.n_c) == -1){
-          result[item.i_c].ncits.push(item.n_c);
+      }
+    });
+  }
+  return result;
+}
+
+const getParentICDO = () => {
+  let data = readGDCValues();
+  let result = [];
+  for(let key in data){
+    let obj = data[key];
+    obj.forEach(item => {
+      if(item.term_type && item.term_type == "HT"){
+        let icdo = item.i_c;
+        if(result.indexOf(icdo) == -1){
+          result.push(icdo);
         }
       }
     });
@@ -754,6 +767,7 @@ module.exports = {
     readCTDCMapping,
     readICDCMapping,
     getICDOMapping,
+    getParentICDO,
     generateICDOHaveWords,
     getGraphicalGDCDictionary,
     getGraphicalICDCDictionary,

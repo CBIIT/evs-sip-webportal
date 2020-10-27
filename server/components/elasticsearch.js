@@ -12,14 +12,12 @@ const caDSR = require('./caDSR');
 const cache = require('./cache');
 const extend = require('util')._extend;
 const _ = require('lodash');
-const {
-  performance
-} = require('perf_hooks');
 const drugs_properties = require('../config').drugs_properties;
 const shared = require('../service/search/shared');
 const folderPath = path.join(__dirname, '..', 'data_files','GDC', 'model');
 var allTerm = {};
 var icdo_mapping = shared.getICDOMapping();
+var icdo2Exclude = shared.getParentICDO();
 var gdc_values = {};
 var allProperties = [];
 var unloaded_ncits = [];
@@ -149,16 +147,31 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
       let enums = [];
       let obj = gdc_values[prop_full_name];
       obj.forEach(v => {
-        let pv = v.nm.toLowerCase();
-        let icdo = v.i_c;
-        if(pv in values_ncit_mapping){
-          values_icdo_mapping[pv] = icdo;
-          icdo_mapping[icdo].ncits.forEach(n => {
-            if(values_ncit_mapping[pv].indexOf(n.trim()) == -1){
-              values_ncit_mapping[pv].push(n.trim());
-            }
-          });
+        if(!(v.term_type && v.term_type == "HT")){
+          //only pick data at child level instead of parent level
+          if(icdo2Exclude.indexOf(v.nm) > -1){
+            return;
+          }
+          let pv = v.nm.toLowerCase();
+          let icdo = v.i_c;
+          let ncit = v.n_c.trim();
+          if(!(pv in values_ncit_mapping)){
+            values.push(v.nm);
+            values_ncit_mapping[pv] = [];
+          }
+
+          //save values to ncit mapping
+          if(values_ncit_mapping[pv].indexOf(ncit) == -1){
+              values_ncit_mapping[pv].push(ncit);
+          }
+
+          //save values to icdo mapping
+          if(!(pv in values_icdo_mapping)){
+            values_icdo_mapping[pv] = icdo;
+          }
+
         }
+        
       });
     }
 
