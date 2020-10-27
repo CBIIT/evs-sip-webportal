@@ -360,80 +360,87 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
       p.prop_desc = entryRaw.description;
       p.id = p.prop + "/" + p.node + "/" + p.category;
 
-      if(["string", "number", "integer", "boolean"].indexOf(entryRaw.type) > -1){
+      if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
       }
       else if(Array.isArray(entryRaw.type)){
-        //p.enum should have the following format:
-        //enum:[
-        //  {
-        //    n: "Abdomen, NOS",
-        //    icdo: {
-        //        c: "C76.2", 
-        //        have: ["C76", "C76.2"],
-        //        s: [
-        //          {n: "Abdomen, NOS", t: "PT"},
-        //          {n: "Abdominal wall, NOS", t: "RT"},
-        //          ...
-        //        ]
-        //      },
-        //    ncit: [
-        //      {
-        //        c: "C12664", 
-        //        s: [
-        //          {n: "ABDOMINAL CAVITY", t: "PT", src: "CDISC"},
-        //          ...
-        //        ]
-        //      },
-        //      ...
-        //    ]
-        //  },
-        //  ...
-        //]
-        p.type = "enum";
-        //add values and ncit codes
-        p.enum = [];
-        let values_dict = {};
-        if(mappingEntryRaw && mappingEntryRaw.values){
-          mappingEntryRaw.values.forEach(entry => {
-            values_dict[entry.v_name.toLowerCase()] = entry;
-          });
+        let arr = entryRaw.type;
+        if(arr.length == 1 && arr[0].indexOf('http') == 0){
+          //this is a reference to other http resource
+          p.type = arr[0];
         }
-        
-        entryRaw.type.forEach(v => {
-          let tmp = {};
-          tmp.n = v;
-          let v_lowcase = v.toLowerCase();
-          tmp.ncit = [];
-          if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
-            let dict = {};
-            dict.c = values_dict[v_lowcase].v_n_code.trim();
-            dict.l = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].label : "");
-            let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
-            if(syns[values_dict[v_lowcase].v_n_code] == undefined){
-              console.log("Don't have the ncit data for:" + dict.c);
-              if(unloaded_ncits.indexOf(dict.c) == -1){
-                unloaded_ncits.push(dict.c);
-              }
-            }
-            if(synonyms.length > 0){
-              dict.s = [];
-              synonyms.forEach(s => {
-                dict.s.push({
-                  n: s.termName,
-                  t: s.termGroup,
-                  src: s.termSource
-                });
-              });
-            }
-            tmp.ncit.push(dict);
-            ncits.push(dict.c.toLowerCase());
+        else{
+          //p.enum should have the following format:
+          //enum:[
+          //  {
+          //    n: "Abdomen, NOS",
+          //    icdo: {
+          //        c: "C76.2", 
+          //        have: ["C76", "C76.2"],
+          //        s: [
+          //          {n: "Abdomen, NOS", t: "PT"},
+          //          {n: "Abdominal wall, NOS", t: "RT"},
+          //          ...
+          //        ]
+          //      },
+          //    ncit: [
+          //      {
+          //        c: "C12664", 
+          //        s: [
+          //          {n: "ABDOMINAL CAVITY", t: "PT", src: "CDISC"},
+          //          ...
+          //        ]
+          //      },
+          //      ...
+          //    ]
+          //  },
+          //  ...
+          //]
+          p.type = "enum";
+          //add values and ncit codes
+          p.enum = [];
+          let values_dict = {};
+          if(mappingEntryRaw && mappingEntryRaw.values){
+            mappingEntryRaw.values.forEach(entry => {
+              values_dict[entry.v_name.toLowerCase()] = entry;
+            });
           }
-          p.enum.push(tmp);
-          values.push(v_lowcase);
-        });
-        values = _.uniq(values.concat(Object.keys(values_dict)));
-        ncits = _.uniq(ncits);
+          
+          entryRaw.type.forEach(v => {
+            let tmp = {};
+            tmp.n = v;
+            let v_lowcase = v.toLowerCase();
+            tmp.ncit = [];
+            if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
+              let dict = {};
+              dict.c = values_dict[v_lowcase].v_n_code.trim();
+              dict.l = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].label : "");
+              let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
+              if(syns[values_dict[v_lowcase].v_n_code] == undefined){
+                console.log("Don't have the ncit data for:" + dict.c);
+                if(unloaded_ncits.indexOf(dict.c) == -1){
+                  unloaded_ncits.push(dict.c);
+                }
+              }
+              if(synonyms.length > 0){
+                dict.s = [];
+                synonyms.forEach(s => {
+                  dict.s.push({
+                    n: s.termName,
+                    t: s.termGroup,
+                    src: s.termSource
+                  });
+                });
+              }
+              tmp.ncit.push(dict);
+              ncits.push(dict.c.toLowerCase());
+            }
+            p.enum.push(tmp);
+            values.push(v_lowcase);
+          });
+          values = _.uniq(values.concat(Object.keys(values_dict)));
+          ncits = _.uniq(ncits);
+        }
       }
       else{
         p.type = "object";
@@ -529,80 +536,87 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
       p.prop_desc = entryRaw.description;
       p.id = p.prop + "/" + p.node + "/" + p.category;
 
-      if(["string", "number", "integer", "boolean"].indexOf(entryRaw.type) > -1){
+      if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
       }
       else if(Array.isArray(entryRaw.type)){
-        //p.enum should have the following format:
-        //enum:[
-        //  {
-        //    n: "Abdomen, NOS",
-        //    icdo: {
-        //        c: "C76.2", 
-        //        have: ["C76", "C76.2"],
-        //        s: [
-        //          {n: "Abdomen, NOS", t: "PT"},
-        //          {n: "Abdominal wall, NOS", t: "RT"},
-        //          ...
-        //        ]
-        //      },
-        //    ncit: [
-        //      {
-        //        c: "C12664", 
-        //        s: [
-        //          {n: "ABDOMINAL CAVITY", t: "PT", src: "CDISC"},
-        //          ...
-        //        ]
-        //      },
-        //      ...
-        //    ]
-        //  },
-        //  ...
-        //]
-        p.type = "enum";
-        //add values and ncit codes
-        p.enum = [];
-        let values_dict = {};
-        if(mappingEntryRaw && mappingEntryRaw.values){
-          mappingEntryRaw.values.forEach(entry => {
-            values_dict[entry.v_name.toLowerCase()] = entry;
-          });
+        let arr = entryRaw.type;
+        if(arr.length == 1 && arr[0].indexOf('http') == 0){
+          //this is a reference to other http resource
+          p.type = arr[0];
         }
-        
-        entryRaw.type.forEach(v => {
-          let tmp = {};
-          tmp.n = v;
-          let v_lowcase = v.toLowerCase();
-          tmp.ncit = [];
-          if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
-            let dict = {};
-            dict.c = values_dict[v_lowcase].v_n_code.trim();
-            dict.l = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].label : "");
-            let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
-            if(syns[values_dict[v_lowcase].v_n_code] == undefined){
-              console.log("Don't have the ncit data for:" + dict.c);
-              if(unloaded_ncits.indexOf(dict.c) == -1){
-                unloaded_ncits.push(dict.c);
-              }
-            }
-            if(synonyms.length > 0){
-              dict.s = [];
-              synonyms.forEach(s => {
-                dict.s.push({
-                  n: s.termName,
-                  t: s.termGroup,
-                  src: s.termSource
-                });
-              });
-            }
-            tmp.ncit.push(dict);
-            ncits.push(dict.c.toLowerCase());
+        else{
+          //p.enum should have the following format:
+          //enum:[
+          //  {
+          //    n: "Abdomen, NOS",
+          //    icdo: {
+          //        c: "C76.2", 
+          //        have: ["C76", "C76.2"],
+          //        s: [
+          //          {n: "Abdomen, NOS", t: "PT"},
+          //          {n: "Abdominal wall, NOS", t: "RT"},
+          //          ...
+          //        ]
+          //      },
+          //    ncit: [
+          //      {
+          //        c: "C12664", 
+          //        s: [
+          //          {n: "ABDOMINAL CAVITY", t: "PT", src: "CDISC"},
+          //          ...
+          //        ]
+          //      },
+          //      ...
+          //    ]
+          //  },
+          //  ...
+          //]
+          p.type = "enum";
+          //add values and ncit codes
+          p.enum = [];
+          let values_dict = {};
+          if(mappingEntryRaw && mappingEntryRaw.values){
+            mappingEntryRaw.values.forEach(entry => {
+              values_dict[entry.v_name.toLowerCase()] = entry;
+            });
           }
-          p.enum.push(tmp);
-          values.push(v_lowcase);
-        });
-        values = _.uniq(values.concat(Object.keys(values_dict)));
-        ncits = _.uniq(ncits);
+          
+          entryRaw.type.forEach(v => {
+            let tmp = {};
+            tmp.n = v;
+            let v_lowcase = v.toLowerCase();
+            tmp.ncit = [];
+            if(values_dict[v_lowcase] && values_dict[v_lowcase].v_n_code && values_dict[v_lowcase].v_n_code.trim() != ""){
+              let dict = {};
+              dict.c = values_dict[v_lowcase].v_n_code.trim();
+              dict.l = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].label : "");
+              let synonyms = (syns[values_dict[v_lowcase].v_n_code] ? syns[values_dict[v_lowcase].v_n_code].synonyms : []);
+              if(syns[values_dict[v_lowcase].v_n_code] == undefined){
+                console.log("Don't have the ncit data for:" + dict.c);
+                if(unloaded_ncits.indexOf(dict.c) == -1){
+                  unloaded_ncits.push(dict.c);
+                }
+              }
+              if(synonyms.length > 0){
+                dict.s = [];
+                synonyms.forEach(s => {
+                  dict.s.push({
+                    n: s.termName,
+                    t: s.termGroup,
+                    src: s.termSource
+                  });
+                });
+              }
+              tmp.ncit.push(dict);
+              ncits.push(dict.c.toLowerCase());
+            }
+            p.enum.push(tmp);
+            values.push(v_lowcase);
+          });
+          values = _.uniq(values.concat(Object.keys(values_dict)));
+          ncits = _.uniq(ncits);
+        }
       }
       else{
         p.type = "object";
