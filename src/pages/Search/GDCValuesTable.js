@@ -4,8 +4,7 @@ import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
-// import GDCTerms from './dialogs/GDCTerms';
+import { getHighlightObj, sortAlphabetically, sortSynonyms, browserDetection } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -106,10 +105,6 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-// const IndicatorTerm = styled.span`
-//   color: #2a72a4;
-// `;
-
 const RowCenter = styled(Row)`
     height: 180px;
     align-content: center;
@@ -119,11 +114,7 @@ const RowCenter = styled(Row)`
 
 
 const GDCValuesTable = (props) => {
-  // let termTypeNotAssigned = false;
-  // let valuesCount = 0;
-
   let items = JSON.parse(JSON.stringify(props.values));
-
   let values = [];
 
   items.forEach((data) => {
@@ -524,7 +515,7 @@ const GDCValuesTable = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        {(values.length < 6) 
+        {(values.length < 6 || browserDetection.isEdge)
           ? 
           <Col xs={12}>
             {values.map((item, index) => 

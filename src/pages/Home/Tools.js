@@ -80,6 +80,7 @@ const ToolBoxTitle = styled.span`
   line-height: 1rem;
   letter-spacing: 0.03125rem;
 `;
+
 const ToolBoxLink = styled(Link)`
   width: 100%;
   line-height: 2rem;

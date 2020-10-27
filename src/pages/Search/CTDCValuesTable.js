@@ -104,17 +104,8 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-// const IndicatorTerm = styled.span`
-//   color: #2a72a4;
-// `;
-
-
 const CTDCValuesTable = (props) => {
-  // let termTypeNotAssigned = false;
-  // let valuesCount = 0;
-
   let items = JSON.parse(JSON.stringify(props.values));
-
   let values = [];
 
   items.forEach((data) => {
