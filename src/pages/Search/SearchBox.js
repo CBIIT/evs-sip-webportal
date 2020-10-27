@@ -141,6 +141,7 @@ const CheckboxLabel = styled.label`
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
+  width: 11rem;
   inline-size: 11rem;
   font-weight: bold;
   margin-bottom: 0;
@@ -239,6 +240,7 @@ const SelectBtn = styled(Button)`
   background-color: #F5F5F5;
   border-radius: 2em;
   text-transform: uppercase;
+  width: 6rem;
   inline-size: 6rem;
   font-size: 0.625rem;
   color: #154C5E;

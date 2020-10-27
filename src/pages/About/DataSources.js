@@ -71,6 +71,7 @@ const ContentBoxTable = styled(Table)`
 
 const ContentThTitle = styled.h3`
   font-size: 0.9375rem;
+  width: 13rem;
   inline-size: 13rem;
   text-align: left;
   margin: 0 auto;

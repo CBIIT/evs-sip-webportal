@@ -17,6 +17,7 @@ const NavLinkStyled = styled(Nav.Link)`
   text-align: center;
   color: #042A68;
   padding: .6rem 2rem;
+  width: 14rem;
   inline-size: 14rem;
 
   &&.active {

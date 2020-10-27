@@ -73,6 +73,7 @@ const ToolBoxTitle = styled.span`
   font-weight: bold;
   color: var(--toolbox-title);
   text-transform: uppercase;
+  width: 8rem;
   inline-size: 8rem;
   margin: auto;
   text-align: center;
@@ -119,6 +120,7 @@ const ToolTitleContainer = styled.div`
 
 const ToolTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
+  width: 10rem;
   inline-size: 10rem;
   font-size: 2.25rem;
   line-height: 2.8rem;
