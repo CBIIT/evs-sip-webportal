@@ -56,7 +56,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         p.cde.id = entry.termDef.cde_id;
         //p.cde.v = entry.termDef.cde_version;
         p.cde.url = entry.termDef.term_url;
-        p.cde.src = 'CDE ID';
+        p.cde.src = 'CDE';
       }
       else if(entry.termDef.source === 'NCIt'){
         p.cde = {};
@@ -240,7 +240,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
       if (em in allTerm) {
         // if exist, then check if have the same type
         let t = allTerm[em];
-        if(p.cde.src == 'CDE ID'){
+        if(p.cde.src == 'CDE'){
           if (t.indexOf('cde id') === -1) {
             t.push('cde id');
           }
