@@ -40,6 +40,10 @@
   border-radius: 50%;
 }
 
+.data-dictionary-graph-legend__icon {
+  width: 20px !important;
+}
+
 .data-dictionary-graph-legend__text {
   margin-left: 15px;
   word-break: break-all;
