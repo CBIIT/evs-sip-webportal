@@ -42,6 +42,10 @@ const SearchFormControl = styled(Form.Control)`
     font-size: 1.5625rem;
     color: #3A9CF7;
   }
+
+  &&::-ms-input-placeholder {
+    transform: scale(0.85) translateX(-4rem);
+  }
 `;
 
 const SearchButton = styled(Button)`
@@ -110,7 +114,7 @@ const FormGroupStyled = styled(Form.Group)`
 
 const FormGroupRadio = styled(Form.Group)`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: flex-start;
   margin-bottom: 0;
   width: 100%;
