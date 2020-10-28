@@ -72,7 +72,7 @@ class Legend extends React.Component {
                 title='Show Legend' 
                 tabIndex={0}
               >
-                <i className='data-dictionary-graph-legend__info-icon g3-icon g3-icon--question-mark' />
+                <i className="data-dictionary-graph-legend__question-icon fas fa-question"></i>
               </span>
             )
         }
