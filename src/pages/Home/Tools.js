@@ -148,10 +148,10 @@ const Tools = () => {
                 <ToolBoxContainer>
                   <ToolBoxImg alt="semantic" src={SemanticImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
-                    <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
+                    <ToolBoxTitle>Semantic Integration</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integraction">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
