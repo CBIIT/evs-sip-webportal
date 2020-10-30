@@ -56,12 +56,20 @@ const TableColRight = styled(Col)`
   border-left: 1px solid #BBC5CD;
 `;
 
+const TableColFlex = styled(Col)`
+  display: flex;
+`;
+
 const TableRow = styled(Row)`
-  height: 100%;
+  height: auto;
+  flex-basis: auto;
+  flex-grow: 1;
 `;
 
 const TableRowValues = styled(Row)`
   height: 100%;
+  flex-basis: auto;
+  flex-grow: 1;
   border-bottom: 1px solid #BBC5CD;
 `;
 
@@ -635,7 +643,7 @@ const CrossValuesTable = (props) => {
     };
 
     return (
-      <Col sx={12}>
+      <TableColFlex data-class="TableColFlex" sx={12}>
         <TableRow>
           <TableCol data-class="TableCol" xs={3}>
             {props.item.category}
@@ -691,7 +699,7 @@ const CrossValuesTable = (props) => {
             }
           </TableColRight>
         </TableRow>
-      </Col>
+      </TableColFlex>
     )
   };
 
