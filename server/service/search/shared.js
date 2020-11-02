@@ -349,17 +349,34 @@ const getICDOMapping = () => {
   for(let key in data){
     let obj = data[key];
     obj.forEach(item => {
-      if(item.nm != item.i_c){
+      if(item.i_c != ""){
         if(!(item.i_c in result)){
           result[item.i_c] = {};
-          result[item.i_c].s = [];
+          result[item.i_c].syn = {};
         }
-        let entry = {n: item.nm, t: item.term_type == "" ? '*' : item.term_type};
-        let idx = result[item.i_c].s.map(function(element){
-          return element.n + "&" + element.t;
-        }).indexOf(entry.n + "&" + entry.t);
-        if(idx == -1){
-          result[item.i_c].s.push(entry);
+        let ss = item.i_c_s;
+
+        if (Array.isArray(ss)) {
+          ss.forEach(s => {
+            let tmp = s.trim();
+            if(tmp in result[item.i_c].syn){
+              result[item.i_c].syn[tmp] = item.term_type == "" ? result[item.i_c].syn[tmp] : item.term_type;
+            }
+            else{
+              result[item.i_c].syn[tmp] = item.term_type;
+            }
+          });
+        } 
+        else {
+          if(ss != ""){
+            let tmp = ss.trim();
+            if(tmp in result[item.i_c].syn){
+              result[item.i_c].syn[tmp] = item.term_type == "" ? result[item.i_c].syn[tmp] : item.term_type;
+            }
+            else{
+              result[item.i_c].syn[tmp] = item.term_type;
+            }
+          }
         }
       }
     });

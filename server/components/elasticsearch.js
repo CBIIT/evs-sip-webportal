@@ -154,15 +154,24 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
           }
           let pv = v.nm.toLowerCase();
           let icdo = v.i_c;
-          let ncit = v.n_c.trim();
+          let ncits = v.n_c;
           if(!(pv in values_ncit_mapping)){
             values.push(v.nm);
             values_ncit_mapping[pv] = [];
           }
 
           //save values to ncit mapping
-          if(values_ncit_mapping[pv].indexOf(ncit) == -1){
-              values_ncit_mapping[pv].push(ncit);
+          if (Array.isArray(ncits)) {
+            ncits.forEach(code => {
+              if(values_ncit_mapping[pv].indexOf(code.trim()) == -1){
+                  values_ncit_mapping[pv].push(code.trim());
+              }
+            });
+          } 
+          else {
+            if(ncits != "" && values_ncit_mapping[pv].indexOf(ncits.trim()) == -1){
+              values_ncit_mapping[pv].push(ncits.trim());
+            }
           }
 
           //save values to icdo mapping
@@ -183,10 +192,18 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         tmp.n = v;
         let v_lowcase = v.toLowerCase();
         if(v_lowcase in values_icdo_mapping){
-          tmp.icdo = {};
-          tmp.icdo.c = values_icdo_mapping[v_lowcase];
-          tmp.icdo.have = shared.generateICDOHaveWords(tmp.icdo.c),
-          tmp.icdo.s = icdo_mapping[tmp.icdo.c].s;
+          
+          if(values_icdo_mapping[v_lowcase] != ""){
+            tmp.icdo = {};
+            tmp.icdo.c = values_icdo_mapping[v_lowcase];
+            tmp.icdo.have = shared.generateICDOHaveWords(tmp.icdo.c),
+            tmp.icdo.s = [];
+            for(let key in icdo_mapping[tmp.icdo.c].syn){
+              let entry = {n: key, t: icdo_mapping[tmp.icdo.c].syn[key]};
+              tmp.icdo.s.push(entry);
+            }
+          }
+          
         }
         if(v_lowcase in values_ncit_mapping){
           tmp.ncit = [];
