@@ -95,17 +95,17 @@ const DataSources = () => {
         <tbody>
           <tr>
             <td><ContentThTitle>Integrated Canine<br/>Data Commons</ContentThTitle></td>
-            <td><a href="https://caninecommons.cancer.gov" target="_blank" rel="noopener noreferrer">https://caninecommons.cancer.gov</a></td>
+            <td><a title="Integrated Canine Data Commons" href="https://caninecommons.cancer.gov" target="_blank" rel="noopener noreferrer">https://caninecommons.cancer.gov</a></td>
             <td>November 2020</td>
           </tr>
           <tr>
           <td><ContentThTitle>Genomic Data Commons</ContentThTitle></td>
-            <td><a href="https://gdc.cancer.gov/" target="_blank" rel="noopener noreferrer">https://gdc.cancer.gov/</a></td>
+            <td><a title="Genomic Data Commons" href="https://gdc.cancer.gov/" target="_blank" rel="noopener noreferrer">https://gdc.cancer.gov/</a></td>
             <td>November 2020</td>
           </tr>
           <tr>
           <td><ContentThTitle>Clinical Trials<br/>Data Commons</ContentThTitle></td>
-            <td><a href="https://trialcommons-dev.cancer.gov" target="_blank" rel="noopener noreferrer">https://trialcommons-dev.cancer.gov</a></td>
+            <td><a title="Clinical Trials Data Commons" href="https://trialcommons.cancer.gov/" target="_blank" rel="noopener noreferrer">https://trialcommons.cancer.gov</a></td>
             <td>November 2020</td>
           </tr>
         </tbody>
