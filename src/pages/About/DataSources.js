@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -51,6 +53,7 @@ const ContentBoxTable = styled(Table)`
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   text-align: center;
+  margin-bottom: 0;
 
   && thead th {
     background-color: var(--table-th);
@@ -80,6 +83,18 @@ const ContentThTitle = styled.h3`
   line-height: 1.5em;
 `;
 
+const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
+  font-size: 0.5625rem;
+  height: 1rem;
+  margin: 0 0.3rem;
+`;
+
+const ConstextBoxIndicator = styled.div`
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  text-align: right;
+`;
+
 const DataSources = () => {
   return <ContentBox>
     <ContentBoxTitle>Integrated Data Sources</ContentBoxTitle>
@@ -105,11 +120,14 @@ const DataSources = () => {
           </tr>
           <tr>
           <td><ContentThTitle>Clinical Trials<br/>Data Commons</ContentThTitle></td>
-            <td><a title="Clinical Trials Data Commons" href="https://trialcommons.cancer.gov/" target="_blank" rel="noopener noreferrer">https://trialcommons.cancer.gov</a></td>
+            <td><a title="Clinical Trials Data Commons" href="https://trialcommons.cancer.gov/" target="_blank" rel="noopener noreferrer">https://trialcommons.cancer.gov</a><FontAwesomeIconStyled icon={faAsterisk}/></td>
             <td>November 2020</td>
           </tr>
         </tbody>
       </ContentBoxTable>
+      <ConstextBoxIndicator>
+        <FontAwesomeIconStyled icon={faAsterisk}/><span>accessible within NIH firewall</span>
+      </ConstextBoxIndicator>
     </ContentBoxTextFullWidth>
   </ContentBox>
 }
