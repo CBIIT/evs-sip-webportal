@@ -499,9 +499,14 @@ const generateGDCData = async function(schema) {
     delete value['previous_version_downloadable'];
     delete value['validators'];
     delete value['uniqueKeys'];
-
+    if(value['properties']){
+      delete value['properties']['$ref'];
+    }
+    
     dict[key.slice(0, -5)] = value;
   }
+
+  console.log(dict);
   
   // Recursivly fix references
   dict = findObjectWithRef(dict, (refObj, rootKey)=> { // This halts for sub objects./...
