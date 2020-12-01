@@ -169,7 +169,7 @@ const PropsTable = (props) => {
             <a id="toCompare" href="/#" data-ref="">Compare with User List</a> */}
           </div>
           : <div>
-            {item.type !== undefined && <span>type: {item.type}</span>}
+            {item.type !== undefined && <SpanBreak>type: {item.type}</SpanBreak>}
           </div>
         }
       </TableCol>

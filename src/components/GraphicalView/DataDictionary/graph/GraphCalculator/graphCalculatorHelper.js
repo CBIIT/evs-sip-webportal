@@ -80,9 +80,17 @@ export const calculateGraphLayout = (dictionary, countsSearch, linksSearch) => {
             rectMinHeight,
             (textPadding * 2) + (nodeNames.length * (fontSize + textLineGap)),
           );
-          const requiredPropertiesCount = originNode.required ? originNode.required.length : 0;
-          const optionalPropertiesCount = originNode.properties ?
-            Object.keys(originNode.properties).length - requiredPropertiesCount : 0;
+          let req_count_tmp = 0;
+          let props_arr = originNode.properties ? Object.keys(originNode.properties): [];
+          if(originNode.required){
+            originNode.required.forEach(function(item){
+              if(props_arr.indexOf(item) > -1){
+                req_count_tmp ++;
+              }
+            });
+          }
+          const requiredPropertiesCount = req_count_tmp;
+          const optionalPropertiesCount = props_arr.length - requiredPropertiesCount;
           let nodeLevel = 0;
           if (originNode && originNode.positionIndex && originNode.positionIndex.length >= 2) {
             nodeLevel = originNode.positionIndex[1];

@@ -14,7 +14,8 @@ export const apiSearchAll = async(keyword, match, options, dataSources) => {
       sources.push(key);
     }
   }
-  const response = await fetch(`${baseUrl}/all/p?keyword=${keyword}&options=${opts}&sources=${sources.join()}`);
+  let encoded_keyword = keyword.replace(/\+/g, "%2B").replace(/\&/g, "%26");
+  const response = await fetch(`${baseUrl}/all/p?keyword=${encoded_keyword}&options=${opts}&sources=${sources.join()}`);
   return response.json();
 };
 

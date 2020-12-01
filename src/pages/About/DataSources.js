@@ -84,7 +84,7 @@ const ContentThTitle = styled.h3`
 `;
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
-  font-size: 0.5625rem;
+  font-size: 0.5rem;
   height: 1rem;
   margin: 0 0.3rem;
 `;
@@ -126,7 +126,7 @@ const DataSources = () => {
         </tbody>
       </ContentBoxTable>
       <ConstextBoxIndicator>
-        <FontAwesomeIconStyled icon={faAsterisk}/><span>accessible within NIH firewall</span>
+        <FontAwesomeIconStyled icon={faAsterisk}/><span>Accessible within NIH Firewall</span>
       </ConstextBoxIndicator>
     </ContentBoxTextFullWidth>
   </ContentBox>
