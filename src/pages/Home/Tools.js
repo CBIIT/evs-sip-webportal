@@ -67,10 +67,9 @@ const ToolBoxTitleContainer = styled.div`
   align-items: center;
 `;
 
-const ToolBoxTitle = styled.span`
+const ToolBoxTitle = styled.strong`
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  font-weight: bold;
   color: var(--toolbox-title);
   text-transform: uppercase;
   width: 8rem;
@@ -94,13 +93,6 @@ const ToolBoxLink = styled(Link)`
   font-size: 0.6875rem;
   text-align: center;
   letter-spacing: 0.0625rem;
-
-  &&:hover,
-  &&:visited,
-  &&:link,
-  &&:active {
-    text-decoration: none;
-  }
 
   &&:hover,
   &&:focus {
