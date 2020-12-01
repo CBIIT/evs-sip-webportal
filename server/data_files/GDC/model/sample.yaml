@@ -63,7 +63,7 @@ uniqueKeys:
 
 deprecated:
   - is_ffpe
-  - oct_embeded
+  - oct_embedded
 
 properties:
 
