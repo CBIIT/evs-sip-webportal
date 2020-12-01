@@ -19,6 +19,10 @@ code {
     monospace;
 }
 
+#returnToNCIframe {
+  display: none !important;
+}
+
 @import url(./assets/css/colors.css);
 @import url(./assets/css/fonts.css);
 
