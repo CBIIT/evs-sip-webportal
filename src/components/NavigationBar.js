@@ -72,7 +72,6 @@ const NavDropdownItem = styled(NavDropdown.Item)`
     color: #fff;
     background-color: transparent;
     border-bottom: 0.1rem solid #09a58a;
-    text-decoration: none;
   }
 `;
 
