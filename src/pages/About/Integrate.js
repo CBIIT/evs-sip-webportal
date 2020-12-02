@@ -23,7 +23,7 @@ const ContentBoxTitle = styled.h2`
   text-transform: uppercase;
 
   &&::after {
-    content: " ";
+    content: "";
     border: 1px solid var(--black);
     margin-top: 1rem;
     margin-bottom: 1rem;

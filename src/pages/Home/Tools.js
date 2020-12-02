@@ -60,7 +60,6 @@ const ToolBoxImg = styled.img`
   display: block;
 `;
 
-
 const ToolBoxTitleContainer = styled.div`
   height: 2rem;
   display: flex;
@@ -134,7 +133,7 @@ const Tools = () => {
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons">Read More</ToolBoxLink>
+                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -143,7 +142,7 @@ const Tools = () => {
                     <ToolBoxTitle>Semantic Integration</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -152,7 +151,7 @@ const Tools = () => {
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Tools">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</ToolBoxLink>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -161,7 +160,7 @@ const Tools = () => {
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Support">Read More</ToolBoxLink>
+                <ToolBoxLink to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</ToolBoxLink>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>
