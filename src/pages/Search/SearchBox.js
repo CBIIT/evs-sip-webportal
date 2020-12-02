@@ -97,10 +97,9 @@ const SearchOptions = styled.div`
 `;
 
 const SearchOptionsLabel = styled.label`
-  font-family: 'Lato-Regular',sans-serif;
+  font-family: 'Lato-Bold',sans-serif;
   color: #1162E9;
   font-size: 0.875rem;
-  font-weight: bold;
   margin-bottom: 0.7rem;
 `;
 
@@ -141,13 +140,12 @@ const CheckboxIcon = styled(FontAwesomeIcon)`
 `;
 
 const CheckboxLabel = styled.label`
-  font-family: 'Lato-Regular', sans-serif;
+  font-family: 'Lato-Bold', sans-serif;
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
   width: 11rem;
   inline-size: 11rem;
-  font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 `;
@@ -183,11 +181,10 @@ const CheckboxInput = styled.input`
 `;
 
 const RadioLabel = styled.label`
-  font-family: 'Lato-Regular', sans-serif;
+  font-family: 'Lato-Bold', sans-serif;
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
-  font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 `;
