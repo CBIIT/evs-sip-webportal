@@ -199,6 +199,11 @@ const CheckboxInput = styled.input`
     opacity: 1;
     color: var(--white);
   }
+
+  &&:focus+${CheckboxBtn} {
+    border: 1px solid #042A68;
+    box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+  }
 `;
 
 
