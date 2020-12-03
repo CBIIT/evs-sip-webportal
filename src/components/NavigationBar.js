@@ -70,6 +70,7 @@ const NavDropdownItem = styled(NavDropdown.Item)`
   &&:hover,
   &&:focus {
     color: #fff;
+    text-decoration: none;
     background-color: transparent;
     border-bottom: 0.1rem solid #09a58a;
   }
