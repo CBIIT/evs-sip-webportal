@@ -92,13 +92,13 @@ const ToolBoxLink = styled(Link)`
   font-size: 0.6875rem;
   text-align: center;
   letter-spacing: 0.0625rem;
+  text-decoration: underline;
 
   &&:hover,
   &&:focus {
     background-color: var(--toolbox-link-select);
     border: var(--toolbox-link-select) 0.125rem solid;
     color: var(--white);
-    outline: none;
   }
 
 `; 
