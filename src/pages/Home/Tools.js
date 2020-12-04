@@ -41,29 +41,38 @@ const FourToolsContainer  = styled.div`
   flex-wrap: wrap;
 `;
 
+const LinkContainer = styled.div`
+  display: block;
+  width: 100%;
+`;
+
+const ToolBoxLink = styled(Link)`
+  display: block;
+  line-height: 2rem;
+  font-family: 'Raleway-ExtraBold', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.0625rem;
+`;
+
 const ToolBox = styled.div`
   width: 17rem;
   margin: 0.8rem 1rem;
 
-  && > a {
-    width: 100%;
-    line-height: 2rem;
-    font-family: 'Raleway-ExtraBold', sans-serif;
+  && ${LinkContainer} ${ToolBoxLink} {
     background-color: var(--toolbox-link);
     color: var(--white);
-    text-transform: uppercase;
     display: block;
     border-radius: 0 0 1rem 1rem;
     border: var(--toolbox-link) 0.125rem solid;
     font-size: 0.6875rem;
-    text-align: center;
-    letter-spacing: 0.0625rem;
   }
 
-  && > a:hover,
-  && > a:focus {
+  && ${LinkContainer} ${ToolBoxLink}:hover,
+  && ${LinkContainer} ${ToolBoxLink}:focus {
     background-color: var(--toolbox-link-select);
     border: var(--toolbox-link-select) 0.125rem solid;
+    color: #b9fee6;
   }
 `;
 
@@ -153,7 +162,9 @@ const Tools = () => {
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <Link to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</Link>
+                <LinkContainer>
+                  <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -162,7 +173,9 @@ const Tools = () => {
                     <ToolBoxTitle>Semantic Integration</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <Link to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</Link>
+                <LinkContainer>
+                  <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -171,7 +184,9 @@ const Tools = () => {
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <Link to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</Link>
+                <LinkContainer>
+                  <ToolBoxLink to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -180,7 +195,9 @@ const Tools = () => {
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <Link to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</Link>
+                <LinkContainer>
+                  <ToolBoxLink to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>
