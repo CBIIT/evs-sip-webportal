@@ -44,6 +44,27 @@ const FourToolsContainer  = styled.div`
 const ToolBox = styled.div`
   width: 17rem;
   margin: 0.8rem 1rem;
+
+  && > a {
+    width: 100%;
+    line-height: 2rem;
+    font-family: 'Raleway-ExtraBold', sans-serif;
+    background-color: var(--toolbox-link);
+    color: var(--white);
+    text-transform: uppercase;
+    display: block;
+    border-radius: 0 0 1rem 1rem;
+    border: var(--toolbox-link) 0.125rem solid;
+    font-size: 0.6875rem;
+    text-align: center;
+    letter-spacing: 0.0625rem;
+  }
+
+  && > a:hover,
+  && > a:focus {
+    background-color: var(--toolbox-link-select);
+    border: var(--toolbox-link-select) 0.125rem solid;
+  }
 `;
 
 const ToolBoxContainer = styled.div`
@@ -79,29 +100,28 @@ const ToolBoxTitle = styled.strong`
   letter-spacing: 0.03125rem;
 `;
 
-const ToolBoxLink = styled(Link)`
-  width: 100%;
-  line-height: 2rem;
-  font-family: 'Raleway-ExtraBold', sans-serif;
-  background-color: var(--toolbox-link);
-  color: var(--white);
-  text-transform: uppercase;
-  display: block;
-  border-radius: 0 0 1rem 1rem;
-  border: var(--toolbox-link) 0.125rem solid;
-  font-size: 0.6875rem;
-  text-align: center;
-  letter-spacing: 0.0625rem;
-  text-decoration: underline;
+// const ToolBoxLink = styled(Link)`
+//   width: 100%;
+//   line-height: 2rem;
+//   font-family: 'Raleway-ExtraBold', sans-serif;
+//   background-color: var(--toolbox-link);
+//   color: var(--white);
+//   text-transform: uppercase;
+//   display: block;
+//   border-radius: 0 0 1rem 1rem;
+//   border: var(--toolbox-link) 0.125rem solid;
+//   font-size: 0.6875rem;
+//   text-align: center;
+//   letter-spacing: 0.0625rem;
+//   text-decoration: underline;
 
-  &&:hover,
-  &&:focus {
-    background-color: var(--toolbox-link-select);
-    border: var(--toolbox-link-select) 0.125rem solid;
-    color: var(--white);
-  }
-
-`; 
+//   &&:hover,
+//   &&:focus {
+//     background-color: var(--toolbox-link-select);
+//     border: var(--toolbox-link-select) 0.125rem solid;
+//     color: var(--white);
+//   }
+// `; 
 
 const ToolTitleContainer = styled.div`
   height: 100%;
@@ -133,7 +153,7 @@ const Tools = () => {
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</ToolBoxLink>
+                <Link to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</Link>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -142,7 +162,7 @@ const Tools = () => {
                     <ToolBoxTitle>Semantic Integration</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</ToolBoxLink>
+                <Link to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</Link>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -151,7 +171,7 @@ const Tools = () => {
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</ToolBoxLink>
+                <Link to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</Link>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -160,7 +180,7 @@ const Tools = () => {
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</ToolBoxLink>
+                <Link to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</Link>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>
