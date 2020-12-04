@@ -53,6 +53,7 @@ const ToolBoxLink = styled(Link)`
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 0.0625rem;
+  text-decoration: underline;
 `;
 
 const ToolBox = styled.div`
@@ -62,7 +63,6 @@ const ToolBox = styled.div`
   && ${LinkContainer} ${ToolBoxLink} {
     background-color: var(--toolbox-link);
     color: var(--white);
-    display: block;
     border-radius: 0 0 1rem 1rem;
     border: var(--toolbox-link) 0.125rem solid;
     font-size: 0.6875rem;
