@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@gen3/ui-component/dist/components/Button';
 import { downloadTemplate, SearchResultItemShape } from '../../utils';
 import { getCategoryIconSVG } from '../../NodeCategories/helper';
 import {

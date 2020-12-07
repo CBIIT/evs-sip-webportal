@@ -7,7 +7,7 @@ import {
   getPropertyDescriptionFragment,
   getPropertyTypeFragment,
 } from '../../highlightHelper';
-import Button from '@gen3/ui-component/dist/components/Button';
+import Button from 'react-bootstrap/Button';
 import DataDictionaryValuesTable from '../DataDictionaryValuesTable/.';
 import './DataDictionaryPropertyTable.css';
 
@@ -285,9 +285,10 @@ class DataDictionaryPropertyTable extends React.Component {
                               <Button
                                 className='data-dictionary-property-table__button'
                                 onClick={(e) => this.openOrCloseValuesTable(e, propertyKey)}
-                                label='All Values'
-                                buttonType='secondary'
-                              />
+                                type='button'
+                              >
+                              All Values
+                              </Button>
                             ) : ""
                           }
                         </td>

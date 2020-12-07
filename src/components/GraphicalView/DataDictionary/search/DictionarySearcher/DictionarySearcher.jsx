@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AutoComplete from '@gen3/ui-component/dist/components/AutoComplete';
 import { compareTwoStrings } from 'string-similarity';
 import { prepareSearchData, searchKeyword, getSearchSummary, ZERO_RESULT_FOUND_MSG } from './searchHelper';
 import './DictionarySearcher.css';
@@ -125,14 +124,6 @@ class DictionarySearcher extends React.Component {
   render() {
     return (
       <div className='data-dictionary-searcher'>
-        <AutoComplete
-          ref={this.autoCompleteRef}
-          suggestionList={this.state.suggestionList}
-          inputPlaceHolderText='Search in Dictionary'
-          onSuggestionItemClick={this.suggestionItemClickFunc}
-          onInputChange={this.inputChangeFunc}
-          onSubmitInput={this.submitInputFunc}
-        />
         {
           this.state.isSearchFinished && (
             <React.Fragment>

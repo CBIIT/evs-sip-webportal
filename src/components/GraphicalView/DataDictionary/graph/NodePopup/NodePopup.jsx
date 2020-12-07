@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@gen3/ui-component/dist/components/Button';
+import Button from 'react-bootstrap/Button';
 import './NodePopup.css';
 
 class NodePopup extends React.Component {
@@ -41,9 +41,10 @@ class NodePopup extends React.Component {
                 <Button
                   className='node-popup__button'
                   onClick={this.handleClickPropertyButton}
-                  label='Open properties'
-                  buttonType='secondary'
-                />
+                  type='button'
+                >
+                Open properties
+                </Button>
               </div>
               <span className='node-popup__arrow node-popup__arrow--outer' />
               <span className='node-popup__arrow node-popup__arrow--inner' />
