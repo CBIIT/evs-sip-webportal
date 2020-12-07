@@ -53,7 +53,6 @@ const ToolBoxLink = styled(Link)`
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 0.0625rem;
-  text-decoration: underline;
 `;
 
 const ToolBox = styled.div`
@@ -111,29 +110,6 @@ const ToolBoxTitle = styled.strong`
   letter-spacing: 0.03125rem;
 `;
 
-// const ToolBoxLink = styled(Link)`
-//   width: 100%;
-//   line-height: 2rem;
-//   font-family: 'Raleway-ExtraBold', sans-serif;
-//   background-color: var(--toolbox-link);
-//   color: var(--white);
-//   text-transform: uppercase;
-//   display: block;
-//   border-radius: 0 0 1rem 1rem;
-//   border: var(--toolbox-link) 0.125rem solid;
-//   font-size: 0.6875rem;
-//   text-align: center;
-//   letter-spacing: 0.0625rem;
-//   text-decoration: underline;
-
-//   &&:hover,
-//   &&:focus {
-//     background-color: var(--toolbox-link-select);
-//     border: var(--toolbox-link-select) 0.125rem solid;
-//     color: var(--white);
-//   }
-// `; 
-
 const ToolTitleContainer = styled.div`
   height: 100%;
   display: flex;
@@ -165,7 +141,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink className="btn" to="/datamodel" aria-label="Read About Data Commons" title="Read About Data Commons">Read About Data Commons</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/datamodel" aria-label="Read More About Data Commons" title="Read More About Data Commons">Read More</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -176,7 +152,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Semantic Integration" title="Read About Semantic Integration">Read About Semantic Integration</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Semantic Integration" title="Read More About Semantic Integration">Read More</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -187,7 +163,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Tools" title="Read About Tools">Read About Tools</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Tools" title="Read More About Tools">Read More</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -198,7 +174,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Support" title="Read About Support">Read About Support</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Support" title="Read More About Support">Read More</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
             </FourToolsContainer>
