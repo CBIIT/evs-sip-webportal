@@ -12,6 +12,7 @@ body {
 
 a {
   color: #1B6BEE;
+  text-decoration: initial;
 }
 
 code {

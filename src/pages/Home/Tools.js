@@ -66,6 +66,7 @@ const ToolBox = styled.div`
     border-radius: 0 0 1rem 1rem;
     border: var(--toolbox-link) 0.125rem solid;
     font-size: 0.6875rem;
+    padding: 0;
   }
 
   && ${LinkContainer} ${ToolBoxLink}:hover,
@@ -73,6 +74,7 @@ const ToolBox = styled.div`
     background-color: var(--toolbox-link-select);
     border: var(--toolbox-link-select) 0.125rem solid;
     color: #b9fee6;
+    text-decoration: underline;
   }
 `;
 
@@ -163,7 +165,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/datamodel" aria-label="Read About Data Commons" title="Read About Data Commons">Read About Data Commons</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/datamodel" aria-label="Read About Data Commons" title="Read About Data Commons">Read About Data Commons</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -174,7 +176,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read About Semantic Integration" title="Read About Semantic Integration">Read About Semantic Integration</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Semantic Integration" title="Read About Semantic Integration">Read About Semantic Integration</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -185,7 +187,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read About Tools" title="Read About Tools">Read About Tools</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Tools" title="Read About Tools">Read About Tools</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -196,7 +198,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read About Support" title="Read About Support">Read About Support</ToolBoxLink>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read About Support" title="Read About Support">Read About Support</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
             </FourToolsContainer>
