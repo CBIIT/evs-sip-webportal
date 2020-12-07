@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
@@ -16,6 +17,8 @@ module.exports = function(app) {
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.resolve(config.root, 'build')));
+
+  app.use(compression());
   
   app.use(function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');

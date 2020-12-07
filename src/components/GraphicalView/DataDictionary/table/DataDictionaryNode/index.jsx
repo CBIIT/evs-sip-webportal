@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@gen3/ui-component/dist/components/Button';
 import { downloadTemplate } from '../../utils';
 import { getCategoryColor } from '../../NodeCategories/helper';
 import DataDictionaryPropertyTable from '../DataDictionaryPropertyTable/.';
@@ -49,22 +48,8 @@ class DataDictionaryNode extends React.Component {
           </span>
           <div className='data-dictionary-node__download-group'>
             <span className='data-dictionary-node__button-wrap'>
-              <Button
-                className='data-dictionary-node__download-button'
-                onClick={(e) => { this.handleDownloadTemplate(e, 'json'); }}
-                label='JSON'
-                rightIcon='download'
-                buttonType='secondary'
-              />
             </span>
             <span className='data-dictionary-node__button-wrap'>
-              <Button
-                className='data-dictionary-node__download-button'
-                onClick={(e) => { this.handleDownloadTemplate(e, 'tsv'); }}
-                label='TSV'
-                rightIcon='download'
-                buttonType='secondary'
-              />
             </span>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@gen3/ui-component/dist/components/Button';
+import Button from 'react-bootstrap/Button';
 import { apiGetPropertyValues  } from '../../../../../api';
 import DataDictionaryValuesTableRows from './DataDictionaryValuesTableRows';
 import './DataDictionaryValuesTable.css';
@@ -78,11 +78,12 @@ class DataDictionaryValuesTableBodyMatched extends React.Component {
         <div class="data-dictionary-node__property-summary">
           <span>{this.props.hits.length} Values Matched Out of {this.state.values.length} . </span>
           <Button
-            className='data-dictionary-values-table__toggle-button g3-button g3-button--secondary'
+            className='data-dictionary-values-table__toggle-button'
             onClick={(e) => this.switchValuesList(e)}
-            label={this.state.matched_show_all ? "Show Matched Values" : "Show All Values"}
-            buttonType='secondary'
-          />
+            type='button'
+          >
+          {this.state.matched_show_all ? "Show Matched Values" : "Show All Values"}
+          </Button>
         </div>
         <div class="data-dictionary-property-table ">
           <table class="data-dictionary-property-table__table">

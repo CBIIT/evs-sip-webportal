@@ -275,6 +275,7 @@ const preProcess = (searchable_nodes, data) => {
       for (let key in p) {
         if (p[key].deprecated_enum && p[key].enum) {
           p[key].new_enum = _.differenceWith(p[key].enum, p[key].deprecated_enum, _.isEqual);
+          console.log(p[key].new_enum);
         }
       }
     }
@@ -506,7 +507,7 @@ const generateGDCData = async function(schema) {
     dict[key.slice(0, -5)] = value;
   }
 
-  console.log(dict);
+  //console.log(dict);
   
   // Recursivly fix references
   dict = findObjectWithRef(dict, (refObj, rootKey)=> { // This halts for sub objects./...
@@ -578,12 +579,15 @@ const generateGDCData = async function(schema) {
           //remove any reference properties
           delete obj.properties[p];
         }
+        /*
         else{
           if (obj.properties[p].deprecated_enum) {
             obj.properties[p].enum = _.differenceWith(obj.properties[p].enum, obj.properties[p].deprecated_enum, _.isEqual);
+            console.log(obj.properties[p].enum);
           }
           delete obj.properties[p].deprecated_enum;
         }
+        */
       }
       obj.properties = excludeSystemProperties(obj);
     }

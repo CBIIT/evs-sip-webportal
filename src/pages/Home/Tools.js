@@ -163,7 +163,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons" title="Read More about Data Commons">Read More</ToolBoxLink>
+                  <ToolBoxLink to="/datamodel" aria-label="Read About Data Commons" title="Read About Data Commons">Read About Data Commons</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -174,7 +174,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read More about Semantic Integration" title="Read More about Semantic Integration">Read More</ToolBoxLink>
+                  <ToolBoxLink to="/about" aria-label="Read About Semantic Integration" title="Read About Semantic Integration">Read About Semantic Integration</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -185,7 +185,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read More about Tools" title="Read More about Tools">Read More</ToolBoxLink>
+                  <ToolBoxLink to="/about" aria-label="Read About Tools" title="Read About Tools">Read About Tools</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
               <ToolBox>
@@ -196,7 +196,7 @@ const Tools = () => {
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
                 <LinkContainer>
-                  <ToolBoxLink to="/about" aria-label="Read More about Support" title="Read More about Support">Read More</ToolBoxLink>
+                  <ToolBoxLink to="/about" aria-label="Read About Support" title="Read About Support">Read About Support</ToolBoxLink>
                 </LinkContainer>
               </ToolBox>
             </FourToolsContainer>

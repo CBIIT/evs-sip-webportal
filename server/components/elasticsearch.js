@@ -48,6 +48,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     entry.enum = extend([], entryRaw.enum);
     entry.enumDef = entryRaw.enumDef? entryRaw.enumDef : [];
     entry.termDef = extend({}, entryRaw.termDef);
+    entry.deprecated_enum = extend([], entryRaw.deprecated_enum);
 
     if (entry.termDef !== undefined && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
       entry.termDef.cde_id = '' + entry.termDef.cde_id;
@@ -182,6 +183,10 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         }
         
       });
+    }
+
+    if (entry.deprecated_enum) {
+      values = _.differenceWith(values, entry.deprecated_enum, _.isEqual);
     }
 
     //generate p.enum
