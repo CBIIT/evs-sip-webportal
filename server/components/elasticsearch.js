@@ -117,7 +117,9 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     }
 
     // 2. work on conceptCode to further combind the ncit code
+    // depracted as data mappings in conceptCode.js file have already been included in gdc_values.js file
     let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
+    /*
     if (prop_full_name in conceptCode) {
       let cc = conceptCode[prop_full_name];
       // add additionalProperties
@@ -142,6 +144,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         }
       }
     }
+    */
 
     // 3. work on gdc_values to pull out icd-o-3 code and ncit code for all the values saved in the previous 3 steps
     if(prop_full_name in gdc_values){

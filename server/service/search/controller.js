@@ -540,20 +540,20 @@ const preloadGDCDataMappings = (req, res) => {
 		  		if(item[3] != null){
 		  			let tmp = {};
 		  			tmp.nm = item[3];
-		  			if(item[4] == null){
+		  			if(item[5] == null){
 		  				tmp.n_c = "";
 		  			}
 		  			else{
-		  				tmp.n_c = item[4].split('|');
+		  				tmp.n_c = item[5].split('|');
 		  			}
-		  			tmp.i_c = item[5] == null ? "" : item[5];
-		  			if(item[6] == null){
+		  			tmp.i_c = item[6] == null ? "" : item[6];
+		  			if(item[7] == null){
 		  				tmp.i_c_s = "";
 		  			}
 		  			else{
-		  				tmp.i_c_s = item[6].split('|');
+		  				tmp.i_c_s = item[7].split('|');
 		  			}
-		  			tmp.term_type = item[7] == null ? "" : item[7];
+		  			tmp.term_type = item[8] == null ? "" : item[8];
 		  			mappings[prop].push(tmp);
 		  		}
 		  		
