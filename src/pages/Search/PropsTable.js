@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
+// import GDCTerms from './dialogs/GDCTerms'
+
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
   padding-left: 15px;
@@ -38,8 +40,14 @@ const TableBody = styled(Row)`
   max-height: 39rem;
 `;
 
+// const TableRow = styled(Row)`
+//   border-bottom: 1px solid #ecf0f1;
+// `;
+
 const TableRow = styled(Row)`
-  border-bottom: 1px solid #ecf0f1;
+  height: auto;
+  flex-basis: auto;
+  flex-grow: 1;
 `;
 
 const TableCol = styled(Col)`
@@ -47,6 +55,28 @@ const TableCol = styled(Col)`
   padding-top: 12px;
   padding-bottom: 12px;
   line-height: 1.428571;
+`;
+
+const TableColLeft = styled(TableCol)`
+  border-bottom: 1px solid #BBC5CD;
+`;
+
+const TableColRight = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-left: 1px solid #BBC5CD;
+`;
+
+const TableColFlex = styled(Col)`
+  display: flex;
+`;
+
+const TableRowProps = styled(Row)`
+  height: 100%;
+  flex-basis: auto;
+  flex-grow: 1;
+  border-bottom: 1px solid #BBC5CD;
 `;
 
 const TableUl = styled.ul`
@@ -69,12 +99,19 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-// const LinkBreak = styled.a`
+// const SpanBreak = styled.span`
 //   word-wrap: break-word;
 // `;
 
-const SpanBreak = styled.span`
-  word-wrap: break-word;
+const DivCenter = styled.div`
+  text-align: center;
+  padding: 1rem 0;
+`;
+
+const CodeSpan = styled.span`
+  color: #475162;
+  font-size: 1.25rem;
+  font-weight: bold;
 `;
 
 const Indicator = styled.div`
@@ -97,11 +134,6 @@ const IndicatorContent = styled.div`
   right: 0;
   transform: translateY(-50%);
 `;
-
-// const IndicatorTerm = styled.span`
-//   color: #2a72a4;
-// `;
-
 
 const PropsTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.properties));
@@ -144,44 +176,184 @@ const PropsTable = (props) => {
     properties.push(propObj);
   });
 
-  const propsItems = properties.map((item, index) =>
-    <TableRow key={index}>
-      <TableCol xs={2}>
-        {item.category}
-        <TableUl>
-          <TableLi>
-            <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
-          </TableLi>
-        </TableUl>
-      </TableCol>
-      <TableCol xs={2}>
-        <SpanBreak dangerouslySetInnerHTML={{ __html: item.property }}></SpanBreak>
-        {/* <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak> */}
-      </TableCol>
-      <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
-      <TableCol xs={1}>{item.source.toUpperCase()}</TableCol>
-      <TableCol xs={2}>
-        {item.enum !== undefined
-          ? <div>
-            <span>See All Values</span><br/>
-            <span>Compare with User List</span>
-            {/* <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
-            <a id="toCompare" href="/#" data-ref="">Compare with User List</a> */}
-          </div>
-          : <div>
-            {item.type !== undefined && <SpanBreak>type: {item.type}</SpanBreak>}
-          </div>
-        }
-      </TableCol>
-      <TableCol xs={1}>
-      {item.cdeId !== undefined && 
-        <span dangerouslySetInnerHTML={{ __html: item.cdeSrc + ' - ' + item.cdeId}}></span>
+  let mappingObj = {};
+  properties.forEach((prop) => {
+    if(prop.cdeId !== undefined && prop.cdeSrc !== 'CDE ID') {
+      if(mappingObj[prop.cdeId] === undefined) {
+        mappingObj[prop.cdeId] = [];
+        mappingObj[prop.cdeId].push(prop);
+      } else {
+        mappingObj[prop.cdeId].push(prop);
       }
-      </TableCol>
-    </TableRow>
-  );
+    } 
+    else {
+      if(mappingObj['no-mapping'] === undefined) {
+        mappingObj['no-mapping'] = [];
+        mappingObj['no-mapping'].push(prop);
+      } else {
+        mappingObj['no-mapping'].push(prop);
+      }
+    }
+  });
 
-  if (properties.length !== 0) {
+  let crossProps = [];
+
+  Object.entries(mappingObj).forEach((entry)=> {
+    let ctdcProps = [];
+    let gdcProps = [];
+    let icdcProps = [];
+    //let refSrc = '';
+
+    if(entry[1] !== undefined && entry[1].length !== 0){
+      entry[1].forEach(prop => {
+        // if(refSrc === '' && prop.cdeSrc !== undefined){
+        //   refSrc = prop.cdeSrc;
+        // }
+        if(prop.source !== undefined && prop.source === 'gdc'){
+          gdcProps.push(prop);
+        }
+        if(prop.source !== undefined && prop.source === 'ctdc'){
+          ctdcProps.push(prop);
+        }
+        if(prop.source !== undefined && prop.source === 'icdc'){
+          icdcProps.push(prop);
+        }
+      });
+    }
+
+    crossProps.push({
+      code: entry[0] !== 'no-mapping' ? entry[0]: 'No NCIt Mapping',
+      ref: 'NCIt',
+      props: {
+        ctdc: ctdcProps,
+        gdc: gdcProps,
+        icdc: icdcProps,
+      }
+    })
+  });
+
+  console.log(crossProps);
+
+  // const propsItems = properties.map((item, index) =>
+  //   <TableRow key={index}>
+  //     <TableCol xs={2}>
+  //       {item.category}
+  //       <TableUl>
+  //         <TableLi>
+  //           <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+  //         </TableLi>
+  //       </TableUl>
+  //     </TableCol>
+  //     <TableCol xs={2}>
+  //       <SpanBreak dangerouslySetInnerHTML={{ __html: item.property }}></SpanBreak>
+  //       {/* <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak> */}
+  //     </TableCol>
+  //     <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
+  //     <TableCol xs={1}>{item.source.toUpperCase()}</TableCol>
+  //     <TableCol xs={2}>
+  //       {item.enum !== undefined
+  //         ? <div>
+  //           <span>See All Values</span><br/>
+  //           <span>Compare with User List</span>
+  //           {/* <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
+  //           <a id="toCompare" href="/#" data-ref="">Compare with User List</a> */}
+  //         </div>
+  //         : <div>
+  //           {item.type !== undefined && <SpanBreak>type: {item.type}</SpanBreak>}
+  //         </div>
+  //       }
+  //     </TableCol>
+  //     <TableCol xs={1}>
+  //     {item.cdeId !== undefined && 
+  //       <span dangerouslySetInnerHTML={{ __html: item.cdeSrc + ' - ' + item.cdeId}}></span>
+  //     }
+  //     </TableCol>
+  //   </TableRow>
+  // );
+
+
+  const PropsItems = (props) => {
+    return (
+      <TableColFlex data-class="TableColFlex" sx={12}>
+        <TableRow>
+          <TableCol data-class="TableCol" xs={3}>
+            {props.item.category}
+            <TableUl>
+              <TableLi>
+                <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
+              </TableLi>
+            </TableUl>
+            {/* <GDCTerms idterm={item.id}/> */}
+          </TableCol>
+          <TableColRight data-class="TableColRight" xs={9}>
+              <div>
+                <span dangerouslySetInnerHTML={{ __html: props.item.property}}></span><br/>
+                <div>{props.item.property_desc}</div>
+              </div>
+          </TableColRight>
+        </TableRow>
+      </TableColFlex>
+    )
+  };
+
+  const PropsItemsContainer = (props) => {
+    return(
+      <Row key={props.index}>
+        <TableColLeft data-class="TableColLeft" xs={2}>
+          <DivCenter>
+            <CodeSpan>{props.cross.code}<br/>({props.cross.ref})</CodeSpan>
+          </DivCenter>
+        </TableColLeft>
+        <TableColRight data-class="TableColRight" xs={10}>
+          {props.cross.props.gdc.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Genomic Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.props.gdc.map((prop, index) =>
+                  <TableRowProps data-class="TableRowValues" key={index}>
+                    <PropsItems item={prop}/>
+                  </TableRowProps>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+          {props.cross.props.ctdc.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Clinical Trials Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.props.ctdc.map((prop, index) =>
+                  <TableRowProps data-class="TableRowValues" key={index}>
+                    <PropsItems item={prop}/>
+                  </TableRowProps>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+          {props.cross.props.icdc.length !== 0 &&
+            <TableRow>
+              <TableColLeft data-class="TableColLeft" xs={2}>
+                <DivCenter>Integrated Canine Data Commons</DivCenter>
+              </TableColLeft>
+              <TableColRight data-class="TableColRight" xs={10}>
+                {props.cross.props.icdc.map((prop, index) =>
+                  <TableRowProps data-class="TableRowValues" key={index}>
+                    <PropsItems item={prop}/>
+                  </TableRowProps>
+                )}
+              </TableColRight>
+            </TableRow>
+          }
+        </TableColRight>
+      </Row>
+    )
+  };
+
+
+  if (crossProps.length !== 0) {
     return (
       <ContainerStyled>
       <TableThead>
@@ -205,7 +377,12 @@ const PropsTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          <Col xs={12}>{propsItems}</Col>
+          {/* <Col xs={12}>{propsItems}</Col> */}
+          <Col xs={12}>
+            {crossProps.map((cross, index) => 
+              <PropsItemsContainer cross={cross} key={index} />
+            )}
+          </Col>
         </TableBody>
       </ContainerStyled>
     );
