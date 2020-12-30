@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
 // import GDCTerms from './dialogs/GDCTerms'
@@ -23,13 +23,12 @@ const TableThead = styled(Row)`
   display: flex;
   align-items: center;
   border-radius: 0.8rem 0.8rem 0 0;
-  padding-right: 0.5rem
 `;
 
 const TableTh = styled.div`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1rem;
-  text-align: left;
+  text-align: center;
   color: var(--white);
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
@@ -39,10 +38,6 @@ const TableBody = styled(Row)`
   overflow-y: auto;
   max-height: 39rem;
 `;
-
-// const TableRow = styled(Row)`
-//   border-bottom: 1px solid #ecf0f1;
-// `;
 
 const TableRow = styled(Row)`
   height: auto;
@@ -99,10 +94,6 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-// const SpanBreak = styled.span`
-//   word-wrap: break-word;
-// `;
-
 const DivCenter = styled.div`
   text-align: center;
   padding: 1rem 0;
@@ -112,6 +103,10 @@ const CodeSpan = styled.span`
   color: #475162;
   font-size: 1.25rem;
   font-weight: bold;
+`;
+
+const ColRight = styled(Col)`
+  text-align: right;
 `;
 
 const Indicator = styled.div`
@@ -202,13 +197,9 @@ const PropsTable = (props) => {
     let ctdcProps = [];
     let gdcProps = [];
     let icdcProps = [];
-    //let refSrc = '';
 
     if(entry[1] !== undefined && entry[1].length !== 0){
       entry[1].forEach(prop => {
-        // if(refSrc === '' && prop.cdeSrc !== undefined){
-        //   refSrc = prop.cdeSrc;
-        // }
         if(prop.source !== undefined && prop.source === 'gdc'){
           gdcProps.push(prop);
         }
@@ -232,47 +223,14 @@ const PropsTable = (props) => {
     })
   });
 
-  console.log(crossProps);
-
-  // const propsItems = properties.map((item, index) =>
-  //   <TableRow key={index}>
-  //     <TableCol xs={2}>
-  //       {item.category}
-  //       <TableUl>
-  //         <TableLi>
-  //           <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
-  //         </TableLi>
-  //       </TableUl>
-  //     </TableCol>
-  //     <TableCol xs={2}>
-  //       <SpanBreak dangerouslySetInnerHTML={{ __html: item.property }}></SpanBreak>
-  //       {/* <LinkBreak href="/#" dangerouslySetInnerHTML={{ __html: item.property }}></LinkBreak> */}
-  //     </TableCol>
-  //     <TableCol xs={4} dangerouslySetInnerHTML={{ __html: item.property_desc }}></TableCol>
-  //     <TableCol xs={1}>{item.source.toUpperCase()}</TableCol>
-  //     <TableCol xs={2}>
-  //       {item.enum !== undefined
-  //         ? <div>
-  //           <span>See All Values</span><br/>
-  //           <span>Compare with User List</span>
-  //           {/* <a id="getGDCTerms" href="/#" data-ref="">See All Values</a><br />
-  //           <a id="toCompare" href="/#" data-ref="">Compare with User List</a> */}
-  //         </div>
-  //         : <div>
-  //           {item.type !== undefined && <SpanBreak>type: {item.type}</SpanBreak>}
-  //         </div>
-  //       }
-  //     </TableCol>
-  //     <TableCol xs={1}>
-  //     {item.cdeId !== undefined && 
-  //       <span dangerouslySetInnerHTML={{ __html: item.cdeSrc + ' - ' + item.cdeId}}></span>
-  //     }
-  //     </TableCol>
-  //   </TableRow>
-  // );
-
-
   const PropsItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
     return (
       <TableColFlex data-class="TableColFlex" sx={12}>
         <TableRow>
@@ -286,10 +244,30 @@ const PropsTable = (props) => {
             {/* <GDCTerms idterm={item.id}/> */}
           </TableCol>
           <TableColRight data-class="TableColRight" xs={9}>
-              <div>
-                <span dangerouslySetInnerHTML={{ __html: props.item.property}}></span><br/>
-                <div>{props.item.property_desc}</div>
-              </div>
+            <TableRowProps data-class="TableRowValue">
+              <TableCol data-class="TableCol" xs={12}>
+                <Row>
+                  <Col xs={10}>
+                    <a href="/#" dangerouslySetInnerHTML={{ __html: props.item.property}} onClick={ToggleTableHandler}></a>
+                  </Col>
+                  <ColRight xs={2}>
+                    <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+                      {isToggleOn === true
+                        ? <FontAwesomeIcon icon={faMinus}/>
+                        : <FontAwesomeIcon icon={faPlus}/>
+                      }
+                    </a>
+                  </ColRight>
+                </Row>
+                <Collapse in={isToggleOn} mountOnEnter={true}>
+                  <Row>
+                    <TableCol data-class="TableCol" xs={12}>
+                      <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property_desc}}></p>
+                    </TableCol>
+                  </Row>
+                </Collapse>
+              </TableCol>
+            </TableRowProps>
           </TableColRight>
         </TableRow>
       </TableColFlex>
@@ -356,28 +334,25 @@ const PropsTable = (props) => {
   if (crossProps.length !== 0) {
     return (
       <ContainerStyled>
-      <TableThead>
+        <TableThead>
           <Col xs={2}>
-            <TableTh>Category / Node</TableTh>
+            <TableTh>Terminology Reference</TableTh>
           </Col>
-          <Col xs={2}>
-            <TableTh>Property</TableTh>
-          </Col>
-          <Col xs={4}>
-            <TableTh>Description</TableTh>
-          </Col>
-          <Col xs={1}>
-            <TableTh>Source</TableTh>
-          </Col>
-          <Col xs={2}>
-            <TableTh>Property Values</TableTh>
-          </Col>
-          <Col xs={1}>
-            <TableTh>Mapped Code</TableTh>
+          <Col xs={10}>
+            <Row>
+              <Col xs={2}>
+                <TableTh>Data Sources</TableTh>
+              </Col>
+              <Col xs={2}>
+                <TableTh>Node</TableTh>
+              </Col>
+              <Col xs={8}>
+                <TableTh>Matched Properties</TableTh>
+              </Col>
+            </Row>
           </Col>
         </TableThead>
         <TableBody>
-          {/* <Col xs={12}>{propsItems}</Col> */}
           <Col xs={12}>
             {crossProps.map((cross, index) => 
               <PropsItemsContainer cross={cross} key={index} />
