@@ -200,6 +200,31 @@ const indexing = (req, res) => {
 				"node": {
 					"type": "keyword"
 				},
+				"n_ncit":{
+					"type": "nested",
+					"properties": {
+						"c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						}
+					}
+				},
 				"prop_desc":{
 					"type": "text",
 					"analyzer": "my_whitespace"
@@ -213,6 +238,31 @@ const indexing = (req, res) => {
 						}
 					},
 					"analyzer": "case_insensitive"
+				},
+				"ncit":{
+					"type": "nested",
+					"properties": {
+						"c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						}
+					}
 				},
 				"enum":{
 					"type": "nested",
@@ -331,6 +381,8 @@ const searchP = (req, res) => {
 	if(req.query.options){
 		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
 		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
+		option.n_syn = req.query.options.indexOf('n_syn') !== -1 ? true : false;
+		option.p_syn = req.query.options.indexOf('p_syn') !== -1 ? true : false;
 		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
 		option.sources = req.query.sources? req.query.sources.split(',') : [];
 	}
@@ -338,6 +390,8 @@ const searchP = (req, res) => {
 		option = {
 			match: "partial",
 			syn: false,
+			n_syn: false,
+			p_syn: false,
 			desc: false
 		};
 		option.sources = [];
@@ -540,20 +594,20 @@ const preloadGDCDataMappings = (req, res) => {
 		  		if(item[3] != null){
 		  			let tmp = {};
 		  			tmp.nm = item[3];
-		  			if(item[4] == null){
+		  			if(item[5] == null){
 		  				tmp.n_c = "";
 		  			}
 		  			else{
-		  				tmp.n_c = item[4].split('|');
+		  				tmp.n_c = item[5].split('|');
 		  			}
-		  			tmp.i_c = item[5] == null ? "" : item[5];
-		  			if(item[6] == null){
+		  			tmp.i_c = item[6] == null ? "" : item[6];
+		  			if(item[7] == null){
 		  				tmp.i_c_s = "";
 		  			}
 		  			else{
-		  				tmp.i_c_s = item[6].split('|');
+		  				tmp.i_c_s = item[7].split('|');
 		  			}
-		  			tmp.term_type = item[7] == null ? "" : item[7];
+		  			tmp.term_type = item[8] == null ? "" : item[8];
 		  			mappings[prop].push(tmp);
 		  		}
 		  		
