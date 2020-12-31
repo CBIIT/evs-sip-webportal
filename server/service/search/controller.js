@@ -200,6 +200,31 @@ const indexing = (req, res) => {
 				"node": {
 					"type": "keyword"
 				},
+				"n_ncit":{
+					"type": "nested",
+					"properties": {
+						"c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						}
+					}
+				},
 				"prop_desc":{
 					"type": "text",
 					"analyzer": "my_whitespace"
@@ -213,6 +238,31 @@ const indexing = (req, res) => {
 						}
 					},
 					"analyzer": "case_insensitive"
+				},
+				"ncit":{
+					"type": "nested",
+					"properties": {
+						"c": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						}
+					}
 				},
 				"enum":{
 					"type": "nested",
@@ -331,6 +381,8 @@ const searchP = (req, res) => {
 	if(req.query.options){
 		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
 		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
+		option.n_syn = req.query.options.indexOf('n_syn') !== -1 ? true : false;
+		option.p_syn = req.query.options.indexOf('p_syn') !== -1 ? true : false;
 		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
 		option.sources = req.query.sources? req.query.sources.split(',') : [];
 	}
@@ -338,6 +390,8 @@ const searchP = (req, res) => {
 		option = {
 			match: "partial",
 			syn: false,
+			n_syn: false,
+			p_syn: false,
 			desc: false
 		};
 		option.sources = [];

@@ -29,6 +29,34 @@ const generateHighlightInnerHits = () => {
   return highlight;
 }
 
+const generateHighlightInnerHits_node = () => {
+  let highlight = {
+    "pre_tags": ["<b>"],
+    "post_tags": ["</b>"],
+    "fields": {
+      "n_ncit.c.have": {"number_of_fragments": 0},
+      "n_ncit.c": {"number_of_fragments": 0},
+      "n_ncit.s.n.have": {"number_of_fragments": 0},
+      "n_ncit.s.n": {"number_of_fragments": 0}
+    }
+  };
+  return highlight;
+}
+
+const generateHighlightInnerHits_prop = () => {
+  let highlight = {
+    "pre_tags": ["<b>"],
+    "post_tags": ["</b>"],
+    "fields": {
+      "ncit.c.have": {"number_of_fragments": 0},
+      "ncit.c": {"number_of_fragments": 0},
+      "ncit.s.n.have": {"number_of_fragments": 0},
+      "ncit.s.n": {"number_of_fragments": 0}
+    }
+  };
+  return highlight;
+}
+
 const generateHighlight = () => {
   let highlight = {
     "pre_tags": ["<b>"],
@@ -87,6 +115,46 @@ const generateQuery = (keyword, option) => {
 
     m = {};
     m.nested = {};
+    m.nested.path = "n_ncit"
+    m.nested.query = {};
+    m.nested.query.query_string = {};
+    m.nested.query.query_string.fields = [];
+    
+    if (option.n_syn) {
+      m.nested.query.query_string.fields.push("n_ncit.s.n");
+    }
+    m.nested.query.query_string.fields.push("n_ncit.c");
+    m.nested.query.query_string.query = exact_keyword;
+    
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "node";
+    m.nested.inner_hits.highlight = generateHighlightInnerHits_node();
+    clause.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "ncit"
+    m.nested.query = {};
+    m.nested.query.query_string = {};
+    m.nested.query.query_string.fields = [];
+    
+    if (option.p_syn) {
+      m.nested.query.query_string.fields.push("ncit.s.n");
+    }
+    m.nested.query.query_string.fields.push("ncit.c");
+    m.nested.query.query_string.query = exact_keyword;
+    
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "prop";
+    m.nested.inner_hits.highlight = generateHighlightInnerHits_prop();
+    clause.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
     m.nested.path = "enum"
     m.nested.query = {};
     m.nested.query.query_string = {};
@@ -103,6 +171,7 @@ const generateQuery = (keyword, option) => {
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
     m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "enum";
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
@@ -187,12 +256,70 @@ const generateQuery = (keyword, option) => {
 
     m = {};
     m.nested = {};
-    m.nested.path = "enum"
+    m.nested.path = "n_ncit";
     m.nested.query = {};
     m.nested.query.bool = {};
     m.nested.query.bool.should = [];
 
     let n = {};
+    if (option.n_syn) {
+      n = {};
+      n.match_phrase_prefix = {};
+      n.match_phrase_prefix["n_ncit.s.n.have"] = {};
+      n.match_phrase_prefix["n_ncit.s.n.have"].query = keyword;
+      n.match_phrase_prefix["n_ncit.s.n.have"].analyzer = "my_whitespace";
+      m.nested.query.bool.should.push(n);
+    }
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["n_ncit.c.have"] = {};
+    n.match_phrase_prefix["n_ncit.c.have"].query = keyword;
+    n.match_phrase_prefix["n_ncit.c.have"].analyzer = "my_whitespace";
+    m.nested.query.bool.should.push(n);
+
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "node";
+    m.nested.inner_hits.highlight = generateHighlightInnerHits_node();
+    clause.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "ncit";
+    m.nested.query = {};
+    m.nested.query.bool = {};
+    m.nested.query.bool.should = [];
+
+    if (option.p_syn) {
+      n = {};
+      n.match_phrase_prefix = {};
+      n.match_phrase_prefix["ncit.s.n.have"] = {};
+      n.match_phrase_prefix["ncit.s.n.have"].query = keyword;
+      n.match_phrase_prefix["ncit.s.n.have"].analyzer = "my_whitespace";
+      m.nested.query.bool.should.push(n);
+    }
+    n = {};
+    n.match_phrase_prefix = {};
+    n.match_phrase_prefix["ncit.c.have"] = {};
+    n.match_phrase_prefix["ncit.c.have"].query = keyword;
+    n.match_phrase_prefix["ncit.c.have"].analyzer = "my_whitespace";
+    m.nested.query.bool.should.push(n);
+
+    m.nested.inner_hits = {};
+    m.nested.inner_hits.from = 0;
+    m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "prop";
+    m.nested.inner_hits.highlight = generateHighlightInnerHits_prop();
+    clause.bool.should.push(m);
+
+    m = {};
+    m.nested = {};
+    m.nested.path = "enum"
+    m.nested.query = {};
+    m.nested.query.bool = {};
+    m.nested.query.bool.should = [];
+
     if (option.syn) {
       n = {};
       n.match_phrase_prefix = {};
@@ -226,6 +353,7 @@ const generateQuery = (keyword, option) => {
     m.nested.inner_hits = {};
     m.nested.inner_hits.from = 0;
     m.nested.inner_hits.size = 10000;
+    m.nested.inner_hits.name = "enum";
     m.nested.inner_hits.highlight = generateHighlightInnerHits();
     clause.bool.should.push(m);
   }
@@ -319,6 +447,11 @@ const readNCItDetails = () => {
 const readGDCValues = () => {
     let content = fs.readFileSync(dataFilesDir + "/gdc_values.js").toString();
 	return JSON.parse(content);
+}
+
+const readGDCNodes = () => {
+    let content = fs.readFileSync(dataFilesDir + "/gdc_nodes.js").toString();
+  return JSON.parse(content);
 }
 
 const readConceptCode = () => {
@@ -788,6 +921,7 @@ module.exports = {
     readNCItDetails,
     preProcess,
     readGDCValues,
+    readGDCNodes,
     readConceptCode,
     readCDEData,
     readCTDCMapping,
