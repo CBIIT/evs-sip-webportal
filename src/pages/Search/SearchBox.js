@@ -450,6 +450,13 @@ const SearchBox = (props) => {
                   </CheckboxSpan>
                   Search Synonyms of Values
                 </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput name="p_syns" type="checkbox"/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Search Synonyms of Properties/Nodes
+                </CheckboxLabel>
               </FormGroupStyled>
             </SearchOptions>
           </SearchOptionsContainer>

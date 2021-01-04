@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Collapse} from 'react-bootstrap';
+import { Container, Row, Col, Table, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
@@ -84,6 +84,10 @@ const TableLi = styled.li`
   word-wrap: break-word;
 `;
 
+const TableStyled = styled(Table)`
+  margin-bottom: 0;
+`;
+
 const SpanIcon = styled.span`
   left: -0.9rem;
   top: 0.2rem;
@@ -135,9 +139,16 @@ const PropsTable = (props) => {
   let properties = [];
 
   items.forEach(item => {
+    //let prop = item.inner_hits.prop;
+    
     if (item.highlight === undefined) return;
+
+    //if (item.highlight === undefined || prop.hits.hits.length === 0) return;
+
     let source = item._source;
-    let highlight = item.highlight;
+    let highlight = item.highlight === undefined ? []: item.highlight;
+
+    //let propHits = prop.hits.hits;
 
     let highlightProperty = ('prop' in highlight) || ('prop.have' in highlight) ? highlight['prop'] || highlight['prop.have'] : undefined;
     let highlightPropertyObj = getHighlightObj(highlightProperty);
@@ -168,19 +179,40 @@ const PropsTable = (props) => {
       propObj.cdeSrc =source.cde.src;
       propObj.cdeUrl = source.cde.url;
     }
+    propObj.ncit = source.ncit;
+
+    // propObj.ncit = []; 
+
+    // propHits.forEach((hits) => {
+    //   let hl = hits.highlight;
+
+    //   let highlightNC = ('prop.ncit.c' in hl) || ('prop.ncit.c.have' in hl) ? hl['prop.ncit.c'] || hl['prop.ncit.c.have'] : undefined;
+    //   let highlightNCObj = getHighlightObj(highlightNC);
+
+    //   console.log(highlightNCObj);
+
+    //   let highlightSyn = ('prop.ncit.s.n' in hl) || ('prop.ncit.s.n.have' in hl) ? hl['prop.ncit.s.n'] || hl['prop.ncit.s.n.have'] : undefined;
+    //   let highlightSynObj = getHighlightObj(highlightSyn);
+
+    //   console.log(highlightSynObj);
+
+    // });
+
     properties.push(propObj);
   });
 
   let mappingObj = {};
   properties.forEach((prop) => {
-    if(prop.cdeId !== undefined && prop.cdeSrc !== 'CDE ID') {
-      if(mappingObj[prop.cdeId] === undefined) {
-        mappingObj[prop.cdeId] = [];
-        mappingObj[prop.cdeId].push(prop);
-      } else {
-        mappingObj[prop.cdeId].push(prop);
-      }
-    } 
+    if(prop.ncit !== undefined && prop.ncit !== 0){
+        prop.ncit.forEach((nt) => {
+          if(mappingObj[nt.c] === undefined) {
+            mappingObj[nt.c] = [];
+            mappingObj[nt.c].push(prop);
+          } else {
+            mappingObj[nt.c].push(prop);
+          }
+        })
+    }
     else {
       if(mappingObj['no-mapping'] === undefined) {
         mappingObj['no-mapping'] = [];
@@ -223,6 +255,52 @@ const PropsTable = (props) => {
     })
   });
 
+  const TableSynonyms = (props) => {
+    if (props.synonyms !== undefined) {
+      return props.synonyms.map((item, index) =>
+        <tr key={index}>
+          <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
+          <td>{item.src}</td>
+          <td>{item.t}</td>
+        </tr>
+      );
+    }
+    return (null);
+  };
+
+  const NcitProps = (props) => {
+    if (props.ncit !== undefined) {
+      return props.ncit.map((item, index) =>
+        <div key={index} data-class="ncit-value-container">
+          <Row>
+            <TableCol xs={12}>
+              <b>NCI Thesaurus Code: </b>
+              <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.c }}></a>
+            </TableCol>
+          </Row>
+          <Row>
+            <TableCol xs={12}>
+              <TableStyled striped bordered condensed="true" hover>
+                <thead>
+                  <tr>
+                    <th>Term</th>
+                    <th>Source</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <TableSynonyms synonyms={item.s}/>
+                </tbody>
+              </TableStyled>
+            </TableCol>
+          </Row>
+        </div>
+      );
+    }
+    return (null);
+  };
+
+
   const PropsItems = (props) => {
     let [isToggleOn, setIsToggleOn] = useState(false);
 
@@ -260,11 +338,18 @@ const PropsTable = (props) => {
                   </ColRight>
                 </Row>
                 <Collapse in={isToggleOn} mountOnEnter={true}>
-                  <Row>
-                    <TableCol data-class="TableCol" xs={12}>
-                      <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property_desc}}></p>
-                    </TableCol>
-                  </Row>
+                  <div data-class="ncit-props-container">
+                    {props.item.property_desc !== undefined &&
+                      <Row>
+                        <TableCol data-class="TableCol" xs={12}>
+                          <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property_desc}}></p>
+                        </TableCol>
+                      </Row>
+                    }
+                    {props.item.ncit !== undefined &&
+                      <NcitProps ncit={props.item.ncit}/>
+                    }
+                  </div>
                 </Collapse>
               </TableCol>
             </TableRowProps>

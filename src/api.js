@@ -8,7 +8,7 @@ export const apiSuggest = async keyword => {
 };
 
 export const apiSearchAll = async(keyword, match, options, dataSources) => {
-  const opts = `${match}${options.syns === true ? `,syn` : ``}${options.desc === true ? `,desc` : ``}`;
+  const opts = `${match}${options.syns === true ? `,syn,n_syn,p_syn` : ``}${options.desc === true ? `,desc` : ``}`;
   let sources = [];
   for(let key in dataSources){
     if(dataSources[key]){
