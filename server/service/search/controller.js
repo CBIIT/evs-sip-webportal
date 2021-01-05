@@ -197,12 +197,23 @@ const indexing = (req, res) => {
 				"category": {
 					"type": "keyword"
 				},
-				"node": {
-					"type": "keyword"
-				},
-				"n_ncit":{
+				"node":{
 					"type": "nested",
 					"properties": {
+						"n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"d": {
+							"type": "text",
+							"analyzer": "my_whitespace"
+						},
 						"c": {
 							"type": "text",
 							"fields": {
@@ -225,24 +236,10 @@ const indexing = (req, res) => {
 						}
 					}
 				},
-				"prop_desc":{
-					"type": "text",
-					"analyzer": "my_whitespace"
-				},
-				"prop": {
-					"type": "text",
-					"fields": {
-						"have": {
-							"type": "text",
-							"analyzer": "my_whitespace"
-						}
-					},
-					"analyzer": "case_insensitive"
-				},
-				"ncit":{
+				"prop":{
 					"type": "nested",
 					"properties": {
-						"c": {
+						"n": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -252,7 +249,11 @@ const indexing = (req, res) => {
 							},
 							"analyzer": "case_insensitive"
 						},
-						"s.n": {
+						"d": {
+							"type": "text",
+							"analyzer": "my_whitespace"
+						},
+						"ncit.c": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -261,6 +262,24 @@ const indexing = (req, res) => {
 								}
 							},
 							"analyzer": "case_insensitive"
+						},
+						"ncit.s.n": {
+							"type": "text",
+							"fields": {
+								"have": {
+									"type": "text",
+									"analyzer": "my_whitespace"
+								}
+							},
+							"analyzer": "case_insensitive"
+						},
+						"cde":{
+							"properties": {
+								"c": {
+									"type": "text",
+									"analyzer": "case_insensitive"
+								}
+							}
 						}
 					}
 				},
@@ -310,10 +329,6 @@ const indexing = (req, res) => {
 							}
 						}
 					}
-				},
-				"cde.id": {
-					"type": "text",
-					"analyzer": "case_insensitive"
 				}
 			}
 		}
@@ -401,7 +416,7 @@ const searchP = (req, res) => {
 	} else {
 		let query = shared.generateQuery(keyword, option);
 		let highlight = shared.generateHighlight();
-		elastic.query(config.index_p, query, "enum", highlight, result => {
+		elastic.query(config.index_p, query, "enum", {}, result => {
 			if (result.hits === undefined) {
 				res.json({total: 0, returnList: [], timedOut: true});
 				//return handleError.error(res, result);
