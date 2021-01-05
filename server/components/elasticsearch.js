@@ -65,14 +65,16 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
 
     p.source = "gdc";
     p.category = fileJson.category;
-    p.node = fileJson.id;
-    p.node_desc = fileJson.description;
+    p.node = {};
+    p.node.n = fileJson.id;
+    p.node.d = fileJson.description;
     if(n_ncit.length > 0){
-      p.n_ncit = n_ncit;
+      p.node.ncit = n_ncit;
     }
-    p.prop = prop;
-    p.prop_desc = entryRaw.description;
-    p.id = p.prop + "/" + p.node + "/" + p.category;
+    p.prop = {};
+    p.prop.n = prop;
+    p.prop.d = entryRaw.description;
+    p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
     p.type = entryRaw.type;
 
     entry.enum = extend([], entryRaw.enum);
@@ -83,21 +85,13 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     if (entry.termDef !== undefined && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
       entry.termDef.cde_id = '' + entry.termDef.cde_id;
       if (entry.termDef.source === 'caDSR') {
-        p.cde = {};
-        p.cde.id = entry.termDef.cde_id;
-        //p.cde.v = entry.termDef.cde_version;
-        p.cde.url = entry.termDef.term_url;
-        p.cde.src = 'CDE';
+        p.prop.cde = {};
+        p.prop.cde.c = entry.termDef.cde_id;
+        p.prop.cde.url = entry.termDef.term_url;
+        p.prop.cde.src = 'CDE';
       }
       else if(entry.termDef.source === 'NCIt'){
-        /*
-        p.cde = {};
-        p.cde.id = entry.termDef.cde_id;
-        //p.cde.v = entry.termDef.cde_version;
-        p.cde.url = entry.termDef.term_url;
-        p.cde.src = 'NCIt';
-        */
-        p.ncit = [];
+        p.prop.ncit = [];
         let tmp = {};
         tmp.c = entry.termDef.cde_id.toUpperCase();
         tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
@@ -118,7 +112,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
             });
           });
         }
-        p.ncit.push(tmp);
+        p.prop.ncit.push(tmp);
       }
     }
 
@@ -172,7 +166,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
 
     // 2. work on conceptCode to further combind the ncit code
     // depracted as data mappings in conceptCode.js file have already been included in gdc_values.js file
-    let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
+    let prop_full_name = p.category + '.' + p.node.n + '.' + p.prop.n;
     /*
     if (prop_full_name in conceptCode) {
       let cc = conceptCode[prop_full_name];
@@ -301,21 +295,21 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
 
     //building typeahead index, need to collect from properties, CDE ID, values, ICDO3 codes and NCIt codes
     //collect properties
-    if (p.prop in allTerm) {
+    if (p.prop.n in allTerm) {
       // if exist, then check if have the same type
-      let t = allTerm[p.prop];
+      let t = allTerm[p.prop.n];
       if (t.indexOf('property') === -1) {
         t.push('property');
       }
     } else {
       let t = [];
       t.push('property');
-      allTerm[p.prop] = t;
+      allTerm[p.prop.n] = t;
     }
 
     // collect CDE ID
-    if (p.cde) {
-      let em = p.cde.id.toString().trim().toLowerCase();
+    if (p.prop.cde) {
+      let em = p.prop.cde.c.toString().trim().toLowerCase();
       if (em in allTerm) {
         // if exist, then check if have the same type
         let t = allTerm[em];
@@ -366,8 +360,8 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     }
 
     //collect node and properties' NCIt codes
-    if (p.n_ncit) {
-      let ncits = p.n_ncit;
+    if (p.node.ncit) {
+      let ncits = p.node.ncit;
       ncits.forEach(n => {
         let em = n.c.trim().toLowerCase();
         if (em in allTerm) {
@@ -383,8 +377,8 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         }
       });
     }
-    if (p.ncit) {
-      let ncits = p.ncit;
+    if (p.prop.ncit) {
+      let ncits = p.prop.ncit;
       ncits.forEach(n => {
         let em = n.c.trim().toLowerCase();
         if (em in allTerm) {
@@ -457,11 +451,13 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
 
       p.source = "icdc";
       p.category = dict[node_name].category;
-      p.node = dict[node_name].id;
-      p.node_desc = dict[node_name].description || "";
-      p.prop = prop;
-      p.prop_desc = entryRaw.description;
-      p.id = p.prop + "/" + p.node + "/" + p.category;
+      p.node = {};
+      p.node.n = dict[node_name].id;
+      p.node.d = dict[node_name].description || "";
+      p.prop = {};
+      p.prop.n = prop;
+      p.prop.d = entryRaw.description;
+      p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
 
       if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
@@ -557,7 +553,7 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
         p.cde.url = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=" + p.cde.id;
         p.cde.src = 'NCIt';
         */
-        p.ncit = [];
+        p.prop.ncit = [];
         let tmp = {};
         tmp.c = mappingEntryRaw.p_n_code.toUpperCase();
         tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
@@ -578,21 +574,21 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
             });
           });
         }
-        p.ncit.push(tmp);
+        p.prop.ncit.push(tmp);
       }
 
       //building typeahead index, need to collect from properties, CDE ID, values, NCIt codes
       //collect properties
-      if (p.prop in allTerm) {
+      if (p.prop.n in allTerm) {
         // if exist, then check if have the same type
-        let t = allTerm[p.prop];
+        let t = allTerm[p.prop.n];
         if (t.indexOf('property') === -1) {
           t.push('property');
         }
       } else {
         let t = [];
         t.push('property');
-        allTerm[p.prop] = t;
+        allTerm[p.prop.n] = t;
       }
 
       //collect values
@@ -613,8 +609,8 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
       }
 
       //collect properties' NCIt codes
-      if (p.ncit) {
-        let ncits = p.ncit;
+      if (p.prop.ncit) {
+        let ncits = p.prop.ncit;
         ncits.forEach(n => {
           let em = n.c.trim().toLowerCase();
           if (em in allTerm) {
@@ -701,14 +697,16 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
 
       p.source = "ctdc";
       p.category = dict[node_name].category;
-      p.node = dict[node_name].id;
-      p.node_desc = dict[node_name].description || "";
+      p.node = {};
+      p.node.n = dict[node_name].id;
+      p.node.d = dict[node_name].description || "";
       if(n_ncit.length > 0){
-        p.n_ncit = n_ncit;
+        p.node.ncit = n_ncit;
       }
-      p.prop = prop;
-      p.prop_desc = entryRaw.description;
-      p.id = p.prop + "/" + p.node + "/" + p.category;
+      p.prop = {};
+      p.prop.n = prop;
+      p.prop.d = entryRaw.description;
+      p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
 
       if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
@@ -804,7 +802,7 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
         p.cde.url = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=" + p.cde.id;
         p.cde.src = 'NCIt';
         */
-        p.ncit = [];
+        p.prop.ncit = [];
         let tmp = {};
         tmp.c = mappingEntryRaw.p_n_code.toUpperCase();
         tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
@@ -825,21 +823,21 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
             });
           });
         }
-        p.ncit.push(tmp);
+        p.prop.ncit.push(tmp);
       }
 
       //building typeahead index, need to collect from properties, CDE ID, values, NCIt codes
       //collect properties
-      if (p.prop in allTerm) {
+      if (p.prop.n in allTerm) {
         // if exist, then check if have the same type
-        let t = allTerm[p.prop];
+        let t = allTerm[p.prop.n];
         if (t.indexOf('property') === -1) {
           t.push('property');
         }
       } else {
         let t = [];
         t.push('property');
-        allTerm[p.prop] = t;
+        allTerm[p.prop.n] = t;
       }
 
       //collect values
@@ -860,8 +858,8 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
       }
 
       //collect node and properties' NCIt codes
-      if (p.n_ncit) {
-        let ncits = p.n_ncit;
+      if (p.node.ncit) {
+        let ncits = p.node.ncit;
         ncits.forEach(n => {
           let em = n.c.trim().toLowerCase();
           if (em in allTerm) {
@@ -877,8 +875,8 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
           }
         });
       }
-      if (p.ncit) {
-        let ncits = p.ncit;
+      if (p.prop.ncit) {
+        let ncits = p.prop.ncit;
         ncits.forEach(n => {
           let em = n.c.trim().toLowerCase();
           if (em in allTerm) {
@@ -978,7 +976,7 @@ const bulkIndex = async function(next){
       ap.prop_desc = ap.prop_desc + " (" + ap.cde.src + " - " + ap.cde.id + ")"
     }
     let doc = extend(ap, {});
-    doc.id = ap.prop + "/" + ap.node + "/" + ap.category + "/" + ap.source;
+    doc.id = ap.prop.n + "/" + ap.node.n + "/" + ap.category + "/" + ap.source;
     propertyBody.push({
       index: {
         _index: config.index_p,
