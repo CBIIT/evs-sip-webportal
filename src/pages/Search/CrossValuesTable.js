@@ -648,9 +648,9 @@ const CrossValuesTable = (props) => {
           <TableCol data-class="TableCol" xs={3}>
             {props.item.category}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
                 <TableUl>
-                  <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
+                  <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
                 </TableUl>
               </TableLi>
             </TableUl>
@@ -705,7 +705,7 @@ const CrossValuesTable = (props) => {
 
   const ValuesItemsContainer = (props) => {
     return (
-      <Row key={props.index}>
+      <Row>
         <TableColLeft data-class="TableColLeft" xs={2}>
           <DivCenter>
             <CodeSpan>{props.cross.code}<br/>({props.cross.ref})</CodeSpan><br/>
