@@ -74,6 +74,12 @@ const TableRowProps = styled(Row)`
   border-bottom: 1px solid #BBC5CD;
 `;
 
+const TableColProps = styled(TableCol)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const TableUl = styled.ul`
   padding-left: 15px;
   list-style: none;
@@ -113,6 +119,14 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
+const LinkDetails = styled.a`
+  padding-left: 1rem;
+`;
+
+const LinkDesc = styled.a`
+  padding-left: 0.5rem;
+`;
+
 const Indicator = styled.div`
   position: relative;
   padding-bottom: 36%;
@@ -138,67 +152,60 @@ const PropsTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.properties));
   let properties = [];
 
+  console.log(items);
+
   items.forEach(item => {
-    //let prop = item.inner_hits.prop;
+    let prop = item.inner_hits.prop;
     
-    if (item.highlight === undefined) return;
+    //if (item.highlight === undefined) return;
 
     //if (item.highlight === undefined || prop.hits.hits.length === 0) return;
 
-    let source = item._source;
-    let highlight = item.highlight === undefined ? []: item.highlight;
+    if (prop.hits.hits.length !== 0) {
+      let propHits = prop.hits.hits;
 
-    //let propHits = prop.hits.hits;
+      propHits.forEach((hits) => {
+        let hl = hits.highlight;
 
-    let highlightProperty = ('prop' in highlight) || ('prop.have' in highlight) ? highlight['prop'] || highlight['prop.have'] : undefined;
-    let highlightPropertyObj = getHighlightObj(highlightProperty);
+        let highlightProp = ('prop.n' in hl) || ('prop.n.have' in hl) ? hl['prop.n'] || hl['prop.n.have'] : undefined;
+        let highlightPropObj = getHighlightObj(highlightProp);
 
-    let highlightPropertyDesc = ('prop_desc' in highlight) ? highlight['prop_desc'] : undefined;
-    let highlightPropertyDescObj = {};
-    if (highlightPropertyDesc !== undefined) {
-      highlightPropertyDesc.forEach(val => {
-        if (highlightPropertyDescObj[source.prop] === undefined) highlightPropertyDescObj[source.prop] = val;
+        let highlightDesc = ('prop.d' in hl) || ('prop.d.have' in hl) ? hl['prop.d'] || hl['prop.d.have'] : undefined;
+        let highlightDescObj = getHighlightObj(highlightDesc);
+
+        let highlightNC = ('prop.ncit.c' in hl) || ('prop.ncit.c.have' in hl) ? hl['prop.ncit.c'] || hl['prop.ncit.c.have'] : undefined;
+        let highlightNCObj = getHighlightObj(highlightNC);
+
+        let highlightSyn = ('prop.ncit.s.n' in hl) || ('prop.ncit.s.n.have' in hl) ? hl['prop.ncit.s.n'] || hl['prop.ncit.s.n.have'] : undefined;
+        let highlightSynObj = getHighlightObj(highlightSyn);
+
+        let propObj = {};
+        propObj.category = item._source.category;
+        propObj.node = item._source.node;
+        propObj.id = item._source.id;
+        propObj.source = item._source.source;
+        propObj.property = item._source.prop;
+        propObj.property.n = highlightPropObj[item._source.prop.n] ? highlightPropObj[item._source.prop.n] : item._source.prop.n;
+        propObj.property.d = highlightDescObj[item._source.prop.d] ? highlightDescObj[item._source.prop.d] : item._source.prop.d;
+        
+        propObj.ncit = hits._source.ncit ? hits._source.ncit : undefined;
+
+        if (propObj.ncit !== undefined && propObj.ncit !== 0) {
+          propObj.ncit.forEach((ncit, i) => {
+            propObj.ncit[i].c = highlightNCObj[ncit.c] ? highlightNCObj[ncit.c] : ncit.c;
+
+            if (ncit.s !== undefined && ncit.s !== 0) {
+              ncit.s.forEach((s, j) => {
+                propObj.ncit[i].s[j].n = highlightSynObj[s.n] ? highlightSynObj[s.n] : s.n;
+              })
+            }
+          });
+        }
+
+        properties.push(propObj);
+
       });
     }
-
-    let highlightCdeId = ('cde.id' in highlight) ? highlight['cde.id'] : undefined;
-    let highlightCdeIdObj = getHighlightObj(highlightCdeId);
-
-    let propObj = {};
-    propObj.category = source.category;
-    propObj.node = source.node;
-    propObj.id = source.id;
-    propObj.source = source.source;
-    propObj.property = highlightPropertyObj[source.prop] ? highlightPropertyObj[source.prop] : source.prop;
-    propObj.property_desc = highlightPropertyDescObj[source.prop] ? highlightPropertyDescObj[source.prop] : source.prop_desc;
-    //if (source.type !== undefined && source.type !== '' && source.type !== 'enum') propObj.type = source.type;
-    if (source.type !== undefined && source.type !== '') propObj.type = source.type;
-    if (source.enum !== undefined) propObj.enum = source.enum;
-    if (source.cde !== undefined) {
-      propObj.cdeId = highlightCdeIdObj[source.cde.id] ? highlightCdeIdObj[source.cde.id] : source.cde.id;
-      propObj.cdeSrc =source.cde.src;
-      propObj.cdeUrl = source.cde.url;
-    }
-    propObj.ncit = source.ncit;
-
-    // propObj.ncit = []; 
-
-    // propHits.forEach((hits) => {
-    //   let hl = hits.highlight;
-
-    //   let highlightNC = ('prop.ncit.c' in hl) || ('prop.ncit.c.have' in hl) ? hl['prop.ncit.c'] || hl['prop.ncit.c.have'] : undefined;
-    //   let highlightNCObj = getHighlightObj(highlightNC);
-
-    //   console.log(highlightNCObj);
-
-    //   let highlightSyn = ('prop.ncit.s.n' in hl) || ('prop.ncit.s.n.have' in hl) ? hl['prop.ncit.s.n'] || hl['prop.ncit.s.n.have'] : undefined;
-    //   let highlightSynObj = getHighlightObj(highlightSyn);
-
-    //   console.log(highlightSynObj);
-
-    // });
-
-    properties.push(propObj);
   });
 
   let mappingObj = {};
@@ -300,6 +307,26 @@ const PropsTable = (props) => {
     return (null);
   };
 
+  const DescCollapse = (props) => {
+
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return (
+      <p>
+        <span dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc.substring(0, 138)}}></span>
+        <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
+        <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+          {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
+        </LinkDesc>
+      </p>
+    );
+  };
+
 
   const PropsItems = (props) => {
     let [isToggleOn, setIsToggleOn] = useState(false);
@@ -316,17 +343,17 @@ const PropsTable = (props) => {
             {props.item.category}
             <TableUl>
               <TableLi>
-                <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
+                <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
               </TableLi>
             </TableUl>
             {/* <GDCTerms idterm={item.id}/> */}
           </TableCol>
           <TableColRight data-class="TableColRight" xs={9}>
             <TableRowProps data-class="TableRowValue">
-              <TableCol data-class="TableCol" xs={12}>
+              <TableColProps data-class="TableCol" xs={12}>
                 <Row>
                   <Col xs={10}>
-                    <a href="/#" dangerouslySetInnerHTML={{ __html: props.item.property}} onClick={ToggleTableHandler}></a>
+                    <a href="/#" dangerouslySetInnerHTML={{ __html: props.item.property.n}} onClick={ToggleTableHandler}></a>
                   </Col>
                   <ColRight xs={2}>
                     <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
@@ -339,10 +366,11 @@ const PropsTable = (props) => {
                 </Row>
                 <Collapse in={isToggleOn} mountOnEnter={true}>
                   <div data-class="ncit-props-container">
-                    {props.item.property_desc !== undefined &&
+                    {props.item.property.d !== undefined &&
                       <Row>
                         <TableCol data-class="TableCol" xs={12}>
-                          <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property_desc}}></p>
+                          {/* <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property.d}}></p> */}
+                          <DescCollapse desc={props.item.property.d}/>
                         </TableCol>
                       </Row>
                     }
@@ -351,7 +379,13 @@ const PropsTable = (props) => {
                     }
                   </div>
                 </Collapse>
-              </TableCol>
+                <Row>
+                  <ColRight xs={12}>
+                    <LinkDetails href="/#">See All Values</LinkDetails>
+                    <LinkDetails href="/#">Compare with User List</LinkDetails>
+                  </ColRight>
+                </Row>
+              </TableColProps>
             </TableRowProps>
           </TableColRight>
         </TableRow>

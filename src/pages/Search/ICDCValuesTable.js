@@ -424,9 +424,9 @@ const ICDCValuesTable = (props) => {
       <TableCol xs={3}>
         {item.category}
         <TableUl>
-          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
+          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node.n}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLi>
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property.n}</TableLi>
             </TableUl>
           </TableLi>
         </TableUl>
