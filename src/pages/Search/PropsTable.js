@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
-// import GDCTerms from './dialogs/GDCTerms'
+import AllValuesModal from './modals/AllValuesModal';
+import ToCompareModal from './modals/ToCompareModal';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -119,10 +120,6 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
-const LinkDetails = styled.a`
-  padding-left: 1rem;
-`;
-
 const LinkDesc = styled.a`
   padding-left: 0.5rem;
 `;
@@ -152,14 +149,8 @@ const PropsTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.properties));
   let properties = [];
 
-  console.log(items);
-
   items.forEach(item => {
     let prop = item.inner_hits.prop;
-    
-    //if (item.highlight === undefined) return;
-
-    //if (item.highlight === undefined || prop.hits.hits.length === 0) return;
 
     if (prop.hits.hits.length !== 0) {
       let propHits = prop.hits.hits;
@@ -185,6 +176,7 @@ const PropsTable = (props) => {
         propObj.id = item._source.id;
         propObj.source = item._source.source;
         propObj.property = item._source.prop;
+        propObj.type = item._source.type;
         propObj.property.n = highlightPropObj[item._source.prop.n] ? highlightPropObj[item._source.prop.n] : item._source.prop.n;
         propObj.property.d = highlightDescObj[item._source.prop.d] ? highlightDescObj[item._source.prop.d] : item._source.prop.d;
         
@@ -346,10 +338,9 @@ const PropsTable = (props) => {
                 <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
               </TableLi>
             </TableUl>
-            {/* <GDCTerms idterm={item.id}/> */}
           </TableCol>
           <TableColRight data-class="TableColRight" xs={9}>
-            <TableRowProps data-class="TableRowValue">
+            <TableRow data-class="TableRowProps">
               <TableColProps data-class="TableCol" xs={12}>
                 <Row>
                   <Col xs={10}>
@@ -369,7 +360,6 @@ const PropsTable = (props) => {
                     {props.item.property.d !== undefined &&
                       <Row>
                         <TableCol data-class="TableCol" xs={12}>
-                          {/* <p dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.item.property.d}}></p> */}
                           <DescCollapse desc={props.item.property.d}/>
                         </TableCol>
                       </Row>
@@ -379,14 +369,16 @@ const PropsTable = (props) => {
                     }
                   </div>
                 </Collapse>
-                <Row>
-                  <ColRight xs={12}>
-                    <LinkDetails href="/#">See All Values</LinkDetails>
-                    <LinkDetails href="/#">Compare with User List</LinkDetails>
-                  </ColRight>
-                </Row>
+                {props.item.type !== undefined && props.item.type === 'enum' &&
+                  <Row>
+                    <ColRight xs={12}>
+                      <AllValuesModal idterm={props.item.id}/>
+                      <ToCompareModal idterm={props.item.id}/>
+                    </ColRight>
+                  </Row>
+                }
               </TableColProps>
-            </TableRowProps>
+            </TableRow>
           </TableColRight>
         </TableRow>
       </TableColFlex>
