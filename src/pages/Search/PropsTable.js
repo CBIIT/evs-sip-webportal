@@ -357,14 +357,14 @@ const PropsTable = (props) => {
                 </Row>
                 <Collapse in={isToggleOn} mountOnEnter={true}>
                   <div data-class="ncit-props-container">
-                    {props.item.property.d !== undefined &&
+                    {(props.item.property.d !== undefined && props.item.property.d !== '') &&
                       <Row>
                         <TableCol data-class="TableCol" xs={12}>
                           <DescCollapse desc={props.item.property.d}/>
                         </TableCol>
                       </Row>
                     }
-                    {props.item.ncit !== undefined &&
+                    {props.item.property.ncit !== undefined &&
                       <NcitProps ncit={props.item.ncit}/>
                     }
                   </div>

@@ -98,7 +98,9 @@ const AllValuesModal = (props) => {
               <tr key={e.n +'-'+index}>
                 <td rowSpan={e.ncit.length}>{e.n}</td>
                 <td rowSpan={e.ncit.length}>{e.icdo !== undefined && e.icdo.c}</td>
-                <td>{nc.c}</td>
+                <td>
+                  <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
+                </td>
                 <td>
                   <TableNCIt ncit={nc}/>
                 </td>
@@ -107,7 +109,9 @@ const AllValuesModal = (props) => {
           } else {
             return (
               <tr key={e.n +'-'+index}>
-                <td>{nc.c}</td>
+                <td>
+                  <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
+                </td>
                 <td>
                   <TableNCIt ncit={nc}/>
                 </td>
