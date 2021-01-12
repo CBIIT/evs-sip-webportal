@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Button, Modal} from 'react-bootstrap';
-import { apiGetGDCDataById } from '../../../api';
+import { apiGetGDCDataById } from '../../api';
 // import { getAllSyn } from '../../../shared';
 
 

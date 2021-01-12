@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
-
-import AllValuesModal from './modals/AllValuesModal';
-import ToCompareModal from './modals/ToCompareModal';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -81,28 +78,8 @@ const TableColProps = styled(TableCol)`
   justify-content: space-between;
 `;
 
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
 const TableStyled = styled(Table)`
   margin-bottom: 0;
-`;
-
-const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
 `;
 
 const DivCenter = styled.div`

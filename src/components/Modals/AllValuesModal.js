@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button, Modal, Table, Row, Col, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { apiGetGDCDataById } from '../../../api';
+import { apiGetGDCDataById } from '../../api';
 
 
 const ColRight = styled(Col)`

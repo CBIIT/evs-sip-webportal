@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
 
-import AllValuesModal from './modals/AllValuesModal';
-import ToCompareModal from './modals/ToCompareModal';
+import AllValuesModal from '../../components/Modals/AllValuesModal';
+import ToCompareModal from '../../components/Modals/ToCompareModal';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
