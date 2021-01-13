@@ -38,33 +38,93 @@ const TableDiff = () => {
         <tbody>
           <tr>
             <td>clinical</td>
-            <td>demographic</td>
-            <td>cause_of_death</td>
-            <td>cancer related</td>
-            <td>cancer related</td>
-            <td>C82561</td>
-            <td>C8278</td>
-            <td>Conflict</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>ALK/c-Met Inhibitor  TQ-B3139</td>
+            <td>ALK/c-Met Inhibitor  TQ-B3139</td>
+            <td></td>
+            <td>C148513</td>
+            <td>Excel File has new NCIt mapping.</td>
           </tr>
           <tr>
             <td>clinical</td>
-            <td>demographic</td>
-            <td>cause_of_death</td>
-            <td>cancer related</td>
-            <td>cancer related</td>
-            <td>C82561</td>
-            <td>C8278</td>
-            <td>Conflict</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Itraconazole</td>
+            <td>Itraconazole</td>
+            <td></td>
+            <td>C1138</td>
+            <td>Excel File has new NCIt mapping.</td>
           </tr>
           <tr>
             <td>clinical</td>
-            <td>demographic</td>
-            <td>cause_of_death</td>
-            <td>cancer related</td>
-            <td>cancer related</td>
-            <td>C82561</td>
-            <td>C8278, C8278</td>
-            <td>Excel File has more NCIt mappings.</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>MDM2 Inhibitor KRT-232</td>
+            <td>MDM2 Inhibitor KRT-232</td>
+            <td>C156415</td>
+            <td>C116624</td>
+            <td>Conflict.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Tipiracil</td>
+            <td>Tipiracil</td>
+            <td></td>
+            <td>C152646</td>
+            <td>Excel File has new NCIt mapping.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Tipiracil Hydrochloride</td>
+            <td>Tipiracil Hydrochloride</td>
+            <td></td>
+            <td>C152647</td>
+            <td>Excel File has new NCIt mapping.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Zirconium Zr 89 Panitumumab</td>
+            <td>Zirconium Zr 89 Panitumumab</td>
+            <td></td>
+            <td>C156043</td>
+            <td>Excel File has new NCIt mapping.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>2-O, 3-O Desulfated Heparin</td>
+            <td></td>
+            <td>C99130</td>
+            <td></td>
+            <td>Value not exists in Excel file.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>AEE788</td>
+            <td></td>
+            <td>C48369</td>
+            <td></td>
+            <td>Value not exists in Excel file.</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td></td>
+            <td>"Value 1"</td>
+            <td></td>
+            <td>C00000</td>
+            <td>Value not exists in GDC Dictionary.</td>
           </tr>
         </tbody>
       </Table>
