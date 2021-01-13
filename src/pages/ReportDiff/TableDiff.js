@@ -15,12 +15,11 @@ const TitleContainer = styled.div`
   align-items: center;
 `;
 
-
 const TableDiff = () => {
   return <>
     <TitleContainer>
       <h2>Result</h2>
-      <Button variant="primary">Download Report</Button>
+      <Button variant="primary">Download Result</Button>
     </TitleContainer>
     <TableContainer>
       <Table striped bordered hover>
@@ -33,7 +32,7 @@ const TableDiff = () => {
             <th>User Provided Value</th>
             <th>NCIt Code from GDC Dictionary</th>
             <th>NCIt Code from User</th>
-            <th>Components</th>
+            <th>Comments</th>
           </tr>
         </thead>
         <tbody>
