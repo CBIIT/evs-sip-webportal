@@ -20,6 +20,11 @@ export const apiSearchAll = async(keyword, match, options, dataSources) => {
   return response.json();
 };
 
+export const apiGetGDCDataById = async(id) => {
+  const response = await fetch(`${baseUrl}/p/local/vs?id=${id}`);
+  return response.json();
+};
+
 export const apiGetGDCDictionary = async() => {
   const response = await fetch(`${baseUrl}/graph/gdc`);
   return response.json();
