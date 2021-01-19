@@ -8,14 +8,14 @@ const FornStyled = styled(Form)`
 
 const FormDiff = () => {
   return <FornStyled>
-    <Form.Group>
+    {/* <Form.Group>
       <Form.Label>
         Select Excel File <Button style={{padding: "0 .75rem"}} variant="link" type="button">
           Get Excel Template
         </Button>
       </Form.Label>
       <Form.File/>
-    </Form.Group>
+    </Form.Group> */}
 
     {/* <Form.Group>
       <Form.Label>Choose Source</Form.Label>
