@@ -214,7 +214,7 @@ const indexing = (req, res) => {
 							"type": "text",
 							"analyzer": "my_whitespace"
 						},
-						"c": {
+						"ncit.c": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -224,7 +224,7 @@ const indexing = (req, res) => {
 							},
 							"analyzer": "case_insensitive"
 						},
-						"s.n": {
+						"ncit.s.n": {
 							"type": "text",
 							"fields": {
 								"have": {
@@ -416,6 +416,7 @@ const searchP = (req, res) => {
 	} else {
 		let query = shared.generateQuery(keyword, option);
 		let highlight = shared.generateHighlight();
+		//console.log(JSON.stringify(query));
 		elastic.query(config.index_p, query, "enum", {}, result => {
 			if (result.hits === undefined) {
 				res.json({total: 0, returnList: [], timedOut: true});
