@@ -23,16 +23,20 @@ const TableDiff = () => {
     </TitleContainer>
     <TableContainer>
       <Table striped bordered hover>
-        <thead>
+        <thead style={{background:"#606060",color: "white", textAlign: "center"}}>
           <tr>
-            <th>Category</th>
-            <th>Node</th>
-            <th>Property</th>
-            <th>GDC Dictionary Value</th>
-            <th>User Provided Value</th>
-            <th>NCIt Code from GDC Dictionary</th>
-            <th>NCIt Code from User</th>
-            <th>Comments</th>
+            <th rowSpan="2" width="10%">Category</th>
+            <th rowSpan="2" width="10%">Node</th>
+            <th rowSpan="2" width="10%">Property</th>
+            <th colSpan="2" width="30%">GDC Dictionary</th>
+            <th colSpan="2" width="30%">EVS-SIP</th>
+            <th rowSpan="2" width="10%">Comments</th>
+          </tr>
+          <tr>
+            <th>Value</th>
+            <th>NCIt Code</th>
+            <th>Value</th>
+            <th>NCIt Code</th>
           </tr>
         </thead>
         <tbody>
@@ -40,91 +44,41 @@ const TableDiff = () => {
             <td>clinical</td>
             <td>treatment</td>
             <td>therapeutic_agents</td>
-            <td>ALK/c-Met Inhibitor  TQ-B3139</td>
-            <td>ALK/c-Met Inhibitor  TQ-B3139</td>
+            <td>Other</td>
             <td></td>
-            <td>C148513</td>
-            <td>Excel File has new NCIt mapping.</td>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
           <tr>
             <td>clinical</td>
             <td>treatment</td>
             <td>therapeutic_agents</td>
-            <td>Itraconazole</td>
-            <td>Itraconazole</td>
+            <td>CDK4/6 Inhibitor</td>
             <td></td>
-            <td>C1138</td>
-            <td>Excel File has new NCIt mapping.</td>
+            <td>CDK4/6 Inhibitor</td>
+            <td></td>
+            <td></td>
           </tr>
           <tr>
             <td>clinical</td>
             <td>treatment</td>
             <td>therapeutic_agents</td>
-            <td>MDM2 Inhibitor KRT-232</td>
-            <td>MDM2 Inhibitor KRT-232</td>
-            <td>C156415</td>
-            <td>C116624</td>
-            <td>Conflict.</td>
+            <td>10-Deacetyltaxol</td>
+            <td></td>
+            <td>10-Deacetyltaxol</td>
+            <td>C957</td>
+            <td></td>
           </tr>
           <tr>
             <td>clinical</td>
             <td>treatment</td>
             <td>therapeutic_agents</td>
-            <td>Tipiracil</td>
-            <td>Tipiracil</td>
+            <td>3'-dA Phosphoramidate NUC-7738</td>
+            <td>C171381</td>
             <td></td>
-            <td>C152646</td>
-            <td>Excel File has new NCIt mapping.</td>
-          </tr>
-          <tr>
-            <td>clinical</td>
-            <td>treatment</td>
-            <td>therapeutic_agents</td>
-            <td>Tipiracil Hydrochloride</td>
-            <td>Tipiracil Hydrochloride</td>
             <td></td>
-            <td>C152647</td>
-            <td>Excel File has new NCIt mapping.</td>
-          </tr>
-          <tr>
-            <td>clinical</td>
-            <td>treatment</td>
-            <td>therapeutic_agents</td>
-            <td>Zirconium Zr 89 Panitumumab</td>
-            <td>Zirconium Zr 89 Panitumumab</td>
             <td></td>
-            <td>C156043</td>
-            <td>Excel File has new NCIt mapping.</td>
-          </tr>
-          <tr>
-            <td>clinical</td>
-            <td>treatment</td>
-            <td>therapeutic_agents</td>
-            <td>2-O, 3-O Desulfated Heparin</td>
-            <td></td>
-            <td>C99130</td>
-            <td></td>
-            <td>Value not exists in Excel file.</td>
-          </tr>
-          <tr>
-            <td>clinical</td>
-            <td>treatment</td>
-            <td>therapeutic_agents</td>
-            <td>AEE788</td>
-            <td></td>
-            <td>C48369</td>
-            <td></td>
-            <td>Value not exists in Excel file.</td>
-          </tr>
-          <tr>
-            <td>clinical</td>
-            <td>treatment</td>
-            <td>therapeutic_agents</td>
-            <td></td>
-            <td>"Value 1"</td>
-            <td></td>
-            <td>C00000</td>
-            <td>Value not exists in GDC Dictionary.</td>
           </tr>
         </tbody>
       </Table>

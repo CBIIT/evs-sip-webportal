@@ -839,6 +839,42 @@ const getGraphicalGDCDictionary = async function() {
     return result;
 }
 
+const getGDCDictionaryByVersion = async function(version) {
+  let result = cache.getValue("gdc_dict_"+version);
+  const DictionaryPath = path.join(__dirname, '..', '..', 'data_files','GDC', 'model-'+version);
+  if(result == undefined){
+      console.log("Start to generate GDC Dictionary "+version+" Data and load to local cache.");
+      let jsonData = {};
+      var termsJson = yaml.load(DictionaryPath + '/_terms.yaml');
+      jsonData["_terms.yaml"] = termsJson;
+      var defJson = yaml.load(DictionaryPath + '/_definitions.yaml');
+      jsonData["_definitions.yaml"] = defJson;
+      // let bulkBody = [];
+      fs.readdirSync(DictionaryPath).forEach(file => {
+          let fileJson = yaml.load(DictionaryPath + '/' + file);
+          // Do not include annotation.yaml, metaschema.yaml
+          // Only include node in the gdc_searchable_nodes
+          // Do not include node in category "TBD" and "data" 
+          /*
+          if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
+            && gdc_searchable_nodes.indexOf(fileJson.id) !== -1 && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
+            jsonData[file] = fileJson;
+          }
+          */
+          if (file.indexOf('_') !== 0 && file !== 'annotation.yaml' && file !== 'metaschema.yaml'  
+            && fileJson.category !== 'TBD' && fileJson.category !== 'data') {
+            jsonData[file] = fileJson;
+          }
+      });
+      result = await generateGDCData(jsonData);
+      console.log("Cached:");
+      console.log(Object.keys(result).length);
+      cache.setValue("gdc_dict_"+version, result, config.item_ttl);
+  }
+
+  return result;
+}
+
 const getGraphicalICDCDictionary = () => {
 
     let result = cache.getValue("icdc_dict");
@@ -889,6 +925,7 @@ module.exports = {
     getParentICDO,
     generateICDOHaveWords,
     getGraphicalGDCDictionary,
+    getGDCDictionaryByVersion,
     getGraphicalICDCDictionary,
     getGraphicalCTDCDictionary
 };

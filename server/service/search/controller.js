@@ -637,6 +637,139 @@ const preloadGDCDataMappings = (req, res) => {
 	});
 };
 
+const processGDCDictionaryEnumData = (prop) => {
+	const enums = prop.enum;
+	const enumsDef = prop.enumDef;
+	let result = enums.map((value) => {
+		let tmp = {};
+		tmp.n = value.replace(/(?:\r\n|\r|\n)/g, ' ');
+		if(enumsDef[tmp.n] && enumsDef[tmp.n].termDef){
+			let term = enumsDef[tmp.n].termDef;
+			if(term.source == "NCIt" && term.term_id !== ""){
+				tmp.gdc_ncit = term.term_id;
+			}
+			else{
+				tmp.gdc_ncit = "";
+			}
+		}
+		else{
+			tmp.gdc_ncit = "";
+		}
+		tmp.n = tmp.n.replace(/\s+/g,' ');
+		return tmp;
+	});
+	return result;
+};
+
+const processEVSSIPEnumData = (enums) => {
+	let result = {};
+	enums.map((entry) => {
+		let value = entry.n.replace(/\s+/g,' ');
+		result[value] = [];
+		let ncits = entry.ncit;
+		ncits.map((ncit) => {
+			result[value].push(ncit.c);
+		});
+	});
+	return result;
+};
+
+const compareWithGDCDictionary = async function(req, res){
+	const params = req.query;
+	const prop = params.p;
+	const node = params.node;
+	const category = params.category;
+	const source = params.source;
+	const uid = prop + "/" + node + "/" + category + "/" + source;
+
+	let query = {};
+	query.terms = {};
+	query.terms.id = [];
+	query.terms.id.push(uid);
+	let result = [];
+	let GDCDict = await shared.getGDCDictionaryByVersion("2.3.0");
+	elastic.query(config.index_p, query, "", null, data => {
+		if (data.hits === undefined) {
+			return handleError.error(res, data);
+		}
+		let rs = data.hits.hits;
+		if(rs.length > 0 && rs[0]._source.enum){
+			result = rs[0]._source.enum;
+		}
+		//compare GDC Dictionary values with EVS-SIP values
+		//start to compare
+		let c = {};
+		//c.result = result;
+		c.dict = GDCDict[node].properties[prop];
+		let dict_data = processGDCDictionaryEnumData(c.dict);
+		let evssip_data = processEVSSIPEnumData(result);
+		let i = 0 ,j = 0, k = 0, m = 0, n = 0, conflict = 0, ok = 0;
+		let groupedContent = {};
+		groupedContent.i = [];
+		groupedContent.j = [];
+		groupedContent.k = [];
+		groupedContent.m = [];
+		groupedContent.n = [];
+		groupedContent.conflict = [];
+		groupedContent.ok = [];
+		let content = dict_data.map((entry) => {
+			let value = entry.n;
+			if(evssip_data[value] && evssip_data[value].length > 0){
+				entry.evssip_ncit = evssip_data[value].join();
+			}
+			else if(evssip_data[value]){
+				entry.evssip_ncit = "";
+			}
+			else{
+				entry.evssip_ncit = "-1";
+			}
+
+			if(entry.gdc_ncit == ""){
+				if(entry.evssip_ncit == ""){
+					i++;
+					groupedContent.i.push(entry);
+				}
+				else if(entry.evssip_ncit == "-1"){
+					j++;
+					groupedContent.j.push(entry);
+				}
+				else{
+					k++;
+					groupedContent.k.push(entry);
+				}
+			}
+			else{
+				if(entry.evssip_ncit == ""){
+					m++;
+					groupedContent.m.push(entry);
+				}
+				else if(entry.evssip_ncit == "-1"){
+					n++;
+					groupedContent.n.push(entry);
+				}
+				else if(entry.evssip_ncit == entry.gdc_ncit){
+					ok++;
+					groupedContent.ok.push(entry);
+				}
+				else{
+					conflict++;
+					groupedContent.conflict.push(entry);
+				}
+			}
+			return entry;
+		});
+
+		console.log("GDC have value and EVSSIP have value:", i);
+		console.log("GDC have value and EVSSIP don't have anything:", j);
+		console.log("GDC have value but EVSSIP have value and ncit code:", k);
+		console.log("GDC have value and ncit code but EVSSIP only have value:", m);
+		console.log("GDC have value and ncit code but EVSSIP don't have anything:", n);
+		console.log("GDC have value and ncit code and EVSSIP have the same value and ncit code:", ok);
+		console.log("GDC have value and ncit code and EVSSIP have value and ncit code, but ncit code conflicts:", conflict);
+		res.json(groupedContent);
+	});
+}
+
 module.exports = {
 	indexing,
 	suggestion,
@@ -647,5 +780,6 @@ module.exports = {
 	getGraphicalCTDCDictionary,
 	getValuesForGraphicalView,
 	preloadNCItSynonyms,
-	preloadGDCDataMappings
+	preloadGDCDataMappings,
+	compareWithGDCDictionary
 };
