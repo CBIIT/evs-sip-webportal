@@ -80,6 +80,26 @@ const TableDiff = () => {
             <td></td>
             <td></td>
           </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Fake Value 1</td>
+            <td>C000000</td>
+            <td>Fake Value 1</td>
+            <td></td>
+            <td>GDC have value and ncit code but EVSSIP only have value</td>
+          </tr>
+          <tr>
+            <td>clinical</td>
+            <td>treatment</td>
+            <td>therapeutic_agents</td>
+            <td>Fake Value 2</td>
+            <td>C111111</td>
+            <td>Fake Value 2</td>
+            <td>C222222</td>
+            <td>Conflict</td>
+          </tr>
         </tbody>
       </Table>
     </TableContainer>
