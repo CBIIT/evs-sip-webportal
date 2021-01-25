@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import { Button, Modal, Table, Row, Col, Collapse, Badge} from 'react-bootstrap';
+import ReactPaginate from 'react-paginate';
+import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus , faSearch} from '@fortawesome/free-solid-svg-icons';
 import { apiGetGDCDataById } from '../../api';
 
 const ColRight = styled(Col)`
@@ -16,6 +17,14 @@ const TableContainer = styled.div`
 
 const MainTableContainer = styled.div`
   width: 100%;
+`;
+
+const MainTable = styled(Table)`
+  && > thead {
+    background-color: #5f5f5f;
+    color: white;
+    text-align: center;
+  }
 `;
 
 const TableStyled = styled(Table)`
@@ -34,10 +43,25 @@ const ModalStyled = styled(Modal)`
 `;
 
 const RowStyled = styled(Row)`
-  width: 30rem;
-  padding-right: -0.75rem;
-  padding-left: -0.75rem;
+  min-width: 25rem;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
 `;
+
+const ButtonStyled = styled(Button)`
+  padding: 0 .75rem;
+`;
+
+const PaginationContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const InputGroupStyled = styled(InputGroup)`
+  max-width: 23rem;
+  padding-left: 2rem;
+`
 
 const AllValuesModal = (props) => {
   const [show, setShow] = useState(false);
@@ -120,26 +144,6 @@ const AllValuesModal = (props) => {
     );
   };
 
-  // const TableICDO3 = (props) => {
-  //   return (
-  //     <TableContainer>
-  //       <TableStyled striped bordered condensed="true" hover>
-  //         <thead>
-  //           <tr>
-  //             <th>Term</th>
-  //             <th>Type</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           <TableICDOSyn synonyms={props.icdo.s}/>
-  //         </tbody>
-  //       </TableStyled>
-  //     </TableContainer>
-  //   );
-  // }
-
-
-
   const TableICDO3 = (props) => {
 
     let [isToggleOn, setIsToggleOn] = useState(false);
@@ -183,8 +187,24 @@ const AllValuesModal = (props) => {
   };
 
   const TableEnums = (props) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(15);
+
+    const handlePageClick = (data) => {
+      setCurrentPage(data.selected + 1);
+    }
+
     if (props.items !== [] && props.items[0]._source.enum !== undefined) {
-      return props.items[0]._source.enum.map((e) => {
+
+      // Logic for displaying current items
+      const indexOfLastItem = currentPage * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentItems = props.items[0]._source.enum.slice(indexOfFirstItem, indexOfLastItem);
+      const pageCount = Math.ceil(props.items[0]._source.enum.length / itemsPerPage);
+
+
+      // render table with items
+      const renderItems = currentItems.map((e) => {
         return e.ncit.map((nc, index) => {
           if(index === 0) {
             return (
@@ -217,6 +237,48 @@ const AllValuesModal = (props) => {
           }  
         });
       });
+
+      return (
+      <>
+        <MainTableContainer>
+          <MainTable bordered condensed="true">
+            <thead>
+              <tr>
+                <th>Values</th>
+                <th>ICD-O-3 Code</th>
+                <th>Mapped NCIt Code</th>
+                <th>NCIt Preferred Term</th>
+              </tr>
+            </thead>
+            <tbody>
+              {renderItems}
+            </tbody>
+          </MainTable>
+        </MainTableContainer>
+        <PaginationContainer>
+          <ReactPaginate
+            previousLabel={'previous'}
+            prevClassName={'page-item'}
+            previousLinkClassName={'page-link'}
+            nextLabel={'next'}
+            nextClassName={'page-item'}
+            nextLinkClassName={'page-link'}
+            breakLabel={'...'}
+            breakClassName={'page-item break-me'}
+            breakLinkClassName={'page-link'}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            pageClassName={'page-item'}
+            pageLinkClassName={'page-link'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'active'}
+          />
+        </PaginationContainer>
+      </>
+      )
     }
     return (null);
   };
@@ -241,9 +303,10 @@ const AllValuesModal = (props) => {
 
   return (
     <>
-      <Button variant="link" onClick={handleShow}>
+      <ButtonStyled variant="link" onClick={handleShow}>
         See All Values
-      </Button>
+      </ButtonStyled>
+
       <ModalStyled
         show={show} 
         onHide={handleClose}
@@ -254,23 +317,22 @@ const AllValuesModal = (props) => {
             <TitleModal items={items}/>
             <TotalLabel items={items}/>  
           </Modal.Title>
+    
+          <InputGroupStyled>
+            <InputGroup.Prepend>
+              <InputGroup.Text id="search-values-input">
+                <FontAwesomeIcon icon={faSearch}/>
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              placeholder="Type at least 3 characters"
+              aria-label="Search"
+              aria-describedby="Search"
+            />
+          </InputGroupStyled>
         </Modal.Header>
         <Modal.Body>
-          <MainTableContainer>
-            <Table bordered condensed="true">
-              <thead>
-                <tr>
-                  <th>Values</th>
-                  <th>ICD-O-3 Code</th>
-                  <th>Mapped NCIt Code</th>
-                  <th>NCIt Preferred Term</th>
-                </tr>
-              </thead>
-              <tbody>
-                <TableEnums items={items}/>
-              </tbody>
-            </Table>
-          </MainTableContainer>
+          <TableEnums items={items}/>
         </Modal.Body>
       </ModalStyled>
     </>

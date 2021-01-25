@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import { Button, Modal} from 'react-bootstrap';
 import { apiGetGDCDataById } from '../../api';
 // import { getAllSyn } from '../../../shared';
 
+const ButtonStyled = styled(Button)`
+  padding: 0 .75rem;
+`;
 
 const ToCompareModal = (props) => {
   const [show, setShow] = useState(false);
@@ -34,9 +38,9 @@ const ToCompareModal = (props) => {
 
   return (
     <>
-      <Button variant="link" onClick={handleShow}>
+      <ButtonStyled variant="link" onClick={handleShow}>
         Compare with User List
-      </Button>
+      </ButtonStyled>
 
       <Modal
         size="lg"
