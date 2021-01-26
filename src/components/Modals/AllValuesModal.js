@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus , faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus , faSearch } from '@fortawesome/free-solid-svg-icons';
 import { apiGetGDCDataById } from '../../api';
 
 const ColRight = styled(Col)`
@@ -61,7 +61,7 @@ const PaginationContainer = styled.div`
 const InputGroupStyled = styled(InputGroup)`
   max-width: 23rem;
   padding-left: 2rem;
-`
+`;
 
 const AllValuesModal = (props) => {
   const [show, setShow] = useState(false);
@@ -257,10 +257,10 @@ const AllValuesModal = (props) => {
         </MainTableContainer>
         <PaginationContainer>
           <ReactPaginate
-            previousLabel={'previous'}
+            previousLabel={'«'}
             prevClassName={'page-item'}
             previousLinkClassName={'page-link'}
-            nextLabel={'next'}
+            nextLabel={'»'}
             nextClassName={'page-item'}
             nextLinkClassName={'page-link'}
             breakLabel={'...'}
@@ -317,7 +317,6 @@ const AllValuesModal = (props) => {
             <TitleModal items={items}/>
             <TotalLabel items={items}/>  
           </Modal.Title>
-    
           <InputGroupStyled>
             <InputGroup.Prepend>
               <InputGroup.Text id="search-values-input">
