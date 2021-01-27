@@ -6,25 +6,8 @@ const FornStyled = styled(Form)`
   margin-bottom: 3rem;
 `;
 
-const FormDiff = () => {
+const FormDiff = (props) => {
   return <FornStyled>
-    {/* <Form.Group>
-      <Form.Label>
-        Select Excel File <Button style={{padding: "0 .75rem"}} variant="link" type="button">
-          Get Excel Template
-        </Button>
-      </Form.Label>
-      <Form.File/>
-    </Form.Group> */}
-
-    {/* <Form.Group>
-      <Form.Label>Choose Source</Form.Label>
-      <Form.Control as="select" defaultValue="gdc">
-      <option value="gdc">GDC</option>
-        <option value="icdc">ICDC</option>
-        <option value="ctdc">CTDC</option>
-      </Form.Control>
-    </Form.Group> */}
     <Form.Group>
       <Form.Label>Source Branch from GDC Dictionary</Form.Label>
       <Form.Control as="select">
@@ -33,7 +16,7 @@ const FormDiff = () => {
         <option value="2.1.0">Thidwick 2.1.0</option>
       </Form.Control>
     </Form.Group>
-    <Button variant="primary" type="submit">
+    <Button variant="primary"onClick={props.reportTrigger} >
       Compare
     </Button>
   </FornStyled>
