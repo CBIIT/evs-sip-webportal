@@ -78,19 +78,14 @@ const ToCompareModal = (props) => {
     });
   };
 
-  // const TableEnums = (props) => {
-  //   if (props.items !== [] && props.items[0]._source.enum !== undefined) {
-  //     return props.items[0]._source.enum.map((e, index) =>
-  //       <tr key={index}>
-  //         <td>{e.n}</td>
-  //         <td></td>
-  //         <td></td>
-  //         <td></td>
-  //       </tr>
-  //     );
-  //   }
-  //   return (null);
-  // };
+  const TableEnums = (props) => {
+    if (props.items !== [] && props.items[0]._source.enum !== undefined) {
+      return props.items[0]._source.enum.map((e, index) =>
+        <div key={index}>{e.n}</div>
+      );
+    }
+    return (null);
+  };
 
 
   // const TitleModal = (props) => {
@@ -145,7 +140,7 @@ const ToCompareModal = (props) => {
                 </CompareFormLeft>
                 <CompareFormDivider/>
                 <CompareFormRight>
-                  {JSON.stringify(items)}
+                  <TableEnums items={items}/>
                 </CompareFormRight>
               </CompareFormContainer>
             </Col>
