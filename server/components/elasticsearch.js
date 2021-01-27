@@ -1059,6 +1059,55 @@ const query = (index, dsl, source_excludes, highlight, next) => {
 
 exports.query = query;
 
+const query_all = async function(index, dsl, source_excludes, highlight) {
+  var body = {
+    size: 10000,
+    from: 0
+  };
+  body.query = dsl;
+  if (highlight) {
+    body.highlight = highlight;
+  }
+  /*
+  body.sort = [{
+    "category": "asc"
+  }, {
+    "node": "asc"
+  }];
+  */
+  
+  if(source_excludes == ""){
+    /*
+    esClient.search({index: index, body: body}, (err, data) => {
+      if (err) {
+        logger.error(err);
+        next(err);
+      } else {
+        next(data);
+      }
+    });
+    */
+    const result = await esClient.search({index: index, body: body});
+    return result;
+  }
+  else{
+    /*
+    esClient.search({index: index, "_source_excludes": source_excludes, body: body}, (err, data) => {
+      if (err) {
+        logger.error(err);
+        next(err);
+      } else {
+        next(data);
+      }
+    });
+    */
+   const result = await esClient.search({index: index, "_source_excludes": source_excludes, body: body});
+   return result;
+  }
+}
+
+exports.query_all = query_all;
+
 const suggest = (index, suggest, next) => {
   let body = {};
   body.suggest = suggest;
