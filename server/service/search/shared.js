@@ -1,4 +1,5 @@
 const cache = require('../../components/cache');
+const elastic = require('../../components/elasticsearch');
 const config = require('../../config');
 const fs = require('fs');
 const path = require('path');
@@ -910,6 +911,177 @@ const getGraphicalCTDCDictionary = () => {
     return result;
 }
 
+const processGDCDictionaryEnumData = (prop) => {
+	const enums = prop.enum;
+	const enumsDef = prop.enumDef;
+	let result = enums ? enums.map((value) => {
+		let tmp = {};
+		tmp.n = value.replace(/(?:\r\n|\r|\n)/g, ' ');
+		if(enumsDef && enumsDef[tmp.n] && enumsDef[tmp.n].termDef){
+			let term = enumsDef[tmp.n].termDef;
+			if(term.source == "NCIt" && term.term_id !== ""){
+				tmp.gdc_ncit = term.term_id;
+			}
+			else{
+				tmp.gdc_ncit = "";
+			}
+		}
+		else{
+			tmp.gdc_ncit = "";
+		}
+		tmp.n = tmp.n.replace(/\s+/g,' ');
+		return tmp;
+	}) : [];
+	return result;
+};
+
+const processEVSSIPEnumData = (enums) => {
+	let result = {};
+	if(enums) {
+		enums.map((entry) => {
+			let value = entry.n.replace(/\s+/g,' ');
+			result[value] = [];
+			let ncits = entry.ncit;
+			ncits.map((ncit) => {
+				result[value].push(ncit.c);
+			});
+		});
+	}
+	return result;
+};
+
+function compareValues(v_gdc, v_evssip, prop, node, category){
+	let dict_data = processGDCDictionaryEnumData(v_gdc);
+	let evssip_data = processEVSSIPEnumData(v_evssip);
+	let i = 0 ,j = 0, k = 0, m = 0, n = 0, conflict = 0, ok = 0;
+	let groupedContent = {};
+	groupedContent.i = [];
+	groupedContent.j = [];
+	groupedContent.k = [];
+	groupedContent.m = [];
+	groupedContent.n = [];
+	groupedContent.conflict = [];
+	groupedContent.ok = [];
+	let result = [];
+	dict_data.map((entry) => {
+		let tmp = {};
+		tmp.p = prop;
+		tmp.n = node;
+		tmp.c = category;
+		tmp.v_1 = entry.n;
+		tmp.n_1 = entry.gdc_ncit;
+		tmp.v_2 = "";
+		tmp.n_2 = "";
+		let value = tmp.v_1;
+		if(evssip_data[value] && evssip_data[value].length > 0){
+			tmp.v_2 = value;
+			tmp.n_2 = evssip_data[value].join();
+			//entry.evssip_ncit = evssip_data[value].join();
+		}
+		else if(evssip_data[value]){
+			tmp.v_2 = value;
+			tmp.n_2 = "";
+			//entry.evssip_ncit = "";
+		}
+		else{
+			tmp.v_2 = "";
+			tmp.n_2 = "";
+		}
+
+		result.push(tmp);
+	});
+	return result;
+}
+
+const getCompareResult = async function(){
+	let result = cache.getValue("compareWith_2.3.0");
+  if(result == undefined){
+    let query = {};
+		query.terms = {};
+		query.terms.source = [];
+		query.terms.source.push("gdc");
+		let result = [];
+		let GDCDict = await getGDCDictionaryByVersion("2.3.0");
+		let data = await elastic.query_all(config.index_p, query, "", null);
+		if (data.hits === undefined) {
+			return handleError.error(res, data);
+		}
+		let rs = data.hits.hits;
+		let local_data = {};
+		rs.map((entry) => {
+			let dt = entry._source;
+			local_data[dt.id] = dt.enum ? dt.enum : [];
+		});
+		let mappings = [];
+		for(let node in GDCDict){
+			let props = GDCDict[node].properties;
+			let category = GDCDict[node].category;
+			if(props == undefined) continue;
+			//compare
+			for(let prop in props){
+				let uid = prop + '/' + node + '/' + category + "/gdc";
+				let v_gdc = props[prop];
+				let v_evssip = local_data[uid];
+				let mapping = compareValues(v_gdc, v_evssip, prop, node, category);
+				mappings = mappings.concat(mapping);
+			}
+		}
+		//console.log(sizeof(mappings));
+    cache.setValue("compareWith_2.3.0", mappings, config.item_ttl/3);
+		return mappings;
+	}
+	else{
+		return result;
+	}
+}
+
+const getCompareResult_unmapped = async function() {
+  let result = cache.getValue("compareWith_2.3.0_unmapped");
+  if(result == undefined){
+    const all_mappings = await getCompareResult();
+    const unmapped = all_mappings.filter((mapping) => {
+      return (mapping.n_1 == "" && mapping.n_2 == "" ) || 
+             (mapping.n_1 != "" && mapping.n_2 == "" );
+    });
+    cache.setValue("compareWith_2.3.0_unmapped", unmapped, config.item_ttl/3);
+		return unmapped;
+  }
+  else{
+    return result;
+  }
+}
+
+const getCompareResult_mapped = async function() {
+  let result = cache.getValue("compareWith_2.3.0_mapped");
+  if(result == undefined){
+    const all_mappings = await getCompareResult();
+    const mapped = all_mappings.filter((mapping) => {
+      return (mapping.n_1 == "" && mapping.n_2 != "" ) || 
+             (mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_1 == mapping.n_2);
+    });
+    cache.setValue("compareWith_2.3.0_mapped", mapped, config.item_ttl/3);
+		return mapped;
+  }
+  else{
+    return result;
+  }
+}
+
+const getCompareResult_conflict = async function() {
+  let result = cache.getValue("compareWith_2.3.0_conflict");
+  if(result == undefined){
+    const all_mappings = await getCompareResult();
+    const conflict = all_mappings.filter((mapping) => {
+      return mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_1 != mapping.n_2;
+    });
+    cache.setValue("compareWith_2.3.0_conflict", conflict, config.item_ttl/3);
+		return conflict;
+  }
+  else{
+    return result;
+  }
+}
+
 module.exports = {
     generateHighlight,
     generateQuery,
@@ -927,5 +1099,9 @@ module.exports = {
     getGraphicalGDCDictionary,
     getGDCDictionaryByVersion,
     getGraphicalICDCDictionary,
-    getGraphicalCTDCDictionary
+    getGraphicalCTDCDictionary,
+    getCompareResult,
+    getCompareResult_unmapped,
+    getCompareResult_mapped,
+    getCompareResult_conflict
 };
