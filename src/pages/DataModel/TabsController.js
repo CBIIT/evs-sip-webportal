@@ -12,6 +12,7 @@ const TabNavsCol = styled(Col)`
 `;
 
 const NavSpan = styled.span`
+  width: 15rem;
   inline-size: 15rem;
 `;
 
@@ -41,6 +42,7 @@ const NavLinkStyled = styled(Nav.Link)`
   }
 
   &&.active > ${NavSpan} {
+    width: 20rem;
     inline-size: 20rem;
   }
 

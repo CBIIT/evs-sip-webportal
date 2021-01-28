@@ -48,7 +48,6 @@ const MenuLi = styled.li`
     color: var(--white);
     font-size: 0.75rem;
   }
-
 `;
 
 const Hr = styled.hr`
@@ -86,7 +85,7 @@ const Footer = () => {
         <Menu>
           <Row>
             <Col xs={5}>
-              <Link to="/"><Logo src={logo} alt="logo-footer" /></Link>
+              <a href="https://www.cancer.gov/" target="_blank" rel="noopener noreferrer"><Logo src={logo} alt="logo-footer" /></a>
             </Col>
             <Col xs={7}>
               <Row>

@@ -61,7 +61,7 @@
 }
 
 .values-row{
-  background-color:#4a4a4a80;
+  background-color:#a5a5a5;
 }
 
 .data-dictionary-property-table__required {
@@ -100,6 +100,7 @@
   height: 30px;
   padding: unset;
   font-weight: normal;
+  font-size: 14px;
   border: none;
   background-color: #1B6BEE;
 }

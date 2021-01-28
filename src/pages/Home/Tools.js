@@ -41,9 +41,40 @@ const FourToolsContainer  = styled.div`
   flex-wrap: wrap;
 `;
 
+const LinkContainer = styled.div`
+  display: block;
+  width: 100%;
+`;
+
+const ToolBoxLink = styled(Link)`
+  display: block;
+  line-height: 2rem;
+  font-family: 'Raleway-ExtraBold', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.0625rem;
+`;
+
 const ToolBox = styled.div`
   width: 17rem;
   margin: 0.8rem 1rem;
+
+  && ${LinkContainer} ${ToolBoxLink} {
+    background-color: var(--toolbox-link);
+    color: var(--white);
+    border-radius: 0 0 1rem 1rem;
+    border: var(--toolbox-link) 0.125rem solid;
+    font-size: 0.6875rem;
+    padding: 0;
+  }
+
+  && ${LinkContainer} ${ToolBoxLink}:hover,
+  && ${LinkContainer} ${ToolBoxLink}:focus {
+    background-color: var(--toolbox-link-select);
+    border: var(--toolbox-link-select) 0.125rem solid;
+    color: #b9fee6;
+    text-decoration: underline;
+  }
 `;
 
 const ToolBoxContainer = styled.div`
@@ -60,55 +91,24 @@ const ToolBoxImg = styled.img`
   display: block;
 `;
 
-
 const ToolBoxTitleContainer = styled.div`
   height: 2rem;
   display: flex;
   align-items: center;
 `;
 
-const ToolBoxTitle = styled.span`
+const ToolBoxTitle = styled.strong`
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  font-weight: bold;
   color: var(--toolbox-title);
   text-transform: uppercase;
+  width: 8rem;
   inline-size: 8rem;
   margin: auto;
   text-align: center;
   line-height: 1rem;
   letter-spacing: 0.03125rem;
 `;
-const ToolBoxLink = styled(Link)`
-  width: 100%;
-  line-height: 2rem;
-  font-family: 'Raleway-ExtraBold', sans-serif;
-  background-color: var(--toolbox-link);
-  color: var(--white);
-  text-transform: uppercase;
-  display: block;
-  border-radius: 0 0 1rem 1rem;
-  border: var(--toolbox-link) 0.125rem solid;
-  font-size: 0.6875rem;
-  text-align: center;
-  letter-spacing: 0.0625rem;
-
-  &&:hover,
-  &&:visited,
-  &&:link,
-  &&:active {
-    text-decoration: none;
-  }
-
-  &&:hover,
-  &&:focus {
-    background-color: var(--toolbox-link-select);
-    border: var(--toolbox-link-select) 0.125rem solid;
-    color: var(--white);
-    outline: none;
-  }
-
-`; 
 
 const ToolTitleContainer = styled.div`
   height: 100%;
@@ -119,6 +119,7 @@ const ToolTitleContainer = styled.div`
 
 const ToolTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
+  width: 10rem;
   inline-size: 10rem;
   font-size: 2.25rem;
   line-height: 2.8rem;
@@ -139,16 +140,20 @@ const Tools = () => {
                     <ToolBoxTitle>Data Commons</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/datamodel" aria-label="Read More about Data Commons">Read More</ToolBoxLink>
+                <LinkContainer>
+                  <ToolBoxLink className="btn" to="/datamodel" aria-label="Read More About Data Commons" title="Read More About Data Commons">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
                   <ToolBoxImg alt="semantic" src={SemanticImg}></ToolBoxImg>
                   <ToolBoxTitleContainer>
-                    <ToolBoxTitle>Semantic Integraction</ToolBoxTitle>
+                    <ToolBoxTitle>Semantic Integration</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Semantic Integraction">Read More</ToolBoxLink>
+                <LinkContainer>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Semantic Integration" title="Read More About Semantic Integration">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -157,7 +162,9 @@ const Tools = () => {
                     <ToolBoxTitle>Tools</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Tools">Read More</ToolBoxLink>
+                <LinkContainer>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Tools" title="Read More About Tools">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
               <ToolBox>
                 <ToolBoxContainer>
@@ -166,7 +173,9 @@ const Tools = () => {
                     <ToolBoxTitle>Support</ToolBoxTitle>
                   </ToolBoxTitleContainer>
                 </ToolBoxContainer>
-                <ToolBoxLink to="/about" aria-label="Read More about Support">Read More</ToolBoxLink>
+                <LinkContainer>
+                  <ToolBoxLink className="btn" to="/about" aria-label="Read More About Support" title="Read More About Support">Read More</ToolBoxLink>
+                </LinkContainer>
               </ToolBox>
             </FourToolsContainer>
           </FourTools>

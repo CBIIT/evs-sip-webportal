@@ -4,10 +4,7 @@ import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortSynonyms } from '../../shared';
-
-
-// import GDCTerms from './dialogs/GDCTerms';
+import { getHighlightObj, sortSynonyms, browserDetection } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -59,12 +56,20 @@ const TableColRight = styled(Col)`
   border-left: 1px solid #BBC5CD;
 `;
 
+const TableColFlex = styled(Col)`
+  display: flex;
+`;
+
 const TableRow = styled(Row)`
-  height: 100%;
+  height: auto;
+  flex-basis: auto;
+  flex-grow: 1;
 `;
 
 const TableRowValues = styled(Row)`
   height: 100%;
+  flex-basis: auto;
+  flex-grow: 1;
   border-bottom: 1px solid #BBC5CD;
 `;
 
@@ -80,6 +85,7 @@ const TableUl = styled.ul`
 const TableLi = styled.li`
   position: relative;
   word-wrap: break-word;
+  width: 10rem;
 `;
 
 const SpanIcon = styled.span`
@@ -91,10 +97,6 @@ const SpanIcon = styled.span`
   color: var(--checkbox-green);
   transform: rotate(45deg);
 `;
-
-// const TableLiBreak = styled(TableLi)`
-//   word-wrap: break-word;
-// `;
 
 const ColRight = styled(Col)`
   text-align: right;
@@ -120,10 +122,6 @@ const IndicatorContent = styled.div`
   right: 0;
   transform: translateY(-50%);
 `;
-
-// const IndicatorTerm = styled.span`
-//   color: #2a72a4;
-// `;
 
 const DivCenter = styled.div`
   text-align: center;
@@ -154,15 +152,7 @@ const RowCenter = styled(Row)`
 `;
 
 const CrossValuesTable = (props) => {
-  // let termTypeNotAssigned = false;
-  // let valuesCount = 0;
-
   let items = JSON.parse(JSON.stringify(props.values));
-
- // console.log(items);
-
-  //let allDataOptions  = (props.dataOptions['ctdc'] === false &&  props.dataOptions['gdc'] === false && props.dataOptions['icdc'] === false) ? true : false;
-
   let values = [];
 
   let ncitMatchObj = {};
@@ -653,7 +643,7 @@ const CrossValuesTable = (props) => {
     };
 
     return (
-      <Col sx={12}>
+      <TableColFlex data-class="TableColFlex" sx={12}>
         <TableRow>
           <TableCol data-class="TableCol" xs={3}>
             {props.item.category}
@@ -709,7 +699,7 @@ const CrossValuesTable = (props) => {
             }
           </TableColRight>
         </TableRow>
-      </Col>
+      </TableColFlex>
     )
   };
 
@@ -801,7 +791,7 @@ const CrossValuesTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          {(crossValues.length < 5) 
+          {(crossValues.length < 5 || browserDetection.isEdge)
           ? 
           <Col xs={12}>
             {crossValues.map((cross, index) => 

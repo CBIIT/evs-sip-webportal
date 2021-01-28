@@ -3,6 +3,7 @@ const handleError = require('../../components/handleError');
 const logger = require('../../components/logger');
 const cache = require('../../components/cache');
 const config = require('../../config');
+const readXlsxFile = require('read-excel-file/node');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -519,6 +520,53 @@ const preloadNCItSynonyms = (req, res) => {
 	
 };
 
+const preloadGDCDataMappings = (req, res) => {
+	let file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'GDC_Data_Mappings.xlsx');
+	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_values_updated.js');
+	console.log(file_path);
+	let mappings = {};
+	readXlsxFile(file_path).then((rows) => {
+		  //console.log(rows[0]);
+		  //console.log(rows[1]);
+		  //console.log(rows[2]);
+		  rows.forEach((item, idx) => {
+		  	if(idx > 0){
+		  		console.log(item[2] + ":" + idx);
+		  		let prop = item[0] + '.' + item[1] + '.' + item[2];
+		  		if(! (prop in mappings)){
+		  			mappings[prop] = [];
+		  		}
+		  		//"nm":"Neoplasm, benign","i_c":"8000/0","n_c":"C3677","term_type":"PT"
+		  		if(item[3] != null){
+		  			let tmp = {};
+		  			tmp.nm = item[3];
+		  			if(item[5] == null){
+		  				tmp.n_c = "";
+		  			}
+		  			else{
+		  				tmp.n_c = item[5].split('|');
+		  			}
+		  			tmp.i_c = item[6] == null ? "" : item[6];
+		  			if(item[7] == null){
+		  				tmp.i_c_s = "";
+		  			}
+		  			else{
+		  				tmp.i_c_s = item[7].split('|');
+		  			}
+		  			tmp.term_type = item[8] == null ? "" : item[8];
+		  			mappings[prop].push(tmp);
+		  		}
+		  		
+		  	}
+		  });
+
+		fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
+			if (err) return logger.error(err);
+		});
+	  	res.json({"result": "success"});
+	});
+};
+
 module.exports = {
 	indexing,
 	suggestion,
@@ -528,5 +576,6 @@ module.exports = {
 	getGraphicalICDCDictionary,
 	getGraphicalCTDCDictionary,
 	getValuesForGraphicalView,
-	preloadNCItSynonyms
+	preloadNCItSynonyms,
+	preloadGDCDataMappings
 };

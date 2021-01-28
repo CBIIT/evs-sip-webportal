@@ -275,6 +275,7 @@ const preProcess = (searchable_nodes, data) => {
       for (let key in p) {
         if (p[key].deprecated_enum && p[key].enum) {
           p[key].new_enum = _.differenceWith(p[key].enum, p[key].deprecated_enum, _.isEqual);
+          console.log(p[key].new_enum);
         }
       }
     }
@@ -349,17 +350,34 @@ const getICDOMapping = () => {
   for(let key in data){
     let obj = data[key];
     obj.forEach(item => {
-      if(item.nm != item.i_c){
+      if(item.i_c != ""){
         if(!(item.i_c in result)){
           result[item.i_c] = {};
-          result[item.i_c].s = [];
+          result[item.i_c].syn = {};
         }
-        let entry = {n: item.nm, t: item.term_type == "" ? '*' : item.term_type};
-        let idx = result[item.i_c].s.map(function(element){
-          return element.n + "&" + element.t;
-        }).indexOf(entry.n + "&" + entry.t);
-        if(idx == -1){
-          result[item.i_c].s.push(entry);
+        let ss = item.i_c_s;
+
+        if (Array.isArray(ss)) {
+          ss.forEach(s => {
+            let tmp = s.trim();
+            if(tmp in result[item.i_c].syn){
+              result[item.i_c].syn[tmp] = item.term_type == "" ? result[item.i_c].syn[tmp] : item.term_type;
+            }
+            else{
+              result[item.i_c].syn[tmp] = item.term_type;
+            }
+          });
+        } 
+        else {
+          if(ss != ""){
+            let tmp = ss.trim();
+            if(tmp in result[item.i_c].syn){
+              result[item.i_c].syn[tmp] = item.term_type == "" ? result[item.i_c].syn[tmp] : item.term_type;
+            }
+            else{
+              result[item.i_c].syn[tmp] = item.term_type;
+            }
+          }
         }
       }
     });
@@ -482,9 +500,14 @@ const generateGDCData = async function(schema) {
     delete value['previous_version_downloadable'];
     delete value['validators'];
     delete value['uniqueKeys'];
-
+    if(value['properties']){
+      delete value['properties']['$ref'];
+    }
+    
     dict[key.slice(0, -5)] = value;
   }
+
+  //console.log(dict);
   
   // Recursivly fix references
   dict = findObjectWithRef(dict, (refObj, rootKey)=> { // This halts for sub objects./...
@@ -556,12 +579,15 @@ const generateGDCData = async function(schema) {
           //remove any reference properties
           delete obj.properties[p];
         }
+        /*
         else{
           if (obj.properties[p].deprecated_enum) {
             obj.properties[p].enum = _.differenceWith(obj.properties[p].enum, obj.properties[p].deprecated_enum, _.isEqual);
+            console.log(obj.properties[p].enum);
           }
           delete obj.properties[p].deprecated_enum;
         }
+        */
       }
       obj.properties = excludeSystemProperties(obj);
     }

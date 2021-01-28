@@ -23,7 +23,7 @@ const ContentBoxTitle = styled.h2`
   text-transform: uppercase;
 
   &&::after {
-    content: " ";
+    content: "";
     border: 1px solid var(--black);
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -61,7 +61,7 @@ const Description = () => {
         Institute (NCI) <a href="https://evs.nci.nih.gov/" target="_blank" rel="noopener noreferrer">Enterprise Vocabulary Service (EVS)</a>. 
         The EVS-SIP permits search and retrieval of terms contained in or 
         across the data dictionaries or data models of repositories participating 
-        in the Cancer Research Data Commons (CDRC) and beyond.
+        in the Cancer Research Data Commons (CRDC) and beyond.
       </p>
       <p>
         The purpose of the EVS-SIP is the identification of semantically similar 

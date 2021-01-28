@@ -66,6 +66,7 @@ const GraphTitleContainer = styled.div`
 
 const GraphTitle = styled.h2`
   font-family: 'Raleway-Medium', sans-serif;
+  width: 22rem;
   inline-size: 22rem;
   font-size: 1.875rem;
   color: #fff;
@@ -76,6 +77,7 @@ const GraphTitle = styled.h2`
 
 const GraphParagraph = styled.p`
   font-family: 'Inter', sans-serif;
+  width: 22rem;
   inline-size: 22rem;
   font-size: 1.0625rem;
   color: #b9fee6;

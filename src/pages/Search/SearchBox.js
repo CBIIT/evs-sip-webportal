@@ -42,6 +42,10 @@ const SearchFormControl = styled(Form.Control)`
     font-size: 1.5625rem;
     color: #3A9CF7;
   }
+
+  &&::-ms-input-placeholder {
+    transform: scale(0.85) translateX(-4rem);
+  }
 `;
 
 const SearchButton = styled(Button)`
@@ -93,10 +97,9 @@ const SearchOptions = styled.div`
 `;
 
 const SearchOptionsLabel = styled.label`
-  font-family: 'Lato-Regular',sans-serif;
+  font-family: 'Lato-Bold',sans-serif;
   color: #1162E9;
   font-size: 0.875rem;
-  font-weight: bold;
   margin-bottom: 0.7rem;
 `;
 
@@ -110,7 +113,7 @@ const FormGroupStyled = styled(Form.Group)`
 
 const FormGroupRadio = styled(Form.Group)`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: flex-start;
   margin-bottom: 0;
   width: 100%;
@@ -137,12 +140,12 @@ const CheckboxIcon = styled(FontAwesomeIcon)`
 `;
 
 const CheckboxLabel = styled.label`
-  font-family: 'Lato-Regular', sans-serif;
+  font-family: 'Lato-Bold', sans-serif;
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
+  width: 11rem;
   inline-size: 11rem;
-  font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 `;
@@ -178,11 +181,10 @@ const CheckboxInput = styled.input`
 `;
 
 const RadioLabel = styled.label`
-  font-family: 'Lato-Regular', sans-serif;
+  font-family: 'Lato-Bold', sans-serif;
   position: relative;
   font-size: 0.875rem;
   color: #1C1C1C;
-  font-weight: bold;
   margin-bottom: 0;
   cursor: pointer;
 `;
@@ -239,6 +241,7 @@ const SelectBtn = styled(Button)`
   background-color: #F5F5F5;
   border-radius: 2em;
   text-transform: uppercase;
+  width: 6rem;
   inline-size: 6rem;
   font-size: 0.625rem;
   color: #154C5E;
