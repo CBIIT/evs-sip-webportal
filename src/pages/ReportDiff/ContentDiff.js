@@ -56,10 +56,7 @@ const TitleContainer = styled.div`
 `;
 
 const ContentDiff = () => {
-
   let [resultState, setResultState] = useState({});
-  // let [loadingState, setLoadingState] = useState(false);
-  // let [errorState, setErrorState] = useState(false);
   let [typeState, setTypeState] = useState('all');
   let [pageState, setPageState] = useState(1);
   let [pageSizeState, setPageSizeState] = useState(25);
