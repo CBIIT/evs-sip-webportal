@@ -60,6 +60,7 @@ const ContentDiff = () => {
   let [typeState, setTypeState] = useState('all');
   let [pageState, setPageState] = useState(1);
   let [pageSizeState, setPageSizeState] = useState(25);
+  let [totalState, setTotalState] = useState(0);
   let [pageCountState, setPageCountState] = useState(0);
 
   const reportTrigger = () => {
@@ -68,6 +69,7 @@ const ContentDiff = () => {
       setResultState(result.data);
       setPageState(result.pageInfo.page);
       setPageSizeState(result.pageInfo.pageSize);
+      setTotalState(result.pageInfo.total);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
     });
   };
@@ -119,7 +121,7 @@ const ContentDiff = () => {
             <Button variant="primary">Download Result</Button>
           </TitleContainer>
           <TabController selectTab={handleSelectTab} type={typeState} result={resultState}/>
-          <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState}/>
+          <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState} total={totalState}/>
         </>
       }
     </ContentBoxText>

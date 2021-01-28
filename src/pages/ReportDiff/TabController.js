@@ -16,15 +16,16 @@ const NavLinkStyled = styled(Nav.Link)`
   text-align: center;
   color: #042A68;
   padding: 0.7rem 2rem;
-  margin: auto;
   width: 10rem;
   inline-size: 10rem; 
+  background-color: #EBEBEB;
+  padding: .7rem 2rem;
+  margin-right: 10px;
 
   &&.active {
     color: #fff;
     background-color: #535F74;
     padding: 0.7rem 2rem;
-    margin: auto;
   }
 `;
 
@@ -34,7 +35,6 @@ const NavStyled = styled(Nav)`
   && ${NavLinkStyled} {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
-    border-right: 1px solid #042A68;
   }
 
   && ${NavLinkStyled}.active {
