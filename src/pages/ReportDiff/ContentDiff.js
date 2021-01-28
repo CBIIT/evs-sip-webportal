@@ -89,6 +89,19 @@ const ContentDiff = () => {
     .then(result => {
       setResultState(result.data);
       setPageState(result.pageInfo.page);
+      // setPageSizeState(result.pageInfo.pageSize);
+      // setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+    });
+  }
+
+  const handlepageSizeChange = (event) => {
+    //setPageSizeState(event.target.value);
+    const pageSize = event.target.value
+
+    compareAllWithGDCDictionary(typeState, pageState, pageSize)
+    .then(result => {
+      setResultState(result.data);
+      // setPageState(result.pageInfo.page);
       setPageSizeState(result.pageInfo.pageSize);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
     });
@@ -106,7 +119,7 @@ const ContentDiff = () => {
             <Button variant="primary">Download Result</Button>
           </TitleContainer>
           <TabController selectTab={handleSelectTab} type={typeState} result={resultState}/>
-          <PaginationController pageClick={handlePageClick} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState}/>
+          <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState}/>
         </>
       }
     </ContentBoxText>

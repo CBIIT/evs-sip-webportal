@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
+import { Form } from 'react-bootstrap';
 
 const PaginationContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const TableDiff = (props) => {
-
   return (<PaginationContainer>
     <ReactPaginate
       previousLabel={'«'}
@@ -31,6 +31,12 @@ const TableDiff = (props) => {
       subContainerClassName={'pages pagination'}
       activeClassName={'active'}
     />
+    <Form.Control style={{width: '12rem'}} as="select" value={props.pageSize} onChange={props.pageSizeChange}>
+      <option value="10">10</option>
+      <option value="15">20</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+    </Form.Control>
   </PaginationContainer>);
 }
 
