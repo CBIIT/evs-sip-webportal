@@ -3,8 +3,13 @@ import styled from 'styled-components';
 import { Button, Modal, Container, Row, Col, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { searchFilter } from '../../shared';
 import { apiGetGDCDataById } from '../../api';
-// import { getAllSyn } from '../../../shared';
+
+
+const ModalBodyStyled = styled(Modal.Body)`
+  padding: 0 0 1rem 0;
+`;
 
 const ButtonStyled = styled(Button)`
   padding: 0 .75rem;
@@ -17,14 +22,14 @@ const ModalStyled = styled(Modal)`
 `;
 
 const TableThead = styled(Row)`
-  background: #f1f1f1;
+  background: #535F74;
 `;
 
 const TableTh = styled.div`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1rem;
   text-align: center;
-  color: #555;
+  color: var(--white);
   padding-top: 0.625rem;
   padding-bottom: 0.625rem;
 `;
@@ -32,6 +37,7 @@ const TableTh = styled.div`
 const CompareFormContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-top: 1rem;
 `;
 
 const CompareFormLeft = styled.div`
@@ -67,33 +73,41 @@ const InputGroupStyled = styled(InputGroup)`
 
 const ToCompareModal = (props) => {
   const [show, setShow] = useState(false);
+  const [data, setData] = useState([]);
   const [items, setItems] = useState([]);
+  //const [keyword, setKeyword] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
-      setItems(result);
+      setData(result);
+      if (result !== [] && result[0]._source.enum !== undefined) {
+        setItems(result[0]._source.enum);
+      }
     }).then(() => {
       setShow(true);
     });
   };
 
+  const handleSearchChange = (event) => {
+    let keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+
+    if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
+      let newItem = searchFilter(data[0]._source.enum, keyword);
+      setItems(newItem);
+    } else {
+      setItems(data[0]._source.enum);
+    }
+  };
+
   const TableEnums = (props) => {
-    if (props.items !== [] && props.items[0]._source.enum !== undefined) {
-      return props.items[0]._source.enum.map((e, index) =>
-        <div key={index}>{e.n}</div>
+    if (props.items !== undefined && props.items !== []) {
+      return props.items.map((e, index) =>
+        <div key={index} dangerouslySetInnerHTML={{ __html: e.n }}></div>
       );
     }
     return (null);
   };
-
-
-  // const TitleModal = (props) => {
-  //   if (props.items !== [] && props.items[0]._source.enum !== undefined) {
-  //     return(<>Compare Your Values</>);
-  //   }
-  //   return (null);
-  // }
 
   return (
     <>
@@ -119,10 +133,11 @@ const ToCompareModal = (props) => {
               placeholder="Type at least 3 characters"
               aria-label="Search"
               aria-describedby="Search"
+              onChange={handleSearchChange}
             />
           </InputGroupStyled>
         </Modal.Header>
-        <Modal.Body>
+        <ModalBodyStyled>
         <Container>
           <TableThead>
             <Col xs={6}>
@@ -146,7 +161,7 @@ const ToCompareModal = (props) => {
             </Col>
           </Row>
         </Container>
-        </Modal.Body>
+        </ModalBodyStyled>
       </ModalStyled>
     </>
   );

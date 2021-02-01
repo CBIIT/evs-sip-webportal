@@ -12,6 +12,7 @@ const TableContainer = styled.div`
 const TableUl = styled.ul`
   padding-left: 15px;
   list-style: none;
+  margin-bottom: 0;
 `;
 
 const TableLi = styled.li`

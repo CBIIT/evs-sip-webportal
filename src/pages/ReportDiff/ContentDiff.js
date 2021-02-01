@@ -112,7 +112,7 @@ const ContentDiff = () => {
     <ContentBoxText>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut sapien tellus. Duis sed dapibus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
       <FormDiff reportTrigger={reportTrigger}/>
-      { _.isEmpty(resultState) === false &&
+      { !_.isEmpty(resultState) &&
         <>
           <TitleContainer>
             <h2>Result</h2>

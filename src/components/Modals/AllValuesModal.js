@@ -4,7 +4,15 @@ import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus , faSearch } from '@fortawesome/free-solid-svg-icons';
+import { searchFilter } from '../../shared';
 import { apiGetGDCDataById } from '../../api';
+
+const ModalBodyStyled = styled(Modal.Body)`
+  min-height: 40rem;
+  display: flex;
+  align-content: space-between;
+  flex-wrap: wrap;
+`;
 
 const ColRight = styled(Col)`
   text-align: right;
@@ -21,9 +29,13 @@ const MainTableContainer = styled.div`
 
 const MainTable = styled(Table)`
   && > thead {
-    background-color: #5f5f5f;
+    background-color: #535F74;
     color: white;
     text-align: center;
+  }
+
+  && > thead th {
+    border: 1px solid #535F74;
   }
 `;
 
@@ -63,17 +75,46 @@ const InputGroupStyled = styled(InputGroup)`
   padding-left: 2rem;
 `;
 
+const Indicator = styled.div`
+  width: 100%;
+  padding: 3rem 0;
+  text-align: center;
+  font-size: 1.2rem;
+`;
+
+// const IndicatorContent = styled.div`
+//   text-align: center;
+//   font-size: 1.2rem;
+// `;
+
 const AllValuesModal = (props) => {
   const [show, setShow] = useState(false);
+  const [data, setData] = useState([]);
   const [items, setItems] = useState([]);
+  //const [keyword, setKeyword] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
-      setItems(result);
+      setData(result);
+      if (result !== [] && result[0]._source.enum !== undefined) {
+        setItems(result[0]._source.enum);
+      }
     }).then(() => {
       setShow(true);
     });
+  };
+
+
+  const handleSearchChange = (event) => {
+    let keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+
+    if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
+      let newItem = searchFilter(data[0]._source.enum, keyword);
+      setItems(newItem);
+    } else {
+      setItems(data[0]._source.enum);
+    }
   };
 
   const TableSynonyms = (props) => {
@@ -194,13 +235,13 @@ const AllValuesModal = (props) => {
       setCurrentPage(data.selected + 1);
     }
 
-    if (props.items !== [] && props.items[0]._source.enum !== undefined) {
+    if (props.items !== undefined && props.items !== []) {
 
       // Logic for displaying current items
       const indexOfLastItem = currentPage * itemsPerPage;
       const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-      const currentItems = props.items[0]._source.enum.slice(indexOfFirstItem, indexOfLastItem);
-      const pageCount = Math.ceil(props.items[0]._source.enum.length / itemsPerPage);
+      const currentItems = props.items.slice(indexOfFirstItem, indexOfLastItem);
+      const pageCount = Math.ceil(props.items.length / itemsPerPage);
 
 
       // render table with items
@@ -208,8 +249,8 @@ const AllValuesModal = (props) => {
         return e.ncit.map((nc, index) => {
           if(index === 0) {
             return (
-              <tr key={e.n +'-'+index}>
-                <td rowSpan={e.ncit.length}>{e.n}</td>
+              <tr key={index}>
+                <td rowSpan={e.ncit.length} dangerouslySetInnerHTML={{ __html: e.n }}></td>
                 <td rowSpan={e.ncit.length}>
                   {e.icdo !== undefined &&
                     <TableICDO3 icdo={e.icdo} />
@@ -225,7 +266,7 @@ const AllValuesModal = (props) => {
             );
           } else {
             return (
-              <tr key={e.n +'-'+index}>
+              <tr key={index}>
                 <td>
                   <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
                 </td>
@@ -285,17 +326,17 @@ const AllValuesModal = (props) => {
 
 
   const TitleModal = (props) => {
-    if (props.items !== [] && props.items[0]._source.enum !== undefined) {
-      return(<>Values from {props.items[0]._source.prop.n}</>);
+    if (props.data !== [] && props.data[0]._source.prop !== undefined) {
+      return(<>Values from {props.data[0]._source.prop.n}</>);
     }
     return (null);
   }
 
 
   const TotalLabel = (props) => {
-    if (props.items !== [] && props.items[0]._source.enum !== undefined) {
+    if (props.data !== [] && props.data[0]._source.enum !== undefined) {
       return(
-        <BadgeStyled variant="primary">{props.items[0]._source.enum.length}</BadgeStyled>
+        <BadgeStyled variant="primary">{props.data[0]._source.enum.length}</BadgeStyled>
       );
     }
     return (null);
@@ -314,8 +355,8 @@ const AllValuesModal = (props) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="all-values-modal">
-            <TitleModal items={items}/>
-            <TotalLabel items={items}/>  
+            <TitleModal data={data}/>
+            <TotalLabel data={data}/>  
           </Modal.Title>
           <InputGroupStyled>
             <InputGroup.Prepend>
@@ -327,12 +368,17 @@ const AllValuesModal = (props) => {
               placeholder="Type at least 3 characters"
               aria-label="Search"
               aria-describedby="Search"
+              onChange={handleSearchChange}
             />
           </InputGroupStyled>
         </Modal.Header>
-        <Modal.Body>
-          <TableEnums items={items}/>
-        </Modal.Body>
+        <ModalBodyStyled>
+          {(items !== [] && items.length !== 0) ? (
+            <TableEnums items={items}/>
+          ) : (
+            <Indicator>Sorry, no results found.</Indicator>
+          )}
+        </ModalBodyStyled>
       </ModalStyled>
     </>
   );
