@@ -77,7 +77,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
     p.type = entryRaw.type;
 
-    entry.enum = extend([], entryRaw.enum);
+    entry.enum = extend([], entryRaw.enum || (entryRaw.items && entryRaw.items.enum ? entryRaw.items.enum : []));
     entry.enumDef = entryRaw.enumDef? entryRaw.enumDef : [];
     entry.termDef = extend({}, entryRaw.termDef);
     entry.deprecated_enum = extend([], entryRaw.deprecated_enum);
@@ -155,12 +155,10 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     for(let key in entry.enumDef){
       let obj = entry.enumDef[key];
       let v = key.toLowerCase();
-      if(!(v in values_ncit_mapping)){
-        values.push(key);
-        values_ncit_mapping[v] = [];
-      }
-      if(obj && obj.termDef && obj.termDef.term_id){
-        values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+      if(v in values_ncit_mapping){
+        if(obj && obj.termDef && obj.termDef.term_id && values_ncit_mapping[v].indexOf(obj.termDef.term_id.trim()) == -1){
+          values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+        }
       }
     }
 
@@ -207,28 +205,25 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
           let pv = v.nm.toLowerCase();
           let icdo = v.i_c;
           let ncits = v.n_c;
-          if(!(pv in values_ncit_mapping)){
-            values.push(v.nm);
-            values_ncit_mapping[pv] = [];
-          }
-
-          //save values to ncit mapping
-          if (Array.isArray(ncits)) {
-            ncits.forEach(code => {
-              if(values_ncit_mapping[pv].indexOf(code.trim()) == -1){
-                  values_ncit_mapping[pv].push(code.trim());
+          if(pv in values_ncit_mapping){
+            //save values to ncit mapping
+            if (Array.isArray(ncits)) {
+              ncits.forEach(code => {
+                if(values_ncit_mapping[pv].indexOf(code.trim()) == -1){
+                    values_ncit_mapping[pv].push(code.trim());
+                }
+              });
+            } 
+            else {
+              if(ncits != "" && values_ncit_mapping[pv].indexOf(ncits.trim()) == -1){
+                values_ncit_mapping[pv].push(ncits.trim());
               }
-            });
-          } 
-          else {
-            if(ncits != "" && values_ncit_mapping[pv].indexOf(ncits.trim()) == -1){
-              values_ncit_mapping[pv].push(ncits.trim());
             }
-          }
 
-          //save values to icdo mapping
-          if(!(pv in values_icdo_mapping)){
-            values_icdo_mapping[pv] = icdo;
+            //save values to icdo mapping
+            if(!(pv in values_icdo_mapping)){
+              values_icdo_mapping[pv] = icdo;
+            }
           }
 
         }
@@ -965,8 +960,6 @@ const bulkIndex = async function(next){
       suggestionBody.push(doc);
     }
   }
-
-
 
   //build property index
   let propertyBody = [];
