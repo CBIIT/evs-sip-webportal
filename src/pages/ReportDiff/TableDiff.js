@@ -30,14 +30,25 @@ const SpanIcon = styled.span`
 `;
 
 const TableDiff = (props) => {
+  let groupCount = {};
+  let tableData = Object.assign([], props.result);
+  tableData.map((entry) => {
+    entry.id = entry.p + '/' + entry.n + '/' + entry.c;
+    if(groupCount[entry.id]){
+      groupCount[entry.id]++;
+    }
+    else{
+      groupCount[entry.id] = 1;
+    }
+  });
   return <>
     <TableContainer>
-      <Table striped bordered hover>
+      <Table bordered>
         <thead style={{background:"#535F74", color: "white", textAlign: "center"}}>
           <tr>
             <th rowSpan="2" width="10%">Category / Node / Property</th>
             <th colSpan="2" width="30%">GDC Dictionary</th>
-            <th colSpan="2" width="30%">EVS-SIP</th>
+            <th colSpan="2" width="30%">Mapped GDC Values</th>
           </tr>
           <tr>
             <th>Value</th>
@@ -48,24 +59,45 @@ const TableDiff = (props) => {
         </thead>
         <tbody>
           {
-            props.result.map((item, index) =>
-              <tr key={index}>
-                <td>
-                  {item.c}
-                  <TableUl>
-                    <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.n}
+            tableData.map((item, index) =>{
+              let rowSpan = 0;
+              if(index == 0){
+                rowSpan = groupCount[item.id];
+              }
+              else{
+                rowSpan = tableData[index].id == tableData[index -1].id ? 0 : groupCount[item.id];
+              }
+              if(rowSpan > 0){
+                return (
+                  <tr key={index}>
+                    <td rowSpan={rowSpan}>
+                      {item.c}
                       <TableUl>
-                        <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.p}</TableLi>
+                        <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.n}
+                          <TableUl>
+                            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.p}</TableLi>
+                          </TableUl>
+                        </TableLi>
                       </TableUl>
-                    </TableLi>
-                  </TableUl>
-                </td>
-                <td>{item.v_1}</td>
-                <td>{item.n_1}</td>
-                <td>{item.v_2}</td>
-                <td>{item.n_2}</td>
-              </tr>
-            )
+                    </td>
+                    <td>{item.v_1}</td>
+                    <td>{item.n_1}</td>
+                    <td>{item.v_2}</td>
+                    <td>{item.n_2}</td>
+                  </tr>
+                );
+              }
+              else{
+                return (
+                  <tr key={index}>
+                    <td>{item.v_1}</td>
+                    <td>{item.n_1}</td>
+                    <td>{item.v_2}</td>
+                    <td>{item.n_2}</td>
+                  </tr>
+                );
+              }
+            })
           }
         </tbody>
       </Table>

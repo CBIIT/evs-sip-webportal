@@ -1,15 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Form, Button} from 'react-bootstrap';
+import { Form, Button, Row} from 'react-bootstrap';
 
-const FornStyled = styled(Form)`
+const FormStyled = styled(Form)`
   margin-bottom: 3rem;
 `;
 
+const FormLabelStyled = styled(Form.Label)`
+  font-weight: 600;
+`;
+
 const FormDiff = (props) => {
-  return <FornStyled>
+  return <FormStyled>
     <Form.Group>
-      <Form.Label>Source Branch from GDC Dictionary</Form.Label>
+      <FormLabelStyled>Choose Data Source</FormLabelStyled>
+      <Form.Control as="select">
+        <option value="gdc">Genomic Data Commons (GDC)</option>
+        <option value="ctdc">Clinical Trial Data Commons (CTDC)</option>
+        <option value="icdc">Integrated Canine Data Commons (ICDC)</option>
+        <option value="pcdc">Pediatric Cancer Data Commons (PCDC)</option>
+      </Form.Control>
+    </Form.Group>
+    <Form.Group>
+      <FormLabelStyled>Select Compare Type</FormLabelStyled>
+      <div>
+        <Form.Check inline label="Value" name="compare_type" type="radio" id="value" defaultChecked />
+        <Form.Check inline label="Property" name="compare_type" type="radio" id="property" />
+        <Form.Check inline label="Node" name="compare_type" type="radio" id="node" />
+      </div>
+    </Form.Group>
+    <Form.Group>
+      <FormLabelStyled>Source Branch from GDC Dictionary</FormLabelStyled>
       <Form.Control as="select">
         <option value="2.3.0">Yertle the Turtle 2.3.0</option>
         <option value="2.2.0">Very Bad Fish 2.2.0</option>
@@ -19,7 +40,7 @@ const FormDiff = (props) => {
     <Button variant="primary"onClick={props.reportTrigger} >
       Compare
     </Button>
-  </FornStyled>
+  </FormStyled>
 }
 
 export default FormDiff;
