@@ -8,7 +8,6 @@ const yaml = require('yamljs');
 const config = require('../config');
 const config_dev = require('../config/dev');
 const logger = require('./logger');
-const caDSR = require('./caDSR');
 const cache = require('./cache');
 const extend = require('util')._extend;
 const _ = require('lodash');
@@ -28,7 +27,7 @@ var esClient = new elasticsearch.Client({
   requestTimeout: config_dev.elasticsearch.requestTimeout
 });
 
-const helper_gdc = (fileJson, conceptCode, syns) => {
+const helper_gdc = (fileJson, syns) => {
   let properties = fileJson.properties;
 
   for (var prop in properties) {
@@ -104,6 +103,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
       values_ncit_mapping[v.toLowerCase()] = [];
     });
 
+    /*
     for(let key in entry.enumDef){
       let obj = entry.enumDef[key];
       let v = key.toLowerCase();
@@ -113,36 +113,11 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
         }
       }
     }
+    */
 
     // 2. work on conceptCode to further combind the ncit code
     // depracted as data mappings in conceptCode.js file have already been included in gdc_values.js file
     let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
-    /*
-    if (prop_full_name in conceptCode) {
-      let cc = conceptCode[prop_full_name];
-      // add additionalProperties
-      for (var s in cc) {
-        let v = s.toLowerCase();
-        if(!(v in values_ncit_mapping)){
-          values.push(s);
-          values_ncit_mapping[v] = [];
-        }
-        
-        if (Array.isArray(cc[s])) {
-          cc[s].forEach(code => {
-            if(values_ncit_mapping[v].indexOf(code.trim()) == -1){
-              values_ncit_mapping[v].push(code.trim());
-            }
-          });
-        } 
-        else {
-          if(values_ncit_mapping[v].indexOf(cc[s].trim()) == -1){
-            values_ncit_mapping[v].push(cc[s].trim());
-          }
-        }
-      }
-    }
-    */
 
     // 3. work on gdc_values to pull out icd-o-3 code and ncit code for all the values saved in the previous 3 steps
     if(prop_full_name in gdc_values){
@@ -706,7 +681,6 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
 
 const bulkIndex = async function(next){
 
-  let ccode = shared.readConceptCode();
   gdc_values = shared.readGDCValues();
   let syns = shared.readNCItDetails();
 
@@ -716,7 +690,7 @@ const bulkIndex = async function(next){
 
   for(let node in jsonData){
     if(node !== '_terms' || node !== '_definitions' ){
-      helper_gdc(jsonData[node], ccode, syns);
+      helper_gdc(jsonData[node], syns);
     }
   }
 
