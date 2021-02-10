@@ -914,7 +914,7 @@ const processGDCDictionaryEnumData = (prop) => {
 		tmp.n = value.replace(/(?:\r\n|\r|\n)/g, ' ');
 		if(enumsDef && enumsDef[tmp.n] && enumsDef[tmp.n].termDef){
 			let term = enumsDef[tmp.n].termDef;
-			if(term.source == "NCIt" && term.term_id !== ""){
+			if(term.source == "NCIt" && term.term_id && term.term_id !== ""){
 				tmp.gdc_ncit = term.term_id;
 			}
 			else{
@@ -1052,7 +1052,7 @@ const getCompareResult_mapped = async function() {
     const all_mappings = await getCompareResult();
     const mapped = all_mappings.filter((mapping) => {
       return (mapping.n_1 == "" && mapping.n_2 != "" ) || 
-             (mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_1 == mapping.n_2);
+             (mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_2.split(',').indexOf(mapping.n_1.trim()) > -1);
     });
     cache.setValue("compareWith_2.3.0_mapped", mapped, config.item_ttl/3);
 		return mapped;
@@ -1067,7 +1067,7 @@ const getCompareResult_conflict = async function() {
   if(result == undefined){
     const all_mappings = await getCompareResult();
     const conflict = all_mappings.filter((mapping) => {
-      return mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_1 != mapping.n_2;
+      return mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_2.split(',').indexOf(mapping.n_1.trim()) == -1;
     });
     cache.setValue("compareWith_2.3.0_conflict", conflict, config.item_ttl/3);
 		return conflict;
