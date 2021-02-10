@@ -414,11 +414,6 @@ const readGDCNodes = () => {
   return JSON.parse(content);
 }
 
-const readConceptCode = () => {
-    let content = fs.readFileSync(dataFilesDir + "/conceptCode.js").toString();
-	return JSON.parse(content);
-}
-
 const readCDEData = () => {
     let content = fs.readFileSync(dataFilesDir + "/cdeData.js").toString();
 	content = content.replace(/}{/g, ",");
@@ -1089,7 +1084,6 @@ module.exports = {
     preProcess,
     readGDCValues,
     readGDCNodes,
-    readConceptCode,
     readCDEData,
     readCTDCMapping,
     readICDCMapping,
