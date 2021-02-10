@@ -277,13 +277,13 @@ const SearchBox = (props) => {
   });
 
   let [selectDataSource, setSelectDataSource] = useState({
-    ctdc: false,
-    gdc: false,
-    icdc: false
+    ctdc: true,
+    gdc: true,
+    icdc: true
   });
 
   let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
-  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(true);
 
   const searchInputRef = useRef();
 
@@ -449,6 +449,13 @@ const SearchBox = (props) => {
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Search Synonyms of Values
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput name="p_syns" type="checkbox"/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Search Synonyms of Properties/Nodes
                 </CheckboxLabel>
               </FormGroupStyled>
             </SearchOptions>
