@@ -70,6 +70,8 @@ const ContentDiff = () => {
       setPageSizeState(result.pageInfo.pageSize);
       setTotalState(result.pageInfo.total);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+      setTypeState('all');
+      setSearchState('');
     });
   };
 
@@ -86,7 +88,7 @@ const ContentDiff = () => {
 
   const handlePageClick = (data) => {
     const page = data.selected + 1;
-    compareAllWithGDCDictionary(typeState, page, pageSizeState)
+    compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState)
     .then(result => {
       setResultState(result.data);
       setPageState(result.pageInfo.page);
@@ -97,8 +99,7 @@ const ContentDiff = () => {
 
   const handlepageSizeChange = (event) => {
     const pageSize = event.target.value;
-
-    compareAllWithGDCDictionary(typeState, pageState, pageSize)
+    compareAllWithGDCDictionary(typeState, pageState, pageSize, searchState)
     .then(result => {
       setResultState(result.data);
       // setPageState(result.pageInfo.page);
@@ -108,9 +109,9 @@ const ContentDiff = () => {
   }
 
   const handleSearchText = event => {
-    setSearchState(event.target.value);
     if (event.keyCode === 13) {
       const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+      setSearchState(keyword);
       compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
       .then(result => {
         setResultState(result.data);
