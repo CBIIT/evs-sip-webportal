@@ -88,9 +88,10 @@ const TableDiff = (props) => {
           placeholder="Search By Text"
           aria-label="Search By Text"
           aria-describedby="Search By Text"
+          onKeyDown={props.searchTrigger}
         />
       </InputGroupStyled>
-      <Button variant="secondary" onClick={props.reportTrigger} className="ml-auto">
+      <Button variant="success" onClick={props.reportTrigger} className="ml-auto">
         Download Result
       </Button>
     </SearchContainer>

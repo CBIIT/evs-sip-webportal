@@ -60,6 +60,7 @@ const ContentDiff = () => {
   let [pageSizeState, setPageSizeState] = useState(25);
   let [totalState, setTotalState] = useState(0);
   let [pageCountState, setPageCountState] = useState(0);
+  let [searchState, setSearchState] = useState('');
 
   const reportTrigger = () => {
     compareAllWithGDCDictionary()
@@ -73,7 +74,7 @@ const ContentDiff = () => {
   };
 
   const handleSelectTab = (type) => {
-    compareAllWithGDCDictionary(type, pageState, pageSizeState)
+    compareAllWithGDCDictionary(type, pageState, pageSizeState, searchState)
     .then(result => {
       setResultState(result.data);
       setTypeState(type);
@@ -95,8 +96,7 @@ const ContentDiff = () => {
   }
 
   const handlepageSizeChange = (event) => {
-    //setPageSizeState(event.target.value);
-    const pageSize = event.target.value
+    const pageSize = event.target.value;
 
     compareAllWithGDCDictionary(typeState, pageState, pageSize)
     .then(result => {
@@ -105,6 +105,21 @@ const ContentDiff = () => {
       setPageSizeState(result.pageInfo.pageSize);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
     });
+  }
+
+  const handleSearchText = event => {
+    setSearchState(event.target.value);
+    if (event.keyCode === 13) {
+      const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+      compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
+      .then(result => {
+        setResultState(result.data);
+        //setSearchState(keyword);
+        // setPageState(result.pageInfo.page);
+        //setPageSizeState(result.pageInfo.pageSize);
+        //setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+      });
+    }
   }
 
   return <ContentBox>
@@ -127,6 +142,9 @@ const ContentDiff = () => {
             pageSize={pageSizeState} 
             pageCount={pageCountState} 
             total={totalState}
+            search={searchState}
+            setSearch={setSearchState}
+            searchTrigger={handleSearchText}
           />
         </>
       }
