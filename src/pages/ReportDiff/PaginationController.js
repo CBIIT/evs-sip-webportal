@@ -5,6 +5,12 @@ import { Form } from 'react-bootstrap';
 
 const PaginationContainer = styled.div`
   width: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const PageInfo = styled.div`
   display: flex;
   justify-content: space-around;
 `;
@@ -31,12 +37,17 @@ const TableDiff = (props) => {
       subContainerClassName={'pages pagination'}
       activeClassName={'active'}
     />
-    <Form.Control style={{width: '12rem'}} as="select" value={props.pageSize} onChange={props.pageSizeChange}>
-      <option value="10">10</option>
-      <option value="15">20</option>
-      <option value="25">25</option>
-      <option value="50">50</option>
-    </Form.Control>
+    <PageInfo>
+      <Form.Label style={{padding: '.375rem .75rem'}} >Page Size:</Form.Label>
+      <Form.Control style={{width: '12rem'}} as="select" value={props.pageSize} onChange={props.pageSizeChange}>
+        <option value="10">10</option>
+        <option value="15">20</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </Form.Control>
+    </PageInfo>
+    
   </PaginationContainer>);
 }
 
