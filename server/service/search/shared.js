@@ -4,6 +4,8 @@ const config = require('../../config');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('yamljs');
+const Datastore = require('nedb-promises');
+let db = Datastore.create();
 const gdc_searchable_nodes = require('../../config').gdc_searchable_nodes;
 const _ = require('lodash');
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
@@ -983,19 +985,36 @@ function compareValues(v_gdc, v_evssip, prop, node, category){
 			tmp.n_2 = "";
 		}
 
+    //generate category
+    if(tmp.n_2 == ""){
+      //unmapped
+      tmp.t = 1;
+    }
+    else if((tmp.n_1 == "" && tmp.n_2 != "" ) || 
+            (tmp.n_1 != "" && tmp.n_2 != "" &&  tmp.n_2.split(',').indexOf(tmp.n_1.trim()) > -1)){
+      //mapped
+      tmp.t = 0;
+    }
+    else if(tmp.n_1 != "" && tmp.n_2 != "" &&  tmp.n_2.split(',').indexOf(tmp.n_1.trim()) == -1){
+      //conflict
+      tmp.t = 2;
+    }
+    else{
+      tmp.t = -1;
+    }
+    db.insert(tmp);
 		result.push(tmp);
 	});
 	return result;
 }
 
-const getCompareResult = async function(){
-	let result = cache.getValue("compareWith_2.3.0");
-  if(result == undefined){
+const genearteCompareResult = async function(){
+    let delCount = await db.remove({}, {multi: true});
+    console.log(delCount);
     let query = {};
 		query.terms = {};
 		query.terms.source = [];
 		query.terms.source.push("gdc");
-		let result = [];
 		let GDCDict = await getGDCDictionaryByVersion("2.3.0");
 		let data = await elastic.query_all(config.index_p, query, "", null);
 		if (data.hits === undefined) {
@@ -1017,64 +1036,87 @@ const getCompareResult = async function(){
 				let uid = prop + '/' + node + '/' + category + "/gdc";
 				let v_gdc = props[prop];
 				let v_evssip = local_data[uid];
-				let mapping = compareValues(v_gdc, v_evssip, prop, node, category);
-				mappings = mappings.concat(mapping);
+				compareValues(v_gdc, v_evssip, prop, node, category);
 			}
 		}
-		//console.log(sizeof(mappings));
-    cache.setValue("compareWith_2.3.0", mappings, config.item_ttl/3);
-		return mappings;
+		cache.setValue("compareWith_2.3.0", true, config.item_ttl/3);
+}
+
+const getCompareResult = async function(searchText, from , limit){
+	let compared = cache.getValue("compareWith_2.3.0");
+  if(compared == undefined){
+    await genearteCompareResult();
+  }
+  let result = {};
+  if(searchText.trim() != ""){
+    const reg = new RegExp(searchText, 'i');
+    result.total = await db.count({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]});
+    result.data = await db.find({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  }
+  else{
+    result.total = await db.count({});
+    result.data = await db.find({}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  }
+  
+  return result;
+}
+
+const getCompareResult_unmapped = async function(searchText, from , limit) {
+  let compared = cache.getValue("compareWith_2.3.0");
+  if(compared == undefined){
+    await genearteCompareResult();
 	}
-	else{
-		return result;
+  let result = {};
+  if(searchText.trim() != ""){
+    const reg = new RegExp(searchText, 'i');
+    result.total = await db.count({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+    result.data = await db.find({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]})
+                      .sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  }
+  else{
+    result.total = await db.count({t: 1});
+    result.data = await db.find({t: 1}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  }
+  
+  return result;
+}
+
+const getCompareResult_mapped = async function(searchText, from , limit) {
+  let compared = cache.getValue("compareWith_2.3.0");
+  if(compared == undefined){
+    await genearteCompareResult();
 	}
-}
-
-const getCompareResult_unmapped = async function() {
-  let result = cache.getValue("compareWith_2.3.0_unmapped");
-  if(result == undefined){
-    const all_mappings = await getCompareResult();
-    const unmapped = all_mappings.filter((mapping) => {
-      return (mapping.n_1 == "" && mapping.n_2 == "" ) || 
-             (mapping.n_1 != "" && mapping.n_2 == "" );
-    });
-    cache.setValue("compareWith_2.3.0_unmapped", unmapped, config.item_ttl/3);
-		return unmapped;
+  let result = {};
+  if(searchText.trim() != ""){
+    const reg = new RegExp(searchText, 'i');
+    result.total = await db.count({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+    result.data = await db.find({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
   }
   else{
-    return result;
+    result.total = await db.count({t: 0});
+    result.data = await db.find({t: 0}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
   }
+  
+  return result;
 }
 
-const getCompareResult_mapped = async function() {
-  let result = cache.getValue("compareWith_2.3.0_mapped");
-  if(result == undefined){
-    const all_mappings = await getCompareResult();
-    const mapped = all_mappings.filter((mapping) => {
-      return (mapping.n_1 == "" && mapping.n_2 != "" ) || 
-             (mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_2.split(',').indexOf(mapping.n_1.trim()) > -1);
-    });
-    cache.setValue("compareWith_2.3.0_mapped", mapped, config.item_ttl/3);
-		return mapped;
+const getCompareResult_conflict = async function(searchText, from , limit) {
+  let compared = cache.getValue("compareWith_2.3.0");
+  if(compared == undefined){
+    await genearteCompareResult();
+	}
+  let result = {};
+  if(searchText.trim() != ""){
+    const reg = new RegExp(searchText, 'i');
+    result.total = await db.count({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+    result.data = await db.find({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
   }
   else{
-    return result;
+    result.total = await db.count({t: 2});
+    result.data = await db.find({t: 2}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
   }
-}
-
-const getCompareResult_conflict = async function() {
-  let result = cache.getValue("compareWith_2.3.0_conflict");
-  if(result == undefined){
-    const all_mappings = await getCompareResult();
-    const conflict = all_mappings.filter((mapping) => {
-      return mapping.n_1 != "" && mapping.n_2 != "" &&  mapping.n_2.split(',').indexOf(mapping.n_1.trim()) == -1;
-    });
-    cache.setValue("compareWith_2.3.0_conflict", conflict, config.item_ttl/3);
-		return conflict;
-  }
-  else{
-    return result;
-  }
+  
+  return result;
 }
 
 module.exports = {
