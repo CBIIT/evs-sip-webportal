@@ -118,7 +118,6 @@ const ContentDiff = () => {
         <>
           <TitleContainer>
             <h2>Result</h2>
-            <Button variant="primary">Download Result</Button>
           </TitleContainer>
           <TabController selectTab={handleSelectTab} type={typeState} result={resultState}/>
           <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState} total={totalState}/>

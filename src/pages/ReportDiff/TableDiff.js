@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Table } from 'react-bootstrap';
+import { Form, Button, Row, Table, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
+const searchContainer = styled(Col)`
+  width: 100%;
+`;
 
 const TableContainer = styled.div`
   width: 100%;
@@ -42,6 +45,26 @@ const TableDiff = (props) => {
     }
   });
   return <>
+    <Form>
+      <Form.Row className="align-items-center">
+        <Col sm={6} className="my-1">
+          <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
+            Search By Text
+          </Form.Label>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text><i class="fas fa-search"></i></InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control id="inlineFormInputGroupUsername" placeholder="Search By Text" />
+          </InputGroup>
+        </Col>
+        <Col sm={6} xs="auto" className="my-1 d-flex">
+          <Button variant="primary"onClick={props.reportTrigger} className="ml-auto">
+            Download Result
+          </Button>
+        </Col>
+      </Form.Row>
+    </Form>
     <TableContainer>
       <Table bordered>
         <thead style={{background:"#535F74", color: "white", textAlign: "center"}}>

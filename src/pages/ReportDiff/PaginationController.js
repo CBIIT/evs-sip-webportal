@@ -5,7 +5,7 @@ import { Form } from 'react-bootstrap';
 
 const PaginationContainer = styled.div`
   width: 100%;
-  padding: 0px 15px;
+  padding: 15px;
   display: flex;
   justify-content: space-around;
 `;

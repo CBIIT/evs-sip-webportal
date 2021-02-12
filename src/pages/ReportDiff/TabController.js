@@ -36,10 +36,6 @@ const NavStyled = styled(Nav)`
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-
-  && ${NavLinkStyled}.active {
-    border: none;
-  }
 `;
 
 const TabsController = (props) => {
@@ -69,7 +65,7 @@ const TabsController = (props) => {
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
-              <Tab.Content transition="false" style={{"fontSize": "1rem"}}>
+              <Tab.Content transition="false" style={{"fontSize": "1rem","border": "1px solid #535F74", "borderRadius": "5px", "padding": "5px 5px 0px 5px"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="all">
                   <TableDiff result={props.result}/>
                 </Tab.Pane>
