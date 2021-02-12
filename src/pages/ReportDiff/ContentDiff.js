@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { Button } from 'react-bootstrap';
 import { compareAllWithGDCDictionary } from '../../api';
 
 import FormDiff from './FormDiff';
 import TabController from './TabController';
-import PaginationController from './PaginationController';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -119,8 +117,17 @@ const ContentDiff = () => {
           <TitleContainer>
             <h2>Result</h2>
           </TitleContainer>
-          <TabController selectTab={handleSelectTab} type={typeState} result={resultState}/>
-          <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState} total={totalState}/>
+          <TabController 
+            selectTab={handleSelectTab} 
+            type={typeState} 
+            result={resultState}
+            pageClick={handlePageClick} 
+            pageSizeChange={handlepageSizeChange} 
+            currentPage={pageState} 
+            pageSize={pageSizeState} 
+            pageCount={pageCountState} 
+            total={totalState}
+          />
         </>
       }
     </ContentBoxText>

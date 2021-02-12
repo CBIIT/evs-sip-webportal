@@ -1,11 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Form, Button, Row, Table, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Row, Table, Col, InputGroup, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-const searchContainer = styled(Col)`
+const SearchContainer = styled.div`
   width: 100%;
+  background-color: #535F74;
+  border: 1px solid #dee2e6;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.4rem 1rem;
 `;
 
 const TableContainer = styled.div`
@@ -33,6 +40,10 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
+const InputGroupStyled = styled(InputGroup)`
+  max-width: 30rem;
+`;
+
 const TableDiff = (props) => {
   let groupCount = {};
   let tableData = Object.assign([], props.result);
@@ -46,7 +57,7 @@ const TableDiff = (props) => {
     }
   });
   return <>
-    <Form>
+    {/* <Form>
       <Form.Row className="align-items-center">
         <Col sm={6} className="my-1">
           <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
@@ -54,7 +65,7 @@ const TableDiff = (props) => {
           </Form.Label>
           <InputGroup>
             <InputGroup.Prepend>
-              <InputGroup.Text><i class="fas fa-search"></i></InputGroup.Text>
+              <InputGroup.Text><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
             </InputGroup.Prepend>
             <Form.Control id="inlineFormInputGroupUsername" placeholder="Search By Text" />
           </InputGroup>
@@ -65,10 +76,27 @@ const TableDiff = (props) => {
           </Button>
         </Col>
       </Form.Row>
-    </Form>
+    </Form> */}
+    <SearchContainer>
+      <InputGroupStyled>
+        <InputGroup.Prepend>
+          <InputGroup.Text id="search-values-input">
+            <FontAwesomeIcon icon={faSearch}/>
+          </InputGroup.Text>
+        </InputGroup.Prepend>
+        <FormControl
+          placeholder="Search By Text"
+          aria-label="Search By Text"
+          aria-describedby="Search By Text"
+        />
+      </InputGroupStyled>
+      <Button variant="secondary" onClick={props.reportTrigger} className="ml-auto">
+        Download Result
+      </Button>
+    </SearchContainer>
     <TableContainer>
       <Table bordered>
-        <thead style={{background:"#535F74", color: "white", textAlign: "center"}}>
+        <thead style={{backgroundColor:"#535F74", color: "white", textAlign: "center"}}>
           <tr>
             <th rowSpan="2" width="10%">Category / Node / Property</th>
             <th colSpan="2" width="30%">GDC Dictionary</th>
@@ -83,13 +111,13 @@ const TableDiff = (props) => {
         </thead>
         <tbody>
           {
-            tableData.map((item, index) =>{
+            tableData.map((item, index) => {
               let rowSpan = 0;
-              if(index == 0){
+              if(index === 0){
                 rowSpan = groupCount[item.id];
               }
               else{
-                rowSpan = tableData[index].id == tableData[index -1].id ? 0 : groupCount[item.id];
+                rowSpan = tableData[index].id === tableData[index -1].id ? 0 : groupCount[item.id];
               }
               if(rowSpan > 0){
                 return (
