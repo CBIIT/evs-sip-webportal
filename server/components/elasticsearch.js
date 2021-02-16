@@ -8,11 +8,9 @@ const yaml = require('yamljs');
 const config = require('../config');
 const config_dev = require('../config/dev');
 const logger = require('./logger');
-const caDSR = require('./caDSR');
 const cache = require('./cache');
 const extend = require('util')._extend;
 const _ = require('lodash');
-const drugs_properties = require('../config').drugs_properties;
 const shared = require('../service/search/shared');
 const folderPath = path.join(__dirname, '..', 'data_files','GDC', 'model');
 var allTerm = {};
@@ -28,7 +26,7 @@ var esClient = new elasticsearch.Client({
   requestTimeout: config_dev.elasticsearch.requestTimeout
 });
 
-const helper_gdc = (fileJson, conceptCode, syns) => {
+const helper_gdc = (fileJson, syns) => {
   let properties = fileJson.properties;
 
   for (var prop in properties) {
@@ -45,7 +43,7 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
     p.id = p.prop + "/" + p.node + "/" + p.category;
     p.type = entryRaw.type;
 
-    entry.enum = extend([], entryRaw.enum);
+    entry.enum = extend([], entryRaw.enum || (entryRaw.items && entryRaw.items.enum ? entryRaw.items.enum : []));
     entry.enumDef = entryRaw.enumDef? entryRaw.enumDef : [];
     entry.termDef = extend({}, entryRaw.termDef);
     entry.deprecated_enum = extend([], entryRaw.deprecated_enum);
@@ -104,47 +102,22 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
       values_ncit_mapping[v.toLowerCase()] = [];
     });
 
+    /*
     for(let key in entry.enumDef){
       let obj = entry.enumDef[key];
       let v = key.toLowerCase();
-      if(!(v in values_ncit_mapping)){
-        values.push(key);
-        values_ncit_mapping[v] = [];
-      }
-      if(obj && obj.termDef && obj.termDef.term_id){
-        values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+      if(v in values_ncit_mapping){
+          if(obj && obj.termDef && obj.termDef.term_id && values_ncit_mapping[v].indexOf(obj.termDef.term_id.trim()) == -1){
+            values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+          }
       }
     }
+    */
+    
 
     // 2. work on conceptCode to further combind the ncit code
     // depracted as data mappings in conceptCode.js file have already been included in gdc_values.js file
     let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
-    /*
-    if (prop_full_name in conceptCode) {
-      let cc = conceptCode[prop_full_name];
-      // add additionalProperties
-      for (var s in cc) {
-        let v = s.toLowerCase();
-        if(!(v in values_ncit_mapping)){
-          values.push(s);
-          values_ncit_mapping[v] = [];
-        }
-        
-        if (Array.isArray(cc[s])) {
-          cc[s].forEach(code => {
-            if(values_ncit_mapping[v].indexOf(code.trim()) == -1){
-              values_ncit_mapping[v].push(code.trim());
-            }
-          });
-        } 
-        else {
-          if(values_ncit_mapping[v].indexOf(cc[s].trim()) == -1){
-            values_ncit_mapping[v].push(cc[s].trim());
-          }
-        }
-      }
-    }
-    */
 
     // 3. work on gdc_values to pull out icd-o-3 code and ncit code for all the values saved in the previous 3 steps
     if(prop_full_name in gdc_values){
@@ -159,30 +132,26 @@ const helper_gdc = (fileJson, conceptCode, syns) => {
           let pv = v.nm.toLowerCase();
           let icdo = v.i_c;
           let ncits = v.n_c;
-          if(!(pv in values_ncit_mapping)){
-            values.push(v.nm);
-            values_ncit_mapping[pv] = [];
-          }
-
-          //save values to ncit mapping
-          if (Array.isArray(ncits)) {
-            ncits.forEach(code => {
-              if(values_ncit_mapping[pv].indexOf(code.trim()) == -1){
-                  values_ncit_mapping[pv].push(code.trim());
+          if(pv in values_ncit_mapping){
+            //save values to ncit mapping
+            if (Array.isArray(ncits)) {
+              ncits.forEach(code => {
+                if(values_ncit_mapping[pv].indexOf(code.trim()) == -1){
+                    values_ncit_mapping[pv].push(code.trim());
+                }
+              });
+            } 
+            else {
+              if(ncits != "" && values_ncit_mapping[pv].indexOf(ncits.trim()) == -1){
+                values_ncit_mapping[pv].push(ncits.trim());
               }
-            });
-          } 
-          else {
-            if(ncits != "" && values_ncit_mapping[pv].indexOf(ncits.trim()) == -1){
-              values_ncit_mapping[pv].push(ncits.trim());
+            }
+
+            //save values to icdo mapping
+            if(!(pv in values_icdo_mapping)){
+              values_icdo_mapping[pv] = icdo;
             }
           }
-
-          //save values to icdo mapping
-          if(!(pv in values_icdo_mapping)){
-            values_icdo_mapping[pv] = icdo;
-          }
-
         }
         
       });
@@ -711,7 +680,6 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
 
 const bulkIndex = async function(next){
 
-  let ccode = shared.readConceptCode();
   gdc_values = shared.readGDCValues();
   let syns = shared.readNCItDetails();
 
@@ -721,7 +689,7 @@ const bulkIndex = async function(next){
 
   for(let node in jsonData){
     if(node !== '_terms' || node !== '_definitions' ){
-      helper_gdc(jsonData[node], ccode, syns);
+      helper_gdc(jsonData[node], syns);
     }
   }
 
