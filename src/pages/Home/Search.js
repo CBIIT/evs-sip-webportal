@@ -211,11 +211,11 @@ const Search = () => {
   let [searchState, setSearchState] = useState('');
   let [suggestState, setSuggestState] = useState([]);
   let [selectIndexState, setSelectIndexState] = useState(-1);
-  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(true);
   let [selectDataSource, setSelectDataSource] = useState({
-    ctdc: false,
-    gdc: false,
-    icdc: false
+    ctdc: true,
+    gdc: true,
+    icdc: true
   });
 
   const history = useHistory();
@@ -276,14 +276,6 @@ const Search = () => {
       [event.target.name]: !event.target.checked
     });
   };
-
-  // // const selectDataAllToggleHandler = event => {
-  //   setSelectDataSource({
-  //     ctdc: true,
-  //     gdc: true,
-  //     icdc: true
-  //   });
-  // // };
 
   const selectDataAllToggleHandler = event => {
     if(isToggleOnSource === false){
