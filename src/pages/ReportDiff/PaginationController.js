@@ -5,7 +5,6 @@ import { Form } from 'react-bootstrap';
 
 const PaginationContainer = styled.div`
   width: 100%;
-  padding: 15px;
   display: flex;
   justify-content: space-around;
 `;
@@ -38,7 +37,7 @@ const TableDiff = (props) => {
       activeClassName={'active'}
     />
     <PageInfo>
-      <Form.Label style={{padding: '.375rem .75rem'}} >Page Size:</Form.Label>
+      <Form.Label style={{padding: '.375rem .75rem'}}>Page Size:</Form.Label>
       <Form.Control style={{width: '12rem'}} as="select" value={props.pageSize} onChange={props.pageSizeChange}>
         <option value="10">10</option>
         <option value="15">20</option>

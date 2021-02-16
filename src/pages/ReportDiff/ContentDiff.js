@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { Button } from 'react-bootstrap';
 import { compareAllWithGDCDictionary } from '../../api';
 
 import FormDiff from './FormDiff';
 import TabController from './TabController';
-import PaginationController from './PaginationController';
 
 const ContentBox =  styled.div`
   padding: 2.5rem;
@@ -62,6 +60,7 @@ const ContentDiff = () => {
   let [pageSizeState, setPageSizeState] = useState(25);
   let [totalState, setTotalState] = useState(0);
   let [pageCountState, setPageCountState] = useState(0);
+  let [searchState, setSearchState] = useState('');
 
   const reportTrigger = () => {
     compareAllWithGDCDictionary()
@@ -71,11 +70,13 @@ const ContentDiff = () => {
       setPageSizeState(result.pageInfo.pageSize);
       setTotalState(result.pageInfo.total);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+      setTypeState('all');
+      setSearchState('');
     });
   };
 
   const handleSelectTab = (type) => {
-    compareAllWithGDCDictionary(type, pageState, pageSizeState)
+    compareAllWithGDCDictionary(type, pageState, pageSizeState, searchState)
     .then(result => {
       setResultState(result.data);
       setTypeState(type);
@@ -87,7 +88,7 @@ const ContentDiff = () => {
 
   const handlePageClick = (data) => {
     const page = data.selected + 1;
-    compareAllWithGDCDictionary(typeState, page, pageSizeState)
+    compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState)
     .then(result => {
       setResultState(result.data);
       setPageState(result.pageInfo.page);
@@ -97,10 +98,8 @@ const ContentDiff = () => {
   }
 
   const handlepageSizeChange = (event) => {
-    //setPageSizeState(event.target.value);
-    const pageSize = event.target.value
-
-    compareAllWithGDCDictionary(typeState, pageState, pageSize)
+    const pageSize = event.target.value;
+    compareAllWithGDCDictionary(typeState, pageState, pageSize, searchState)
     .then(result => {
       setResultState(result.data);
       // setPageState(result.pageInfo.page);
@@ -109,18 +108,45 @@ const ContentDiff = () => {
     });
   }
 
+  const handleSearchText = event => {
+    if (event.keyCode === 13) {
+      const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+      setSearchState(keyword);
+      compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
+      .then(result => {
+        setResultState(result.data);
+        //setSearchState(keyword);
+        // setPageState(result.pageInfo.page);
+        //setPageSizeState(result.pageInfo.pageSize);
+        //setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+      });
+    }
+  }
+
   return <ContentBox>
     <ContentBoxTitle>Report Differences</ContentBoxTitle>
     <ContentBoxText>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut sapien tellus. Duis sed dapibus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
       <FormDiff reportTrigger={reportTrigger}/>
-      { _.isEmpty(resultState) === false &&
+      { !_.isEmpty(resultState) &&
         <>
           <TitleContainer>
             <h2>Result</h2>
           </TitleContainer>
-          <TabController selectTab={handleSelectTab} type={typeState} result={resultState}/>
-          <PaginationController pageClick={handlePageClick} pageSizeChange={handlepageSizeChange} currentPage={pageState} pageSize={pageSizeState} pageCount={pageCountState} total={totalState}/>
+          <TabController 
+            selectTab={handleSelectTab} 
+            type={typeState} 
+            result={resultState}
+            pageClick={handlePageClick} 
+            pageSizeChange={handlepageSizeChange} 
+            currentPage={pageState} 
+            pageSize={pageSizeState} 
+            pageCount={pageCountState} 
+            total={totalState}
+            search={searchState}
+            setSearch={setSearchState}
+            searchTrigger={handleSearchText}
+          />
         </>
       }
     </ContentBoxText>

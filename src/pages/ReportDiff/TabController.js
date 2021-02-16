@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
+import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import TableDiff from './TableDiff';
+import PaginationController from './PaginationController';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -40,13 +41,12 @@ const NavStyled = styled(Nav)`
 
 const TabsController = (props) => {
   return (
-    <div>
+    <>
       <Tab.Container 
         id="tabs-controller" 
         defaultActiveKey="all"
         activeKey={props.type}
         onSelect={props.selectTab}>
-        <Container>
           <Row className="clearfix">
             <TabNavsCol sm={12}>
               <NavStyled variant="tabs">
@@ -65,25 +65,25 @@ const TabsController = (props) => {
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
-              <Tab.Content transition="false" style={{"fontSize": "1rem","border": "1px solid #535F74", "borderRadius": "5px", "padding": "5px 5px 0px 5px"}}>
+              <Tab.Content transition="false" style={{"fontSize": "1rem", "border": "1px solid #535F74", "borderRadius": "5px", "padding": "5px 5px 0px 5px"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="all">
-                  <TableDiff result={props.result}/>
+                  <TableDiff result={props.result} searchTrigger={props.searchTrigger}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="unmapped">
-                  <TableDiff result={props.result}/>
+                  <TableDiff result={props.result} searchTrigger={props.searchTrigger}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="mapped">
-                  <TableDiff result={props.result}/>
+                  <TableDiff result={props.result} searchTrigger={props.searchTrigger}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="conflict">
-                  <TableDiff result={props.result}/>
+                  <TableDiff result={props.result} searchTrigger={props.searchTrigger}/>
                 </Tab.Pane>
+                <PaginationController pageClick={props.pageClick} pageSizeChange={props.pageSizeChange} currentPage={props.currentPage} pageSize={props.pageSize} pageCount={props.pageCount} total={props.total}/>
               </Tab.Content>
             </Col>
           </Row>
-        </Container>
       </Tab.Container>
-    </div>
+    </>
   );
 };
 

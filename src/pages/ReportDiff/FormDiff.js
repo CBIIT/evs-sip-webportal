@@ -37,7 +37,7 @@ const FormDiff = (props) => {
         <option value="2.1.0">Thidwick 2.1.0</option>
       </Form.Control>
     </Form.Group>
-    <Button variant="primary"onClick={props.reportTrigger} >
+    <Button variant="primary" onClick={props.reportTrigger} >
       Compare
     </Button>
   </FormStyled>
