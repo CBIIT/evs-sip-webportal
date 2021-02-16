@@ -46,7 +46,7 @@ export const apiGetPropertyValues = async(id) => {
 };
 
 //Reports API's
-export const compareAllWithGDCDictionary = async(type ='all', page='1', pageSize='25') => {
-  const response = await fetch(`${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}`);
+export const compareAllWithGDCDictionary = async(type ='all', page='1', pageSize='25', search='') => {
+  const response = await fetch(`${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}&searchText=${search}`);
   return response.json();
 };
