@@ -8,9 +8,12 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('yamljs');
-const excel = require('node-excel-export');
+const xlsx = require('node-xlsx');
 const _ = require('lodash');
 const shared = require('./shared');
+const {
+  performance
+} = require('perf_hooks');
 // const git = require('nodegit');
 const dataFilesPath = path.join(__dirname, '..', '..', 'data_files');
 var cdeData = {};
@@ -194,91 +197,22 @@ const indexing = (req, res) => {
 				"category": {
 					"type": "keyword"
 				},
-				"node":{
-					"type": "nested",
-					"properties": {
-						"n": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						},
-						"d": {
-							"type": "text",
-							"analyzer": "my_whitespace"
-						},
-						"ncit.c": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						},
-						"ncit.s.n": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						}
-					}
+				"node": {
+					"type": "keyword"
 				},
-				"prop":{
-					"type": "nested",
-					"properties": {
-						"n": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						},
-						"d": {
+				"prop_desc":{
+					"type": "text",
+					"analyzer": "my_whitespace"
+				},
+				"prop": {
+					"type": "text",
+					"fields": {
+						"have": {
 							"type": "text",
 							"analyzer": "my_whitespace"
-						},
-						"ncit.c": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						},
-						"ncit.s.n": {
-							"type": "text",
-							"fields": {
-								"have": {
-									"type": "text",
-									"analyzer": "my_whitespace"
-								}
-							},
-							"analyzer": "case_insensitive"
-						},
-						"cde":{
-							"properties": {
-								"c": {
-									"type": "text",
-									"analyzer": "case_insensitive"
-								}
-							}
 						}
-					}
+					},
+					"analyzer": "case_insensitive"
 				},
 				"enum":{
 					"type": "nested",
@@ -326,6 +260,10 @@ const indexing = (req, res) => {
 							}
 						}
 					}
+				},
+				"cde.id": {
+					"type": "text",
+					"analyzer": "case_insensitive"
 				}
 			}
 		}
@@ -393,8 +331,6 @@ const searchP = (req, res) => {
 	if(req.query.options){
 		option.match = req.query.options.indexOf("exact") !== -1 ? "exact" : "partial";
 		option.syn = req.query.options.indexOf('syn') !== -1 ? true : false;
-		option.n_syn = req.query.options.indexOf('n_syn') !== -1 ? true : false;
-		option.p_syn = req.query.options.indexOf('p_syn') !== -1 ? true : false;
 		option.desc = req.query.options.indexOf('desc') !== -1 ? true : false;
 		option.sources = req.query.sources? req.query.sources.split(',') : [];
 	}
@@ -402,8 +338,6 @@ const searchP = (req, res) => {
 		option = {
 			match: "partial",
 			syn: false,
-			n_syn: false,
-			p_syn: false,
 			desc: false
 		};
 		option.sources = [];
@@ -413,8 +347,7 @@ const searchP = (req, res) => {
 	} else {
 		let query = shared.generateQuery(keyword, option);
 		let highlight = shared.generateHighlight();
-		//console.log(JSON.stringify(query));
-		elastic.query(config.index_p, query, "enum", {}, result => {
+		elastic.query(config.index_p, query, "enum", highlight, result => {
 			if (result.hits === undefined) {
 				res.json({total: 0, returnList: [], timedOut: true});
 				//return handleError.error(res, result);
@@ -634,176 +567,6 @@ const preloadGDCDataMappings = (req, res) => {
 	});
 };
 
-const processGDCDictionaryEnumData = (prop) => {
-	const enums = prop.enum;
-	const enumsDef = prop.enumDef;
-	let result = enums ? enums.map((value) => {
-		let tmp = {};
-		tmp.n = value.replace(/(?:\r\n|\r|\n)/g, ' ');
-		if(enumsDef && enumsDef[tmp.n] && enumsDef[tmp.n].termDef){
-			let term = enumsDef[tmp.n].termDef;
-			if(term.source == "NCIt" && term.term_id !== ""){
-				tmp.gdc_ncit = term.term_id;
-			}
-			else{
-				tmp.gdc_ncit = "";
-			}
-		}
-		else{
-			tmp.gdc_ncit = "";
-		}
-		tmp.n = tmp.n.replace(/\s+/g,' ');
-		return tmp;
-	}) : [];
-	return result;
-};
-
-const processEVSSIPEnumData = (enums) => {
-	let result = {};
-	if(enums) {
-		enums.map((entry) => {
-			let value = entry.n.replace(/\s+/g,' ');
-			result[value] = [];
-			let ncits = entry.ncit;
-			ncits.map((ncit) => {
-				result[value].push(ncit.c);
-			});
-		});
-	}
-	return result;
-};
-
-const compareAllWithGDCDictionary = async function(req, res){
-	const params = req.query;
-	const searchText = params.searchText ? params.searchText : "";
-	const type = params.type ? params.type : "all";
-	const page = parseInt(params.page ? params.page : 1);
-	const pageSize = parseInt(params.pageSize ? params.pageSize : 25);
-	const from = page > 1 ? (page - 1) * pageSize : 0;
-	const limit = pageSize;
-	
-	let result = {};
-	result.pageInfo = {};
-	result.pageInfo.page = page;
-	result.pageInfo.pageSize = pageSize;
-	if(type == "all"){
-		let mappings = await shared.getCompareResult(searchText, from , limit);
-		result.data = mappings.data;
-		result.pageInfo.total = mappings.total;
-		res.json(result);
-	}
-	else if(type == "unmapped"){
-		let mappings = await shared.getCompareResult_unmapped(searchText, from , limit);
-		result.data = mappings.data;
-		result.pageInfo.total = mappings.total;
-		res.json(result);
-	}
-	else if(type == "mapped"){
-		let mappings = await shared.getCompareResult_mapped(searchText, from , limit);
-		result.data = mappings.data;
-		result.pageInfo.total = mappings.total;
-		res.json(result);
-	}
-	else if(type == "conflict"){
-		//conflict
-		let mappings = await shared.getCompareResult_conflict(searchText, from , limit);
-		result.data = mappings.data;
-		result.pageInfo.total = mappings.total;
-		res.json(result);
-	}
-	else{
-		let mappings = await shared.getCompareResult(searchText, from , limit);
-		result.data = mappings.data;
-		result.pageInfo.total = mappings.total;
-		res.json(result); 
-	}
-}
-
-const generateProperties = async function(req, res) {
-	const dataset = [];
-	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_values_updated.js');
-	let GDCDict = await shared.getGDCDictionaryByVersion("2.3.0");
-	
-	for(let node in GDCDict){
-		let entry = GDCDict[node];
-		let uid = node + "/" + entry.category + "/gdc";
-		if(entry.properties){
-			let prop_dict = entry.properties;
-			for(let prop in prop_dict){
-				let tmp = {};
-				tmp.category = entry.category;
-				tmp.node = node;
-				tmp.property = prop;
-				let dict = prop_dict[prop];
-				tmp.ncit = dict.termDef && dict.termDef.source  && dict.termDef.source == "NCIt" ? (dict.termDef.term_id || dict.termDef.cde_id ) : "";
-				dataset.push(tmp);
-			}
-		} 
-	}
-
-	// You can define styles as json object
-	const styles = {
-	cellPink: {
-		fill: {
-		fgColor: {
-			rgb: 'FF00FF00'
-		}
-		}
-	}
-	};
-	
-	//Array of objects representing heading rows (very top)
-	const heading = [
-	];
-	
-	//Here you specify the export structure
-	const specification = {
-		category: { // <- the key should match the actual data key
-			displayName: 'Category', // <- Here you specify the column header
-			headerStyle: styles.cellPink, // <- Header style
-			width: 220 // <- width in pixels
-		},
-		node: {
-			displayName: 'Node',
-			headerStyle: styles.cellPink,
-			width: '220' // <- width in chars (when the number is passed as string)
-		},
-		property: {
-			displayName: 'Property',
-			headerStyle: styles.cellPink,
-			width: 220 // <- width in pixels
-		},
-		ncit: {
-			displayName: 'NCIt Code',
-			headerStyle: styles.cellPink,
-			width: 220 // <- width in pixels
-		}
-	}
-	
-	// Define an array of merges. 1-1 = A:1
-	// The merges are independent of the data.
-	// A merge will overwrite all data _not_ in the top-left cell.
-	const merges = [];
-	
-	// Create the excel report.
-	// This function will return Buffer
-	const report = excel.buildExport(
-	[ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
-		{
-		name: 'Report', // <- Specify sheet name (optional)
-		heading: heading, // <- Raw heading array (optional)
-		merges: merges, // <- Merge cell ranges
-		specification: specification, // <- Report specification
-		data: dataset // <-- Report data
-		}
-	]
-	);
-	
-	// You can then return this straight
-	res.attachment('report.xlsx'); // This is sails.js specific (in general you need to set headers)
-	res.send(report);
-}
-
 module.exports = {
 	indexing,
 	suggestion,
@@ -814,7 +577,5 @@ module.exports = {
 	getGraphicalCTDCDictionary,
 	getValuesForGraphicalView,
 	preloadNCItSynonyms,
-	preloadGDCDataMappings,
-	compareAllWithGDCDictionary,
-	generateProperties
+	preloadGDCDataMappings
 };

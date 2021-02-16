@@ -441,9 +441,9 @@ const GDCValuesTable = (props) => {
         <TableCol xs={3}>
           {props.item.category}
           <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
+            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node}
               <TableUl>
-                <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+                <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
               </TableUl>
             </TableLi>
           </TableUl>

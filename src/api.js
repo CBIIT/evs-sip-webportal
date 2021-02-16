@@ -8,7 +8,7 @@ export const apiSuggest = async keyword => {
 };
 
 export const apiSearchAll = async(keyword, match, options, dataSources) => {
-  const opts = `${match}${options.syns === true ? `,syn,n_syn,p_syn` : ``}${options.desc === true ? `,desc` : ``}`;
+  const opts = `${match}${options.syns === true ? `,syn` : ``}${options.desc === true ? `,desc` : ``}`;
   let sources = [];
   for(let key in dataSources){
     if(dataSources[key]){
@@ -17,11 +17,6 @@ export const apiSearchAll = async(keyword, match, options, dataSources) => {
   }
   let encoded_keyword = keyword.replace(/\+/g, "%2B").replace(/\&/g, "%26");
   const response = await fetch(`${baseUrl}/all/p?keyword=${encoded_keyword}&options=${opts}&sources=${sources.join()}`);
-  return response.json();
-};
-
-export const apiGetGDCDataById = async(id) => {
-  const response = await fetch(`${baseUrl}/p/local/vs?id=${id}`);
   return response.json();
 };
 
@@ -42,11 +37,5 @@ export const apiGetCTDCDictionary = async() => {
 
 export const apiGetPropertyValues = async(id) => {
   const response = await fetch(`${baseUrl}/graph/p/vs?id=${id}`);
-  return response.json();
-};
-
-//Reports API's
-export const compareAllWithGDCDictionary = async(type ='all', page='1', pageSize='25') => {
-  const response = await fetch(`${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}`);
   return response.json();
 };

@@ -17,7 +17,6 @@ var allTerm = {};
 var icdo_mapping = shared.getICDOMapping();
 var icdo2Exclude = shared.getParentICDO();
 var gdc_values = {};
-var gdc_nodes = {};
 var allProperties = [];
 var unloaded_ncits = [];
 
@@ -30,32 +29,6 @@ var esClient = new elasticsearch.Client({
 const helper_gdc = (fileJson, syns) => {
   let properties = fileJson.properties;
 
-  let n_ncit = [];
-  if(gdc_nodes[fileJson.id]){
-    let n_tmp = {};
-    n_tmp.c = gdc_nodes[fileJson.id].toUpperCase();
-    n_tmp.l = (n_tmp.c !== '' && syns[n_tmp.c] ? syns[n_tmp.c].label : "");
-    let synonyms = (n_tmp.c !== '' && syns[n_tmp.c] ? syns[n_tmp.c].synonyms : []);
-    if(syns[n_tmp.c] == undefined){
-      console.log("Don't have the ncit data for:" + n_tmp.c);
-      if(unloaded_ncits.indexOf(n_tmp.c) == -1){
-        unloaded_ncits.push(n_tmp.c);
-      }
-    }
-    if(synonyms.length > 0){
-      n_tmp.s = [];
-      synonyms.forEach(s => {
-        n_tmp.s.push({
-          n: s.termName,
-          t: s.termGroup,
-          src: s.termSource
-        });
-      });
-    }
-    n_ncit.push(n_tmp);
-  }
-  
-
   for (var prop in properties) {
     let entry = {};
     let p = {};
@@ -63,16 +36,11 @@ const helper_gdc = (fileJson, syns) => {
 
     p.source = "gdc";
     p.category = fileJson.category;
-    p.node = {};
-    p.node.n = fileJson.id;
-    p.node.d = fileJson.description;
-    if(n_ncit.length > 0){
-      p.node.ncit = n_ncit;
-    }
-    p.prop = {};
-    p.prop.n = prop;
-    p.prop.d = entryRaw.description;
-    p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
+    p.node = fileJson.id;
+    p.node_desc = fileJson.description;
+    p.prop = prop;
+    p.prop_desc = entryRaw.description;
+    p.id = p.prop + "/" + p.node + "/" + p.category;
     p.type = entryRaw.type;
 
     entry.enum = extend([], entryRaw.enum || (entryRaw.items && entryRaw.items.enum ? entryRaw.items.enum : []));
@@ -83,34 +51,18 @@ const helper_gdc = (fileJson, syns) => {
     if (entry.termDef !== undefined && entry.termDef.cde_id !== undefined && entry.termDef.cde_id !== null) {
       entry.termDef.cde_id = '' + entry.termDef.cde_id;
       if (entry.termDef.source === 'caDSR') {
-        p.prop.cde = {};
-        p.prop.cde.c = entry.termDef.cde_id;
-        p.prop.cde.url = entry.termDef.term_url;
-        p.prop.cde.src = 'CDE';
+        p.cde = {};
+        p.cde.id = entry.termDef.cde_id;
+        //p.cde.v = entry.termDef.cde_version;
+        p.cde.url = entry.termDef.term_url;
+        p.cde.src = 'CDE';
       }
       else if(entry.termDef.source === 'NCIt'){
-        p.prop.ncit = [];
-        let tmp = {};
-        tmp.c = entry.termDef.cde_id.toUpperCase();
-        tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
-        let synonyms = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].synonyms : []);
-        if(syns[tmp.c] == undefined){
-          console.log("Don't have the ncit data for:" + tmp.c);
-          if(unloaded_ncits.indexOf(tmp.c) == -1){
-            unloaded_ncits.push(tmp.c);
-          }
-        }
-        if(synonyms.length > 0){
-          tmp.s = [];
-          synonyms.forEach(s => {
-            tmp.s.push({
-              n: s.termName,
-              t: s.termGroup,
-              src: s.termSource
-            });
-          });
-        }
-        p.prop.ncit.push(tmp);
+        p.cde = {};
+        p.cde.id = entry.termDef.cde_id;
+        //p.cde.v = entry.termDef.cde_version;
+        p.cde.url = entry.termDef.term_url;
+        p.cde.src = 'NCIt';
       }
     }
 
@@ -155,17 +107,17 @@ const helper_gdc = (fileJson, syns) => {
       let obj = entry.enumDef[key];
       let v = key.toLowerCase();
       if(v in values_ncit_mapping){
-        if(obj && obj.termDef && obj.termDef.term_id && values_ncit_mapping[v].indexOf(obj.termDef.term_id.trim()) == -1){
-          values_ncit_mapping[v].push(obj.termDef.term_id.trim());
-        }
+          if(obj && obj.termDef && obj.termDef.term_id && values_ncit_mapping[v].indexOf(obj.termDef.term_id.trim()) == -1){
+            values_ncit_mapping[v].push(obj.termDef.term_id.trim());
+          }
       }
     }
     */
+    
 
     // 2. work on conceptCode to further combind the ncit code
     // depracted as data mappings in conceptCode.js file have already been included in gdc_values.js file
-
-    let prop_full_name = p.category + '.' + p.node.n + '.' + p.prop.n;
+    let prop_full_name = p.category + '.' + p.node + '.' + p.prop;
 
     // 3. work on gdc_values to pull out icd-o-3 code and ncit code for all the values saved in the previous 3 steps
     if(prop_full_name in gdc_values){
@@ -264,30 +216,43 @@ const helper_gdc = (fileJson, syns) => {
 
     //building typeahead index, need to collect from properties, CDE ID, values, ICDO3 codes and NCIt codes
     //collect properties
-    if (p.prop.n in allTerm) {
+    if (p.prop in allTerm) {
       // if exist, then check if have the same type
-      let t = allTerm[p.prop.n];
+      let t = allTerm[p.prop];
       if (t.indexOf('property') === -1) {
         t.push('property');
       }
     } else {
       let t = [];
       t.push('property');
-      allTerm[p.prop.n] = t;
+      allTerm[p.prop] = t;
     }
 
     // collect CDE ID
-    if (p.prop.cde) {
-      let em = p.prop.cde.c.toString().trim().toLowerCase();
+    if (p.cde) {
+      let em = p.cde.id.toString().trim().toLowerCase();
       if (em in allTerm) {
         // if exist, then check if have the same type
         let t = allTerm[em];
-        if (t.indexOf('cde id') === -1) {
-          t.push('cde id');
+        if(p.cde.src == 'CDE'){
+          if (t.indexOf('cde id') === -1) {
+            t.push('cde id');
+          }
         }
+        else if(p.cde.src == 'NCIt'){
+          if (t.indexOf('ncit code') === -1) {
+            t.push('ncit code');
+          }
+        }
+        
       } else {
         let t = [];
-        t.push('cde id');
+        if(p.cde.src == 'NCIt'){
+          t.push('ncit code');
+        }
+        else{
+          t.push('cde id');
+        }
         allTerm[em] = t;
       }
     }
@@ -328,44 +293,7 @@ const helper_gdc = (fileJson, syns) => {
       }
     }
 
-    //collect node and properties' NCIt codes
-    if (p.node.ncit) {
-      let ncits = p.node.ncit;
-      ncits.forEach(n => {
-        let em = n.c.trim().toLowerCase();
-        if (em in allTerm) {
-          //if exist, then check if have the same type
-          let t = allTerm[em];
-          if (t.indexOf("ncit code") == -1) {
-            t.push("ncit code");
-          }
-        } else {
-          let t = [];
-          t.push("ncit code");
-          allTerm[em] = t;
-        }
-      });
-    }
-    if (p.prop.ncit) {
-      let ncits = p.prop.ncit;
-      ncits.forEach(n => {
-        let em = n.c.trim().toLowerCase();
-        if (em in allTerm) {
-          //if exist, then check if have the same type
-          let t = allTerm[em];
-          if (t.indexOf("ncit code") == -1) {
-            t.push("ncit code");
-          }
-        } else {
-          let t = [];
-          t.push("ncit code");
-          allTerm[em] = t;
-        }
-      });
-    }
-    
-
-    //collect values' NCIt codes
+    //collect NCIt codes
     if (Object.keys(values_ncit_mapping).length > 0) {
       for (let key in values_ncit_mapping) {
         let ncits = values_ncit_mapping[key];
@@ -420,13 +348,11 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
 
       p.source = "icdc";
       p.category = dict[node_name].category;
-      p.node = {};
-      p.node.n = dict[node_name].id;
-      p.node.d = dict[node_name].description || "";
-      p.prop = {};
-      p.prop.n = prop;
-      p.prop.d = entryRaw.description;
-      p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
+      p.node = dict[node_name].id;
+      p.node_desc = dict[node_name].description || "";
+      p.prop = prop;
+      p.prop_desc = entryRaw.description;
+      p.id = p.prop + "/" + p.node + "/" + p.category;
 
       if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
@@ -515,49 +441,25 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
       }
 
       if(mappingEntryRaw && mappingEntryRaw.p_n_code){
-        /*
         p.cde = {};
         p.cde.id = mappingEntryRaw.p_n_code;
         //p.cde.v = entry.termDef.cde_version;
         p.cde.url = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=" + p.cde.id;
         p.cde.src = 'NCIt';
-        */
-        p.prop.ncit = [];
-        let tmp = {};
-        tmp.c = mappingEntryRaw.p_n_code.toUpperCase();
-        tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
-        let synonyms = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].synonyms : []);
-        if(syns[tmp.c] == undefined){
-          console.log("Don't have the ncit data for:" + tmp.c);
-          if(unloaded_ncits.indexOf(tmp.c) == -1){
-            unloaded_ncits.push(tmp.c);
-          }
-        }
-        if(synonyms.length > 0){
-          tmp.s = [];
-          synonyms.forEach(s => {
-            tmp.s.push({
-              n: s.termName,
-              t: s.termGroup,
-              src: s.termSource
-            });
-          });
-        }
-        p.prop.ncit.push(tmp);
       }
 
       //building typeahead index, need to collect from properties, CDE ID, values, NCIt codes
       //collect properties
-      if (p.prop.n in allTerm) {
+      if (p.prop in allTerm) {
         // if exist, then check if have the same type
-        let t = allTerm[p.prop.n];
+        let t = allTerm[p.prop];
         if (t.indexOf('property') === -1) {
           t.push('property');
         }
       } else {
         let t = [];
         t.push('property');
-        allTerm[p.prop.n] = t;
+        allTerm[p.prop] = t;
       }
 
       //collect values
@@ -577,26 +479,7 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
         });
       }
 
-      //collect properties' NCIt codes
-      if (p.prop.ncit) {
-        let ncits = p.prop.ncit;
-        ncits.forEach(n => {
-          let em = n.c.trim().toLowerCase();
-          if (em in allTerm) {
-            //if exist, then check if have the same type
-            let t = allTerm[em];
-            if (t.indexOf("ncit code") == -1) {
-              t.push("ncit code");
-            }
-          } else {
-            let t = [];
-            t.push("ncit code");
-            allTerm[em] = t;
-          }
-        });
-      }
-
-      //collect values' NCIt codes
+      //collect NCIt codes
       if (ncits.length > 0) {
           ncits.forEach(em => {
             if(em == undefined || em == '') return;
@@ -629,31 +512,6 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
         mapping_dict[prop.p_name] = prop;
       });
     }
-
-    let n_ncit = [];
-    if(ctdc_mapping[node_name] && ctdc_mapping[node_name].n_n_code){
-      let n_tmp = {};
-      n_tmp.c = ctdc_mapping[node_name].n_n_code.toUpperCase();
-      n_tmp.l = (n_tmp.c !== '' && syns[n_tmp.c] ? syns[n_tmp.c].label : "");
-      let synonyms = (n_tmp.c !== '' && syns[n_tmp.c] ? syns[n_tmp.c].synonyms : []);
-      if(syns[n_tmp.c] == undefined){
-        console.log("Don't have the ncit data for:" + n_tmp.c);
-        if(unloaded_ncits.indexOf(n_tmp.c) == -1){
-          unloaded_ncits.push(n_tmp.c);
-        }
-      }
-      if(synonyms.length > 0){
-        n_tmp.s = [];
-        synonyms.forEach(s => {
-          n_tmp.s.push({
-            n: s.termName,
-            t: s.termGroup,
-            src: s.termSource
-          });
-        });
-      }
-      n_ncit.push(n_tmp);
-    }
     
 
     for (var prop in properties) {
@@ -666,16 +524,11 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
 
       p.source = "ctdc";
       p.category = dict[node_name].category;
-      p.node = {};
-      p.node.n = dict[node_name].id;
-      p.node.d = dict[node_name].description || "";
-      if(n_ncit.length > 0){
-        p.node.ncit = n_ncit;
-      }
-      p.prop = {};
-      p.prop.n = prop;
-      p.prop.d = entryRaw.description;
-      p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
+      p.node = dict[node_name].id;
+      p.node_desc = dict[node_name].description || "";
+      p.prop = prop;
+      p.prop_desc = entryRaw.description;
+      p.id = p.prop + "/" + p.node + "/" + p.category;
 
       if(["string", "number", "integer", "boolean", "TBD", "datetime"].indexOf(entryRaw.type) > -1){
         p.type = entryRaw.type;
@@ -764,49 +617,25 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
       }
 
       if(mappingEntryRaw && mappingEntryRaw.p_n_code){
-        /*
         p.cde = {};
         p.cde.id = mappingEntryRaw.p_n_code;
         //p.cde.v = entry.termDef.cde_version;
         p.cde.url = "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=" + p.cde.id;
         p.cde.src = 'NCIt';
-        */
-        p.prop.ncit = [];
-        let tmp = {};
-        tmp.c = mappingEntryRaw.p_n_code.toUpperCase();
-        tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
-        let synonyms = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].synonyms : []);
-        if(syns[tmp.c] == undefined){
-          console.log("Don't have the ncit data for:" + tmp.c);
-          if(unloaded_ncits.indexOf(tmp.c) == -1){
-            unloaded_ncits.push(tmp.c);
-          }
-        }
-        if(synonyms.length > 0){
-          tmp.s = [];
-          synonyms.forEach(s => {
-            tmp.s.push({
-              n: s.termName,
-              t: s.termGroup,
-              src: s.termSource
-            });
-          });
-        }
-        p.prop.ncit.push(tmp);
       }
 
       //building typeahead index, need to collect from properties, CDE ID, values, NCIt codes
       //collect properties
-      if (p.prop.n in allTerm) {
+      if (p.prop in allTerm) {
         // if exist, then check if have the same type
-        let t = allTerm[p.prop.n];
+        let t = allTerm[p.prop];
         if (t.indexOf('property') === -1) {
           t.push('property');
         }
       } else {
         let t = [];
         t.push('property');
-        allTerm[p.prop.n] = t;
+        allTerm[p.prop] = t;
       }
 
       //collect values
@@ -826,43 +655,7 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
         });
       }
 
-      //collect node and properties' NCIt codes
-      if (p.node.ncit) {
-        let ncits = p.node.ncit;
-        ncits.forEach(n => {
-          let em = n.c.trim().toLowerCase();
-          if (em in allTerm) {
-            //if exist, then check if have the same type
-            let t = allTerm[em];
-            if (t.indexOf("ncit code") == -1) {
-              t.push("ncit code");
-            }
-          } else {
-            let t = [];
-            t.push("ncit code");
-            allTerm[em] = t;
-          }
-        });
-      }
-      if (p.prop.ncit) {
-        let ncits = p.prop.ncit;
-        ncits.forEach(n => {
-          let em = n.c.trim().toLowerCase();
-          if (em in allTerm) {
-            //if exist, then check if have the same type
-            let t = allTerm[em];
-            if (t.indexOf("ncit code") == -1) {
-              t.push("ncit code");
-            }
-          } else {
-            let t = [];
-            t.push("ncit code");
-            allTerm[em] = t;
-          }
-        });
-      }
-
-      //collect values' NCIt codes
+      //collect NCIt codes
       if (ncits.length > 0) {
           ncits.forEach(em => {
             if(em == undefined || em == '') return;
@@ -888,7 +681,6 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
 const bulkIndex = async function(next){
 
   gdc_values = shared.readGDCValues();
-  gdc_nodes = shared.readGDCNodes();
   let syns = shared.readNCItDetails();
 
 
@@ -934,6 +726,8 @@ const bulkIndex = async function(next){
     }
   }
 
+
+
   //build property index
   let propertyBody = [];
 
@@ -942,7 +736,7 @@ const bulkIndex = async function(next){
       ap.prop_desc = ap.prop_desc + " (" + ap.cde.src + " - " + ap.cde.id + ")"
     }
     let doc = extend(ap, {});
-    doc.id = ap.prop.n + "/" + ap.node.n + "/" + ap.category + "/" + ap.source;
+    doc.id = ap.prop + "/" + ap.node + "/" + ap.category + "/" + ap.source;
     propertyBody.push({
       index: {
         _index: config.index_p,
@@ -1024,55 +818,6 @@ const query = (index, dsl, source_excludes, highlight, next) => {
 }
 
 exports.query = query;
-
-const query_all = async function(index, dsl, source_excludes, highlight) {
-  var body = {
-    size: 10000,
-    from: 0
-  };
-  body.query = dsl;
-  if (highlight) {
-    body.highlight = highlight;
-  }
-  /*
-  body.sort = [{
-    "category": "asc"
-  }, {
-    "node": "asc"
-  }];
-  */
-  
-  if(source_excludes == ""){
-    /*
-    esClient.search({index: index, body: body}, (err, data) => {
-      if (err) {
-        logger.error(err);
-        next(err);
-      } else {
-        next(data);
-      }
-    });
-    */
-    const result = await esClient.search({index: index, body: body});
-    return result;
-  }
-  else{
-    /*
-    esClient.search({index: index, "_source_excludes": source_excludes, body: body}, (err, data) => {
-      if (err) {
-        logger.error(err);
-        next(err);
-      } else {
-        next(data);
-      }
-    });
-    */
-   const result = await esClient.search({index: index, "_source_excludes": source_excludes, body: body});
-   return result;
-  }
-}
-
-exports.query_all = query_all;
 
 const suggest = (index, suggest, next) => {
   let body = {};

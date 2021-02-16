@@ -416,9 +416,9 @@ const CTDCValuesTable = (props) => {
       <TableCol xs={3}>
         {item.category}
         <TableUl>
-          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node.n}
+          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property.n}</TableLi>
+              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property}</TableLi>
             </TableUl>
           </TableLi>
         </TableUl>
