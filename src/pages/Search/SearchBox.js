@@ -8,7 +8,7 @@ import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
-  padding: 3rem 0;
+  padding: 3rem 0 2rem 0;
   background-color: var(--gray-bkgd);
 `;
 
@@ -104,11 +104,12 @@ const SearchOptionsLabel = styled.label`
 `;
 
 const FormGroupStyled = styled(Form.Group)`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: flex-start;
   margin-left: 3rem;
   margin-bottom: 0;
+  width: 33rem;
 `;
 
 const FormGroupRadio = styled(Form.Group)`
@@ -146,7 +147,7 @@ const CheckboxLabel = styled.label`
   color: #1C1C1C;
   width: 11rem;
   inline-size: 11rem;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   cursor: pointer;
 `;
 
@@ -279,7 +280,8 @@ const SearchBox = (props) => {
   let [selectDataSource, setSelectDataSource] = useState({
     ctdc: false,
     gdc: false,
-    icdc: false
+    icdc: false,
+    pcdc: false
   });
 
   let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
@@ -371,13 +373,15 @@ const SearchBox = (props) => {
       setSelectDataSource({
         ctdc: true,
         gdc: true,
-        icdc: true
+        icdc: true,
+        pcdc: true
       });
     } else {
       setSelectDataSource({
         ctdc: false,
         gdc: false,
-        icdc: false
+        icdc: false,
+        false: false
       });
     }
     setIsToggleOnSource(!isToggleOnSource);
@@ -478,6 +482,13 @@ const SearchBox = (props) => {
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Integrated Canine Data Commons <SpanNormal>(ICDC)</SpanNormal>
+                </CheckboxLabel>
+                <CheckboxLabel>
+                  <CheckboxInput name="pcdc" type="checkbox" checked={selectDataSource['pcdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxSpan>
+                    <CheckboxIcon icon={faCheck}/>
+                  </CheckboxSpan>
+                  Pediatric Cancer Data Commons <SpanNormal>(PCDC)</SpanNormal>
                 </CheckboxLabel>
               </FormGroupStyled>
             </SearchOptions>
