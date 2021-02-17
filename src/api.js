@@ -35,6 +35,11 @@ export const apiGetCTDCDictionary = async() => {
   return response.json();
 };
 
+export const apiGetPCDCDictionary = async() => {
+  const response = await fetch(`${baseUrl}/graph/pcdc`);
+  return response.json();
+};
+
 export const apiGetPropertyValues = async(id) => {
   const response = await fetch(`${baseUrl}/graph/p/vs?id=${id}`);
   return response.json();
