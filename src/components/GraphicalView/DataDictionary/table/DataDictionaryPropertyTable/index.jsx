@@ -212,6 +212,9 @@ class DataDictionaryPropertyTable extends React.Component {
                   else if(original_source == 'ctdc' || original_source == 'icdc'){
                     hasValues = property.type && Array.isArray(property.type);
                   }
+                  else if(original_source == 'pcdc'){
+                    hasValues = property.type == "enum";
+                  }
                   else{
                     hasValues = false;
                   }

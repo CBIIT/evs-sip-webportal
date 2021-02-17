@@ -602,6 +602,7 @@ const preloadPCDCDataMappings = async (req, res) => {
 					node = node.substring(0, length - 6).trim();
 					//console.log(node);
 				}
+				node = shared.convert2Key(node);
 				if(!(node in mappings)){
 					mappings[node] = {};
 					mappings[node].n_n_code = item[1];

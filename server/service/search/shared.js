@@ -727,14 +727,13 @@ const generatePCDCData = (dc, linkInfo) => {
   let relationships = linkInfo.Relationships;
   const dataList={};
  
-  for (let [name, value] of Object.entries(dc)) {
+  for (let [key, value] of Object.entries(dc)) {
     //console.log(key);
     //console.log(value.Category);
-    let key = convert2Key(name);
     const item = {}
     item["$schema"] = "http://json-schema.org/draft-06/schema#";
     item["id"] = key;
-    item["title"] = name;
+    item["title"] = convert2Title(key);
     if("Category" in value){
       item["category"] = "AML";
     }
@@ -905,5 +904,6 @@ module.exports = {
     getGraphicalGDCDictionary,
     getGraphicalICDCDictionary,
     getGraphicalCTDCDictionary,
-    getGraphicalPCDCDictionary
+    getGraphicalPCDCDictionary,
+    convert2Key
 };

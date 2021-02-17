@@ -1,5 +1,5 @@
 {
-  "Subject Characteristics": {
+  "subject_characteristics": {
     "n_n_code": "C173229",
     "n_PT": "Subject Characteristics Table",
     "properties": [
@@ -87,7 +87,7 @@
       }
     ]
   },
-  "Off Protocol Therapy Study": {
+  "off_protocol_therapy_study": {
     "n_n_code": "C173197",
     "n_PT": "Off Protocol Therapy Study Table",
     "properties": [
@@ -202,7 +202,7 @@
       }
     ]
   },
-  "Disease Phase Timing": {
+  "disease_phase_timing": {
     "n_n_code": "C173198",
     "n_PT": "Disease Phase Timing Table",
     "properties": [
@@ -246,7 +246,7 @@
       }
     ]
   },
-  "Course Timing": {
+  "course_timing": {
     "n_n_code": "C173199",
     "n_PT": "Course Timing Table",
     "properties": [
@@ -311,7 +311,7 @@
       }
     ]
   },
-  "Demographics": {
+  "demographics": {
     "n_n_code": "C173230",
     "n_PT": "Demographics Table",
     "properties": [
@@ -382,7 +382,7 @@
       }
     ]
   },
-  "Medical History": {
+  "medical_history": {
     "n_n_code": "C173201",
     "n_PT": "Medical History Table",
     "properties": [
@@ -420,7 +420,7 @@
       }
     ]
   },
-  "Survival Characteristics": {
+  "survival_characteristics": {
     "n_n_code": "C173231",
     "n_PT": "Survival Characteristics Table",
     "properties": [
@@ -595,7 +595,7 @@
       }
     ]
   },
-  "Disease Characteristics": {
+  "disease_characteristics": {
     "n_n_code": "C173232",
     "n_PT": "Disease Characteristics",
     "properties": [
@@ -864,7 +864,7 @@
       }
     ]
   },
-  "Myeloid Sarcoma Involvement": {
+  "myeloid_sarcoma_involvement": {
     "n_n_code": "C173204",
     "n_PT": "Myeloid Sarcoma Involvement Table",
     "properties": [
@@ -964,7 +964,7 @@
       }
     ]
   },
-  "Vitals": {
+  "vitals": {
     "n_n_code": "C173209",
     "n_PT": "Vitals Table",
     "properties": [
@@ -1070,7 +1070,7 @@
       }
     ]
   },
-  "Lab": {
+  "lab": {
     "n_n_code": "C173206",
     "n_PT": "Lab Table",
     "properties": [
@@ -1243,7 +1243,7 @@
       }
     ]
   },
-  "Molecular Analysis": {
+  "molecular_analysis": {
     "n_n_code": "C173233",
     "n_PT": "Molecular Analysis Table",
     "properties": [
@@ -1546,7 +1546,7 @@
       }
     ]
   },
-  "Radiation Therapy": {
+  "radiation_therapy": {
     "n_n_code": "C173244",
     "n_PT": "Radiation Therapy Table",
     "properties": [
@@ -1651,7 +1651,7 @@
       }
     ]
   },
-  "Transfusion Medicine Procedures": {
+  "transfusion_medicine_procedures": {
     "n_n_code": "C173245",
     "n_PT": "Transfusion Medicine Procedures Table",
     "properties": [
@@ -1755,7 +1755,7 @@
       }
     ]
   },
-  "Cellular Immunotherapy": {
+  "cellular_immunotherapy": {
     "n_n_code": "C173242",
     "n_PT": "Cellular Immunotherapy Table",
     "properties": [
@@ -1844,7 +1844,7 @@
       }
     ]
   },
-  "Total Dose": {
+  "total_dose": {
     "n_n_code": "C173234",
     "n_PT": "Total Dose Table",
     "properties": [
@@ -2017,7 +2017,7 @@
       }
     ]
   },
-  "Concomitant Medication": {
+  "concomitant_medication": {
     "n_n_code": "C173243",
     "n_PT": "Concomitant Medication Table",
     "properties": [
@@ -2124,7 +2124,7 @@
       }
     ]
   },
-  "Stem Cell Transplant": {
+  "stem_cell_transplant": {
     "n_n_code": "C173235",
     "n_PT": "Stem Cell Transplant Table",
     "properties": [
@@ -2420,7 +2420,7 @@
       }
     ]
   },
-  "Minimal Residual Disease": {
+  "minimal_residual_disease": {
     "n_n_code": "C173236",
     "n_PT": "Minimal Residual Disease Table",
     "properties": [
@@ -2671,7 +2671,7 @@
       }
     ]
   },
-  "Subject Response": {
+  "subject_response": {
     "n_n_code": "C173208",
     "n_PT": "Subject Response Table",
     "properties": [
@@ -2832,7 +2832,7 @@
       }
     ]
   },
-  "Echocardiogram": {
+  "echocardiogram": {
     "n_n_code": "C173237",
     "n_PT": "Echocardiogram Table",
     "properties": [
@@ -2928,7 +2928,7 @@
       }
     ]
   },
-  "Adverse Events": {
+  "adverse_events": {
     "n_n_code": "C173217",
     "n_PT": "Adverse Events Table",
     "properties": [
@@ -3220,7 +3220,7 @@
       }
     ]
   },
-  "Secondary Malignant Neoplasm": {
+  "secondary_malignant_neoplasm": {
     "n_n_code": "C173218",
     "n_PT": "Secondary Malignant Neoplasm Table",
     "properties": [
