@@ -321,11 +321,6 @@ const readGDCValues = () => {
 	return JSON.parse(content);
 }
 
-const readConceptCode = () => {
-    let content = fs.readFileSync(dataFilesDir + "/conceptCode.js").toString();
-	return JSON.parse(content);
-}
-
 const readCDEData = () => {
     let content = fs.readFileSync(dataFilesDir + "/cdeData.js").toString();
 	content = content.replace(/}{/g, ",");
@@ -339,9 +334,15 @@ const readCTDCMapping = () => {
 }
 
 const readICDCMapping = () => {
-    let content = fs.readFileSync(dataFilesPath + "/ICDC/ICDC_Mappings.json").toString();
+  let content = fs.readFileSync(dataFilesPath + "/ICDC/ICDC_Mappings.json").toString();
   content = content.replace(/}{/g, ",");
   return JSON.parse(content);
+}
+
+const readPCDCMapping = () => {
+  let content = fs.readFileSync(dataFilesPath + "/PCDC/pcdc-model.json").toString();
+content = content.replace(/}{/g, ",");
+return JSON.parse(content);
 }
 
 const getICDOMapping = () => {
@@ -788,10 +789,10 @@ module.exports = {
     readNCItDetails,
     preProcess,
     readGDCValues,
-    readConceptCode,
     readCDEData,
     readCTDCMapping,
     readICDCMapping,
+    readPCDCMapping,
     getICDOMapping,
     getParentICDO,
     generateICDOHaveWords,
