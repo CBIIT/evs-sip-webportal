@@ -4,6 +4,8 @@ import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import GDCValuesTable from './GDCValuesTable';
 import CTDCValuesTable from './CTDCValuesTable';
 import ICDCValuesTable from './ICDCValuesTable';
+import PCDCValuesTable1 from './PCDCValuesTable1';
+import PCDCValuesTable2 from './PCDCValuesTable2';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -61,6 +63,12 @@ const SingleTabsController = (props) => {
                 <Nav.Item>
                   <NavLinkStyled eventKey="icdc">ICDC</NavLinkStyled>
                 </Nav.Item>
+                <Nav.Item>
+                  <NavLinkStyled eventKey="pcdc1">PCDC</NavLinkStyled>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLinkStyled eventKey="pcdc2">PCDC</NavLinkStyled>
+                </Nav.Item>
               </NavStyled>
             </TabNavsCol>
             <Col sm={12}>
@@ -73,6 +81,12 @@ const SingleTabsController = (props) => {
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
                   <ICDCValuesTable values={props.source}/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="pcdc1">
+                  <PCDCValuesTable1 values={props.source}/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="pcdc2">
+                  <PCDCValuesTable2 values={props.source}/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
