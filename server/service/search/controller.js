@@ -400,6 +400,12 @@ const getGraphicalCTDCDictionary = (req, res) => {
 	res.json(jsonData);
 }
 
+const getGraphicalPCDCDictionary = (req, res) => {
+	
+	let jsonData = shared.getGraphicalPCDCDictionary();
+	res.json(jsonData);
+}
+
 const getValuesForGraphicalView = async function(req, res) {
 	let uid = req.query.id;
 	let result = cache.getValue("values:"+uid);
@@ -596,6 +602,7 @@ const preloadPCDCDataMappings = async (req, res) => {
 					node = node.substring(0, length - 6).trim();
 					//console.log(node);
 				}
+				node = shared.convert2Key(node);
 				if(!(node in mappings)){
 					mappings[node] = {};
 					mappings[node].n_n_code = item[1];
@@ -698,6 +705,7 @@ module.exports = {
 	getGraphicalGDCDictionary,
 	getGraphicalICDCDictionary,
 	getGraphicalCTDCDictionary,
+	getGraphicalPCDCDictionary,
 	getValuesForGraphicalView,
 	preloadNCItSynonyms,
 	preloadGDCDataMappings,

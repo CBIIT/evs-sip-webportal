@@ -13,6 +13,7 @@ router.get('/all/p', controller.searchP);
 router.get('/graph/gdc', controller.getGraphicalGDCDictionary);
 router.get('/graph/icdc', controller.getGraphicalICDCDictionary);
 router.get('/graph/ctdc', controller.getGraphicalCTDCDictionary);
+router.get('/graph/pcdc', controller.getGraphicalPCDCDictionary);
 router.get('/graph/p/vs', controller.getValuesForGraphicalView);
 router.get('/p/local/vs', controller.getGDCData);
 
@@ -20,7 +21,7 @@ router.get('/p/local/vs', controller.getGDCData);
 //for preload only
 //router.get('/preloadNCItSynonyms', controller.preloadNCItSynonyms);
 //router.get('/preloadGDCDataMappings', controller.preloadGDCDataMappings);
-router.get('/preloadPCDCDataMappings', controller.preloadPCDCDataMappings);
+//router.get('/preloadPCDCDataMappings', controller.preloadPCDCDataMappings);
 
 
 module.exports = router;

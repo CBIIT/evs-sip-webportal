@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReduxDataDictionaryTable from './table/DataDictionaryTable';
 import DataDictionaryGraph from './graph/DataDictionaryGraph/.';
+import ReduxDataDictionaryTable from './table/DataDictionaryTable';
 import ReduxDictionarySearcher from './search/DictionarySearcher/.';
 import ReduxDictionarySearchHistory from './search/DictionarySearchHistory/.';
-import { apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary  } from '../../../api';
+import { apiGetGDCDictionary, apiGetICDCDictionary, apiGetCTDCDictionary, apiGetPCDCDictionary  } from '../../../api';
 import { getSearchResult, getSearchSummary} from './search/DictionarySearcher/searchHelper'; 
 import './DataDictionary.css';
 
@@ -37,6 +37,9 @@ class DataDictionary extends React.Component {
       else if(this.props.graphType == 'ctdc'){
         dict = await apiGetCTDCDictionary();
       }
+      else if(this.props.graphType == 'pcdc'){
+        dict = await apiGetPCDCDictionary();
+      }
       else if(this.props.graphType == 'gdc_readonly'){
         dict = await apiGetGDCDictionary();
       }
@@ -45,6 +48,9 @@ class DataDictionary extends React.Component {
       }
       else if(this.props.graphType == 'ctdc_readonly'){
         dict = await apiGetCTDCDictionary();
+      }
+      else if(this.props.graphType == 'pcdc_readonly'){
+        dict = await apiGetPCDCDictionary();
       }
       else{
         dict = await apiGetGDCDictionary();
