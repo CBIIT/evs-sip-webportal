@@ -678,6 +678,114 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
   }
 }
 
+const helper_pcdc = (pcdc_mapping, syns) => {
+  for(let node_name in pcdc_mapping){
+    let properties = pcdc_mapping[node_name].properties;
+
+    properties.map((prop) => {
+      let p = {};
+      let ncits = [];
+      let values = [];
+      p.source = "pcdc";
+      p.category = "AML";
+      p.node = node_name;
+      p.node_desc = "";
+      p.prop = prop.p_name;
+      p.prop_desc = prop.p_desc;
+      p.id = p.prop + "/" + p.node + "/" + p.category;
+      p.type = prop.p_type;
+
+      p.enum = [];
+      
+      prop.values.map((v) => {
+        let tmp = {};
+        tmp.n = v.v_name;
+        tmp.ncit = [];
+        if(v.v_n_code.trim() != ""){
+          let dict = {};
+          dict.c = v.v_n_code.trim();
+          dict.l = syns[dict.c] ? syns[dict.c].label : "";
+          let synonyms = syns[dict.c] ? syns[dict.c].synonyms : [];
+          if(syns[dict.c] == undefined){
+            console.log("Don't have the ncit data for:" + dict.c);
+            if(unloaded_ncits.indexOf(dict.c) == -1){
+              unloaded_ncits.push(dict.c);
+            }
+          }
+          if(synonyms.length > 0){
+            dict.s = [];
+            synonyms.forEach(s => {
+              dict.s.push({
+                n: s.termName,
+                t: s.termGroup,
+                src: s.termSource
+              });
+            });
+          }
+          tmp.ncit.push(dict);
+          ncits.push(dict.c.toLowerCase());
+        }
+        p.enum.push(tmp);
+        values.push(tmp.n.toLowerCase());
+      });
+      
+      ncits = _.uniq(ncits);
+
+      //building typeahead index, need to collect from properties, CDE ID, values, NCIt codes
+      //collect properties
+      if (p.prop in allTerm) {
+        // if exist, then check if have the same type
+        let t = allTerm[p.prop];
+        if (t.indexOf('property') === -1) {
+          t.push('property');
+        }
+      } else {
+        let t = [];
+        t.push('property');
+        allTerm[p.prop] = t;
+      }
+
+      //collect values
+      if(values.length > 0){
+        values.forEach(function(em){
+          if (em in allTerm) {
+            // if exist, then check if have the same type
+            let t = allTerm[em];
+            if (t.indexOf("value") == -1) {
+              t.push("value");
+            }
+          } else {
+            let t = [];
+            t.push("value");
+            allTerm[em] = t;
+          }
+        });
+      }
+
+      //collect NCIt codes
+      if (ncits.length > 0) {
+          ncits.forEach(em => {
+            if(em == undefined || em == '') return;
+            if (em in allTerm) {
+              //if exist, then check if have the same type
+              let t = allTerm[em];
+              if (t.indexOf("ncit code") == -1) {
+                t.push("ncit code");
+              }
+            } else {
+              let t = [];
+              t.push("ncit code");
+              allTerm[em] = t;
+            }
+          });
+      }
+
+      allProperties.push(p);
+
+    });
+  }
+}
+
 const bulkIndex = async function(next){
 
   gdc_values = shared.readGDCValues();
@@ -704,6 +812,9 @@ const bulkIndex = async function(next){
   let ctdcData = shared.getGraphicalCTDCDictionary();
   let ctdc_mapping = shared.readCTDCMapping();
   helper_ctdc(ctdcData, ctdc_mapping, syns);
+
+  let pcdc_mapping = shared.readPCDCMapping();
+  helper_pcdc(pcdc_mapping, syns);
 
   cache.setValue("unloaded_ncits", unloaded_ncits, config.item_ttl);
 

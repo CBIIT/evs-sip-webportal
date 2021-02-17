@@ -334,9 +334,15 @@ const readCTDCMapping = () => {
 }
 
 const readICDCMapping = () => {
-    let content = fs.readFileSync(dataFilesPath + "/ICDC/ICDC_Mappings.json").toString();
+  let content = fs.readFileSync(dataFilesPath + "/ICDC/ICDC_Mappings.json").toString();
   content = content.replace(/}{/g, ",");
   return JSON.parse(content);
+}
+
+const readPCDCMapping = () => {
+  let content = fs.readFileSync(dataFilesPath + "/PCDC/pcdc-model.json").toString();
+content = content.replace(/}{/g, ",");
+return JSON.parse(content);
 }
 
 const getICDOMapping = () => {
@@ -786,6 +792,7 @@ module.exports = {
     readCDEData,
     readCTDCMapping,
     readICDCMapping,
+    readPCDCMapping,
     getICDOMapping,
     getParentICDO,
     generateICDOHaveWords,

@@ -3,13 +3,12 @@ const handleError = require('../../components/handleError');
 const logger = require('../../components/logger');
 const cache = require('../../components/cache');
 const config = require('../../config');
-const readXlsxFile = require('read-excel-file/node');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('yamljs');
-const xlsx = require('node-xlsx');
 const _ = require('lodash');
+const Excel = require('exceljs');
 const shared = require('./shared');
 const {
   performance
@@ -520,51 +519,175 @@ const preloadNCItSynonyms = (req, res) => {
 	
 };
 
-const preloadGDCDataMappings = (req, res) => {
+const preloadGDCDataMappings = async (req, res) => {
 	let file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'GDC_Data_Mappings.xlsx');
 	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_values_updated.js');
-	console.log(file_path);
+	console.log(file_path.replace(/\\/g,"/"));
 	let mappings = {};
-	readXlsxFile(file_path).then((rows) => {
-		  //console.log(rows[0]);
-		  //console.log(rows[1]);
-		  //console.log(rows[2]);
-		  rows.forEach((item, idx) => {
-		  	if(idx > 0){
-		  		console.log(item[2] + ":" + idx);
-		  		let prop = item[0] + '.' + item[1] + '.' + item[2];
-		  		if(! (prop in mappings)){
-		  			mappings[prop] = [];
-		  		}
-		  		//"nm":"Neoplasm, benign","i_c":"8000/0","n_c":"C3677","term_type":"PT"
-		  		if(item[3] != null){
-		  			let tmp = {};
-		  			tmp.nm = item[3];
-		  			if(item[5] == null){
-		  				tmp.n_c = "";
-		  			}
-		  			else{
-		  				tmp.n_c = item[5].split('|');
-		  			}
-		  			tmp.i_c = item[6] == null ? "" : item[6];
-		  			if(item[7] == null){
-		  				tmp.i_c_s = "";
-		  			}
-		  			else{
-		  				tmp.i_c_s = item[7].split('|');
-		  			}
-		  			tmp.term_type = item[8] == null ? "" : item[8];
-		  			mappings[prop].push(tmp);
-		  		}
-		  		
-		  	}
-		  });
-
-		fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
-			if (err) return logger.error(err);
-		});
-	  	res.json({"result": "success"});
+	const workbook = new Excel.Workbook();
+	await workbook.xlsx.readFile(file_path.replace(/\\/g,"/"));
+	let worksheet = workbook.worksheets[0];
+	let rows = worksheet.getRows(0);
+	//console.log(rows[0]);
+	//console.log(rows[1]);
+	//console.log(rows[2]);
+	rows.forEach((item, idx) => {
+	if(idx > 0){
+		console.log(item[2] + ":" + idx);
+		let prop = item[0] + '.' + item[1] + '.' + item[2];
+		if(! (prop in mappings)){
+			mappings[prop] = [];
+		}
+		//"nm":"Neoplasm, benign","i_c":"8000/0","n_c":"C3677","term_type":"PT"
+		if(item[3] != null){
+			let tmp = {};
+			tmp.nm = item[3];
+			if(item[5] == null){
+				tmp.n_c = "";
+			}
+			else{
+				tmp.n_c = item[5].split('|');
+			}
+			tmp.i_c = item[6] == null ? "" : item[6];
+			if(item[7] == null){
+				tmp.i_c_s = "";
+			}
+			else{
+				tmp.i_c_s = item[7].split('|');
+			}
+			tmp.term_type = item[8] == null ? "" : item[8];
+			mappings[prop].push(tmp);
+		}
+		
+	}
 	});
+
+	fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
+		if (err) return logger.error(err);
+	});
+	res.json({"result": "success"});
+};
+
+const preloadPCDCDataMappings = async (req, res) => {
+	let file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'PCDC_Terminology.xlsx');
+	
+	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'pcdc-model.json');
+	console.log(file_path.replace(/\\/g,"/"));
+	let mappings = {};
+	const workbook = new Excel.Workbook();
+	await workbook.xlsx.readFile(file_path.replace(/\\/g,"/"));
+	const worksheets = workbook.worksheets;
+
+	for(let i = 0; i< worksheets.length ; i++){
+		let worksheet = worksheets[i];
+		if(worksheet.name !== "AML"){
+			continue;
+		}
+
+		let latest_p = "";
+		let latest_p_values = [];
+		let count_v = 0, count_p = 0;
+		worksheet.eachRow(function(row, rowNumber) {
+			let item = row.values;
+			if(rowNumber > 1){
+				let node = item[2];
+				let length = node.length;
+				if(length >= 6 && node.lastIndexOf(" Table") == (length - 6)){
+					node = node.substring(0, length - 6).trim();
+					//console.log(node);
+				}
+				if(!(node in mappings)){
+					mappings[node] = {};
+					mappings[node].n_n_code = item[1];
+					mappings[node].n_PT = item[2]; 
+					mappings[node].properties = [];
+				}
+				let props = mappings[node].properties;
+				
+				if(item[11] == ""){
+					//property row
+					let prop = {};
+					prop.p_name = item[6].trim();
+					prop.p_n_code = item[3].trim();
+					prop.p_desc = item[9].trim();
+					if(item[15] == "code"){
+						prop.p_type = "enum";
+					}
+					else if(item[15] != ""){
+						prop.p_type = item[15];
+					}
+					else{
+						prop.p_type = "object";
+					}
+					prop.values = [];
+					if(item[15] == "code" && item[13] != ""){
+						latest_p = prop.p_name;
+						latest_p_values = item[13].split(" || ");
+					}
+					count_p++;
+					props.push(prop);
+				}
+				else{
+					//value row
+					let has = false;
+					props.map((prop) => {
+						if(prop.p_name == latest_p){
+							if(latest_p_values.indexOf(item[6]) > -1){
+								let value = {};
+								value.v_name = item[6];
+								value.v_n_code = item[3];
+								value.v_PT = "";
+								prop.values.push(value);
+								count_v++;
+								has = true;
+							}
+							else{
+								if(item[11].indexOf(" || ") > -1){
+									let items = item[11].split(" || ");
+									items.map((itm) => {
+										if(prop.p_name == itm){
+											let value = {};
+											value.v_name = item[6];
+											value.v_n_code = item[3];
+											value.v_PT = "";
+											prop.values.push(value);
+											count_v++;
+											has = true;
+										}
+									});
+									
+								}
+								else{
+									if(prop.p_name == item[11]){
+										let value = {};
+										value.v_name = item[6];
+										value.v_n_code = item[3];
+										value.v_PT = "";
+										prop.values.push(value);
+										count_v++;
+										has = true;
+									}
+								}
+							}
+						}
+					});
+								
+					if(!has){
+
+						console.log("Do not find any properties:", rowNumber);
+					}
+				}
+
+				
+			}
+		});
+		console.log(count_p, count_v);
+	}
+	fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
+		if (err) return logger.error(err);
+	});
+	res.json({"result": "success"});
+	
 };
 
 module.exports = {
@@ -577,5 +700,6 @@ module.exports = {
 	getGraphicalCTDCDictionary,
 	getValuesForGraphicalView,
 	preloadNCItSynonyms,
-	preloadGDCDataMappings
+	preloadGDCDataMappings,
+	preloadPCDCDataMappings
 };

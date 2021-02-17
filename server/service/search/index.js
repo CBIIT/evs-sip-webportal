@@ -20,5 +20,7 @@ router.get('/p/local/vs', controller.getGDCData);
 //for preload only
 //router.get('/preloadNCItSynonyms', controller.preloadNCItSynonyms);
 //router.get('/preloadGDCDataMappings', controller.preloadGDCDataMappings);
+router.get('/preloadPCDCDataMappings', controller.preloadPCDCDataMappings);
+
 
 module.exports = router;
