@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , useContext} from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button} from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionToggle, AccordionContext} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -104,15 +104,12 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const RowCenter = styled(Row)`
-  height: 180px;
-  align-content: center;
-  justify-content: center;
-  color: #888;
-`;
-
 const AccordionStyled = styled(Accordion)`
   width: 100%;
+`;
+const AccordionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 
@@ -121,7 +118,7 @@ const PCDCValuesTable2 = (props) => {
   let values = [];
 
   items.forEach((data) => {
-    if(data._source.source !== 'gdc') return;
+    if(data._source.source !== 'pcdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -212,14 +209,6 @@ const PCDCValuesTable2 = (props) => {
       values.push(obj);
     }
   });
-
-  const PlaceholderComponent = () => {
-    return (<Col sm={12}>
-        <RowCenter>
-          <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-        </RowCenter>
-      </Col>);
-  }
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -442,9 +431,9 @@ const PCDCValuesTable2 = (props) => {
     return(
       <TableRow key={props.index}>
         <TableCol xs={3}>
-          {props.item.node.n}
+          {props.item.node}
           <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
           </TableUl>
         </TableCol>
 
@@ -494,13 +483,28 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
-  // const LazyLoadContainer = (props) => {
-  //   return (
-  //     <LazyLoad height={180} once overflow={true} offset={200} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-gdc">
-  //       {props.children}
-  //     </LazyLoad>
-  //   );
-  // }
+
+  const ContextAwareToggle = ({ children, eventKey, callback }) => {
+    const currentEventKey = useContext(AccordionContext);
+  
+    const decoratedOnClick = useAccordionToggle(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+  
+    const isCurrentEventKey = currentEventKey === eventKey;
+  
+    return (
+      <Button variant="link" onClick={decoratedOnClick}>
+        {isCurrentEventKey === true
+          ? <FontAwesomeIcon icon={faAngleUp}/>
+          : <FontAwesomeIcon icon={faAngleDown}/>
+        }
+      </Button>
+    );
+  }
+  
+  
 
   if (values.length !== 0) {
     return (
@@ -514,13 +518,15 @@ const PCDCValuesTable2 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-
         <AccordionStyled>
           <Card>
             <Card.Header>
-              <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                Project Name 1
-              </Accordion.Toggle>
+              <AccordionHeader>
+                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                  AML
+                </Accordion.Toggle>
+                <ContextAwareToggle eventKey="0"/>
+              </AccordionHeader>
             </Card.Header>
             <Accordion.Collapse eventKey="0">
               <Col xs={12}>
@@ -532,9 +538,12 @@ const PCDCValuesTable2 = (props) => {
           </Card>
           <Card>
             <Card.Header>
-              <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                Project Name 2
-              </Accordion.Toggle>
+              <AccordionHeader>
+                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                  EWS
+                </Accordion.Toggle>
+                <ContextAwareToggle eventKey="1"/>
+              </AccordionHeader>
             </Card.Header>
             <Accordion.Collapse eventKey="1">
               <Col xs={12}>

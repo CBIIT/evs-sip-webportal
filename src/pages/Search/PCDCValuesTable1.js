@@ -108,12 +108,12 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-const RowCenter = styled(Row)`
-    height: 180px;
-    align-content: center;
-    justify-content: center;
-    color: #888;
-`;
+// const RowCenter = styled(Row)`
+//     height: 180px;
+//     align-content: center;
+//     justify-content: center;
+//     color: #888;
+// `;
 
 const DivCenter = styled.div`
   text-align: center;
@@ -132,7 +132,7 @@ const PCDCValuesTable1 = (props) => {
   let values = [];
 
   items.forEach((data) => {
-    if(data._source.source !== 'gdc') return;
+    if(data._source.source !== 'pcdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -445,9 +445,9 @@ const PCDCValuesTable1 = (props) => {
     return(
       <TableRow key={props.index}>
         <TableColLeft xs={3}>
-          {props.item.node.n}
+          {props.item.node}
           <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
           </TableUl>
         </TableColLeft>
 
@@ -514,7 +514,7 @@ const PCDCValuesTable1 = (props) => {
       <TableBody>
         <TableCol xs={2}>
           <DivCenter>
-            <CodeSpan>Project Name</CodeSpan>
+            <CodeSpan>AML</CodeSpan>
           </DivCenter>
         </TableCol>
         <Col xs={10}>
