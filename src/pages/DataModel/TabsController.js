@@ -4,6 +4,7 @@ import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
 import GDCModel from './GDCModel';
 import CTDCModel from './CTDCModel';
 import ICDCModel from './ICDCModel';
+import PCDCModel from './PCDCModel';
 
 const TabNavsCol = styled(Col)`
   display: flex;
@@ -77,7 +78,7 @@ const NavStyled = styled(Nav)`
 `;
 
 const NavItemStyled = styled(Nav.Item)`
-  width: 25rem;
+  width: 20rem;
   margin-right: -4rem;
 `;
 
@@ -95,6 +96,11 @@ const TabsController = (props) => {
             <TabNavsCol sm={12}>
               <NavStyled variant="tabs">
               <NavItemStyled>
+                  <NavLinkStyled eventKey="pcdc">
+                    <NavSpan>Pediatric Cancer <br/>Data Commons</NavSpan>
+                  </NavLinkStyled>
+                </NavItemStyled>
+              <NavItemStyled>
                   <NavLinkStyled eventKey="icdc">
                     <NavSpan>Integrated Canine <br/>Data Commons</NavSpan>
                   </NavLinkStyled>
@@ -106,7 +112,7 @@ const TabsController = (props) => {
                 </NavItemStyled>
                 <NavItemStyled>
                   <NavLinkStyled eventKey="gdc">
-                    <NavSpan>Genomic Data Commons</NavSpan>
+                    <NavSpan>Genomic <br/>Data Commons</NavSpan>
                   </NavLinkStyled>
                 </NavItemStyled>
               </NavStyled>
@@ -121,6 +127,9 @@ const TabsController = (props) => {
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="icdc">
                   <ICDCModel/>
+                </Tab.Pane>
+                <Tab.Pane unmountOnExit={true} eventKey="pcdc">
+                  <PCDCModel/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
