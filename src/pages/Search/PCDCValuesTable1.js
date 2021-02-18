@@ -79,6 +79,10 @@ const TableValues = styled(Col)`
 `;
 
 const TableColLeft = styled(TableCol)`
+  border-bottom: 1px solid #BBC5CD;
+`;
+
+const TableColRight = styled(TableCol)`
   border-left: 1px solid #BBC5CD;
 `;
 
@@ -444,12 +448,12 @@ const PCDCValuesTable1 = (props) => {
 
     return(
       <TableRow key={props.index}>
-        <TableColLeft xs={3}>
+        <TableColRight xs={3}>
           {props.item.node}
           <TableUl>
             <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
           </TableUl>
-        </TableColLeft>
+        </TableColRight>
 
         <TableValues xs={9}>
           <div>
@@ -512,11 +516,11 @@ const PCDCValuesTable1 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <TableCol xs={2}>
+        <TableColLeft xs={2}>
           <DivCenter>
             <CodeSpan>AML</CodeSpan>
           </DivCenter>
-        </TableCol>
+        </TableColLeft>
         <Col xs={10}>
           {values.map((item, index) => 
             <ValueItem item={item} key={index} />
