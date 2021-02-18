@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('yamljs');
 const _ = require('lodash');
-const Excel = require('exceljs');
+//const Excel = require('exceljs');
 const shared = require('./shared');
 const {
   performance
@@ -525,7 +525,9 @@ const preloadNCItSynonyms = (req, res) => {
 	
 };
 
+
 const preloadGDCDataMappings = async (req, res) => {
+	/*
 	let file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'GDC_Data_Mappings.xlsx');
 	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_values_updated.js');
 	console.log(file_path.replace(/\\/g,"/"));
@@ -571,10 +573,12 @@ const preloadGDCDataMappings = async (req, res) => {
 	fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
 		if (err) return logger.error(err);
 	});
+	*/
 	res.json({"result": "success"});
 };
 
 const preloadPCDCDataMappings = async (req, res) => {
+	/*
 	let file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'PCDC_Terminology.xlsx');
 	
 	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'pcdc-model.json');
@@ -693,9 +697,11 @@ const preloadPCDCDataMappings = async (req, res) => {
 	fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
 		if (err) return logger.error(err);
 	});
+	*/
 	res.json({"result": "success"});
 	
 };
+
 
 module.exports = {
 	indexing,
