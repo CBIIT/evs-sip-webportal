@@ -74,15 +74,18 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
-`;
+// const TableValues = styled(Col)`
+//   border-left: 1px solid #BBC5CD;
+// `;
 
 const TableColLeft = styled(TableCol)`
   border-bottom: 1px solid #BBC5CD;
 `;
 
-const TableColRight = styled(TableCol)`
+const TableColRight = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   border-left: 1px solid #BBC5CD;
 `;
 
@@ -111,13 +114,6 @@ const IndicatorContent = styled.div`
   right: 0;
   transform: translateY(-50%);
 `;
-
-// const RowCenter = styled(Row)`
-//     height: 180px;
-//     align-content: center;
-//     justify-content: center;
-//     color: #888;
-// `;
 
 const DivCenter = styled.div`
   text-align: center;
@@ -448,14 +444,14 @@ const PCDCValuesTable1 = (props) => {
 
     return(
       <TableRow key={props.index}>
-        <TableColRight xs={3}>
+        <TableCol xs={3}>
           {props.item.node}
           <TableUl>
             <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
           </TableUl>
-        </TableColRight>
+        </TableCol>
 
-        <TableValues xs={9}>
+        <TableColRight xs={9}>
           <div>
             {props.item.vs.slice(0,5).map((value, index) => {
               return(
@@ -496,10 +492,57 @@ const PCDCValuesTable1 = (props) => {
               </TableCol>
             </TableRowValue>
           }
-        </TableValues>
+        </TableColRight>
       </TableRow>
     );
   }
+
+  const ValueItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return (
+      <>
+        {props.values.slice(0,5).map((item, index) => 
+          <ValueItem item={item} key={index} />
+        )}
+        {props.values.length > 5 && 
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div>
+              {props.values.map((item, index) => {
+                if (index >= 5) {
+                  return(
+                    <ValueItem item={item} key={index} />
+                  )
+                }
+                return null;
+              })}
+            </div>
+          </Collapse>
+        }
+        {props.values.length > 5 && 
+          <TableRow data-class="TableRow">
+            <TableCol data-class="TableCol" xs={12}>
+            {isToggleOn === false ? (
+              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
+              </a>
+            ) : (
+              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleUp}/> Show Less
+              </a>
+            )}
+            </TableCol>
+          </TableRow>
+        }
+      </>
+    );
+  }
+
 
   if (values.length !== 0) {
     return (
@@ -516,15 +559,27 @@ const PCDCValuesTable1 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <TableColLeft xs={2}>
-          <DivCenter>
-            <CodeSpan>AML</CodeSpan>
-          </DivCenter>
-        </TableColLeft>
-        <Col xs={10}>
-          {values.map((item, index) => 
-            <ValueItem item={item} key={index} />
-          )}
+        <Col xs={12}>
+          <Row>
+            <TableColLeft xs={2}>
+              <DivCenter>
+                <CodeSpan>AML</CodeSpan>
+              </DivCenter>
+            </TableColLeft>
+            <TableColRight xs={10}>
+              <ValueItems values={values}/>
+            </TableColRight>
+          </Row>
+          <Row>
+            <TableColLeft xs={2}>
+              <DivCenter>
+                <CodeSpan>EWS</CodeSpan>
+              </DivCenter>
+            </TableColLeft>
+            <TableColRight xs={10}>
+              <ValueItems values={values}/>
+            </TableColRight>
+          </Row>
         </Col>
       </TableBody>
     </ContainerStyled>
