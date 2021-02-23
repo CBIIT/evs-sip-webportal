@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
@@ -74,10 +74,6 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-// const TableValues = styled(Col)`
-//   border-left: 1px solid #BBC5CD;
-// `;
-
 const TableColLeft = styled(TableCol)`
   border-bottom: 1px solid #BBC5CD;
 `;
@@ -92,7 +88,6 @@ const TableColRight = styled(Col)`
 const ColRight = styled(Col)`
   text-align: right;
 `;
-
 
 const Indicator = styled.div`
   position: relative;
@@ -121,9 +116,11 @@ const DivCenter = styled.div`
 `;
 
 const CodeSpan = styled.span`
+  display: block;
   color: #475162;
   font-size: 1.25rem;
   font-weight: bold;
+  margin-bottom: 1rem;
 `;
 
 
@@ -506,7 +503,16 @@ const PCDCValuesTable1 = (props) => {
     };
 
     return (
-      <>
+      <Row>
+        <TableColLeft xs={2}>
+          <DivCenter>
+            <CodeSpan>{props.project}</CodeSpan>
+            <Button variant="outline-secondary" onClick={ToggleTableHandler}>
+              {isToggleOn === false ? 'See More' : 'Show Less'}
+            </Button>
+          </DivCenter>
+        </TableColLeft>
+        <TableColRight xs={10}>
         {props.values.slice(0,5).map((item, index) => 
           <ValueItem item={item} key={index} />
         )}
@@ -539,7 +545,8 @@ const PCDCValuesTable1 = (props) => {
             </TableCol>
           </TableRow>
         }
-      </>
+        </TableColRight>
+      </Row>
     );
   }
 
@@ -560,26 +567,8 @@ const PCDCValuesTable1 = (props) => {
       </TableThead>
       <TableBody>
         <Col xs={12}>
-          <Row>
-            <TableColLeft xs={2}>
-              <DivCenter>
-                <CodeSpan>AML</CodeSpan>
-              </DivCenter>
-            </TableColLeft>
-            <TableColRight xs={10}>
-              <ValueItems values={values}/>
-            </TableColRight>
-          </Row>
-          <Row>
-            <TableColLeft xs={2}>
-              <DivCenter>
-                <CodeSpan>EWS</CodeSpan>
-              </DivCenter>
-            </TableColLeft>
-            <TableColRight xs={10}>
-              <ValueItems values={values}/>
-            </TableColRight>
-          </Row>
+          <ValueItems values={values} project={'AML'}/>
+          <ValueItems values={values} project={'EWS'}/>
         </Col>
       </TableBody>
     </ContainerStyled>
