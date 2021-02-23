@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
@@ -74,18 +74,20 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
+const TableColLeft = styled(TableCol)`
+  border-bottom: 1px solid #BBC5CD;
 `;
 
-const TableColLeft = styled(TableCol)`
+const TableColRight = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   border-left: 1px solid #BBC5CD;
 `;
 
 const ColRight = styled(Col)`
   text-align: right;
 `;
-
 
 const Indicator = styled.div`
   position: relative;
@@ -108,22 +110,17 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
-// const RowCenter = styled(Row)`
-//     height: 180px;
-//     align-content: center;
-//     justify-content: center;
-//     color: #888;
-// `;
-
 const DivCenter = styled.div`
   text-align: center;
   padding: 1rem 0;
 `;
 
 const CodeSpan = styled.span`
+  display: block;
   color: #475162;
   font-size: 1.25rem;
   font-weight: bold;
+  margin-bottom: 1rem;
 `;
 
 
@@ -444,14 +441,14 @@ const PCDCValuesTable1 = (props) => {
 
     return(
       <TableRow key={props.index}>
-        <TableColLeft xs={3}>
+        <TableCol xs={3}>
           {props.item.node}
           <TableUl>
             <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property}</TableLi>
           </TableUl>
-        </TableColLeft>
+        </TableCol>
 
-        <TableValues xs={9}>
+        <TableColRight xs={9}>
           <div>
             {props.item.vs.slice(0,5).map((value, index) => {
               return(
@@ -492,10 +489,67 @@ const PCDCValuesTable1 = (props) => {
               </TableCol>
             </TableRowValue>
           }
-        </TableValues>
+        </TableColRight>
       </TableRow>
     );
   }
+
+  const ValueItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return (
+      <Row>
+        <TableColLeft xs={2}>
+          <DivCenter>
+            <CodeSpan>{props.project}</CodeSpan>
+            <Button variant="outline-secondary" onClick={ToggleTableHandler}>
+              {isToggleOn === false ? 'See More' : 'Show Less'}
+            </Button>
+          </DivCenter>
+        </TableColLeft>
+        <TableColRight xs={10}>
+        {props.values.slice(0,5).map((item, index) => 
+          <ValueItem item={item} key={index} />
+        )}
+        {props.values.length > 5 && 
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div>
+              {props.values.map((item, index) => {
+                if (index >= 5) {
+                  return(
+                    <ValueItem item={item} key={index} />
+                  )
+                }
+                return null;
+              })}
+            </div>
+          </Collapse>
+        }
+        {props.values.length > 5 && 
+          <TableRow data-class="TableRow">
+            <TableCol data-class="TableCol" xs={12}>
+            {isToggleOn === false ? (
+              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
+              </a>
+            ) : (
+              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleUp}/> Show Less
+              </a>
+            )}
+            </TableCol>
+          </TableRow>
+        }
+        </TableColRight>
+      </Row>
+    );
+  }
+
 
   if (values.length !== 0) {
     return (
@@ -512,15 +566,9 @@ const PCDCValuesTable1 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <TableCol xs={2}>
-          <DivCenter>
-            <CodeSpan>AML</CodeSpan>
-          </DivCenter>
-        </TableCol>
-        <Col xs={10}>
-          {values.map((item, index) => 
-            <ValueItem item={item} key={index} />
-          )}
+        <Col xs={12}>
+          <ValueItems values={values} project={'AML'}/>
+          <ValueItems values={values} project={'EWS'}/>
         </Col>
       </TableBody>
     </ContainerStyled>

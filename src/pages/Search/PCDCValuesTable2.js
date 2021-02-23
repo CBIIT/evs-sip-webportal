@@ -483,6 +483,51 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
+  const ValueItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return (
+      <>
+        {props.values.slice(0,5).map((item, index) => 
+          <ValueItem item={item} key={index} />
+        )}
+        {props.values.length > 5 && 
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div>
+              {props.values.map((item, index) => {
+                if (index >= 5) {
+                  return(
+                    <ValueItem item={item} key={index} />
+                  )
+                }
+                return null;
+              })}
+            </div>
+          </Collapse>
+        }
+        {props.values.length > 5 && 
+          <TableRow data-class="TableRow">
+            <TableCol data-class="TableCol" xs={12}>
+            {isToggleOn === false ? (
+              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
+              </a>
+            ) : (
+              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleUp}/> Show Less
+              </a>
+            )}
+            </TableCol>
+          </TableRow>
+        }
+      </>
+    );
+  }
 
   const ContextAwareToggle = ({ children, eventKey, callback }) => {
     const currentEventKey = useContext(AccordionContext);
@@ -504,8 +549,6 @@ const PCDCValuesTable2 = (props) => {
     );
   }
   
-  
-
   if (values.length !== 0) {
     return (
     <ContainerStyled>
@@ -518,7 +561,7 @@ const PCDCValuesTable2 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <AccordionStyled>
+        <AccordionStyled defaultActiveKey="0">
           <Card>
             <Card.Header>
               <AccordionHeader>
@@ -530,9 +573,7 @@ const PCDCValuesTable2 = (props) => {
             </Card.Header>
             <Accordion.Collapse eventKey="0">
               <Col xs={12}>
-                {values.map((item, index) => 
-                  <ValueItem item={item} key={index} />
-                )}
+                <ValueItems values={values}/>
               </Col>
             </Accordion.Collapse>
           </Card>
@@ -547,9 +588,7 @@ const PCDCValuesTable2 = (props) => {
             </Card.Header>
             <Accordion.Collapse eventKey="1">
               <Col xs={12}>
-                {values.map((item, index) => 
-                  <ValueItem item={item} key={index} />
-                )}
+                <ValueItems values={values}/>
               </Col>
             </Accordion.Collapse>
           </Card>
