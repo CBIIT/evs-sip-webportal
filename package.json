@@ -58,7 +58,7 @@
     "string-similarity": "^3.0.0",
     "styled-components": "^5.1.1",
     "underscore": "^1.8.3",
-    "viz.js": "2.0.0",
+    "viz.js": "^2.1.2",
     "winston": "^2.4.4",
     "winston-daily-rotate-file": "^4.5.0",
     "yamljs": "^0.3.0"

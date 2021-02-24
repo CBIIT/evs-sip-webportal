@@ -3,5 +3,49 @@ Relationships:
     Mul: many_to_one
     Ends:
       - Src: adverse_events
-        Dst: off_protocol_therapy_study
+        Dst: project
+      - Src: subject_characteristics
+        Dst: project
+      - Src: off_protocol_therapy_study
+        Dst: project
+      - Src: course_timing
+        Dst: project
+      - Src: disease_phase_timing
+        Dst: project
+      - Src: demographics
+        Dst: project
+      - Src: medical_history
+        Dst: project
+      - Src: survival_characteristics
+        Dst: project
+      - Src: disease_characteristics
+        Dst: project
+      - Src: myeloid_sarcoma_involvement
+        Dst: project
+      - Src: vitals
+        Dst: project
+      - Src: lab
+        Dst: project
+      - Src: molecular_analysis
+        Dst: project
+      - Src: radiation_therapy
+        Dst: project
+      - Src: transfusion_medicine_procedures
+        Dst: project
+      - Src: cellular_immunotherapy
+        Dst: project
+      - Src: total_dose
+        Dst: project
+      - Src: concomitant_medication
+        Dst: project
+      - Src: stem_cell_transplant
+        Dst: project
+      - Src: minimal_residual_disease
+        Dst: project
+      - Src: subject_response
+        Dst: project
+      - Src: echocardiogram
+        Dst: project
+      - Src: secondary_malignant_neoplasm
+        Dst: project
     Props: null

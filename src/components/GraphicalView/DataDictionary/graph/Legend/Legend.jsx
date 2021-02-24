@@ -56,7 +56,7 @@ class Legend extends React.Component {
                             )
                           }
                         </span>
-                        <span className='data-dictionary-graph-legend__text'>{capitalizeFirstLetter(category)}</span>
+                        <span className='data-dictionary-graph-legend__text'>{this.props.graphType.indexOf("pcdc") == 0 ? category.toUpperCase() : capitalizeFirstLetter(category)}</span>
                       </div>
                     );
                   })
@@ -83,10 +83,12 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
+  graphType: PropTypes.string,
 };
 
 Legend.defaultProps = {
   items: [],
+  graphType: "gdc"
 };
 
 export default Legend;
