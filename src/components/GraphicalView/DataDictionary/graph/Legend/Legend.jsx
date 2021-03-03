@@ -33,10 +33,21 @@ class Legend extends React.Component {
                   title='close' 
                   tabIndex={0}
                 />
-                <div className='data-dictionary-graph-legend__item body'>
-                  <i className="data-dictionary-graph-legend__icon fas fa-minus"></i>
-                  <span className='data-dictionary-graph-legend__text'>Relationships</span>
-                </div>
+                {
+                  this.props.graphType.indexOf("pcdc") == 0 ? 
+                      (
+                        <div className='data-dictionary-graph-legend__item body'>
+                          <span style={{fontWeight: "bold"}}>Projects</span>
+                        </div>
+                      )
+                      : 
+                      (
+                        <div className='data-dictionary-graph-legend__item body'>
+                          <i className="data-dictionary-graph-legend__icon fas fa-minus"></i>
+                          <span className='data-dictionary-graph-legend__text'>Relationships</span>
+                        </div>
+                      )
+                }
                 {
                   this.props.items.map((category) => {
                     const itemColor = getCategoryColor(category);

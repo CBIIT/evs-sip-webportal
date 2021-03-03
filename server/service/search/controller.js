@@ -12,8 +12,6 @@ const shared = require("./shared");
 const { performance } = require("perf_hooks");
 // const git = require('nodegit');
 const dataFilesPath = path.join(__dirname, "..", "..", "data_files");
-var cdeData = {};
-var gdcData = {};
 var syns = {};
 
 const indexing = (req, res) => {

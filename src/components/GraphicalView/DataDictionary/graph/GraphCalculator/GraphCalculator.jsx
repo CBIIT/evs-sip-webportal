@@ -21,6 +21,7 @@ class GraphCalculator extends React.Component {
         this.props.dictionary,
         this.props.countsSearch,
         this.props.linksSearch,
+        this.props.graphType,
       ).then((layoutResult) => {
         this.props.onGraphLayoutCalculated(layoutResult);
         const legendItems = getAllTypes(layoutResult.nodes);
@@ -143,6 +144,7 @@ class GraphCalculator extends React.Component {
 }
 
 GraphCalculator.propTypes = {
+  graphType:PropTypes.string,
   dictionary: PropTypes.object,
   countsSearch: PropTypes.array,
   linksSearch: PropTypes.array,
@@ -160,6 +162,7 @@ GraphCalculator.propTypes = {
 };
 
 GraphCalculator.defaultProps = {
+  graphType: "gdc",
   dictionary: {},
   countsSearch: [],
   linksSearch: [],

@@ -797,32 +797,34 @@ const generatePCDCData = (dc, linkInfo) => {
       item["properties"] = {};
     }
 
-    for (var propertyName in relationships) {
-      const linkItem = {};
-      const label = propertyName;
-      const multiplicity = relationships[propertyName].Mul;
-      const required = false;
-      for (var i = 0; i < relationships[propertyName].Ends.length; i++) {
-        if (relationships[propertyName].Ends[i].Src == key) {
-          const backref = relationships[propertyName].Ends[i].Src;
-          const name = relationships[propertyName].Ends[i].Dst;
-          const target = relationships[propertyName].Ends[i].Dst;
-
-          linkItem["name"] = name;
-          linkItem["backref"] = backref;
-          linkItem["label"] = label;
-          linkItem["target_type"] = target;
-          linkItem["required"] = required;
-
-          link.push(linkItem);
-        }
-      }
-    }
-
     item["links"] = link;
 
     dataList[key] = item;
   }
+
+  /*
+  for (var propertyName in relationships) {
+    const linkItem = {};
+    const label = propertyName;
+    const multiplicity = relationships[propertyName].Mul;
+    const required = false;
+    for (var i = 0; i < relationships[propertyName].Ends.length; i++) {
+      if (relationships[propertyName].Ends[i].Src == key) {
+        const backref = relationships[propertyName].Ends[i].Src;
+        const name = relationships[propertyName].Ends[i].Dst;
+        const target = relationships[propertyName].Ends[i].Dst;
+
+        linkItem["name"] = name;
+        linkItem["backref"] = backref;
+        linkItem["label"] = label;
+        linkItem["target_type"] = target;
+        linkItem["required"] = required;
+
+        link.push(linkItem);
+      }
+    }
+  }
+  */
 
   return dataList;
 };
@@ -915,6 +917,10 @@ const getGraphicalPCDCDictionary = () => {
     //result = generatePCDCData(jsonData, {Relationships: {}});
     cache.setValue("pcdc_dict", result, config.item_ttl);
   }
+
+  let nodes = Object.keys(result);
+
+  /*
   let project = {
     id: "project",
     title: "Project",
@@ -931,6 +937,34 @@ const getGraphicalPCDCDictionary = () => {
   };
 
   result.project = project;
+  */
+
+  //create fake relationship for graphical display purpose
+
+  nodes.forEach((n, i) => {
+    if (i - 4 >= 0) {
+      let linkItem = {};
+      linkItem["name"] = nodes[i - 4];
+      linkItem["backref"] = n;
+      linkItem["label"] = "of_pcdc";
+      linkItem["target_type"] = nodes[i - 4];
+      linkItem["required"] = false;
+
+      result[n].links.push(linkItem);
+    } else {
+      /*
+      let linkItem = {};
+      linkItem["name"] = "project";
+      linkItem["backref"] = n;
+      linkItem["label"] = "of_pcdc";
+      linkItem["target_type"] = "project";
+      linkItem["required"] = false;
+
+      result[n].links.push(linkItem);
+      */
+    }
+  });
+
   return result;
 };
 
