@@ -1,9 +1,10 @@
 import React, { useState , useContext} from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionToggle, AccordionContext} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -140,7 +141,7 @@ const CodeSpan = styled.span`
 
 const PCDCValuesTable2 = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
-  let values = [];
+  let valuesObj = {};
 
   items.forEach((data) => {
     if(data._source.source !== 'pcdc') return;
@@ -156,9 +157,7 @@ const PCDCValuesTable2 = (props) => {
       obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
       obj.vs = [];
       let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-      // if (highlightCdeId !== undefined) {
-      //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
-      // }
+
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -231,7 +230,13 @@ const PCDCValuesTable2 = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
       // valuesCount += obj.vs.length;
-      values.push(obj);
+
+      if(valuesObj[obj.category] === undefined) {
+        valuesObj[obj.category] = [obj];
+      }
+      valuesObj[obj.category].push(obj);
+
+      valuesObj = sortAlphabeticallyObject(valuesObj);
     }
   });
 
@@ -604,21 +609,25 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
-  if (values.length !== 0) {
+  if (!_.isEmpty(valuesObj)) {
     return (
     <ContainerStyled>
       <TableThead>
-        <Col xs={3}>
+        <Col xs={2}>
+          <TableTh>Project</TableTh>
+        </Col>
+        <Col xs={2}>
           <TableTh>Node / Property</TableTh>
         </Col>
-        <Col xs={9}>
+        <Col xs={8}>
           <TableTh>Matched PCDC Values</TableTh>
         </Col>
       </TableThead>
       <TableBody>
         <AccordionStyled defaultActiveKey="0">
-          <AccordionValueItems project="AML" values={values} eventKey="0"/>
-          <AccordionValueItems project="EWS" values={values} eventKey="1"/>
+          {Object.entries(valuesObj).map((result, index) =>
+            <AccordionValueItems project={result[0]} values={result[1]} eventKey={index.toString()}/>
+          )}
         </AccordionStyled>
       </TableBody>
     </ContainerStyled>
