@@ -54,10 +54,13 @@ class GraphDrawer extends React.Component {
   render() {
     if (!this.props.layoutInitialized) return (<React.Fragment />);
     const boundingBoxLength = this.props.graphBoundingBox[2][0];
-    const fittingScale = Math.min(
+    let fittingScale = Math.min(
       this.props.canvasWidth,
       this.props.canvasHeight,
     ) / boundingBoxLength;
+    if(this.props.graphType.indexOf('pcdc') == 0){
+      fittingScale = fittingScale * 0.8;
+    }
     const fittingTransX = Math.abs(
       (boundingBoxLength - (this.props.canvasWidth / fittingScale)) / 2,
     );
