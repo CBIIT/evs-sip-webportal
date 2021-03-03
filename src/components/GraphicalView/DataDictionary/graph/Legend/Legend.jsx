@@ -33,10 +33,21 @@ class Legend extends React.Component {
                   title='close' 
                   tabIndex={0}
                 />
-                <div className='data-dictionary-graph-legend__item body'>
-                  <i className="data-dictionary-graph-legend__icon fas fa-minus"></i>
-                  <span className='data-dictionary-graph-legend__text'>Relationships</span>
-                </div>
+                {
+                  this.props.graphType.indexOf("pcdc") == 0 ? 
+                      (
+                        <div className='data-dictionary-graph-legend__item body'>
+                          <span style={{fontWeight: "bold"}}>Projects</span>
+                        </div>
+                      )
+                      : 
+                      (
+                        <div className='data-dictionary-graph-legend__item body'>
+                          <i className="data-dictionary-graph-legend__icon fas fa-minus"></i>
+                          <span className='data-dictionary-graph-legend__text'>Relationships</span>
+                        </div>
+                      )
+                }
                 {
                   this.props.items.map((category) => {
                     const itemColor = getCategoryColor(category);
@@ -56,7 +67,7 @@ class Legend extends React.Component {
                             )
                           }
                         </span>
-                        <span className='data-dictionary-graph-legend__text'>{capitalizeFirstLetter(category)}</span>
+                        <span className='data-dictionary-graph-legend__text'>{this.props.graphType.indexOf("pcdc") == 0 ? category.toUpperCase() : capitalizeFirstLetter(category)}</span>
                       </div>
                     );
                   })
@@ -83,10 +94,12 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
+  graphType: PropTypes.string,
 };
 
 Legend.defaultProps = {
   items: [],
+  graphType: "gdc"
 };
 
 export default Legend;

@@ -1,7 +1,0 @@
-Relationships:
-  of_study:
-    Mul: many_to_one
-    Ends:
-      - Src: adverse_events
-        Dst: off_protocol_therapy_study
-    Props: null
