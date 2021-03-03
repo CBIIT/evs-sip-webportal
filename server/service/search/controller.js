@@ -11,6 +11,7 @@ const _ = require("lodash");
 const shared = require("./shared");
 const { performance } = require("perf_hooks");
 // const git = require('nodegit');
+//const Excel = require("exceljs");
 const dataFilesPath = path.join(__dirname, "..", "..", "data_files");
 var syns = {};
 
@@ -596,125 +597,130 @@ const preloadGDCDataMappings = async (req, res) => {
 
 const preloadPCDCDataMappings = async (req, res) => {
   /*
-	let file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'PCDC_Terminology.xlsx');
-	
-	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'PCDC', 'pcdc-model.json');
-	console.log(file_path.replace(/\\/g,"/"));
-	let mappings = {};
-	const workbook = new Excel.Workbook();
-	await workbook.xlsx.readFile(file_path.replace(/\\/g,"/"));
-	const worksheets = workbook.worksheets;
+  let file_path = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data_files",
+    "PCDC",
+    "PCDC_Terminology.xlsx"
+  );
 
-	for(let i = 0; i< worksheets.length ; i++){
-		let worksheet = worksheets[i];
-		if(worksheet.name !== "AML"){
-			continue;
-		}
+  let output_file_path = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data_files",
+    "PCDC",
+    "pcdc-model-all.json"
+  );
+  console.log(file_path.replace(/\\/g, "/"));
+  let data = {};
+  const workbook = new Excel.Workbook();
+  await workbook.xlsx.readFile(file_path.replace(/\\/g, "/"));
+  const worksheets = workbook.worksheets;
 
-		let latest_p = "";
-		let latest_p_values = [];
-		let count_v = 0, count_p = 0;
-		worksheet.eachRow(function(row, rowNumber) {
-			let item = row.values;
-			if(rowNumber > 1){
-				let node = item[2];
-				let length = node.length;
-				if(length >= 6 && node.lastIndexOf(" Table") == (length - 6)){
-					node = node.substring(0, length - 6).trim();
-					//console.log(node);
-				}
-				node = shared.convert2Key(node);
-				if(!(node in mappings)){
-					mappings[node] = {};
-					mappings[node].n_n_code = item[1];
-					mappings[node].n_PT = item[2]; 
-					mappings[node].properties = [];
-				}
-				let props = mappings[node].properties;
-				
-				if(item[11] == ""){
-					//property row
-					let prop = {};
-					prop.p_name = item[6].trim();
-					prop.p_n_code = item[3].trim();
-					prop.p_desc = item[9].trim();
-					if(item[15] == "code"){
-						prop.p_type = "enum";
-					}
-					else if(item[15] != ""){
-						prop.p_type = item[15];
-					}
-					else{
-						prop.p_type = "object";
-					}
-					prop.values = [];
-					if(item[15] == "code" && item[13] != ""){
-						latest_p = prop.p_name;
-						latest_p_values = item[13].split(" || ");
-					}
-					count_p++;
-					props.push(prop);
-				}
-				else{
-					//value row
-					let has = false;
-					props.map((prop) => {
-						if(prop.p_name == latest_p){
-							if(latest_p_values.indexOf(item[6]) > -1){
-								let value = {};
-								value.v_name = item[6];
-								value.v_n_code = item[3];
-								value.v_PT = "";
-								prop.values.push(value);
-								count_v++;
-								has = true;
-							}
-							else{
-								if(item[11].indexOf(" || ") > -1){
-									let items = item[11].split(" || ");
-									items.map((itm) => {
-										if(prop.p_name == itm){
-											let value = {};
-											value.v_name = item[6];
-											value.v_n_code = item[3];
-											value.v_PT = "";
-											prop.values.push(value);
-											count_v++;
-											has = true;
-										}
-									});
-									
-								}
-								else{
-									if(prop.p_name == item[11]){
-										let value = {};
-										value.v_name = item[6];
-										value.v_n_code = item[3];
-										value.v_PT = "";
-										prop.values.push(value);
-										count_v++;
-										has = true;
-									}
-								}
-							}
-						}
-					});
-								
-					if(!has){
+  for (let i = 0; i < worksheets.length; i++) {
+    let worksheet = worksheets[i];
+    data[worksheet.name] = {};
 
-						console.log("Do not find any properties:", rowNumber);
-					}
-				}
+    let latest_p = "";
+    let latest_p_values = [];
+    let count_v = 0,
+      count_p = 0;
+    let mappings = data[worksheet.name];
+    worksheet.eachRow(function (row, rowNumber) {
+      let item = row.values;
+      if (rowNumber > 1) {
+        let node = item[2];
+        let length = node.length;
+        if (length >= 6 && node.lastIndexOf(" Table") == length - 6) {
+          node = node.substring(0, length - 6).trim();
+          //console.log(node);
+        }
+        node = shared.convert2Key(node);
+        if (!(node in mappings)) {
+          mappings[node] = {};
+          mappings[node].n_n_code = item[1];
+          mappings[node].n_PT = item[2];
+          mappings[node].properties = [];
+        }
+        let props = mappings[node].properties;
 
-				
-			}
-		});
-		console.log(count_p, count_v);
-	}
-	fs.writeFileSync(output_file_path, JSON.stringify(mappings), err => {
-		if (err) return logger.error(err);
-	});
-	*/
+        if (item[11] == undefined || item[11] == "") {
+          //property row
+          let prop = {};
+          prop.p_name = item[6] == undefined ? "" : item[6].trim();
+          prop.p_n_code = item[3] == undefined ? "" : item[3].trim();
+          prop.p_desc = item[9] == undefined ? "" : item[9].trim();
+          if (item[15] == "code") {
+            prop.p_type = "enum";
+          } else if (item[15] != "") {
+            prop.p_type = item[15];
+          } else {
+            prop.p_type = "object";
+          }
+          prop.values = [];
+          if (item[15] == "code" && item[13] != "") {
+            latest_p = prop.p_name;
+            latest_p_values = item[13].split(" || ");
+          }
+          count_p++;
+          props.push(prop);
+        } else {
+          //value row
+          let has = false;
+          props.map((prop) => {
+            if (prop.p_name == latest_p) {
+              if (latest_p_values.indexOf(item[6]) > -1) {
+                let value = {};
+                value.v_name = item[6];
+                value.v_n_code = item[3];
+                value.v_PT = "";
+                prop.values.push(value);
+                count_v++;
+                has = true;
+              } else {
+                if (item[11].indexOf(" || ") > -1) {
+                  let items = item[11].split(" || ");
+                  items.map((itm) => {
+                    if (prop.p_name == itm) {
+                      let value = {};
+                      value.v_name = item[6];
+                      value.v_n_code = item[3];
+                      value.v_PT = "";
+                      prop.values.push(value);
+                      count_v++;
+                      has = true;
+                    }
+                  });
+                } else {
+                  if (prop.p_name == item[11]) {
+                    let value = {};
+                    value.v_name = item[6];
+                    value.v_n_code = item[3];
+                    value.v_PT = "";
+                    prop.values.push(value);
+                    count_v++;
+                    has = true;
+                  }
+                }
+              }
+            }
+          });
+
+          if (!has) {
+            console.log("Do not find any properties:", rowNumber);
+          }
+        }
+      }
+    });
+    console.log(count_p, count_v);
+  }
+  fs.writeFileSync(output_file_path, JSON.stringify(data), (err) => {
+    if (err) return logger.error(err);
+  });
+  */
   res.json({ result: "success" });
 };
 

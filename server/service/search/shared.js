@@ -369,7 +369,7 @@ const readICDCMapping = () => {
 
 const readPCDCMapping = () => {
   let content = fs
-    .readFileSync(dataFilesPath + "/PCDC/pcdc-model.json")
+    .readFileSync(dataFilesPath + "/PCDC/pcdc-model-all.json")
     .toString();
   content = content.replace(/}{/g, ",");
   return JSON.parse(content);
@@ -750,82 +750,60 @@ const generateICDCorCTDCData = (dc) => {
   return dataList;
 };
 
-const generatePCDCData = (dc, linkInfo) => {
-  let relationships = linkInfo.Relationships;
-  const dataList = {};
+const generatePCDCData = (pcdc_data, filter) => {
+  let dataList = {};
 
-  for (let [key, value] of Object.entries(dc)) {
-    //console.log(key);
-    //console.log(value.Category);
-    const item = {};
-    item["$schema"] = "http://json-schema.org/draft-06/schema#";
-    item["id"] = key;
-    item["title"] = convert2Title(key);
-    if ("Category" in value) {
-      item["category"] = "AML";
-    } else {
-      item["category"] = "AML";
-    }
-
-    item["program"] = "*";
-    item["project"] = "*";
-    item["additionalProperties"] = false;
-    item["submittable"] = true;
-    item["constraints"] = null;
-    //item["links"]=[];
-
-    item["type"] = "object";
-    const link = [];
-    const properties = {};
-    const pRequired = [];
-
-    if (value.properties.length > 0) {
-      for (var i = 0; i < value.properties.length; i++) {
-        //console.log(icdcMData.Nodes[key].Props[i]);
-        const nodeP = value.properties[i];
-        const propertiesItem = {};
-        propertiesItem["description"] = nodeP.p_desc;
-        propertiesItem["type"] = nodeP.p_type;
-        propertiesItem["src"] = value.n_PT;
-
-        properties[nodeP.p_name] = propertiesItem;
+  for (let project in pcdc_data) {
+    dataList[project] = {};
+    let dc = pcdc_data[project];
+    for (let [key, value] of Object.entries(dc)) {
+      //console.log(key);
+      //console.log(value.Category);
+      const item = {};
+      item["$schema"] = "http://json-schema.org/draft-06/schema#";
+      item["id"] = key;
+      item["title"] = convert2Title(key);
+      if ("Category" in value) {
+        item["category"] = project;
+      } else {
+        item["category"] = project;
       }
 
-      item["properties"] = properties;
-      item["required"] = pRequired;
-    } else {
-      item["properties"] = {};
-    }
+      item["program"] = "*";
+      item["project"] = "*";
+      item["additionalProperties"] = false;
+      item["submittable"] = true;
+      item["constraints"] = null;
+      //item["links"]=[];
 
-    item["links"] = link;
+      item["type"] = "object";
+      const link = [];
+      const properties = {};
+      const pRequired = [];
 
-    dataList[key] = item;
-  }
+      if (value.properties.length > 0) {
+        for (var i = 0; i < value.properties.length; i++) {
+          //console.log(icdcMData.Nodes[key].Props[i]);
+          const nodeP = value.properties[i];
+          const propertiesItem = {};
+          propertiesItem["description"] = nodeP.p_desc;
+          propertiesItem["type"] = nodeP.p_type;
+          propertiesItem["src"] = value.n_PT;
 
-  /*
-  for (var propertyName in relationships) {
-    const linkItem = {};
-    const label = propertyName;
-    const multiplicity = relationships[propertyName].Mul;
-    const required = false;
-    for (var i = 0; i < relationships[propertyName].Ends.length; i++) {
-      if (relationships[propertyName].Ends[i].Src == key) {
-        const backref = relationships[propertyName].Ends[i].Src;
-        const name = relationships[propertyName].Ends[i].Dst;
-        const target = relationships[propertyName].Ends[i].Dst;
+          properties[nodeP.p_name] = propertiesItem;
+        }
 
-        linkItem["name"] = name;
-        linkItem["backref"] = backref;
-        linkItem["label"] = label;
-        linkItem["target_type"] = target;
-        linkItem["required"] = required;
-
-        link.push(linkItem);
+        item["properties"] = properties;
+        item["required"] = pRequired;
+      } else {
+        item["properties"] = {};
       }
+
+      item["links"] = link;
+
+      dataList[project][key] = item;
     }
   }
-  */
-
   return dataList;
 };
 
@@ -910,35 +888,13 @@ const getGraphicalPCDCDictionary = () => {
   let result = cache.getValue("pcdc_dict");
   if (result == undefined) {
     let jsonData = readPCDCMapping();
-    let relationshipData = yaml.load(
-      dataFilesPath + "/PCDC/pcdc-model-relationship.yml"
-    );
-    result = generatePCDCData(jsonData, relationshipData);
+    result = generatePCDCData(jsonData, {});
     //result = generatePCDCData(jsonData, {Relationships: {}});
     cache.setValue("pcdc_dict", result, config.item_ttl);
   }
 
-  let nodes = Object.keys(result);
-
-  /*
-  let project = {
-    id: "project",
-    title: "Project",
-    type: "object",
-    category: "AML",
-    description:
-      "Any specifically defined piece of work that is undertaken or attempted to meet a single requirement. (NCIt C47885)",
-    additionalProperties: false,
-    links: [],
-    required: ["name"],
-    properties: {
-      name: { description: "Display name for the project", type: "string" },
-    },
-  };
-
-  result.project = project;
-  */
-
+  let data = result["AML"];
+  let nodes = Object.keys(data);
   //create fake relationship for graphical display purpose
 
   nodes.forEach((n, i) => {
@@ -950,22 +906,11 @@ const getGraphicalPCDCDictionary = () => {
       linkItem["target_type"] = nodes[i - 4];
       linkItem["required"] = false;
 
-      result[n].links.push(linkItem);
-    } else {
-      /*
-      let linkItem = {};
-      linkItem["name"] = "project";
-      linkItem["backref"] = n;
-      linkItem["label"] = "of_pcdc";
-      linkItem["target_type"] = "project";
-      linkItem["required"] = false;
-
-      result[n].links.push(linkItem);
-      */
+      data[n].links.push(linkItem);
     }
   });
 
-  return result;
+  return data;
 };
 
 module.exports = {
