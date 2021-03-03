@@ -78,10 +78,20 @@ const TableValues = styled(Col)`
   border-left: 1px solid #BBC5CD;
 `;
 
+const TableColLeft = styled(TableCol)`
+  border-bottom: 1px solid #BBC5CD;
+`;
+
+const TableColRight = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-left: 1px solid #BBC5CD;
+`;
+
 const ColRight = styled(Col)`
   text-align: right;
 `;
-
 
 const Indicator = styled.div`
   position: relative;
@@ -108,16 +118,25 @@ const AccordionStyled = styled(Accordion)`
   width: 100%;
 `;
 
-const AccordionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
+const CardHeader = styled(Card.Header)`
+   display: flex;
+   justify-content: space-between;
+   padding: .25rem 1.25rem;
 `;
 
-const AccordionToggleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 12rem;
+const DivCenter = styled.div`
+  text-align: center;
+  padding: 1rem 0;
 `;
+
+const CodeSpan = styled.span`
+  display: block;
+  color: #475162;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
 
 const PCDCValuesTable2 = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
@@ -510,7 +529,8 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
-  const AccordionValueItems = (props) => {
+
+  const ValueItems = (props) => {
     let [isToggleOn, setIsToggleOn] = useState(false);
 
     const ToggleTableHandler = event => {
@@ -519,54 +539,65 @@ const PCDCValuesTable2 = (props) => {
     };
 
     return (
+      <Row>
+        <TableColLeft xs={2}>
+          <DivCenter>
+            <CodeSpan>{props.project}</CodeSpan>
+            <Button variant="outline-secondary" onClick={ToggleTableHandler}>
+              {isToggleOn === false ? 'See More' : 'Show Less'}
+            </Button>
+          </DivCenter>
+        </TableColLeft>
+        <TableColRight xs={10}>
+        {props.values.slice(0,5).map((item, index) => 
+          <ValueItem item={item} key={index} />
+        )}
+        {props.values.length > 5 && 
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div>
+              {props.values.map((item, index) => {
+                if (index >= 5) {
+                  return(
+                    <ValueItem item={item} key={index} />
+                  )
+                }
+                return null;
+              })}
+            </div>
+          </Collapse>
+        }
+        {props.values.length > 5 && 
+          <TableRow data-class="TableRow">
+            <TableCol data-class="TableCol" xs={12}>
+            {isToggleOn === false ? (
+              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
+              </a>
+            ) : (
+              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <FontAwesomeIcon icon={faAngleUp}/> Show Less
+              </a>
+            )}
+            </TableCol>
+          </TableRow>
+        }
+        </TableColRight>
+      </Row>
+    );
+  }
+
+  const AccordionValueItems = (props) => {
+    return (
       <Card>
-        <Card.Header>
-          <AccordionHeader>
-            <AccordionToggleContainer>
-              <Accordion.Toggle as={Button} variant="link" eventKey={props.eventKey}>
-                {props.project}
-              </Accordion.Toggle>
-              <Button variant="outline-secondary" onClick={ToggleTableHandler}>
-                {isToggleOn === false ? 'See More' : 'Show Less'}
-              </Button>
-            </AccordionToggleContainer>
-            <ContextAwareToggle eventKey={props.eventKey}/>
-          </AccordionHeader>
-        </Card.Header>
+        <CardHeader>
+          <Accordion.Toggle as={Button} variant="link" eventKey={props.eventKey}>
+            {props.project}
+          </Accordion.Toggle>
+          <ContextAwareToggle eventKey={props.eventKey}/>
+        </CardHeader>
         <Accordion.Collapse eventKey={props.eventKey}>
           <Col xs={12}>
-            {props.values.slice(0,5).map((item, index) => 
-              <ValueItem item={item} key={index} />
-            )}
-            {props.values.length > 5 && 
-              <Collapse in={isToggleOn} mountOnEnter={true}>
-                <div>
-                  {props.values.map((item, index) => {
-                    if (index >= 5) {
-                      return(
-                        <ValueItem item={item} key={index} />
-                      )
-                    }
-                    return null;
-                  })}
-                </div>
-              </Collapse>
-            }
-            {props.values.length > 5 && 
-              <TableRow data-class="TableRow">
-                <TableCol data-class="TableCol" xs={12}>
-                {isToggleOn === false ? (
-                  <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
-                  </a>
-                ) : (
-                  <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleUp}/> Show Less
-                  </a>
-                )}
-                </TableCol>
-              </TableRow>
-            }
+            <ValueItems values={props.values} project={props.project}/>
           </Col>
         </Accordion.Collapse>
       </Card>
