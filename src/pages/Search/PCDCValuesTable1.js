@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Button} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -126,7 +127,7 @@ const CodeSpan = styled.span`
 
 const PCDCValuesTable1 = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
-  let values = [];
+  let valuesObj = {};
 
   items.forEach((data) => {
     if(data._source.source !== 'pcdc') return;
@@ -217,7 +218,14 @@ const PCDCValuesTable1 = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
       // valuesCount += obj.vs.length;
-      values.push(obj);
+
+      if(valuesObj[obj.category] === undefined) {
+        valuesObj[obj.category] = [obj];
+      }
+      valuesObj[obj.category].push(obj);
+
+      valuesObj = sortAlphabeticallyObject(valuesObj);
+
     }
   });
 
@@ -551,7 +559,7 @@ const PCDCValuesTable1 = (props) => {
   }
 
 
-  if (values.length !== 0) {
+  if (!_.isEmpty(valuesObj)) {
     return (
     <ContainerStyled>
       <TableThead>
@@ -567,8 +575,9 @@ const PCDCValuesTable1 = (props) => {
       </TableThead>
       <TableBody>
         <Col xs={12}>
-          <ValueItems values={values} project={'AML'}/>
-          <ValueItems values={values} project={'EWS'}/>
+          {Object.entries(valuesObj).map((result, index) =>
+            <ValueItems project={result[0]} values={result[1]} />
+          )}
         </Col>
       </TableBody>
     </ContainerStyled>
