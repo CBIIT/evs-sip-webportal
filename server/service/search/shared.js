@@ -3,7 +3,6 @@ const config = require("../../config");
 const fs = require("fs");
 const path = require("path");
 const yaml = require("yamljs");
-const gdc_searchable_nodes = require("../../config").gdc_searchable_nodes;
 const _ = require("lodash");
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 

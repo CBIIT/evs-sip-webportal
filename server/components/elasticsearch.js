@@ -12,7 +12,6 @@ const cache = require("./cache");
 const extend = require("util")._extend;
 const _ = require("lodash");
 const shared = require("../service/search/shared");
-const folderPath = path.join(__dirname, "..", "data_files", "GDC", "model");
 var allTerm = {};
 var icdo_mapping = shared.getICDOMapping();
 var icdo2Exclude = shared.getParentICDO();
