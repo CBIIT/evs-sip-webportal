@@ -138,6 +138,11 @@ const CodeSpan = styled.span`
   margin-bottom: 1rem;
 `;
 
+const ButtonStyled = styled(Button)`
+  color: #475162;
+  font-size: 1.125rem;
+  font-weight: bold;
+`;
 
 const PCDCValuesTable2 = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
@@ -513,28 +518,6 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
-
-  const ContextAwareToggle = ({ children, eventKey, callback }) => {
-    const currentEventKey = useContext(AccordionContext);
-  
-    const decoratedOnClick = useAccordionToggle(
-      eventKey,
-      () => callback && callback(eventKey),
-    );
-  
-    const isCurrentEventKey = currentEventKey === eventKey;
-  
-    return (
-      <Button variant="link" onClick={decoratedOnClick}>
-        {isCurrentEventKey === true
-          ? <FontAwesomeIcon icon={faAngleUp}/>
-          : <FontAwesomeIcon icon={faAngleDown}/>
-        }
-      </Button>
-    );
-  }
-
-
   const ValueItems = (props) => {
     let [isToggleOn, setIsToggleOn] = useState(false);
 
@@ -591,14 +574,34 @@ const PCDCValuesTable2 = (props) => {
     );
   }
 
+  const AccordionToggle = ({ children, eventKey, callback }) => {
+    const currentEventKey = useContext(AccordionContext);
+  
+    const decoratedOnClick = useAccordionToggle(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+  
+    const isCurrentEventKey = currentEventKey === eventKey;
+  
+    return (
+      <>
+        <ButtonStyled variant="link" onClick={decoratedOnClick}>{children}</ButtonStyled>
+        <Button variant="link" onClick={decoratedOnClick}>
+          {isCurrentEventKey === true
+            ? <FontAwesomeIcon icon={faAngleUp}/>
+            : <FontAwesomeIcon icon={faAngleDown}/>
+          }
+        </Button>
+      </>
+    );
+  }
+
   const AccordionValueItems = (props) => {
     return (
       <Card>
         <CardHeader>
-          <Accordion.Toggle as={Button} variant="link" eventKey={props.eventKey}>
-            {props.project}
-          </Accordion.Toggle>
-          <ContextAwareToggle eventKey={props.eventKey}/>
+          <AccordionToggle eventKey={props.eventKey}>{props.project}</AccordionToggle>
         </CardHeader>
         <Accordion.Collapse eventKey={props.eventKey}>
           <Col xs={12}>
