@@ -13,8 +13,8 @@ const TabNavsCol = styled(Col)`
 `;
 
 const NavSpan = styled.span`
-  width: 15rem;
-  inline-size: 15rem;
+  width: 12rem;
+  inline-size: 12rem;
 `;
 
 const NavLinkStyled = styled(Nav.Link)`
@@ -36,15 +36,15 @@ const NavLinkStyled = styled(Nav.Link)`
   &&.active {
     font-family: 'Raleway-Bold', sans-serif;
     color: #009ECC;
-    font-size: 1.3125rem;
+    font-size: 1.125rem;
     text-transform: uppercase;
     background-color: transparent;
     padding: 0.2rem 3rem .2rem 2rem;
   }
 
   &&.active > ${NavSpan} {
-    width: 20rem;
-    inline-size: 20rem;
+    width: 14rem;
+    inline-size: 14rem;
   }
 
   &&.active::after {
@@ -74,12 +74,15 @@ const NavLinkStyled = styled(Nav.Link)`
 
 const NavStyled = styled(Nav)`
   flex-direction: row-reverse;
-  margin-left: -3rem;
+  margin-left: -4rem;
 `;
 
 const NavItemStyled = styled(Nav.Item)`
   width: 20rem;
-  margin-right: -4rem;
+  margin-right: -3.25rem;
+  &:last-child {
+    width: 18rem;
+  }
 `;
 
 const TabsController = (props) => {
