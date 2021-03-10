@@ -117,6 +117,12 @@ const IndicatorContent = styled.div`
 
 const AccordionStyled = styled(Accordion)`
   width: 100%;
+  && > .card {
+    border-radius: 0;
+  }
+  &&:not(:last-of-type) > .card {
+    border-bottom: 0;
+  }
 `;
 
 const CardHeader = styled(Card.Header)`
@@ -140,7 +146,7 @@ const CodeSpan = styled.span`
 
 const ButtonStyled = styled(Button)`
   color: #475162;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: bold;
 `;
 
@@ -599,16 +605,18 @@ const PCDCValuesTable = (props) => {
 
   const AccordionValueItems = (props) => {
     return (
-      <Card>
-        <CardHeader>
-          <AccordionToggle eventKey={props.eventKey}>{props.project}</AccordionToggle>
-        </CardHeader>
-        <Accordion.Collapse eventKey={props.eventKey}>
-          <Col xs={12}>
-            <ValueItems values={props.values} project={props.project}/>
-          </Col>
-        </Accordion.Collapse>
-      </Card>
+      <AccordionStyled defaultActiveKey={props.index === 0 ? '0': ''}>
+        <Card>
+          <CardHeader>
+            <AccordionToggle eventKey="0">{props.project}</AccordionToggle>
+          </CardHeader>
+          <Accordion.Collapse eventKey="0">
+            <Col xs={12}>
+              <ValueItems values={props.values} project={props.project}/>
+            </Col>
+          </Accordion.Collapse>
+        </Card>
+      </AccordionStyled>
     );
   }
 
@@ -627,11 +635,9 @@ const PCDCValuesTable = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <AccordionStyled defaultActiveKey="0">
           {Object.entries(valuesObj).map((result, index) =>
-            <AccordionValueItems project={result[0]} values={result[1]} eventKey={index.toString()}/>
+            <AccordionValueItems project={result[0]} values={result[1]} index={index}/>
           )}
-        </AccordionStyled>
       </TableBody>
     </ContainerStyled>
     );
