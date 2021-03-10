@@ -3,7 +3,6 @@ const config = require("../../config");
 const fs = require("fs");
 const path = require("path");
 const yaml = require("yamljs");
-const gdc_searchable_nodes = require("../../config").gdc_searchable_nodes;
 const _ = require("lodash");
 const $RefParser = require("@apidevtools/json-schema-ref-parser");
 
@@ -371,7 +370,13 @@ const readPCDCMapping = () => {
   let content = fs
     .readFileSync(dataFilesPath + "/PCDC/pcdc-model-all.json")
     .toString();
-  content = content.replace(/}{/g, ",");
+  return JSON.parse(content);
+};
+
+const readPCDCProjects = () => {
+  let content = fs
+    .readFileSync(dataFilesPath + "/PCDC/pcdc-projects.json")
+    .toString();
   return JSON.parse(content);
 };
 
@@ -884,33 +889,46 @@ const getGraphicalCTDCDictionary = () => {
   return result;
 };
 
-const getGraphicalPCDCDictionary = () => {
-  let result = cache.getValue("pcdc_dict");
-  if (result == undefined) {
-    let jsonData = readPCDCMapping();
-    result = generatePCDCData(jsonData, {});
-    //result = generatePCDCData(jsonData, {Relationships: {}});
-    cache.setValue("pcdc_dict", result, config.item_ttl);
+const getGraphicalPCDCDictionary = (project) => {
+  let project_result = cache.getValue("pcdc_dict_" + project);
+  if (project_result == undefined) {
+    let result = cache.getValue("pcdc_dict");
+    if (result == undefined) {
+      let jsonData = readPCDCMapping();
+      result = generatePCDCData(jsonData, {});
+      //result = generatePCDCData(jsonData, {Relationships: {}});
+      cache.setValue("pcdc_dict", result, config.item_ttl);
+    }
+
+    project_result = result[project];
+    let nodes = Object.keys(project_result);
+    //create fake relationship for graphical display purpose
+
+    nodes.forEach((n, i) => {
+      if (i - 4 >= 0) {
+        let linkItem = {};
+        linkItem["name"] = nodes[i - 4];
+        linkItem["backref"] = n;
+        linkItem["label"] = "of_pcdc";
+        linkItem["target_type"] = nodes[i - 4];
+        linkItem["required"] = false;
+
+        project_result[n].links.push(linkItem);
+      }
+    });
+    cache.setValue("pcdc_dict_" + project, project_result, config.item_ttl);
   }
 
-  let data = result["AML"];
-  let nodes = Object.keys(data);
-  //create fake relationship for graphical display purpose
+  return project_result;
+};
 
-  nodes.forEach((n, i) => {
-    if (i - 4 >= 0) {
-      let linkItem = {};
-      linkItem["name"] = nodes[i - 4];
-      linkItem["backref"] = n;
-      linkItem["label"] = "of_pcdc";
-      linkItem["target_type"] = nodes[i - 4];
-      linkItem["required"] = false;
-
-      data[n].links.push(linkItem);
-    }
-  });
-
-  return data;
+const getPCDCProjectsFullName = () => {
+  let result = cache.getValue("pcdc_projects");
+  if (result == undefined) {
+    result = readPCDCProjects();
+    cache.setValue("pcdc_projects", result, config.item_ttl);
+  }
+  return result;
 };
 
 module.exports = {
@@ -931,4 +949,5 @@ module.exports = {
   getGraphicalCTDCDictionary,
   getGraphicalPCDCDictionary,
   convert2Key,
+  getPCDCProjectsFullName,
 };

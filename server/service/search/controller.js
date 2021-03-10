@@ -6,10 +6,7 @@ const config = require("../../config");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
-const yaml = require("yamljs");
-const _ = require("lodash");
 const shared = require("./shared");
-const { performance } = require("perf_hooks");
 // const git = require('nodegit');
 //const Excel = require("exceljs");
 const dataFilesPath = path.join(__dirname, "..", "..", "data_files");
@@ -356,7 +353,13 @@ const searchP = (req, res) => {
           delete entry._type;
           delete entry._id;
         });
-        res.json({ total: total, returnList: data, timedOut: false });
+        const pcdc_project_fullName = shared.getPCDCProjectsFullName();
+        res.json({
+          total: total,
+          returnList: data,
+          timedOut: false,
+          info: pcdc_project_fullName,
+        });
       }
     });
   }
@@ -393,7 +396,8 @@ const getGraphicalCTDCDictionary = (req, res) => {
 };
 
 const getGraphicalPCDCDictionary = (req, res) => {
-  let jsonData = shared.getGraphicalPCDCDictionary();
+  let project = req.query.project == "" ? "AML" : req.query.project;
+  let jsonData = shared.getGraphicalPCDCDictionary(project);
   res.json(jsonData);
 };
 
