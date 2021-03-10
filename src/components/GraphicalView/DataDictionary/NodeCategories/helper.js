@@ -85,8 +85,8 @@ const nodeCategoryList = {
     color: "#F4B940",
   },
   ews: {
-    icon: IconMetadata,
-    color: "#F4B940",
+    icon: IconIndexFile,
+    color: "#26D9B1",
   },
 };
 

@@ -13,12 +13,22 @@ class GraphDrawer extends React.Component {
     this.nodeSVGElementInitialized = false;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     // check if need update all node's svg elements
-    // this only happens once, at the first time graph is rendered
+    // this only happens once, at the first time graph is rendered, or when switching between projects in PCDC
+    let needUpdate = false;
+
+    if(this.props.graphType.indexOf("pcdc") == 0 && prevProps.nodes.length > 0){
+      if(prevProps.nodes.length != this.props.nodes.length 
+        || prevProps.nodes[0].type != this.props.nodes[0].type){
+          needUpdate = true;
+      }
+    }
+
+
     if (this.props.isGraphView
        && this.props.layoutInitialized
-       && !this.nodeSVGElementInitialized) {
+       && (!this.nodeSVGElementInitialized || needUpdate)) {
       const graphNodesSVGElements = this.props.nodes.map(node => ({
         nodeID: node.id,
         svgElement: this.getNodeRef(node.id).current.getSVGElement(),
@@ -94,6 +104,10 @@ class GraphDrawer extends React.Component {
                   && this.props.secondHighlightingNodeCandidateIDs.includes(node.id));
 
               isNodeFaded = !this.props.relatedNodeIDs.includes(node.id);
+
+              if(this.props.graphType.indexOf("pcdc") == 0){
+                isNodeFaded = this.props.highlightingNode.id !== node.id;
+              }
               if (this.props.secondHighlightingNodeID) {
                 isNodeHalfFaded = !isNodeFaded && !this.props.pathRelatedToSecondHighlightingNode
                   .find(e => (e.source === node.id || e.target === node.id));

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { capitalizeFirstLetter } from '../../../utils';
+import { Button, ListGroup} from 'react-bootstrap';
 import { getCategoryIconSVG, getCategoryColor } from '../../NodeCategories/helper';
+import { apiGetPCDCDictionary  } from '../../../../../api';
 import './Legend.css';
 
 class Legend extends React.Component {
@@ -9,6 +11,7 @@ class Legend extends React.Component {
     super(props);
     this.state = {
       show: true,
+      current_project: "AML"
     };
   }
 
@@ -18,7 +21,74 @@ class Legend extends React.Component {
     }));
   }
 
+  switchProject = async (project) => {
+    if(this.props.graphType.indexOf("pcdc") == 0){
+      const dict = await apiGetPCDCDictionary(project);
+      this.props.onInitiateGraph(dict);
+      this.setState({current_project: project});
+    }
+  }
+
   render() {
+    let legend_content = "";
+    if(this.props.graphType.indexOf("pcdc") == 0){
+
+      
+      legend_content = ["AML", "EWS"].map((project, i) => {
+        const itemColor = getCategoryColor(project.toLowerCase());
+        const IconSvg = getCategoryIconSVG(project.toLowerCase());
+        const active = this.state.current_project == project;
+        return (
+          <ListGroup.Item onClick={() => this.switchProject(project)} active={active}>
+            <div
+              key={project}
+              className='data-dictionary-graph-legend__item body'
+            >
+              <span className='data-dictionary-graph-legend__circle-wrapper'>
+                {
+                  IconSvg ? <IconSvg /> : (
+                    <span
+                      className='data-dictionary-graph-legend__circle'
+                      style={{ backgroundColor: itemColor }}
+                    />
+                  )
+                }
+              </span>
+              <span className='data-dictionary-graph-legend__text'>
+                {project.toUpperCase()}
+              </span>
+            </div>
+          </ListGroup.Item>
+        );
+      });
+      legend_content = (<ListGroup defaultActiveKey="#link0">
+        {legend_content}
+      </ListGroup>);
+    }
+    else{
+      legend_content = this.props.items.map((category) => {
+        const itemColor = getCategoryColor(category);
+        const IconSvg = getCategoryIconSVG(category);
+        return (
+          <div
+            key={category}
+            className='data-dictionary-graph-legend__item body'
+          >
+            <span className='data-dictionary-graph-legend__circle-wrapper'>
+              {
+                IconSvg ? <IconSvg /> : (
+                  <span
+                    className='data-dictionary-graph-legend__circle'
+                    style={{ backgroundColor: itemColor }}
+                  />
+                )
+              }
+            </span>
+            <span className='data-dictionary-graph-legend__text'>{capitalizeFirstLetter(category)}</span>
+          </div>
+        );
+      });
+    }
     return (
       <div className={`data-dictionary-graph-legend ${this.state.show ? '' : 'data-dictionary-graph-legend--toggled'}`}>
         {
@@ -49,28 +119,7 @@ class Legend extends React.Component {
                       )
                 }
                 {
-                  this.props.items.map((category) => {
-                    const itemColor = getCategoryColor(category);
-                    const IconSvg = getCategoryIconSVG(category);
-                    return (
-                      <div
-                        key={category}
-                        className='data-dictionary-graph-legend__item body'
-                      >
-                        <span className='data-dictionary-graph-legend__circle-wrapper'>
-                          {
-                            IconSvg ? <IconSvg /> : (
-                              <span
-                                className='data-dictionary-graph-legend__circle'
-                                style={{ backgroundColor: itemColor }}
-                              />
-                            )
-                          }
-                        </span>
-                        <span className='data-dictionary-graph-legend__text'>{this.props.graphType.indexOf("pcdc") == 0 ? category.toUpperCase() : capitalizeFirstLetter(category)}</span>
-                      </div>
-                    );
-                  })
+                  legend_content
                 }
               </React.Fragment>
             )
@@ -94,11 +143,13 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
+  onInitiateGraph: PropTypes.func,
   graphType: PropTypes.string,
 };
 
 Legend.defaultProps = {
   items: [],
+  onInitiateGraph: () => {},
   graphType: "gdc"
 };
 

@@ -7,6 +7,7 @@ import {
   setSecondHighlightingNodeCandidateIDs,
   setPathRelatedToSecondHighlightingNode,
   setDataModelStructure,
+  resetGraphHighlight,
 } from "../../action";
 
 const ReduxGraphCalculator = (() => {
@@ -48,6 +49,8 @@ const ReduxGraphCalculator = (() => {
           pathRelatedToSecondHighlightingNode
         )
       ),
+    onClearGraphHighlight: () =>
+      dispatch(resetGraphHighlight(ownProps.graphType)),
     onDataModelStructureCalculated: (
       dataModelStructure,
       dataModelStructureRelatedNodeIDs,

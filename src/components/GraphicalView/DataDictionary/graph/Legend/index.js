@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { initiateGraph } from "../../action.js";
 import Legend from "./Legend";
 
 const ReduxLegend = (() => {
@@ -7,7 +8,12 @@ const ReduxLegend = (() => {
     graphType: ownProps.graphType,
   });
 
-  return connect(mapStateToProps)(Legend);
+  const mapDispatchToProps = (dispatch, ownProps) => ({
+    onInitiateGraph: (dictionary) =>
+      dispatch(initiateGraph(ownProps.graphType, dictionary)),
+  });
+
+  return connect(mapStateToProps, mapDispatchToProps)(Legend);
 })();
 
 export default ReduxLegend;
