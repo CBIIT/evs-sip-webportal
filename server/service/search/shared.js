@@ -370,7 +370,13 @@ const readPCDCMapping = () => {
   let content = fs
     .readFileSync(dataFilesPath + "/PCDC/pcdc-model-all.json")
     .toString();
-  content = content.replace(/}{/g, ",");
+  return JSON.parse(content);
+};
+
+const readPCDCProjects = () => {
+  let content = fs
+    .readFileSync(dataFilesPath + "/PCDC/pcdc-projects.json")
+    .toString();
   return JSON.parse(content);
 };
 
@@ -912,6 +918,15 @@ const getGraphicalPCDCDictionary = () => {
   return data;
 };
 
+const getPCDCProjectsFullName = () => {
+  let result = cache.getValue("pcdc_projects");
+  if (result == undefined) {
+    result = readPCDCProjects();
+    cache.setValue("pcdc_projects", result, config.item_ttl);
+  }
+  return result;
+};
+
 module.exports = {
   generateHighlight,
   generateQuery,
@@ -930,4 +945,5 @@ module.exports = {
   getGraphicalCTDCDictionary,
   getGraphicalPCDCDictionary,
   convert2Key,
+  getPCDCProjectsFullName,
 };

@@ -353,7 +353,13 @@ const searchP = (req, res) => {
           delete entry._type;
           delete entry._id;
         });
-        res.json({ total: total, returnList: data, timedOut: false });
+        const pcdc_project_fullName = shared.getPCDCProjectsFullName();
+        res.json({
+          total: total,
+          returnList: data,
+          timedOut: false,
+          info: pcdc_project_fullName,
+        });
       }
     });
   }
