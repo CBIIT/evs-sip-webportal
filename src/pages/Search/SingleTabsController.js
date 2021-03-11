@@ -79,7 +79,7 @@ const SingleTabsController = (props) => {
                   <ICDCValuesTable values={props.source}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="pcdc">
-                  <PCDCValuesTable values={props.source}/>
+                  <PCDCValuesTable values={props.source} info={props.info}/>
                 </Tab.Pane>
               </Tab.Content>
             </Col>

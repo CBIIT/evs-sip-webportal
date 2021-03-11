@@ -137,11 +137,16 @@ const DivCenter = styled.div`
 `;
 
 const CodeSpan = styled.span`
-  display: block;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   color: #475162;
   font-size: 1.25rem;
   font-weight: bold;
+  inline-size: 9rem;
+  margin: 0 auto;
   margin-bottom: 1rem;
+  min-height: 7rem;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -152,6 +157,7 @@ const ButtonStyled = styled(Button)`
 
 const PCDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
+  let info = props.info;  
   let valuesObj = {};
 
   items.forEach((data) => {
@@ -536,7 +542,7 @@ const PCDCValuesTable = (props) => {
       <Row>
         <TableColLeft xs={2}>
           <DivCenter>
-            <CodeSpan>{props.project}</CodeSpan>
+            <CodeSpan>{info[props.project] !== undefined ? info[props.project] : props.project}</CodeSpan>
             <Button variant="outline-secondary" onClick={ToggleTableHandler}>
               {isToggleOn === false ? 'Show More' : 'Show Less'}
             </Button>
