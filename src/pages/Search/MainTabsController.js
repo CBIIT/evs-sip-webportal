@@ -152,7 +152,7 @@ const MainTabsController = (props) => {
                     <TabsController source={props.result.returnList}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="single">
-                    <SingleTabsController source={props.result.returnList}/>
+                    <SingleTabsController source={props.result.returnList} info={props.result.info}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="graph">
                     <GraphTabsController keyword={props.keyword} source={props.result.returnList}/>

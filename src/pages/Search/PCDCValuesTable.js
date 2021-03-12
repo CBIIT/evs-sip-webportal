@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState , useContext} from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { Container, Row, Col, Table, Tab, Nav, Collapse, Button} from 'react-bootstrap';
+import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionToggle, AccordionContext} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';
@@ -75,6 +75,10 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
+const TableValues = styled(Col)`
+  border-left: 1px solid #BBC5CD;
+`;
+
 const TableColLeft = styled(TableCol)`
   border-bottom: 1px solid #BBC5CD;
 `;
@@ -111,22 +115,49 @@ const IndicatorContent = styled.div`
   transform: translateY(-50%);
 `;
 
+const AccordionStyled = styled(Accordion)`
+  width: 100%;
+  && > .card {
+    border-radius: 0;
+  }
+  &&:not(:last-of-type) > .card {
+    border-bottom: 0;
+  }
+`;
+
+const CardHeader = styled(Card.Header)`
+   display: flex;
+   justify-content: space-between;
+   padding: .25rem 1.25rem;
+`;
+
 const DivCenter = styled.div`
   text-align: center;
   padding: 1rem 0;
 `;
 
 const CodeSpan = styled.span`
-  display: block;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   color: #475162;
   font-size: 1.25rem;
   font-weight: bold;
+  inline-size: 9rem;
+  margin: 0 auto;
   margin-bottom: 1rem;
+  min-height: 7rem;
 `;
 
+const ButtonStyled = styled(Button)`
+  color: #475162;
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
 
-const PCDCValuesTable1 = (props) => {
+const PCDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
+  let info = props.info;  
   let valuesObj = {};
 
   items.forEach((data) => {
@@ -143,9 +174,7 @@ const PCDCValuesTable1 = (props) => {
       obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
       obj.vs = [];
       let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-      // if (highlightCdeId !== undefined) {
-      //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
-      // }
+
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -225,7 +254,6 @@ const PCDCValuesTable1 = (props) => {
       valuesObj[obj.category].push(obj);
 
       valuesObj = sortAlphabeticallyObject(valuesObj);
-
     }
   });
 
@@ -456,7 +484,7 @@ const PCDCValuesTable1 = (props) => {
           </TableUl>
         </TableCol>
 
-        <TableColRight xs={9}>
+        <TableValues xs={9}>
           <div>
             {props.item.vs.slice(0,5).map((value, index) => {
               return(
@@ -497,7 +525,7 @@ const PCDCValuesTable1 = (props) => {
               </TableCol>
             </TableRowValue>
           }
-        </TableColRight>
+        </TableValues>
       </TableRow>
     );
   }
@@ -514,9 +542,9 @@ const PCDCValuesTable1 = (props) => {
       <Row>
         <TableColLeft xs={2}>
           <DivCenter>
-            <CodeSpan>{props.project}</CodeSpan>
+            <CodeSpan>{info[props.project] !== undefined ? info[props.project] : props.project}</CodeSpan>
             <Button variant="outline-secondary" onClick={ToggleTableHandler}>
-              {isToggleOn === false ? 'See More' : 'Show Less'}
+              {isToggleOn === false ? 'Show More' : 'Show Less'}
             </Button>
           </DivCenter>
         </TableColLeft>
@@ -558,6 +586,45 @@ const PCDCValuesTable1 = (props) => {
     );
   }
 
+  const AccordionToggle = ({ children, eventKey, callback }) => {
+    const currentEventKey = useContext(AccordionContext);
+  
+    const decoratedOnClick = useAccordionToggle(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+  
+    const isCurrentEventKey = currentEventKey === eventKey;
+  
+    return (
+      <>
+        <ButtonStyled variant="link" onClick={decoratedOnClick}>{children}</ButtonStyled>
+        <Button variant="link" onClick={decoratedOnClick}>
+          {isCurrentEventKey === true
+            ? <FontAwesomeIcon icon={faAngleUp}/>
+            : <FontAwesomeIcon icon={faAngleDown}/>
+          }
+        </Button>
+      </>
+    );
+  }
+
+  const AccordionValueItems = (props) => {
+    return (
+      <AccordionStyled defaultActiveKey={props.index === 0 ? '0': ''}>
+        <Card>
+          <CardHeader>
+            <AccordionToggle eventKey="0">{props.project}</AccordionToggle>
+          </CardHeader>
+          <Accordion.Collapse eventKey="0">
+            <Col xs={12}>
+              <ValueItems values={props.values} project={props.project}/>
+            </Col>
+          </Accordion.Collapse>
+        </Card>
+      </AccordionStyled>
+    );
+  }
 
   if (!_.isEmpty(valuesObj)) {
     return (
@@ -574,11 +641,9 @@ const PCDCValuesTable1 = (props) => {
         </Col>
       </TableThead>
       <TableBody>
-        <Col xs={12}>
           {Object.entries(valuesObj).map((result, index) =>
-            <ValueItems project={result[0]} values={result[1]} />
+            <AccordionValueItems project={result[0]} values={result[1]} index={index}/>
           )}
-        </Col>
       </TableBody>
     </ContainerStyled>
     );
@@ -595,4 +660,4 @@ const PCDCValuesTable1 = (props) => {
   }
 };
 
-export default PCDCValuesTable1;
+export default PCDCValuesTable;
