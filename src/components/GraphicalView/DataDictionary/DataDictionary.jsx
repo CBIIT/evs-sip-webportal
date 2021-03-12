@@ -81,8 +81,6 @@ class DataDictionary extends React.Component {
       return;
     }
     const summary = getSearchSummary(result);
-    //console.log(result);
-    //console.log(summary);
     this.props.onSearchResultUpdated(result, summary);
   };
 
@@ -99,7 +97,7 @@ class DataDictionary extends React.Component {
           >
             <div className='data-dictionary__graph'>
               <DataDictionaryGraph 
-                graphType={this.props.graphType}
+                graphType={this.props.graphType} source={this.props.source}
               />
             </div>
           </div>
@@ -132,6 +130,7 @@ class DataDictionary extends React.Component {
 DataDictionary.propTypes = {
   onSetGraphView: PropTypes.func,
   onInitiateGraph: PropTypes.func,
+  onSearchResultUpdated: PropTypes.func,
   isGraphView: PropTypes.bool,
   graphType: PropTypes.string,
   keyword: PropTypes.string,
@@ -142,6 +141,7 @@ DataDictionary.propTypes = {
 DataDictionary.defaultProps = {
   onSetGraphView: () => {},
   onInitiateGraph: () => {},
+  onSearchResultUpdated: () => {},
   isGraphView: false,
   graphType: "gdc",
   keyword: "",

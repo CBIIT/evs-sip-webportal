@@ -4,6 +4,7 @@ import { capitalizeFirstLetter } from '../../../utils';
 import { Button, ListGroup} from 'react-bootstrap';
 import { getCategoryIconSVG, getCategoryColor } from '../../NodeCategories/helper';
 import { apiGetPCDCDictionary  } from '../../../../../api';
+import { getSearchResult, getSearchSummary} from '../../search/DictionarySearcher/searchHelper'; 
 import './Legend.css';
 
 class Legend extends React.Component {
@@ -25,6 +26,17 @@ class Legend extends React.Component {
     if(this.props.graphType.indexOf("pcdc") == 0){
       const dict = await apiGetPCDCDictionary(project);
       this.props.onInitiateGraph(dict);
+
+      if(this.props.graphType == "pcdc"){
+        const result = getSearchResult(this.props.graphType , this.props.source, project);
+        if (!result || result.length === 0) {
+          this.props.onSearchResultUpdated([], []);
+          return;
+        }
+        const summary = getSearchSummary(result);
+        this.props.onSearchResultUpdated(result, summary);
+      }
+      
       this.setState({current_project: project});
     }
   }
@@ -144,13 +156,17 @@ class Legend extends React.Component {
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
   onInitiateGraph: PropTypes.func,
+  onSearchResultUpdated: PropTypes.func,
   graphType: PropTypes.string,
+  source: PropTypes.object,
 };
 
 Legend.defaultProps = {
   items: [],
   onInitiateGraph: () => {},
-  graphType: "gdc"
+  onSearchResultUpdated: () => {},
+  graphType: "gdc",
+  source: [],
 };
 
 export default Legend;
