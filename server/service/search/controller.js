@@ -432,7 +432,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
   }
   let syn = [];
   https
-    .get(config.NCIt_url[4] + ncitids[idx], (rsp) => {
+    .get(config.NCIt_url[6] + ncitids[idx], (rsp) => {
       let html = "";
       rsp.on("data", (dt) => {
         html += dt;
@@ -443,7 +443,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
           if (d.synonyms !== undefined) {
             let tmp = {};
             tmp[ncitids[idx]] = {};
-            tmp[ncitids[idx]].label = d.label;
+            tmp[ncitids[idx]].label = d.name;
             tmp[ncitids[idx]].code = d.code;
             tmp[ncitids[idx]].definitions = d.definitions;
             tmp[ncitids[idx]].synonyms = [];
@@ -451,24 +451,18 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
             d.synonyms.forEach((data) => {
               if (
                 checker_arr.indexOf(
-                  (
-                    data.termName +
-                    "@#$" +
-                    data.termGroup +
-                    "@#$" +
-                    data.termSource
-                  )
+                  (data.name + "@#$" + data.termGroup + "@#$" + data.source)
                     .trim()
                     .toLowerCase()
                 ) !== -1
               )
                 return;
               let obj = {};
-              obj.termName = data.termName;
+              obj.termName = data.name;
               obj.termGroup = data.termGroup;
-              obj.termSource = data.termSource;
+              obj.termSource = data.source;
               //only keep NCI synonyms
-              if (obj.termSource == "NCI") {
+              if (obj.source == "NCI") {
                 if (obj.termGroup == "PT") {
                   tmp[ncitids[idx]].synonyms.unshift(obj);
                 } else {
@@ -476,17 +470,12 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
                 }
               }
               checker_arr.push(
-                (
-                  data.termName +
-                  "@#$" +
-                  data.termGroup +
-                  "@#$" +
-                  data.termSource
-                )
+                (data.name + "@#$" + data.termGroup + "@#$" + data.source)
                   .trim()
                   .toLowerCase()
               );
             });
+            /*
             if (d.additionalProperties !== undefined) {
               tmp[ncitids[idx]].additionalProperties = [];
               d.additionalProperties.forEach((data) => {
@@ -496,6 +485,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
                 tmp[ncitids[idx]].additionalProperties.push(obj);
               });
             }
+            */
             let str = {};
             str[ncitids[idx]] = syns;
             fs.appendFile(
@@ -596,6 +586,97 @@ const preloadGDCDataMappings = async (req, res) => {
 		if (err) return logger.error(err);
 	});
 	*/
+  res.json({ result: "success" });
+};
+
+const updateGDCDataMappings = async (req, res) => {
+  /*
+  let file_path = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data_files",
+    "GDC",
+    "Revised Mapping.xlsx"
+  );
+  let output_file_path = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data_files",
+    "GDC",
+    "gdc_values_updated.js"
+  );
+  let current_mappings = shared.readGDCValues();
+  const workbook = new Excel.Workbook();
+  await workbook.xlsx.readFile(file_path.replace(/\\/g, "/"));
+  let worksheet = workbook.worksheets[0];
+
+  worksheet.eachRow(function (row, rowNumber) {
+    let item = row.values;
+    if (rowNumber > 1) {
+      let category = item[1];
+      let node = item[2];
+      let property = item[3];
+      let value = item[4];
+      let ncit = item[5];
+      let icdo = item[7];
+      let icdo_s = item[8];
+
+      let prop_id = category + "." + node + "." + property;
+
+      if (!(prop_id in current_mappings)) {
+        current_mappings[prop_id] = [];
+      }
+      //"nm":"Neoplasm, benign","i_c":"8000/0","n_c":"C3677","term_type":"PT"
+      let found = false;
+      current_mappings[prop_id].forEach((value_entry) => {
+        if (value_entry.nm == value.trim()) {
+          found = true;
+          if (ncit != "") {
+            value_entry.n_c = ncit.split("|");
+          }
+          if (icdo != "") {
+            value_entry.i_c = icdo;
+          }
+          if (icdo_s != "") {
+            value_entry.i_c_s = icdo_s.split("|");
+          }
+        }
+      });
+
+      if (!found) {
+        let entry = {};
+        entry.nm = value;
+        if (ncit == "") {
+          entry.n_c = "";
+        } else {
+          entry.n_c = ncit.split("|");
+        }
+        if (icdo != "") {
+          entry.i_c = icdo;
+        } else {
+          entry.i_c = "";
+        }
+        if (icdo_s != "") {
+          entry.i_c_s = icdo_s.split("|");
+        } else {
+          entry.i_c_s = "";
+        }
+        entry.term_type = "PT";
+        current_mappings[prop_id].push(entry);
+      }
+    }
+  });
+
+  fs.writeFileSync(
+    output_file_path,
+    JSON.stringify(current_mappings),
+    (err) => {
+      if (err) return logger.error(err);
+    }
+  );
+  */
   res.json({ result: "success" });
 };
 
@@ -740,5 +821,6 @@ module.exports = {
   getValuesForGraphicalView,
   preloadNCItSynonyms,
   preloadGDCDataMappings,
+  updateGDCDataMappings,
   preloadPCDCDataMappings,
 };
