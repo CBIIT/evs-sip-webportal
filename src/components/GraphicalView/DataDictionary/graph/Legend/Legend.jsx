@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { capitalizeFirstLetter } from '../../../utils';
-import { Button, ListGroup} from 'react-bootstrap';
+import { ListGroup} from 'react-bootstrap';
 import { getCategoryIconSVG, getCategoryColor } from '../../NodeCategories/helper';
 import { apiGetPCDCDictionary  } from '../../../../../api';
 import { getSearchResult, getSearchSummary} from '../../search/DictionarySearcher/searchHelper'; 
@@ -23,11 +23,11 @@ class Legend extends React.Component {
   }
 
   switchProject = async (project) => {
-    if(this.props.graphType.indexOf("pcdc") == 0){
+    if(this.props.graphType.indexOf("pcdc") === 0){
       const dict = await apiGetPCDCDictionary(project);
       this.props.onInitiateGraph(dict);
 
-      if(this.props.graphType == "pcdc"){
+      if(this.props.graphType === "pcdc"){
         const result = getSearchResult(this.props.graphType , this.props.source, project);
         if (!result || result.length === 0) {
           this.props.onSearchResultUpdated([], []);
@@ -43,13 +43,13 @@ class Legend extends React.Component {
 
   render() {
     let legend_content = "";
-    if(this.props.graphType.indexOf("pcdc") == 0){
+    if(this.props.graphType.indexOf("pcdc") === 0){
 
       
       legend_content = ["AML", "EWS"].map((project, i) => {
         const itemColor = getCategoryColor(project.toLowerCase());
         const IconSvg = getCategoryIconSVG(project.toLowerCase());
-        const active = this.state.current_project == project;
+        const active = this.state.current_project === project;
         return (
           <ListGroup.Item onClick={() => this.switchProject(project)} active={active}>
             <div
@@ -116,7 +116,7 @@ class Legend extends React.Component {
                   tabIndex={0}
                 />
                 {
-                  this.props.graphType.indexOf("pcdc") == 0 ? 
+                  this.props.graphType.indexOf("pcdc") === 0 ? 
                       (
                         <div className='data-dictionary-graph-legend__item body'>
                           <span style={{fontWeight: "bold"}}>Projects</span>

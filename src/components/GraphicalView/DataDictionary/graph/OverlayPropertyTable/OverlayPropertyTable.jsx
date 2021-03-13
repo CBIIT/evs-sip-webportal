@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { downloadTemplate, SearchResultItemShape } from '../../utils';
 import { getCategoryIconSVG } from '../../NodeCategories/helper';
-import {
-  getNodeDescriptionFragment,
-  getNodeTitleFragment,
-} from '../../highlightHelper';
 import DataDictionaryPropertyTable from '../../table/DataDictionaryPropertyTable/.';
-import { apiGetPropertyValues  } from '../../../../../api';
 import './OverlayPropertyTable.css';
 
 class OverlayPropertyTable extends React.Component {

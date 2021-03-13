@@ -462,7 +462,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
               obj.termGroup = data.termGroup;
               obj.termSource = data.source;
               //only keep NCI synonyms
-              if (obj.source == "NCI") {
+              if (obj.termSource == "NCI") {
                 if (obj.termGroup == "PT") {
                   tmp[ncitids[idx]].synonyms.unshift(obj);
                 } else {
@@ -486,8 +486,8 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
               });
             }
             */
-            let str = {};
-            str[ncitids[idx]] = syns;
+            //let str = {};
+            //str[ncitids[idx]] = syns;
             fs.appendFile(
               dataFilesPath + "/GDC/ncit_details.js",
               JSON.stringify(tmp),
@@ -499,7 +499,7 @@ const synchronziedLoadSynonmysfromNCIT = (ncitids, idx, next) => {
             logger.debug("!!!!!!!!!!!! no synonyms for " + ncitids[idx]);
           }
         }
-        syns[ncitids[idx]] = syn;
+        //syns[ncitids[idx]] = syn;
         idx++;
         synchronziedLoadSynonmysfromNCIT(ncitids, idx, next);
         if (ncitids.length == idx) {

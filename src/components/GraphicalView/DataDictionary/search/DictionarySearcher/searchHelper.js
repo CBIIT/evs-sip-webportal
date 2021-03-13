@@ -116,17 +116,17 @@ export const searchKeyword = (searchData, keyword) => {
  */
 export const getSearchResult = (graphType, searchData, project_filter) => {
   let result = {};
-  if (graphType == "pcdc" && project_filter == undefined) {
+  if (graphType === "pcdc" && project_filter === undefined) {
     project_filter = "AML";
   }
   if (searchData.length > 0) {
     searchData.forEach((entry) => {
       let dt = entry._source;
 
-      if (project_filter && dt.category != project_filter) {
+      if (project_filter && dt.category !== project_filter) {
         return;
       }
-      if (dt.source == graphType) {
+      if (dt.source === graphType) {
         if (!(dt.node in result)) {
           result[dt.node] = {};
           result[dt.node].props = {};
