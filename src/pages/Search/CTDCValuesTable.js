@@ -82,7 +82,6 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
-
 const Indicator = styled.div`
   position: relative;
   padding-bottom: 36%;
