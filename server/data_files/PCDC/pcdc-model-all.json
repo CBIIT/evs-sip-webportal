@@ -424,24 +424,16 @@
           "p_desc": "",
           "p_type": "enum",
           "values": [
+            { "v_name": "Trisomy 21", "v_n_code": "C43224", "v_PT": "" },
+            {
+              "v_name": "Trisomy 21 Mosaicism",
+              "v_n_code": "C142099",
+              "v_PT": ""
+            },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
-        },
-        {
-          "p_name": "Trisomy 21",
-          "p_n_code": "C43224",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
-        },
-        {
-          "p_name": "Trisomy 21 Mosaicism",
-          "p_n_code": "C142099",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
         }
       ]
     },
@@ -840,13 +832,19 @@
         },
         {
           "p_name": "CNS_DISEASE_STATUS",
-          "p_n_code": "C173264",
+          "p_n_code": "C116832",
           "p_desc": "",
           "p_type": "enum",
           "values": [
             { "v_name": "CNS1", "v_n_code": "C116833", "v_PT": "" },
             { "v_name": "CNS2", "v_n_code": "C116834", "v_PT": "" },
             { "v_name": "CNS3", "v_n_code": "C116835", "v_PT": "" },
+            { "v_name": "CNS2a", "v_n_code": "C116836", "v_PT": "" },
+            { "v_name": "CNS2b", "v_n_code": "C116837", "v_PT": "" },
+            { "v_name": "CNS2c", "v_n_code": "C116838", "v_PT": "" },
+            { "v_name": "CNS3a", "v_n_code": "C116840", "v_PT": "" },
+            { "v_name": "CNS3b", "v_n_code": "C116841", "v_PT": "" },
+            { "v_name": "CNS3c", "v_n_code": "C116843", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
@@ -1576,21 +1574,21 @@
           "p_name": "CHROMOSOME",
           "p_n_code": "C13202",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         },
         {
           "p_name": "GENE1",
           "p_n_code": "C173595",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         },
         {
           "p_name": "GENE2",
           "p_n_code": "C171253",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         },
         {
@@ -4010,35 +4008,16 @@
           "p_n_code": "C18772",
           "p_desc": "",
           "p_type": "enum",
-          "values": []
-        },
-        {
-          "p_name": "Fanconi Anemia",
-          "p_n_code": "C62505",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
-        },
-        {
-          "p_name": "Lynch Syndrome",
-          "p_n_code": "C8494",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
-        },
-        {
-          "p_name": "Breast and Ovarian Cancer",
-          "p_n_code": "C8493",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
-        },
-        {
-          "p_name": "Li-Fraumeni",
-          "p_n_code": "C3476",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
+          "values": [
+            { "v_name": "Fanconi Anemia", "v_n_code": "C62505", "v_PT": "" },
+            { "v_name": "Lynch Syndrome", "v_n_code": "C8494", "v_PT": "" },
+            {
+              "v_name": "Breast and Ovarian Cancer",
+              "v_n_code": "C8493",
+              "v_PT": ""
+            },
+            { "v_name": "Li-Fraumeni", "v_n_code": "C3476", "v_PT": "" }
+          ]
         }
       ]
     },
@@ -4473,6 +4452,7 @@
             { "v_name": "Thigh", "v_n_code": "C33763", "v_PT": "" },
             { "v_name": "Thoracic Vertebra", "v_n_code": "C12798", "v_PT": "" },
             { "v_name": "Tibia", "v_n_code": "C12800", "v_PT": "" },
+            { "v_name": "Ulna", "v_n_code": "C12809", "v_PT": "" },
             { "v_name": "Upper Arm", "v_n_code": "C32141", "v_PT": "" },
             { "v_name": "Upper Extremity", "v_n_code": "C12671", "v_PT": "" },
             { "v_name": "Wrist", "v_n_code": "C33894", "v_PT": "" },
@@ -4481,7 +4461,6 @@
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
         },
-        { "p_name": "Ulna", "p_n_code": "C12809", "p_desc": "", "values": [] },
         {
           "p_name": "TUMOR_LATERALITY",
           "p_n_code": "C119931",
@@ -4719,14 +4698,14 @@
             { "v_name": "Thigh", "v_n_code": "C33763", "v_PT": "" },
             { "v_name": "Tibia", "v_n_code": "C12800", "v_PT": "" },
             { "v_name": "Toe", "v_n_code": "C33788", "v_PT": "" },
+            { "v_name": "Ulna", "v_n_code": "C12809", "v_PT": "" },
             { "v_name": "Upper Arm", "v_n_code": "C32141", "v_PT": "" },
             { "v_name": "Wrist", "v_n_code": "C33894", "v_PT": "" },
             { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
-        },
-        { "p_name": "Ulna", "p_n_code": "C12809", "p_desc": "", "values": [] }
+        }
       ]
     },
     "histology": {
@@ -5223,16 +5202,10 @@
           "p_type": "enum",
           "values": [
             { "v_name": "Primary Tumor", "v_n_code": "C8509", "v_PT": "" },
+            { "v_name": "Metastatic Tumor", "v_n_code": "C127155", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
-        },
-        {
-          "p_name": "Metastatic Tumor",
-          "p_n_code": "C127155",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
         },
         {
           "p_name": "MOLECULAR_ANALYSIS_METHOD",
@@ -5390,21 +5363,21 @@
           "p_name": "CHROMOSOME",
           "p_n_code": "C13202",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         },
         {
           "p_name": "GENE1",
           "p_n_code": "C173595",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         },
         {
           "p_name": "GENE2",
           "p_n_code": "C171253",
           "p_desc": "",
-          "p_type": "enum",
+          "p_type": "string",
           "values": []
         }
       ]
@@ -5496,7 +5469,18 @@
           "values": [
             { "v_name": "Bone", "v_n_code": "C12366", "v_PT": "" },
             { "v_name": "Soft Tissue", "v_n_code": "C12471", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PROCEDURE_SITE",
+          "p_n_code": "C164323",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
             { "v_name": "Abdomen", "v_n_code": "C12664", "v_PT": "" },
+            { "v_name": "Intra-Abdominal", "v_n_code": "C12492", "v_PT": "" },
             { "v_name": "Abdominal Wall", "v_n_code": "C77608", "v_PT": "" },
             { "v_name": "Acetabulum", "v_n_code": "C32042", "v_PT": "" },
             { "v_name": "Ankle", "v_n_code": "C32078", "v_PT": "" },
@@ -5568,6 +5552,7 @@
             { "v_name": "Cranium", "v_n_code": "C12789", "v_PT": "" },
             { "v_name": "Spheniod Bone", "v_n_code": "C12790", "v_PT": "" },
             { "v_name": "Retroperitoneum", "v_n_code": "C12298", "v_PT": "" },
+            { "v_name": "Sternum", "v_n_code": "C12793", "v_PT": "" },
             { "v_name": "Spinal Cord", "v_n_code": "C12464", "v_PT": "" },
             { "v_name": "Spine", "v_n_code": "C12998", "v_PT": "" },
             { "v_name": "Chest Wall", "v_n_code": "C62484", "v_PT": "" },
@@ -5584,16 +5569,6 @@
             { "v_name": "Zygomatic Bone", "v_n_code": "C33897", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
-          ]
-        },
-        {
-          "p_name": "PROCEDURE_SITE",
-          "p_n_code": "C164323",
-          "p_desc": "",
-          "p_type": "enum",
-          "values": [
-            { "v_name": "Sternum", "v_n_code": "C12793", "v_PT": "" },
-            { "v_name": "Intra-Abdominal", "v_n_code": "C12492", "v_PT": "" }
           ]
         },
         {
@@ -5617,18 +5592,7 @@
           "p_type": "enum",
           "values": [
             { "v_name": "Surgery", "v_n_code": "C17173", "v_PT": "" },
-            { "v_name": "Biopsy", "v_n_code": "C15189", "v_PT": "" }
-          ]
-        },
-        {
-          "p_name": "BIOPSY_TYPE",
-          "p_n_code": "C15189",
-          "p_desc": "",
-          "p_type": "enum",
-          "values": [
-            { "v_name": "Core Needle", "v_n_code": "C15680", "v_PT": "" },
-            { "v_name": "Incisional biopsy", "v_n_code": "C15386", "v_PT": "" },
-            { "v_name": "Excisional biopsy", "v_n_code": "C15385", "v_PT": "" },
+            { "v_name": "Biopsy", "v_n_code": "C15189", "v_PT": "" },
             { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
@@ -5640,11 +5604,11 @@
           "p_desc": "",
           "p_type": "enum",
           "values": [
+            { "v_name": "Amputation", "v_n_code": "C15179", "v_PT": "" },
+            { "v_name": "Limb-salvage", "v_n_code": "C16042", "v_PT": "" },
             { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
-            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" },
-            { "v_name": "Amputation", "v_n_code": "C15179", "v_PT": "" },
-            { "v_name": "Limb-salvage", "v_n_code": "C16042", "v_PT": "" }
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
         },
         {
@@ -5803,6 +5767,20 @@
           ]
         },
         {
+          "p_name": "BIOPSY_TYPE",
+          "p_n_code": "C15189",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Core Needle", "v_n_code": "C15680", "v_PT": "" },
+            { "v_name": "Incisional biopsy", "v_n_code": "C15386", "v_PT": "" },
+            { "v_name": "Excisional biopsy", "v_n_code": "C15385", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
           "p_name": "MET_NON_LUNG_MGMT",
           "p_n_code": "C175028",
           "p_desc": "",
@@ -5943,16 +5921,10 @@
           "p_type": "enum",
           "values": [
             { "v_name": "Primary Tumor", "v_n_code": "C8509", "v_PT": "" },
+            { "v_name": "Metastatic Tumor", "v_n_code": "C127155", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
-        },
-        {
-          "p_name": "Metastatic Tumor",
-          "p_n_code": "C127155",
-          "p_desc": "",
-          "p_type": "object",
-          "values": []
         },
         {
           "p_name": "TUMOR_TISSUE_TYPE",
@@ -6137,8 +6109,8 @@
           "p_desc": "",
           "p_type": "enum",
           "values": [
-            { "v_name": "Autologous", "v_n_code": "C28000", "v_PT": "" },
-            { "v_name": "Allogeneic", "v_n_code": "C28343", "v_PT": "" },
+            { "v_name": "Autologous", "v_n_code": "C16039", "v_PT": "" },
+            { "v_name": "Allogeneic", "v_n_code": "C46089", "v_PT": "" },
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
@@ -6172,7 +6144,7 @@
         }
       ]
     },
-    "nonprotocol_therapy": {
+    "non_protocol_therapy": {
       "n_n_code": "C174253",
       "n_PT": "Non-Protocol Therapy Table",
       "properties": [
@@ -6599,6 +6571,3996 @@
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
+        }
+      ]
+    }
+  },
+  "GCT": {
+    "subject_characteristics": {
+      "n_n_code": "C177388",
+      "n_PT": "Subject Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "HONEST_BROKER_SUBJECT_ID",
+          "p_n_code": "C168949",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DATA_CONTRIBUTOR_ID",
+          "p_n_code": "C168950",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "AIEOP", "v_n_code": "C168887", "v_PT": "" },
+            { "v_name": "COG", "v_n_code": "C39353", "v_PT": "" },
+            { "v_name": "MRC", "v_n_code": "C168892", "v_PT": "" },
+            { "v_name": "CCLG", "v_n_code": "C177327", "v_PT": "" },
+            { "v_name": "SFCE", "v_n_code": "C177328", "v_PT": "" },
+            { "v_name": "SOPOBE", "v_n_code": "C177329", "v_PT": "" },
+            { "v_name": "DFCI", "v_n_code": "C177330", "v_PT": "" },
+            { "v_name": "NRG-Oncology", "v_n_code": "C177331", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "STUDY_ID",
+          "p_n_code": "C83082",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "TGM85", "v_n_code": "C177332", "v_PT": "" },
+            { "v_name": "TGM90", "v_n_code": "C177333", "v_PT": "" },
+            { "v_name": "TGM95", "v_n_code": "C177334", "v_PT": "" },
+            { "v_name": "GC1", "v_n_code": "C177335", "v_PT": "" },
+            { "v_name": "GC2", "v_n_code": "C177336", "v_PT": "" },
+            { "v_name": "GOG78", "v_n_code": "C177337", "v_PT": "" },
+            { "v_name": "GOG0090", "v_n_code": "C177338", "v_PT": "" },
+            { "v_name": "GOG116", "v_n_code": "C177339", "v_PT": "" },
+            { "v_name": "P9749", "v_n_code": "C177340", "v_PT": "" },
+            { "v_name": "POG9049", "v_n_code": "C177341", "v_PT": "" },
+            { "v_name": "AGCT01P1", "v_n_code": "C177342", "v_PT": "" },
+            { "v_name": "AGCT0132", "v_n_code": "C177343", "v_PT": "" },
+            { "v_name": "AGCT0521", "v_n_code": "C177344", "v_PT": "" },
+            { "v_name": "TE04", "v_n_code": "C177345", "v_PT": "" },
+            { "v_name": "TE05", "v_n_code": "C177346", "v_PT": "" },
+            { "v_name": "TE08", "v_n_code": "C177347", "v_PT": "" },
+            { "v_name": "TE22", "v_n_code": "C177348", "v_PT": "" },
+            { "v_name": "TE09", "v_n_code": "C177349", "v_PT": "" },
+            { "v_name": "TE13", "v_n_code": "C177350", "v_PT": "" },
+            { "v_name": "TE20", "v_n_code": "C177351", "v_PT": "" },
+            { "v_name": "TIP", "v_n_code": "C177352", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AGE_AT_ENROLLMENT",
+          "p_n_code": "C168843",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "YEAR_AT_ENROLLMENT",
+          "p_n_code": "C177353",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "TREATMENT_ARM",
+          "p_n_code": "C15538",
+          "p_desc": "Assigned Treatment Arm by Intention-To-Treat",
+          "p_type": "enum",
+          "values": []
+        }
+      ]
+    },
+    "disease_phase_timing": {
+      "n_n_code": "C177389",
+      "n_PT": "Disease Phase Timing Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_DISEASE_PHASE",
+          "p_n_code": "C168972",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "YEAR_AT_DISEASE_PHASE",
+          "p_n_code": "C168823",
+          "p_desc": "Year when the diagnosis was made for the disease phase.",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "demographics": {
+      "n_n_code": "C177390",
+      "n_PT": "Demographics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "SEX",
+          "p_n_code": "C28421",
+          "p_desc": "The biologic character or quality that distinguishes male and female from one another as expressed by analysis of the person's gonadal, morphologic (internal and external), chromosomal, and hormonal characteristics.",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Male", "v_n_code": "C20197", "v_PT": "" },
+            { "v_name": "Female", "v_n_code": "C16576", "v_PT": "" },
+            { "v_name": "Undifferentiated", "v_n_code": "C41438", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RACE",
+          "p_n_code": "C17049",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "American Indian or Alaska Native",
+              "v_n_code": "C41259",
+              "v_PT": ""
+            },
+            { "v_name": "Asian", "v_n_code": "C41260", "v_PT": "" },
+            {
+              "v_name": "Black or African American",
+              "v_n_code": "C16352",
+              "v_PT": ""
+            },
+            { "v_name": "Multiracial", "v_n_code": "C67109", "v_PT": "" },
+            {
+              "v_name": "Native Hawaiian or Other Pacific Islander",
+              "v_n_code": "C41219",
+              "v_PT": ""
+            },
+            { "v_name": "White", "v_n_code": "C41261", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "ETHNICITY",
+          "p_n_code": "C16564",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Hispanic or Latino",
+              "v_n_code": "C17459",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Not Hispanic or Latino",
+              "v_n_code": "C41222",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "medical_history": {
+      "n_n_code": "C177391",
+      "n_PT": "Medical History Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "MEDICAL_HISTORY",
+          "p_n_code": "C18772",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Turner Syndrome", "v_n_code": "C26900", "v_PT": "" },
+            {
+              "v_name": "Klinefelter Syndrome",
+              "v_n_code": "C34752",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Swyer James Syndrome",
+              "v_n_code": "C85178",
+              "v_PT": ""
+            },
+            { "v_name": "Frasier Syndrome", "v_n_code": "C122805", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DYSGENETIC_GONAD",
+          "p_n_code": "C61420",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "survival_characteristics": {
+      "n_n_code": "C177392",
+      "n_PT": "Survival Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_LKSS",
+          "p_n_code": "C168844",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LKSS",
+          "p_n_code": "C168931",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Alive", "v_n_code": "C37987", "v_PT": "" },
+            { "v_name": "Dead", "v_n_code": "C28554", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CAUSE_OF_DEATH",
+          "p_n_code": "C81239",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Disease Progression",
+              "v_n_code": "C168970",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Treatment-Related Mortality",
+              "v_n_code": "C166165",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Secondary Malignancy",
+              "v_n_code": "C4968",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "disease_characteristics": {
+      "n_n_code": "C177393",
+      "n_PT": "Disease Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "IGCCC_RISK_GROUP",
+          "p_n_code": "C111073",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "IGCCC Good", "v_n_code": "C177310", "v_PT": "" },
+            {
+              "v_name": "IGCCC Intermediate",
+              "v_n_code": "C177311",
+              "v_PT": ""
+            },
+            { "v_name": "IGCCC Poor", "v_n_code": "C177312", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MAGIC_RISK_GROUP",
+          "p_n_code": "C177316",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Low", "v_n_code": "C177354", "v_PT": "" },
+            { "v_name": "Standard", "v_n_code": "C177355", "v_PT": "" },
+            { "v_name": "Poor", "v_n_code": "C177356", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DETECTION_METHOD",
+          "p_n_code": "C173262",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Tumor Marker", "v_n_code": "C17220", "v_PT": "" },
+            { "v_name": "Imaging", "v_n_code": "C17369", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "tumor_assessment": {
+      "n_n_code": "C177394",
+      "n_PT": "Tumor Assessment Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_TUMOR_ASSESSMENT",
+          "p_n_code": "C174997",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "TUMOR_DETECTION_METHOD",
+          "p_n_code": "C117438",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Imaging", "v_n_code": "C17369", "v_PT": "" },
+            { "v_name": "PET", "v_n_code": "C17007", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "TUMOR_CLASSIFICATION",
+          "p_n_code": "C174459",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Primary", "v_n_code": "C8509", "v_PT": "" },
+            { "v_name": "Metastatic", "v_n_code": "C14174", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "TUMOR_SITE",
+          "p_n_code": "C157120",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Ascitic Fluid", "v_n_code": "C159203", "v_PT": "" },
+            { "v_name": "Bone", "v_n_code": "C12366", "v_PT": "" },
+            { "v_name": "Brain", "v_n_code": "C12439", "v_PT": "" },
+            {
+              "v_name": "Cerebrospinal Fluid",
+              "v_n_code": "C12692",
+              "v_PT": ""
+            },
+            { "v_name": "Frontal Cortex", "v_n_code": "C177766", "v_PT": "" },
+            { "v_name": "Head and Neck", "v_n_code": "C12418", "v_PT": "" },
+            { "v_name": "Liver", "v_n_code": "C12392", "v_PT": "" },
+            { "v_name": "Lung", "v_n_code": "C12468", "v_PT": "" },
+            { "v_name": "Mediastinum", "v_n_code": "C12748", "v_PT": "" },
+            { "v_name": "Occipital Cortex", "v_n_code": "C177767", "v_PT": "" },
+            { "v_name": "Omentum", "v_n_code": "C33209", "v_PT": "" },
+            { "v_name": "Peritoneum", "v_n_code": "C12770", "v_PT": "" },
+            { "v_name": "Ovary", "v_n_code": "C12404", "v_PT": "" },
+            { "v_name": "Pineal", "v_n_code": "C12398", "v_PT": "" },
+            { "v_name": "Retroperitoneum", "v_n_code": "C28256", "v_PT": "" },
+            { "v_name": "Sacrococcygeal", "v_n_code": "C33506", "v_PT": "" },
+            { "v_name": "Spinal Cord", "v_n_code": "C12464", "v_PT": "" },
+            { "v_name": "Spine", "v_n_code": "C12998", "v_PT": "" },
+            {
+              "v_name": "Suprasellar/Neurohypophyseal",
+              "v_n_code": "C177357",
+              "v_PT": ""
+            },
+            { "v_name": "Temporal Cortex", "v_n_code": "C177768", "v_PT": "" },
+            { "v_name": "Testis", "v_n_code": "C12412", "v_PT": "" },
+            { "v_name": "Thalamus", "v_n_code": "C12459", "v_PT": "" },
+            { "v_name": "Vagina", "v_n_code": "C12407", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "TUMOR_LATERALITY",
+          "p_n_code": "C25185",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Left", "v_n_code": "C25229", "v_PT": "" },
+            { "v_name": "Right", "v_n_code": "C25228", "v_PT": "" },
+            { "v_name": "Bilateral", "v_n_code": "C13332", "v_PT": "" },
+            { "v_name": "Midline", "v_n_code": "C81170", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "NODAL_INVOLVEMENT",
+          "p_n_code": "C36297",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "NODAL_SITE",
+          "p_n_code": "C177358",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Cervix", "v_n_code": "C12311", "v_PT": "" },
+            { "v_name": "Mediastinum", "v_n_code": "C12748", "v_PT": "" },
+            { "v_name": "Omentum", "v_n_code": "C33209", "v_PT": "" },
+            { "v_name": "Peritoneum", "v_n_code": "C12770", "v_PT": "" },
+            { "v_name": "Pelvis", "v_n_code": "C12767", "v_PT": "" },
+            { "v_name": "Retroperitoneum", "v_n_code": "C28256", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "staging": {
+      "n_n_code": "C177395",
+      "n_PT": "Staging Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_STAGING",
+          "p_n_code": "C177359",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "STAGE_SYSTEM",
+          "p_n_code": "C18004",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "FIGO", "v_n_code": "C89808", "v_PT": "" },
+            { "v_name": "COG", "v_n_code": "C39353", "v_PT": "" },
+            { "v_name": "AJCC", "v_n_code": "C39315", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "STAGE",
+          "p_n_code": "C16899",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Stage I", "v_n_code": "C96244", "v_PT": "" },
+            { "v_name": "Stage II", "v_n_code": "C96252", "v_PT": "" },
+            { "v_name": "Stage III", "v_n_code": "C96255", "v_PT": "" },
+            { "v_name": "Stage IV", "v_n_code": "C96261", "v_PT": "" },
+            { "v_name": "Stage I", "v_n_code": "C27966", "v_PT": "" },
+            { "v_name": "Stage II", "v_n_code": "C28054", "v_PT": "" },
+            { "v_name": "Stage III", "v_n_code": "C27970", "v_PT": "" },
+            { "v_name": "Stage IV", "v_n_code": "C27971", "v_PT": "" },
+            { "v_name": "Stage 0", "v_n_code": "C4523", "v_PT": "" },
+            { "v_name": "Stage I", "v_n_code": "C7901", "v_PT": "" },
+            { "v_name": "Stage IA", "v_n_code": "C6361", "v_PT": "" },
+            { "v_name": "Stage IB", "v_n_code": "C6362", "v_PT": "" },
+            { "v_name": "Stage IS", "v_n_code": "C6363", "v_PT": "" },
+            { "v_name": "Stage II", "v_n_code": "C9073", "v_PT": "" },
+            { "v_name": "Stage IIA", "v_n_code": "C6364", "v_PT": "" },
+            { "v_name": "Stage IIB", "v_n_code": "C6365", "v_PT": "" },
+            { "v_name": "Stage IIC", "v_n_code": "C6366", "v_PT": "" },
+            { "v_name": "Stage III", "v_n_code": "C9074", "v_PT": "" },
+            { "v_name": "Stage IIIA", "v_n_code": "C6369", "v_PT": "" },
+            { "v_name": "Stage IIIB", "v_n_code": "C6368", "v_PT": "" },
+            { "v_name": "Stage IIIC", "v_n_code": "C6367", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "histology": {
+      "n_n_code": "C177396",
+      "n_PT": "Histology Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_HIST_ASSESSMENT",
+          "p_n_code": "C175004",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "HIST_ASSESSMENT_REVIEW",
+          "p_n_code": "C177360",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Institutional", "v_n_code": "C41206", "v_PT": "" },
+            { "v_name": "Central", "v_n_code": "C16104", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "HISTOLOGY",
+          "p_n_code": "C16681",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Seminoma/Dysgerminoma/Germinoma",
+              "v_n_code": "C121618",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Embryonal Carcinoma",
+              "v_n_code": "C3752",
+              "v_PT": ""
+            },
+            { "v_name": "Yolk Sac Tumor", "v_n_code": "C3011", "v_PT": "" },
+            { "v_name": "Choriocarcinoma", "v_n_code": "C2948", "v_PT": "" },
+            { "v_name": "Mature Teratoma", "v_n_code": "C9015", "v_PT": "" },
+            { "v_name": "Immature Teratoma", "v_n_code": "C4286", "v_PT": "" },
+            { "v_name": "Gonadoblastoma", "v_n_code": "C3754", "v_PT": "" },
+            { "v_name": "Somatic Malignancy", "v_n_code": "C4289", "v_PT": "" },
+            {
+              "v_name": "Tumor Cell Necrosis",
+              "v_n_code": "C35957",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Teratoma, Not Otherwise Specified",
+              "v_n_code": "C3403",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Mixed Germ Cell Tumor",
+              "v_n_code": "C4290",
+              "v_PT": ""
+            },
+            { "v_name": "Malignant Teratoma", "v_n_code": "C4287", "v_PT": "" },
+            { "v_name": "Seminoma", "v_n_code": "C9309", "v_PT": "" },
+            { "v_name": "Dysgerminoma", "v_n_code": "C2996", "v_PT": "" },
+            { "v_name": "Germinoma", "v_n_code": "C3753", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "HISTOLOGY_RESULT",
+          "p_n_code": "C166246",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "HISTOLOGY_RESULT_NUMERIC",
+          "p_n_code": "C177361",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "HISTOLOGY_RESULT_UNIT",
+          "p_n_code": "C177362",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "%", "v_n_code": "C48570", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "HIST_ICD_O_MORPH_CODE",
+          "p_n_code": "C176985",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "HISTOLOGY_GRADE",
+          "p_n_code": "C18000",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Grade 1", "v_n_code": "C28077", "v_PT": "" },
+            { "v_name": "Grade 2", "v_n_code": "C28078", "v_PT": "" },
+            { "v_name": "Grade 3", "v_n_code": "C28079", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MATURE_GLIAL_IMPLANTS",
+          "p_n_code": "C177363",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "SOMATIC_MALIGNANCY_TYPE",
+          "p_n_code": "C177364",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Rhabdomyosarcoma", "v_n_code": "C3359", "v_PT": "" },
+            {
+              "v_name": "Sarcoma, Not Otherwise Specified",
+              "v_n_code": "C9118",
+              "v_PT": ""
+            },
+            { "v_name": "Adenocarcinoma", "v_n_code": "C2852", "v_PT": "" },
+            {
+              "v_name": "Primitive Neuroectodermal Tumor",
+              "v_n_code": "C3716",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Squamous Cell Carcinoma",
+              "v_n_code": "C2929",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Malignant Histiocytosis",
+              "v_n_code": "C7202",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "vitals": {
+      "n_n_code": "C177397",
+      "n_PT": "Vitals Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_VITALS",
+          "p_n_code": "C168845",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_TEST",
+          "p_n_code": "C49672",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Weight", "v_n_code": "C25208", "v_PT": "" },
+            { "v_name": "Height", "v_n_code": "C25347", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "VITALS_RESULT",
+          "p_n_code": "C83108",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_RESULT_NUMERIC",
+          "p_n_code": "C173268",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_RESULT_UNIT",
+          "p_n_code": "C49675",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "kg", "v_n_code": "C28252", "v_PT": "" },
+            { "v_name": "cm", "v_n_code": "C49668", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "labs": {
+      "n_n_code": "C177398",
+      "n_PT": "Labs Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_LAB",
+          "p_n_code": "C172691",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LAB_CAT",
+          "p_n_code": "C83017",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "CSF Analysis", "v_n_code": "C173272", "v_PT": "" },
+            {
+              "v_name": "microRNA Sequencing",
+              "v_n_code": "C156057",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_TEST",
+          "p_n_code": "C117142",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "LDH", "v_n_code": "C64855", "v_PT": "" },
+            { "v_name": "AFP", "v_n_code": "C74732", "v_PT": "" },
+            { "v_name": "beta-hCG", "v_n_code": "C64851", "v_PT": "" },
+            { "v_name": "miR-371a-3p", "v_n_code": "C177299", "v_PT": "" },
+            { "v_name": "miR-372-3p", "v_n_code": "C177300", "v_PT": "" },
+            { "v_name": "miR-373-3p", "v_n_code": "C177301", "v_PT": "" },
+            { "v_name": "miR-367-3p", "v_n_code": "C177302", "v_PT": "" },
+            { "v_name": "miR-375-3p", "v_n_code": "C177303", "v_PT": "" },
+            { "v_name": "cfDNA/ctDNA", "v_n_code": "C177304", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_SPEC_TYPE",
+          "p_n_code": "C83315",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Blood", "v_n_code": "C41067", "v_PT": "" },
+            { "v_name": "Serum", "v_n_code": "C13325", "v_PT": "" },
+            { "v_name": "Plasma", "v_n_code": "C13356", "v_PT": "" },
+            {
+              "v_name": "Cerebrospinal Fluid",
+              "v_n_code": "C12692",
+              "v_PT": ""
+            },
+            { "v_name": "Peritoneal Fluid", "v_n_code": "C77612", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_RESULT",
+          "p_n_code": "C36292",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "LAB_RESULT_NUMERIC",
+          "p_n_code": "C70952",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LAB_RESULT_UNIT",
+          "p_n_code": "C173274",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "U/L", "v_n_code": "C67456", "v_PT": "" },
+            { "v_name": "ng/mL", "v_n_code": "C67306", "v_PT": "" },
+            { "v_name": "IU/L", "v_n_code": "C67376", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_METHOD",
+          "p_n_code": "C83312",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "microRNA Sequencing",
+              "v_n_code": "C156057",
+              "v_PT": ""
+            },
+            { "v_name": "qPCR", "v_n_code": "C51962", "v_PT": "" },
+            { "v_name": "ddPCR", "v_n_code": "C166064", "v_PT": "" },
+            { "v_name": "Cytology", "v_n_code": "C16491", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_SEQ_METHOD",
+          "p_n_code": "C49142",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Relative", "v_n_code": "C45830", "v_PT": "" },
+            { "v_name": "Absolute", "v_n_code": "C45829", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "THRESHOLD_HIGH",
+          "p_n_code": "C177365",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "THRESHOLD_LOW",
+          "p_n_code": "C177366",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "PMID_REF",
+          "p_n_code": "C127797",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "immunohistochemistry": {
+      "n_n_code": "C177399",
+      "n_PT": "Immunohistochemistry Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_IHC",
+          "p_n_code": "C175006",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "IHC_TEST",
+          "p_n_code": "C51944",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "CD30", "v_n_code": "C38906", "v_PT": "" },
+            { "v_name": "beta-catenin", "v_n_code": "C17478", "v_PT": "" },
+            { "v_name": "GPC3", "v_n_code": "C88175", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "IHC_RESULT",
+          "p_n_code": "C175007",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "IHC_RESULT_NUMERIC",
+          "p_n_code": "C177368",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "cytology": {
+      "n_n_code": "C177400",
+      "n_PT": "Cytology Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_CYTOLOGY",
+          "p_n_code": "C177369",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MALIGNANT_CELLS",
+          "p_n_code": "C12917",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Present", "v_n_code": "C25626", "v_PT": "" },
+            { "v_name": "Absent", "v_n_code": "C48190", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CYTOLOGY_SPEC_TYPE",
+          "p_n_code": "C177413",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Cerebrospinal Fluid",
+              "v_n_code": "C12692",
+              "v_PT": ""
+            },
+            { "v_name": "Peritoneal Fluid", "v_n_code": "C77612", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "molecular_analysis": {
+      "n_n_code": "C177401",
+      "n_PT": "Molecular Analysis Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_MOLECULAR_ANALYSIS",
+          "p_n_code": "C168848",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MOLECULAR_ANALYSIS_METHOD",
+          "p_n_code": "C158954",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Karyotyping", "v_n_code": "C16768", "v_PT": "" },
+            { "v_name": "Cytogenetics", "v_n_code": "C16487", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "KARYOTYPE_STATUS",
+          "p_n_code": "C168871",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Normal Karyotype", "v_n_code": "C173277", "v_PT": "" },
+            {
+              "v_name": "Abnormal Karyotype",
+              "v_n_code": "C168875",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "ISCN",
+          "p_n_code": "C173278",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "NUM_CHROMOSOMES",
+          "p_n_code": "C177370",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "INDEPEN_ABB",
+          "p_n_code": "C173279",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MOLECULAR_ABNORMALITY",
+          "p_n_code": "C3910",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "45XO", "v_n_code": "C176780", "v_PT": "" },
+            {
+              "v_name": "45XO w/ Y Chromosomal Material",
+              "v_n_code": "C176781",
+              "v_PT": ""
+            },
+            { "v_name": "46XX", "v_n_code": "C45976", "v_PT": "" },
+            { "v_name": "46XY", "v_n_code": "C45977", "v_PT": "" },
+            { "v_name": "47XYY", "v_n_code": "C176782", "v_PT": "" },
+            { "v_name": "47XXY", "v_n_code": "C176784", "v_PT": "" },
+            { "v_name": "47XXX", "v_n_code": "C176785", "v_PT": "" },
+            { "v_name": "48XXXY", "v_n_code": "C176786", "v_PT": "" },
+            { "v_name": "48XXXX", "v_n_code": "C176787", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CHROMOSOME",
+          "p_n_code": "C13202",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "GENE1",
+          "p_n_code": "C173595",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "GENE2",
+          "p_n_code": "C171253",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "VARIANT_TYPE",
+          "p_n_code": "C97926",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Translocation", "v_n_code": "C3420", "v_PT": "" },
+            { "v_name": "Inversion", "v_n_code": "C45589", "v_PT": "" },
+            { "v_name": "Mutation", "v_n_code": "C45576", "v_PT": "" },
+            {
+              "v_name": "Single Nucleotide Variant",
+              "v_n_code": "C164674",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Copy Number Alteration",
+              "v_n_code": "C40207",
+              "v_PT": ""
+            },
+            { "v_name": "Rearrangement", "v_n_code": "C21069", "v_PT": "" },
+            { "v_name": "Deletion", "v_n_code": "C19296", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "biopsy_surgical_procedures": {
+      "n_n_code": "C177402",
+      "n_PT": "Biopsy/Surgical Procedures Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_PROCEDURE",
+          "p_n_code": "C175008",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "PROCEDURE_SITE",
+          "p_n_code": "C164323",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Frontal Cortex", "v_n_code": "C177766", "v_PT": "" },
+            { "v_name": "Head and Neck", "v_n_code": "C12418", "v_PT": "" },
+            { "v_name": "Liver", "v_n_code": "C12392", "v_PT": "" },
+            { "v_name": "Mediastinum", "v_n_code": "C12748", "v_PT": "" },
+            { "v_name": "Occipital Cortex", "v_n_code": "C177767", "v_PT": "" },
+            { "v_name": "Ovary", "v_n_code": "C12404", "v_PT": "" },
+            { "v_name": "Parietal Cortex", "v_n_code": "C177764", "v_PT": "" },
+            { "v_name": "Pineal", "v_n_code": "C12398", "v_PT": "" },
+            { "v_name": "Retroperitoneum", "v_n_code": "C28256", "v_PT": "" },
+            { "v_name": "Sacrococcygeal", "v_n_code": "C33506", "v_PT": "" },
+            { "v_name": "Spinal Cord", "v_n_code": "C12464", "v_PT": "" },
+            {
+              "v_name": "Suprasellar/Neurohypophyseal",
+              "v_n_code": "C177357",
+              "v_PT": ""
+            },
+            { "v_name": "Temporal Cortex", "v_n_code": "C177768", "v_PT": "" },
+            { "v_name": "Testis", "v_n_code": "C12412", "v_PT": "" },
+            { "v_name": "Thalamus", "v_n_code": "C12459", "v_PT": "" },
+            { "v_name": "Vagina", "v_n_code": "C12407", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PROCEDURE_LATERALITY",
+          "p_n_code": "C117526",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Left", "v_n_code": "C25229", "v_PT": "" },
+            { "v_name": "Right", "v_n_code": "C25228", "v_PT": "" },
+            { "v_name": "Bilateral", "v_n_code": "C13332", "v_PT": "" },
+            { "v_name": "Midline", "v_n_code": "C81170", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PROCEDURE_TYPE",
+          "p_n_code": "C161601",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Surgery", "v_n_code": "C17173", "v_PT": "" },
+            { "v_name": "Biopsy", "v_n_code": "C15189", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MARGINS",
+          "p_n_code": "C123560",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Incomplete Resection",
+              "v_n_code": "C131680",
+              "v_PT": ""
+            },
+            {
+              "v_name": "R0 - Complete Resection, Negative Margins",
+              "v_n_code": "C139578",
+              "v_PT": ""
+            },
+            {
+              "v_name": "R1 - Complete Resection, Positive Margins",
+              "v_n_code": "C139579",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Complete Resection",
+              "v_n_code": "C131672",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_MEDICATION_START",
+          "p_n_code": "C172692",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_MEDICATION_END",
+          "p_n_code": "C172693",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MEDICATION",
+          "p_n_code": "C70902",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Sodium Thiosulfate", "v_n_code": "C1230", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "radiation_therapy": {
+      "n_n_code": "C177403",
+      "n_PT": "Radiation Therapy Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_RT_START",
+          "p_n_code": "C172695",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_RT_END",
+          "p_n_code": "C172696",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "RT_SITE",
+          "p_n_code": "C173281",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Frontal Cortex", "v_n_code": "C177766", "v_PT": "" },
+            { "v_name": "Head and Neck", "v_n_code": "C12418", "v_PT": "" },
+            { "v_name": "Liver", "v_n_code": "C12392", "v_PT": "" },
+            { "v_name": "Mediastinum", "v_n_code": "C12748", "v_PT": "" },
+            { "v_name": "Occipital Cortex", "v_n_code": "C177767", "v_PT": "" },
+            { "v_name": "Ovary", "v_n_code": "C12404", "v_PT": "" },
+            { "v_name": "Parietal Cortex", "v_n_code": "C177764", "v_PT": "" },
+            { "v_name": "Pineal", "v_n_code": "C12398", "v_PT": "" },
+            { "v_name": "Retroperitoneum", "v_n_code": "C28256", "v_PT": "" },
+            { "v_name": "Sacrococcygeal", "v_n_code": "C33506", "v_PT": "" },
+            { "v_name": "Spinal Cord", "v_n_code": "C12464", "v_PT": "" },
+            {
+              "v_name": "Suprasellar/Neurohypophyseal",
+              "v_n_code": "C177357",
+              "v_PT": ""
+            },
+            { "v_name": "Temporal Cortex", "v_n_code": "C177768", "v_PT": "" },
+            { "v_name": "Testis", "v_n_code": "C12412", "v_PT": "" },
+            { "v_name": "Thalamus", "v_n_code": "C12459", "v_PT": "" },
+            { "v_name": "Vagina", "v_n_code": "C12407", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "ENERGY_TYPE",
+          "p_n_code": "C15313",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Proton", "v_n_code": "C66897", "v_PT": "" },
+            { "v_name": "Photon", "v_n_code": "C88112", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RT_DOSE",
+          "p_n_code": "C173282",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "RT_UNIT",
+          "p_n_code": "C18068",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Gy", "v_n_code": "C18063", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "BOOST",
+          "p_n_code": "C137812",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "NUM_FRACTION",
+          "p_n_code": "C175034",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "stem_cell_transplant": {
+      "n_n_code": "C177405",
+      "n_PT": "Stem Cell Transplant Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_SCT",
+          "p_n_code": "C168853",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "SCT_CYCLES",
+          "p_n_code": "C177373",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "total_dose": {
+      "n_n_code": "C177406",
+      "n_PT": "Total Dose Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_TOTAL_DOSE_START",
+          "p_n_code": "C172698",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_A_TOTAL_DOSE_END",
+          "p_n_code": "C172686",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "ANTINEOPLASTIC_AGENT",
+          "p_n_code": "C274",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Amifostine", "v_n_code": "C488", "v_PT": "" },
+            { "v_name": "Bleomycin", "v_n_code": "C313", "v_PT": "" },
+            { "v_name": "Carboplatin", "v_n_code": "C1282", "v_PT": "" },
+            { "v_name": "Cisplatin", "v_n_code": "C376", "v_PT": "" },
+            { "v_name": "Cyclophosphamide", "v_n_code": "C405", "v_PT": "" },
+            { "v_name": "Dactinomycin", "v_n_code": "C412", "v_PT": "" },
+            { "v_name": "Etoposide", "v_n_code": "C491", "v_PT": "" },
+            {
+              "v_name": "Etoposide Phosphate",
+              "v_n_code": "C1093",
+              "v_PT": ""
+            },
+            { "v_name": "Gemcitabine", "v_n_code": "C66876", "v_PT": "" },
+            { "v_name": "Ifosfamide", "v_n_code": "C564", "v_PT": "" },
+            { "v_name": "Melphalan", "v_n_code": "C633", "v_PT": "" },
+            { "v_name": "Paclitaxel", "v_n_code": "C1411", "v_PT": "" },
+            { "v_name": "Vinblastine", "v_n_code": "C930", "v_PT": "" },
+            { "v_name": "Vincristine", "v_n_code": "C933", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "TOTAL_DOSE_ADMINISTERED",
+          "p_n_code": "C94394",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "TOTAL_DOSE_UNITS",
+          "p_n_code": "C73558",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "mg/m2", "v_n_code": "C67402", "v_PT": "" },
+            { "v_name": "mg/kg", "v_n_code": "C67401", "v_PT": "" },
+            { "v_name": "mg", "v_n_code": "C28253", "v_PT": "" },
+            { "v_name": "IU", "v_n_code": "C48579", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "subject_response": {
+      "n_n_code": "C177407",
+      "n_PT": "Subject Response Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_RESPONSE",
+          "p_n_code": "C168856",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "RESPONSE_CATEGORY",
+          "p_n_code": "C173306",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Overall Response", "v_n_code": "C96613", "v_PT": "" },
+            { "v_name": "Tumor Marker", "v_n_code": "C17220", "v_PT": "" },
+            { "v_name": "Imaging", "v_n_code": "C17369", "v_PT": "" },
+            { "v_name": "Pathology", "v_n_code": "C18189", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RESPONSE",
+          "p_n_code": "C50995",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Partial Response", "v_n_code": "C18058", "v_PT": "" },
+            { "v_name": "Stable Disease", "v_n_code": "C18213", "v_PT": "" },
+            {
+              "v_name": "Progressive Disease",
+              "v_n_code": "C35571",
+              "v_PT": ""
+            },
+            { "v_name": "Complete Response", "v_n_code": "C4870", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RESPONSE_CRITERIA",
+          "p_n_code": "C125932",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "RECIST", "v_n_code": "C49164", "v_PT": "" },
+            { "v_name": "WHO", "v_n_code": "C75419", "v_PT": "" },
+            { "v_name": "Choi", "v_n_code": "C122394", "v_PT": "" },
+            { "v_name": "mRECIST", "v_n_code": "C126031", "v_PT": "" },
+            { "v_name": "PERCIST", "v_n_code": "C126039", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RESPONSE_CRITERIA_VERSION",
+          "p_n_code": "C175042",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        }
+      ]
+    },
+    "adverse_events": {
+      "n_n_code": "C177408",
+      "n_PT": "Adverse Events Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_AE",
+          "p_n_code": "C172677",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "ADVERSE_EVENT",
+          "p_n_code": "C41331",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Renal Toxicity", "v_n_code": "C115459", "v_PT": "" },
+            { "v_name": "Neuropathy", "v_n_code": "C4731", "v_PT": "" },
+            {
+              "v_name": "Pulmonary Toxicity",
+              "v_n_code": "C177374",
+              "v_PT": ""
+            },
+            { "v_name": "Ototoxicity", "v_n_code": "C66929", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_GRADE",
+          "p_n_code": "C166200",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Grade 1", "v_n_code": "C41338", "v_PT": "" },
+            { "v_name": "Grade 2", "v_n_code": "C41339", "v_PT": "" },
+            { "v_name": "Grade 3", "v_n_code": "C41340", "v_PT": "" },
+            { "v_name": "Grade 4", "v_n_code": "C84266", "v_PT": "" },
+            { "v_name": "Grade 5", "v_n_code": "C48275", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_ATTRIBUTION",
+          "p_n_code": "C41358",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Definite", "v_n_code": "C53260", "v_PT": "" },
+            { "v_name": "Probable", "v_n_code": "C53259", "v_PT": "" },
+            { "v_name": "Possible", "v_n_code": "C53258", "v_PT": "" },
+            { "v_name": "Unlikely", "v_n_code": "C53257", "v_PT": "" },
+            { "v_name": "Unrelated", "v_n_code": "C53256", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_OUTCOME",
+          "p_n_code": "C49489",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Death, Contributory",
+              "v_n_code": "C168948",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Death, Noncontributory",
+              "v_n_code": "C173315",
+              "v_PT": ""
+            },
+            { "v_name": "Not Yet Recovered", "v_n_code": "C49494", "v_PT": "" },
+            {
+              "v_name": "Recovered with Sequelae",
+              "v_n_code": "C49495",
+              "v_PT": ""
+            },
+            { "v_name": "Recovered", "v_n_code": "C49498", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "secondary_malignant_neoplasm": {
+      "n_n_code": "C177409",
+      "n_PT": "Secondary Malignant Neoplasm Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_SMN",
+          "p_n_code": "C168860",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "SMN_MORPH_ICDO",
+          "p_n_code": "C168862",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "SMN_TOP_ICDO",
+          "p_n_code": "C168863",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        }
+      ]
+    },
+    "growing_teratoma_syndrome": {
+      "n_n_code": "C177410",
+      "n_PT": "Growing Teratoma Syndrome Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_GTS",
+          "p_n_code": "C177375",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "GTS_TREATMENT",
+          "p_n_code": "C177376",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Surgery", "v_n_code": "C17173", "v_PT": "" },
+            { "v_name": "Chemotherapy", "v_n_code": "C15632", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "patient_reported_outcomes_metadata": {
+      "n_n_code": "C177411",
+      "n_PT": "Patient Reported Outcomes Metadata Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C175600",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "STUDY_ID",
+          "p_n_code": "C83082",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "PRO_MEASURES",
+          "p_n_code": "C177377",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "FACT Ntx", "v_n_code": "C177378", "v_PT": "" },
+            {
+              "v_name": "PedsQL Multi-Dimensional Fatigue Scale",
+              "v_n_code": "C131369",
+              "v_PT": ""
+            },
+            {
+              "v_name": "PedsQL 4.0 Generic Core Scale",
+              "v_n_code": "C177379",
+              "v_PT": ""
+            },
+            { "v_name": "AYA-HEARS", "v_n_code": "C131878", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    }
+  },
+  "ALL": {
+    "subject_characteristics": {
+      "n_n_code": "C178097",
+      "n_PT": "Subject Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "HONEST_BROKER_SUBJECT_ID",
+          "p_n_code": "C168949",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DATA_CONTRIBUTOR_ID",
+          "p_n_code": "C168950",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Children's Oncology Group",
+              "v_n_code": "C39353",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "STUDY_ID",
+          "p_n_code": "C83082",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "AALL0331", "v_n_code": "C178095", "v_PT": "" },
+            { "v_name": "AALL0232", "v_n_code": "C178065", "v_PT": "" },
+            { "v_name": "AALL0434", "v_n_code": "C178066", "v_PT": "" },
+            { "v_name": "AALL08B1", "v_n_code": "C178067", "v_PT": "" },
+            { "v_name": "AALL03B1", "v_n_code": "C178068", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AGE_AT_ENROLLMENT",
+          "p_n_code": "C168843",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "TREATMENT_ARM",
+          "p_n_code": "C15538",
+          "p_desc": "Assigned Treatment Arm by Intention-To-Treat",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "ENROLLED_STATUS",
+          "p_n_code": "C168298",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Enrolled", "v_n_code": "C142715", "v_PT": "" },
+            { "v_name": "Not Enrolled", "v_n_code": "C168929", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "disease_phase_timing": {
+      "n_n_code": "C178098",
+      "n_PT": "Disease Phase Timing Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            { "v_name": "Refractory", "v_n_code": "C38014", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_DISEASE_PHASE",
+          "p_n_code": "C168972",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "YEAR_AT_DISEASE_PHASE",
+          "p_n_code": "C168823",
+          "p_desc": "Year when the diagnosis was made for the disease phase.",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "course_timing": {
+      "n_n_code": "C178099",
+      "n_PT": "Course Timing Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "COURSE",
+          "p_n_code": "C168807",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Prephase", "v_n_code": "C168826", "v_PT": "" },
+            { "v_name": "Induction", "v_n_code": "C158876", "v_PT": "" },
+            { "v_name": "Intensification", "v_n_code": "C173105", "v_PT": "" },
+            { "v_name": "Consolidation", "v_n_code": "C15679", "v_PT": "" },
+            {
+              "v_name": "Stem Cell Transplant Conditioning",
+              "v_n_code": "C168794",
+              "v_PT": ""
+            },
+            { "v_name": "Maintenance", "v_n_code": "C15688", "v_PT": "" },
+            {
+              "v_name": "Interim Maintenance",
+              "v_n_code": "C178069",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Delayed Intensification",
+              "v_n_code": "C178270",
+              "v_PT": ""
+            },
+            { "v_name": "Continuation", "v_n_code": "C123452", "v_PT": "" },
+            {
+              "v_name": "Investigational Agent",
+              "v_n_code": "C49135",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "COURSE_NUMBER",
+          "p_n_code": "C166235",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_COURSE_START",
+          "p_n_code": "C168850",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_COURSE_END",
+          "p_n_code": "C168851",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        }
+      ]
+    },
+    "off_protocol_therapy_study": {
+      "n_n_code": "C178100",
+      "n_PT": "Off Protocol Therapy/Study Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_OFF",
+          "p_n_code": "C172678",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            { "v_name": "Refractory", "v_n_code": "C38014", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "COURSE",
+          "p_n_code": "C168807",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Prephase", "v_n_code": "C168826", "v_PT": "" },
+            { "v_name": "Induction", "v_n_code": "C158876", "v_PT": "" },
+            { "v_name": "Intensification", "v_n_code": "C173105", "v_PT": "" },
+            { "v_name": "Consolidation", "v_n_code": "C15679", "v_PT": "" },
+            {
+              "v_name": "Stem Cell Transplant Conditioning",
+              "v_n_code": "C168794",
+              "v_PT": ""
+            },
+            { "v_name": "Maintenance", "v_n_code": "C15688", "v_PT": "" },
+            {
+              "v_name": "Interim Maintenance",
+              "v_n_code": "C178070",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Delayed Intensification",
+              "v_n_code": "C178270",
+              "v_PT": ""
+            },
+            { "v_name": "Continuation", "v_n_code": "C123452", "v_PT": "" },
+            {
+              "v_name": "Investigational Agent",
+              "v_n_code": "C49135",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "COURSE_NUMBER",
+          "p_n_code": "C166235",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "OFF_TYPE",
+          "p_n_code": "C173256",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Protocol Therapy", "v_n_code": "C173257", "v_PT": "" },
+            { "v_name": "Study", "v_n_code": "C29851", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "REASON_OFF",
+          "p_n_code": "C93611",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Death", "v_n_code": "C93546", "v_PT": "" },
+            { "v_name": "Lost to Follow-Up", "v_n_code": "C70740", "v_PT": "" },
+            {
+              "v_name": "Completion of Follow-Up",
+              "v_n_code": "C178071",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Completion of Planned Therapy",
+              "v_n_code": "C168935",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Physician Decision",
+              "v_n_code": "C48250",
+              "v_PT": ""
+            },
+            { "v_name": "Ineligible", "v_n_code": "C40412", "v_PT": "" },
+            {
+              "v_name": "Withdrawal of Consent",
+              "v_n_code": "C48271",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Subject/Guardian Refused Further Teatment",
+              "v_n_code": "C168934",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Subject Non-Compliance",
+              "v_n_code": "C91752",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Failure to Attain Remission",
+              "v_n_code": "C178072",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            {
+              "v_name": "Secondary Malignancy",
+              "v_n_code": "C4968",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "Adverse Event",
+          "p_n_code": "C41331",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "ANOTHER_STUDY",
+          "p_n_code": "C178073",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "demographics": {
+      "n_n_code": "C178122",
+      "n_PT": "Demographics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "SEX",
+          "p_n_code": "C28421",
+          "p_desc": "The biologic character or quality that distinguishes male and female from one another as expressed by analysis of the person's gonadal, morphologic (internal and external), chromosomal, and hormonal characteristics.",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Male", "v_n_code": "C20197", "v_PT": "" },
+            { "v_name": "Female", "v_n_code": "C16576", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "RACE",
+          "p_n_code": "C17049",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "American Indian or Alaska Native",
+              "v_n_code": "C41259",
+              "v_PT": ""
+            },
+            { "v_name": "Asian", "v_n_code": "C41260", "v_PT": "" },
+            {
+              "v_name": "Black or African American",
+              "v_n_code": "C16352",
+              "v_PT": ""
+            },
+            { "v_name": "Multiracial", "v_n_code": "C67109", "v_PT": "" },
+            {
+              "v_name": "Native Hawaiian or Other Pacific Islander",
+              "v_n_code": "C41219",
+              "v_PT": ""
+            },
+            { "v_name": "White", "v_n_code": "C41261", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "ETHNICITY",
+          "p_n_code": "C16564",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Hispanic or Latino",
+              "v_n_code": "C17459",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Not Hispanic or Latino",
+              "v_n_code": "C41222",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "medical_history": {
+      "n_n_code": "C178102",
+      "n_PT": "Medical History Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "MEDICAL_HISTORY",
+          "p_n_code": "C18772",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Trisomy 21", "v_n_code": "C43224", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C48660", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "survival_characteristics": {
+      "n_n_code": "C178121",
+      "n_PT": "Survival Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_LKSS",
+          "p_n_code": "C168844",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LKSS",
+          "p_n_code": "C168931",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Alive", "v_n_code": "C37987", "v_PT": "" },
+            { "v_name": "Dead", "v_n_code": "C28554", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LKSS_WITH_DISEASE",
+          "p_n_code": "C178074",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AGE_LOST_TO_FOLLOW_UP",
+          "p_n_code": "C172679",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "CAUSE_OF_DEATH",
+          "p_n_code": "C81239",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Disease Progression",
+              "v_n_code": "C168970",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Treatment-Related Mortality",
+              "v_n_code": "C166165",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Secondary Malignancy",
+              "v_n_code": "C4968",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "TRM_TYPE",
+          "p_n_code": "C173260",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Stem Cell Transplant",
+              "v_n_code": "C15431",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CAUSE_OF_DEATH_DETAIL",
+          "p_n_code": "C168868",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Hemorrhage", "v_n_code": "C26791", "v_PT": "" },
+            {
+              "v_name": "Bacterial Infection",
+              "v_n_code": "C2890",
+              "v_PT": ""
+            },
+            { "v_name": "Viral Infection", "v_n_code": "C3439", "v_PT": "" },
+            { "v_name": "Fungal Infection", "v_n_code": "C3245", "v_PT": "" },
+            {
+              "v_name": "Infection, Not Otherwise Specified",
+              "v_n_code": "C128320",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Immunotherapy-Related",
+              "v_n_code": "C168874",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Sinusoidal Obstruction Syndrome",
+              "v_n_code": "C26793",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Multi-Organ Failure",
+              "v_n_code": "C75568",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Acute Respiratory Distress Syndrome",
+              "v_n_code": "C3353",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Graft Versus Host Disease",
+              "v_n_code": "C3063",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CAUSE_OF_DEATH_RANKING",
+          "p_n_code": "C168932",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Primary", "v_n_code": "C99531", "v_PT": "" },
+            { "v_name": "Contributory", "v_n_code": "C168948", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "disease_characteristics": {
+      "n_n_code": "C178123",
+      "n_PT": "Disease Characteristics Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            { "v_name": "Refractory", "v_n_code": "C38014", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "ALL_TYPE",
+          "p_n_code": "C3167",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "B-ALL", "v_n_code": "C8644", "v_PT": "" },
+            { "v_name": "T-ALL", "v_n_code": "C3183", "v_PT": "" },
+            {
+              "v_name": "Acute Leukemia, ambiguous lineage (mixed or biphenotypic)",
+              "v_n_code": "C7464",
+              "v_PT": ""
+            },
+            { "v_name": "Bone Marrow", "v_n_code": "C12431", "v_PT": "" },
+            {
+              "v_name": "Central Nervous System",
+              "v_n_code": "C12438",
+              "v_PT": ""
+            },
+            { "v_name": "Testes", "v_n_code": "C12412", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "Mixed Phenotype Acute Leukemia",
+          "p_n_code": "C82179",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "HIST_ICD_O_MORPH",
+          "p_n_code": "C176985",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_SITE",
+          "p_n_code": "C173263",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
+        },
+        {
+          "p_name": "CNS_STATUS",
+          "p_n_code": "C116832",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "CNS1", "v_n_code": "C116833", "v_PT": "" },
+            { "v_name": "CNS2", "v_n_code": "C116834", "v_PT": "" },
+            { "v_name": "CNS2a", "v_n_code": "C116836", "v_PT": "" },
+            { "v_name": "CNS2b", "v_n_code": "C116837", "v_PT": "" },
+            { "v_name": "CNS2c", "v_n_code": "C116838", "v_PT": "" },
+            { "v_name": "CNS3", "v_n_code": "C116835", "v_PT": "" },
+            { "v_name": "CNS3a", "v_n_code": "C116840", "v_PT": "" },
+            { "v_name": "CNS3b", "v_n_code": "C116841", "v_PT": "" },
+            { "v_name": "CNS3c", "v_n_code": "C116843", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "BULK_MED_MASS",
+          "p_n_code": "C178075",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PRIOR_STEROIDS_WEEK",
+          "p_n_code": "C178076",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "PRIOR_STEROIDS_MONTH",
+          "p_n_code": "C178077",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "vitals": {
+      "n_n_code": "C178124",
+      "n_PT": "Vitals Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_VITALS",
+          "p_n_code": "C168845",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "DISEASE_PHASE",
+          "p_n_code": "C168878",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Initial Diagnosis",
+              "v_n_code": "C156813",
+              "v_PT": ""
+            },
+            { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            { "v_name": "Refractory", "v_n_code": "C38014", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DISEASE_PHASE_NUMBER",
+          "p_n_code": "C173258",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "COURSE",
+          "p_n_code": "C168807",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Prephase", "v_n_code": "C168826", "v_PT": "" },
+            { "v_name": "Induction", "v_n_code": "C158876", "v_PT": "" },
+            { "v_name": "Intensification", "v_n_code": "C173105", "v_PT": "" },
+            { "v_name": "Consolidation", "v_n_code": "C15679", "v_PT": "" },
+            {
+              "v_name": "Stem Cell Transplant Conditioning",
+              "v_n_code": "C168794",
+              "v_PT": ""
+            },
+            { "v_name": "Maintenance", "v_n_code": "C15688", "v_PT": "" },
+            {
+              "v_name": "Interim Maintenance",
+              "v_n_code": "C178078",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Delayed Intensification",
+              "v_n_code": "C178270",
+              "v_PT": ""
+            },
+            { "v_name": "Continuation", "v_n_code": "C123452", "v_PT": "" },
+            {
+              "v_name": "Investigational Agent",
+              "v_n_code": "C49135",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "COURSE_NUMBER",
+          "p_n_code": "C166235",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_TEST",
+          "p_n_code": "C49672",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Weight", "v_n_code": "C81328", "v_PT": "" },
+            { "v_name": "Height", "v_n_code": "C164634", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "VITALS_RESULT",
+          "p_n_code": "C83108",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_RESULT_NUMERIC",
+          "p_n_code": "C173268",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "VITALS_RESULT_UNIT",
+          "p_n_code": "C49675",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "kg", "v_n_code": "C28252", "v_PT": "" },
+            { "v_name": "cm", "v_n_code": "C49668", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "lab": {
+      "n_n_code": "C178106",
+      "n_PT": "Lab Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_LAB",
+          "p_n_code": "C172691",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LAB_CAT",
+          "p_n_code": "C83017",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Peripheral Blood Analysis",
+              "v_n_code": "C173271",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Cerebrospinal Fluid Analysis",
+              "v_n_code": "C173272",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Bone Marrow Analysis",
+              "v_n_code": "C173273",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_TEST",
+          "p_n_code": "C117142",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Platelets", "v_n_code": "C51951", "v_PT": "" },
+            { "v_name": "RBC", "v_n_code": "C51946", "v_PT": "" },
+            { "v_name": "WBC", "v_n_code": "C51948", "v_PT": "" },
+            {
+              "v_name": "Absolute Neutrophil Count",
+              "v_n_code": "C63321",
+              "v_PT": ""
+            },
+            { "v_name": "Blasts", "v_n_code": "C74605", "v_PT": "" },
+            { "v_name": "Hemoglobin", "v_n_code": "C64848", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_SPEC_TYPE",
+          "p_n_code": "C83315",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Blood", "v_n_code": "C41067", "v_PT": "" },
+            {
+              "v_name": "Cerebrospinal Fluid",
+              "v_n_code": "C12692",
+              "v_PT": ""
+            },
+            { "v_name": "Bone Marrow", "v_n_code": "C12431", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_RESULT",
+          "p_n_code": "C36292",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "LAB_RESULT_NUMERIC",
+          "p_n_code": "C70952",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "LAB_RESULT_UNIT",
+          "p_n_code": "C173274",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "%", "v_n_code": "C48570", "v_PT": "" },
+            { "v_name": "count/mm3", "v_n_code": "C173275", "v_PT": "" },
+            { "v_name": "g/dL", "v_n_code": "C64783", "v_PT": "" },
+            { "v_name": "U/L", "v_n_code": "C67456", "v_PT": "" },
+            { "v_name": "mm/h", "v_n_code": "C67419", "v_PT": "" },
+            { "v_name": "mg/L", "v_n_code": "C64572", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "LAB_METHOD",
+          "p_n_code": "C83312",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Flow Cytometry", "v_n_code": "C16585", "v_PT": "" },
+            { "v_name": "Morphology", "v_n_code": "C17943", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "BM_MORPHOLOGY",
+          "p_n_code": "C178079",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "M1 (less than 5% blasts)",
+              "v_n_code": "C137698",
+              "v_PT": ""
+            },
+            {
+              "v_name": "M2 (5-25% blasts)",
+              "v_n_code": "C146709",
+              "v_PT": ""
+            },
+            {
+              "v_name": "M3 (greater than 25% blasts)",
+              "v_n_code": "C140330",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "TRAUMATIC_TAP",
+          "p_n_code": "C168879",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "molecular_analysis": {
+      "n_n_code": "C178125",
+      "n_PT": "Molecular Analysis Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_MOLECULAR_ANALYSIS",
+          "p_n_code": "C168848",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MOLECULAR_ANALYSIS_METHOD",
+          "p_n_code": "C158954",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Karyotype", "v_n_code": "C25215", "v_PT": "" },
+            {
+              "v_name": "Fluorescence In Situ Hybridization",
+              "v_n_code": "C17563",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Reverse Transcriptase-Polymerase Chain Reaction",
+              "v_n_code": "C18136",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Next Generation Sequencing",
+              "v_n_code": "C101293",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MOLECULAR_ANALYSIS_SAMPLE_SOURCE",
+          "p_n_code": "C178080",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Blood", "v_n_code": "C41067", "v_PT": "" },
+            { "v_name": "Bone Marrow", "v_n_code": "C12431", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "KARYOTYPE_STATUS",
+          "p_n_code": "C168871",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Normal Karyotype", "v_n_code": "C173277", "v_PT": "" },
+            {
+              "v_name": "Abnormal Karyotype",
+              "v_n_code": "C168875",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "ISCN",
+          "p_n_code": "C173278",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "NUM_CHROMOSOMES",
+          "p_n_code": "C177370",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MOLECULAR_ABNORMALITY",
+          "p_n_code": "C3910",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "t(9;22)", "v_n_code": "C117116", "v_PT": "" },
+            { "v_name": "t(1;19)", "v_n_code": "C128654", "v_PT": "" },
+            { "v_name": "t(12;21)(p13;q22)", "v_n_code": "C13727", "v_PT": "" },
+            { "v_name": "t(4;11)(q21;q23)", "v_n_code": "C36365", "v_PT": "" },
+            {
+              "v_name": "MLL Rearrangement (Translocation)",
+              "v_n_code": "C167144",
+              "v_PT": ""
+            },
+            { "v_name": "t(8;14)(q24;q32)", "v_n_code": "C36319", "v_PT": "" },
+            { "v_name": "Trisomy 10", "v_n_code": "C81729", "v_PT": "" },
+            { "v_name": "Trisomy 17", "v_n_code": "C37865", "v_PT": "" },
+            { "v_name": "Trisomy 4", "v_n_code": "C36530", "v_PT": "" },
+            { "v_name": "iAMP21", "v_n_code": "C124874", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "CHROMOSOME",
+          "p_n_code": "C13202",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "GENE1",
+          "p_n_code": "C173595",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "GENE2",
+          "p_n_code": "C171253",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "VARIANT_TYPE",
+          "p_n_code": "C97926",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Translocation", "v_n_code": "C3420", "v_PT": "" },
+            { "v_name": "Inversion", "v_n_code": "C45589", "v_PT": "" },
+            { "v_name": "Mutation", "v_n_code": "C45576", "v_PT": "" },
+            {
+              "v_name": "Single Nucleotide Variant",
+              "v_n_code": "C164674",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Copy Number Alteration",
+              "v_n_code": "C40207",
+              "v_PT": ""
+            },
+            { "v_name": "Rearrangement", "v_n_code": "C21069", "v_PT": "" },
+            { "v_name": "Deletion", "v_n_code": "C19296", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "GENETIC_SEQ",
+          "p_n_code": "C97927",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AA_MUTATION",
+          "p_n_code": "C97928",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "MOLECULAR_ABNORMALITY_RESULT",
+          "p_n_code": "C173596",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Positive", "v_n_code": "C38758", "v_PT": "" },
+            { "v_name": "Negative", "v_n_code": "C38757", "v_PT": "" },
+            { "v_name": "Not Done", "v_n_code": "C49484", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "DNA_INDEX",
+          "p_n_code": "C86972",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "TRANSLOCATION_STATUS",
+          "p_n_code": "C63326",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Balanced", "v_n_code": "C6822", "v_PT": "" },
+            { "v_name": "Unbalanced", "v_n_code": "C6823", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "radiation_therapy": {
+      "n_n_code": "C178108",
+      "n_PT": "Radiation Therapy Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_RT_START",
+          "p_n_code": "C172695",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_RT_END",
+          "p_n_code": "C172696",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "RT_SITE",
+          "p_n_code": "C173281",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Cranium", "v_n_code": "C12789", "v_PT": "" },
+            { "v_name": "Testes", "v_n_code": "C12412", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "stem_cell_transplant": {
+      "n_n_code": "C178109",
+      "n_PT": "Stem Cell Transplant",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_SCT",
+          "p_n_code": "C168853",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "SCT_TYPE",
+          "p_n_code": "C168864",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Autologous", "v_n_code": "C16039", "v_PT": "" },
+            { "v_name": "Allogeneic", "v_n_code": "C46089", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "SCT_SOURCE",
+          "p_n_code": "C168870",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Bone Marrow", "v_n_code": "C12431", "v_PT": "" },
+            { "v_name": "Peripheral Blood", "v_n_code": "C173496", "v_PT": "" },
+            { "v_name": "Cord Blood", "v_n_code": "C13300", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "SCT_DONOR_RELATIONSHIP",
+          "p_n_code": "C168869",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Biological Sibling",
+              "v_n_code": "C100809",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Biological Parent",
+              "v_n_code": "C166114",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Biological Relative",
+              "v_n_code": "C71384",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Biologically Unrelated",
+              "v_n_code": "C130053",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "HLA_MATCH",
+          "p_n_code": "C169009",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Match", "v_n_code": "C129972", "v_PT": "" },
+            { "v_name": "Non-Match", "v_n_code": "C126298", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "NUMBER_HLA",
+          "p_n_code": "C173301",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "NUMBER_MATCHES",
+          "p_n_code": "C173302",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "SCT_CONDITIONING_TYPE",
+          "p_n_code": "C169014",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Myeloablative", "v_n_code": "C131679", "v_PT": "" },
+            {
+              "v_name": "Reduced Intensity Conditioning/Reduced Toxicity Conditioning",
+              "v_n_code": "C116471",
+              "v_PT": ""
+            },
+            { "v_name": "Non-Myeloablative", "v_n_code": "C62714", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "SCT_TBI",
+          "p_n_code": "C15350",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "No", "v_n_code": "C49487", "v_PT": "" },
+            { "v_name": "Yes", "v_n_code": "C49488", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "minimal_residual_disease": {
+      "n_n_code": "C178126",
+      "n_PT": "Minimal Residual Disease Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_MRD_ASSESSMENT",
+          "p_n_code": "C168855",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MRD_METHOD",
+          "p_n_code": "C168933",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Flow Cytometry", "v_n_code": "C16585", "v_PT": "" },
+            {
+              "v_name": "Molecular Real-Time Quantitative Polymerase Chain Reaction",
+              "v_n_code": "C51962",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Next Generation Sequencing",
+              "v_n_code": "C101293",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "FLOW_CYTOMETRY_TYPE",
+          "p_n_code": "C173732",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Leukemia-Associated Immunophenotypes",
+              "v_n_code": "C168812",
+              "v_PT": ""
+            },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MRD_RESULT",
+          "p_n_code": "C124433",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "MRD_RESULT_NUMERIC",
+          "p_n_code": "C168951",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MRD_RESULT_UNIT",
+          "p_n_code": "C173304",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "%", "v_n_code": "C48570", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "MRD_SENSITIVTY",
+          "p_n_code": "C168957",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "MRD_SAMPLE_SOURCE",
+          "p_n_code": "C168958",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Bone Marrow", "v_n_code": "C12431", "v_PT": "" },
+            { "v_name": "Blood", "v_n_code": "C41067", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        }
+      ]
+    },
+    "adverse_events": {
+      "n_n_code": "C178127",
+      "n_PT": "Adverse Events Table",
+      "properties": [
+        {
+          "p_name": "AGE_AT_AE",
+          "p_n_code": "C172677",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AE_CODE",
+          "p_n_code": "C173313",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AE_SYSTEM",
+          "p_n_code": "C168872",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "CTCAE", "v_n_code": "C49704", "v_PT": "" },
+            {
+              "v_name": "Balis Neuropathy Scale",
+              "v_n_code": "C178081",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_SYSTEM_VERSION",
+          "p_n_code": "C173314",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AE_GRADE",
+          "p_n_code": "C166200",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Grade 1", "v_n_code": "C41338", "v_PT": "" },
+            { "v_name": "Grade 2", "v_n_code": "C41339", "v_PT": "" },
+            { "v_name": "Grade 3", "v_n_code": "C41340", "v_PT": "" },
+            { "v_name": "Grade 4", "v_n_code": "C41337", "v_PT": "" },
+            { "v_name": "Grade 5", "v_n_code": "C48275", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_ATTRIBUTION",
+          "p_n_code": "C41358",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Definite", "v_n_code": "C53260", "v_PT": "" },
+            { "v_name": "Probable", "v_n_code": "C53259", "v_PT": "" },
+            { "v_name": "Possible", "v_n_code": "C53258", "v_PT": "" },
+            { "v_name": "Unlikely", "v_n_code": "C53257", "v_PT": "" },
+            { "v_name": "Unrelated", "v_n_code": "C53256", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AVN_JOINT",
+          "p_n_code": "C178082",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Ankle (distal tibia, intrinsic ankle bones)",
+              "v_n_code": "C32078",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Elbow (distal humerus, proximal radius, proximal ulna)",
+              "v_n_code": "C32497",
+              "v_PT": ""
+            },
+            { "v_name": "Heel (calcaneus)", "v_n_code": "C161381", "v_PT": "" },
+            {
+              "v_name": "Hip (proximal femur)",
+              "v_n_code": "C32742",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Knee (distal femur, proximal tibia)",
+              "v_n_code": "C32898",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Shoulder (proximal humerus)",
+              "v_n_code": "C25203",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Wrist (distal radius, distal ulna, intrinsic wrist bones)",
+              "v_n_code": "C33894",
+              "v_PT": ""
+            },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AVN_JOINT_LATERALITY",
+          "p_n_code": "C178083",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Left", "v_n_code": "C25229", "v_PT": "" },
+            { "v_name": "Right", "v_n_code": "C25228", "v_PT": "" },
+            { "v_name": "Bilateral", "v_n_code": "C13332", "v_PT": "" },
+            { "v_name": "Midline", "v_n_code": "C81170", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AVN_METHOD",
+          "p_n_code": "C178084",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Bone Scan", "v_n_code": "C17646", "v_PT": "" },
+            { "v_name": "CT", "v_n_code": "C17204", "v_PT": "" },
+            { "v_name": "MRI (NMR)", "v_n_code": "C16809", "v_PT": "" },
+            { "v_name": "X-Ray", "v_n_code": "C17262", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "ORTHOPEDIC_PROCEDURE",
+          "p_n_code": "C178085",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Arthroplasty, Hemi/Resurfacing",
+              "v_n_code": "C178086",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Arthroplasty, Total",
+              "v_n_code": "C178087",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Bone Graft, Free Vascularized",
+              "v_n_code": "C178088",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Bone Graft, Nonvascularized",
+              "v_n_code": "C178089",
+              "v_PT": ""
+            },
+            { "v_name": "Chondroplasty", "v_n_code": "C178090", "v_PT": "" },
+            {
+              "v_name": "Core Decompression",
+              "v_n_code": "C157826",
+              "v_PT": ""
+            },
+            { "v_name": "Osteotomy", "v_n_code": "C51903", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "AE_PATHOGEN",
+          "p_n_code": "C80324",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Bacteria", "v_n_code": "C14187", "v_PT": "" },
+            { "v_name": "Virus", "v_n_code": "C14283", "v_PT": "" },
+            { "v_name": "Fungus", "v_n_code": "C14209", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "INFECTION_CLASSIFICATION",
+          "p_n_code": "C178091",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "Clinically Documented",
+              "v_n_code": "C178092",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Microbiologically Documented Non-Sterile Site",
+              "v_n_code": "C178093",
+              "v_PT": ""
+            },
+            {
+              "v_name": "Microbiologically Documented Sterile Site",
+              "v_n_code": "C178094",
+              "v_PT": ""
+            }
+          ]
+        }
+      ]
+    },
+    "secondary_malignant_neoplasm": {
+      "n_n_code": "C178112",
+      "n_PT": "Secondary Malignant Neoplasm Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "AGE_AT_SMN",
+          "p_n_code": "C168860",
+          "p_desc": "",
+          "p_type": "number",
+          "values": []
+        },
+        {
+          "p_name": "SMN_ICD_O_MORPH",
+          "p_n_code": "C168862",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "SMN_ICD_O_TOP",
+          "p_n_code": "C168863",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        }
+      ]
+    },
+    "non_protocol_therapy": {
+      "n_n_code": "C178113",
+      "n_PT": "Non-protocol Therapy Table",
+      "properties": [
+        {
+          "p_name": "PCDC_SUBJECT_ID",
+          "p_n_code": "C69256",
+          "p_desc": "",
+          "p_type": "string",
+          "values": []
+        },
+        {
+          "p_name": "NPT_TIMING",
+          "p_n_code": "C175038",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            {
+              "v_name": "After Study Completion",
+              "v_n_code": "C175040",
+              "v_PT": ""
+            }
+          ]
+        },
+        {
+          "p_name": "NPT_TYPE",
+          "p_n_code": "C175041",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Chemotherapy", "v_n_code": "C15632", "v_PT": "" },
+            {
+              "v_name": "Stem Cell Transplant",
+              "v_n_code": "C15431",
+              "v_PT": ""
+            },
+            { "v_name": "Surgery", "v_n_code": "C15329", "v_PT": "" },
+            { "v_name": "Immunotherapy", "v_n_code": "C15262", "v_PT": "" },
+            { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" }
+          ]
+        },
+        {
+          "p_name": "Radiation Therapy",
+          "p_n_code": "C15313",
+          "p_desc": "",
+          "p_type": "enum",
+          "values": []
         }
       ]
     }

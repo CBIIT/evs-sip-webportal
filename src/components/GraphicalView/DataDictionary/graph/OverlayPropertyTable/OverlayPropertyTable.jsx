@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getCategoryIconSVG } from '../../NodeCategories/helper';
+import { getCategoryIconSVG, getCategoryColor } from '../../NodeCategories/helper';
 import DataDictionaryPropertyTable from '../../table/DataDictionaryPropertyTable/.';
 import './OverlayPropertyTable.css';
 
@@ -29,7 +29,8 @@ class OverlayPropertyTable extends React.Component {
 
   render() {
     if (!this.props.node || this.props.hidden) return (<React.Fragment />);
-    const IconSVG = getCategoryIconSVG(this.props.node.category);
+    const IconSVG = getCategoryIconSVG(this.props.node.category.toLowerCase());
+    const itemColor = getCategoryColor(this.props.node.category.toLowerCase());
     const searchedNodeNotOpened = this.props.isSearchMode && !this.props.isSearchResultNodeOpened;
     const needHighlightSearchResult = this.props.isSearchMode;
     return (
@@ -39,7 +40,7 @@ class OverlayPropertyTable extends React.Component {
           <div className='overlay-property-table__content'>
             <div className='overlay-property-table__header'>
               <div className='overlay-property-table__category'>
-                <IconSVG className='overlay-property-table__category-icon' />
+                <IconSVG fill={itemColor} className='overlay-property-table__category-icon' />
                 <h4 className='overlay-property-table__category-text'>{this.props.node.category} / {this.props.node.id}</h4>
                 <span
                   className='overlay-property-table__close'

@@ -46,7 +46,7 @@ class Legend extends React.Component {
     if(this.props.graphType.indexOf("pcdc") === 0){
 
       
-      legend_content = ["AML", "EWS"].map((project, i) => {
+      legend_content = ["AML", "EWS", "GCT", "ALL"].map((project, i) => {
         const itemColor = getCategoryColor(project.toLowerCase());
         const IconSvg = getCategoryIconSVG(project.toLowerCase());
         const active = this.state.current_project === project;
@@ -58,7 +58,7 @@ class Legend extends React.Component {
             >
               <span className='data-dictionary-graph-legend__circle-wrapper'>
                 {
-                  IconSvg ? <IconSvg /> : (
+                  IconSvg ? <IconSvg fill={itemColor}/> : (
                     <span
                       className='data-dictionary-graph-legend__circle'
                       style={{ backgroundColor: itemColor }}

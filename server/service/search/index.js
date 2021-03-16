@@ -18,6 +18,7 @@ router.get("/graph/p/vs", controller.getValuesForGraphicalView);
 router.get("/p/local/vs", controller.getGDCData);
 
 //for data preprocessing only
+//router.get("/preloadNCItSynonyms_old", controller.preloadNCItSynonyms_old);
 //router.get("/preloadNCItSynonyms", controller.preloadNCItSynonyms);
 //router.get('/preloadGDCDataMappings', controller.preloadGDCDataMappings);
 //router.get("/updateGDCDataMappings", controller.updateGDCDataMappings);
