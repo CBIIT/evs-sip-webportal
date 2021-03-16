@@ -277,12 +277,12 @@ const SearchBox = (props) => {
     syns: false
   });
 
-  let [selectDataSource, setSelectDataSource] = useState({
-    ctdc: false,
-    gdc: false,
-    icdc: false,
-    pcdc: false
-  });
+  // let [selectDataSource, setSelectDataSource] = useState({
+  //   ctdc: false,
+  //   gdc: false,
+  //   icdc: false,
+  //   pcdc: false
+  // });
 
   let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
   let [isToggleOnSource, setIsToggleOnSource] = useState(false);
@@ -292,19 +292,19 @@ const SearchBox = (props) => {
   const suggestClickHandler = (id, event) => {
     setSearchState(id);
     setSuggestState([]);
-    props.searchTrigger(id, matchOptionsState, optionsState, selectDataSource);
+    props.searchTrigger(id, matchOptionsState, optionsState, props.selectSource);
   };
 
   const suggestKeyPressHandler = event => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       setSearchState(event.target.value);
       setSuggestState([]);
-      props.searchTrigger(event.target.value, matchOptionsState, optionsState, selectDataSource);
+      props.searchTrigger(event.target.value, matchOptionsState, optionsState, props.selectSource);
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       setSearchState(suggestState[selectIndexState].id);
       setSuggestState([]);
-      props.searchTrigger(suggestState[selectIndexState].id, matchOptionsState, optionsState, selectDataSource);
+      props.searchTrigger(suggestState[selectIndexState].id, matchOptionsState, optionsState, props.selectSource);
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState;
@@ -347,8 +347,8 @@ const SearchBox = (props) => {
   };
 
   const selectDataToggleHandler = event => {
-    setSelectDataSource({
-      ...selectDataSource,
+    props.setSelectSource({
+      ...props.selectSource,
       [event.target.name]: !event.target.checked
     });
   };
@@ -370,14 +370,14 @@ const SearchBox = (props) => {
 
   const selectDataAllToggleHandler = event => {
     if(isToggleOnSource === false){
-      setSelectDataSource({
+      props.setSelectSource({
         ctdc: true,
         gdc: true,
         icdc: true,
         pcdc: true
       });
     } else {
-      setSelectDataSource({
+      props.setSelectSource({
         ctdc: false,
         gdc: false,
         icdc: false,
@@ -403,7 +403,7 @@ const SearchBox = (props) => {
               error={props.errors.toString()}
             />
             <DeleteBtn aria-label="Delete" href="/#" onClick={cleanSearchBar} style={searchState.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></DeleteBtn>
-            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, matchOptionsState, optionsState, selectDataSource)}>
+            <SearchButton aria-label="Search" onClick={() => props.searchTrigger(searchState, matchOptionsState, optionsState, props.selectSource)}>
               <SearchButtonIcon icon={faArrowRight}/>
             </SearchButton>
           </InputGroup>
@@ -463,28 +463,28 @@ const SearchBox = (props) => {
               <SelectBtn aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'} onClick={selectDataAllToggleHandler}>{isToggleOnSource === false ? 'Select All' : 'Unselect All'}</SelectBtn>
               <FormGroupStyled>
                 <CheckboxLabel>
-                  <CheckboxInput name="gdc" type="checkbox" checked={selectDataSource['gdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxInput name="gdc" type="checkbox" checked={props.selectSource['gdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Genomic Data Commons <SpanNormal>(GDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput name="ctdc" type="checkbox" checked={selectDataSource['ctdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxInput name="ctdc" type="checkbox" checked={props.selectSource['ctdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Clinical Trial Data Commons <SpanNormal>(CTDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput name="icdc" type="checkbox" checked={selectDataSource['icdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxInput name="icdc" type="checkbox" checked={props.selectSource['icdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
                   Integrated Canine Data Commons <SpanNormal>(ICDC)</SpanNormal>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput name="pcdc" type="checkbox" checked={selectDataSource['pcdc']} onClick={selectDataToggleHandler}/>
+                  <CheckboxInput name="pcdc" type="checkbox" checked={props.selectSource['pcdc']} onClick={selectDataToggleHandler}/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
