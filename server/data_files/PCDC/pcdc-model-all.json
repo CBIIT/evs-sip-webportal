@@ -9094,6 +9094,7 @@
               "v_PT": ""
             },
             { "v_name": "Relapse", "v_n_code": "C38155", "v_PT": "" },
+            { "v_name": "Adverse Event", "v_n_code": "C41331", "v_PT": "" },
             {
               "v_name": "Secondary Malignancy",
               "v_n_code": "C4968",
@@ -9103,13 +9104,6 @@
             { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
             { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
           ]
-        },
-        {
-          "p_name": "Adverse Event",
-          "p_n_code": "C41331",
-          "p_desc": "",
-          "p_type": "enum",
-          "values": []
         },
         {
           "p_name": "ANOTHER_STUDY",
@@ -10545,6 +10539,7 @@
           "p_type": "enum",
           "values": [
             { "v_name": "Chemotherapy", "v_n_code": "C15632", "v_PT": "" },
+            { "v_name": "Radiation Therapy", "v_n_code": "C15313", "v_PT": "" },
             {
               "v_name": "Stem Cell Transplant",
               "v_n_code": "C15431",
@@ -10554,13 +10549,6 @@
             { "v_name": "Immunotherapy", "v_n_code": "C15262", "v_PT": "" },
             { "v_name": "Other", "v_n_code": "C17649", "v_PT": "" }
           ]
-        },
-        {
-          "p_name": "Radiation Therapy",
-          "p_n_code": "C15313",
-          "p_desc": "",
-          "p_type": "enum",
-          "values": []
         }
       ]
     }
