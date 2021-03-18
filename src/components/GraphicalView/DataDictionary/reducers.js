@@ -251,8 +251,6 @@ const ddgraph = (state = ddgraphsInitialState, action) => {
         tableExpandNodeID: newTableExpandNodeID,
       };
 
-      console.log(toUpdate_1);
-
       return generateState(state, action.graphType, toUpdate_1);
     }
     case "GRAPH_CLICK_BLANK_SPACE": {

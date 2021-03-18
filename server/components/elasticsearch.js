@@ -202,8 +202,8 @@ const helper_gdc = (fileJson, syns) => {
                 unloaded_ncits.push(dict.c);
               }
             }
+            dict.s = [];
             if (synonyms.length > 0) {
-              dict.s = [];
               synonyms.forEach((s) => {
                 dict.s.push({
                   n: s.termName,
@@ -424,8 +424,8 @@ const helper_icdc = (dict, icdc_mapping, syns) => {
                   unloaded_ncits.push(dict.c);
                 }
               }
+              dict.s = [];
               if (synonyms.length > 0) {
-                dict.s = [];
                 synonyms.forEach((s) => {
                   dict.s.push({
                     n: s.termName,
@@ -610,8 +610,8 @@ const helper_ctdc = (dict, ctdc_mapping, syns) => {
                   unloaded_ncits.push(dict.c);
                 }
               }
+              dict.s = [];
               if (synonyms.length > 0) {
-                dict.s = [];
                 synonyms.forEach((s) => {
                   dict.s.push({
                     n: s.termName,
@@ -733,8 +733,8 @@ const helper_pcdc = (pcdc_data, syns) => {
                 unloaded_ncits.push(dict.c);
               }
             }
+            dict.s = [];
             if (synonyms.length > 0) {
-              dict.s = [];
               synonyms.forEach((s) => {
                 dict.s.push({
                   n: s.termName,

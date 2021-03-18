@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { capitalizeFirstLetter } from '../../../utils';
-import { Button, ListGroup} from 'react-bootstrap';
+import { ListGroup} from 'react-bootstrap';
 import { getCategoryIconSVG, getCategoryColor } from '../../NodeCategories/helper';
 import { apiGetPCDCDictionary  } from '../../../../../api';
+import { getSearchResult, getSearchSummary} from '../../search/DictionarySearcher/searchHelper'; 
 import './Legend.css';
 
 class Legend extends React.Component {
@@ -22,22 +23,33 @@ class Legend extends React.Component {
   }
 
   switchProject = async (project) => {
-    if(this.props.graphType.indexOf("pcdc") == 0){
+    if(this.props.graphType.indexOf("pcdc") === 0){
       const dict = await apiGetPCDCDictionary(project);
       this.props.onInitiateGraph(dict);
+
+      if(this.props.graphType === "pcdc"){
+        const result = getSearchResult(this.props.graphType , this.props.source, project);
+        if (!result || result.length === 0) {
+          this.props.onSearchResultUpdated([], []);
+          return;
+        }
+        const summary = getSearchSummary(result);
+        this.props.onSearchResultUpdated(result, summary);
+      }
+      
       this.setState({current_project: project});
     }
   }
 
   render() {
     let legend_content = "";
-    if(this.props.graphType.indexOf("pcdc") == 0){
+    if(this.props.graphType.indexOf("pcdc") === 0){
 
       
-      legend_content = ["AML", "EWS"].map((project, i) => {
+      legend_content = ["AML", "EWS", "GCT", "ALL"].map((project, i) => {
         const itemColor = getCategoryColor(project.toLowerCase());
         const IconSvg = getCategoryIconSVG(project.toLowerCase());
-        const active = this.state.current_project == project;
+        const active = this.state.current_project === project;
         return (
           <ListGroup.Item onClick={() => this.switchProject(project)} active={active}>
             <div
@@ -46,7 +58,7 @@ class Legend extends React.Component {
             >
               <span className='data-dictionary-graph-legend__circle-wrapper'>
                 {
-                  IconSvg ? <IconSvg /> : (
+                  IconSvg ? <IconSvg fill={itemColor}/> : (
                     <span
                       className='data-dictionary-graph-legend__circle'
                       style={{ backgroundColor: itemColor }}
@@ -104,7 +116,7 @@ class Legend extends React.Component {
                   tabIndex={0}
                 />
                 {
-                  this.props.graphType.indexOf("pcdc") == 0 ? 
+                  this.props.graphType.indexOf("pcdc") === 0 ? 
                       (
                         <div className='data-dictionary-graph-legend__item body'>
                           <span style={{fontWeight: "bold"}}>Projects</span>
@@ -144,13 +156,17 @@ class Legend extends React.Component {
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
   onInitiateGraph: PropTypes.func,
+  onSearchResultUpdated: PropTypes.func,
   graphType: PropTypes.string,
+  source: PropTypes.object,
 };
 
 Legend.defaultProps = {
   items: [],
   onInitiateGraph: () => {},
-  graphType: "gdc"
+  onSearchResultUpdated: () => {},
+  graphType: "gdc",
+  source: [],
 };
 
 export default Legend;

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GraphNode from '../GraphNode/GraphNode';
 import GraphEdge from '../GraphEdge/GraphEdge';
-import { SearchResultItemShape } from '../../utils';
 import './GraphDrawer.css';
 
 class GraphDrawer extends React.Component {
@@ -18,9 +17,9 @@ class GraphDrawer extends React.Component {
     // this only happens once, at the first time graph is rendered, or when switching between projects in PCDC
     let needUpdate = false;
 
-    if(this.props.graphType.indexOf("pcdc") == 0 && prevProps.nodes.length > 0){
-      if(prevProps.nodes.length != this.props.nodes.length 
-        || prevProps.nodes[0].type != this.props.nodes[0].type){
+    if(this.props.graphType.indexOf("pcdc") === 0 && prevProps.nodes.length > 0){
+      if(prevProps.nodes.length !== this.props.nodes.length 
+        || prevProps.nodes[0].type !== this.props.nodes[0].type){
           needUpdate = true;
       }
     }
@@ -68,7 +67,7 @@ class GraphDrawer extends React.Component {
       this.props.canvasWidth,
       this.props.canvasHeight,
     ) / boundingBoxLength;
-    if(this.props.graphType.indexOf('pcdc') == 0){
+    if(this.props.graphType.indexOf('pcdc') === 0){
       fittingScale = fittingScale * 0.8;
     }
     const fittingTransX = Math.abs(
@@ -105,7 +104,7 @@ class GraphDrawer extends React.Component {
 
               isNodeFaded = !this.props.relatedNodeIDs.includes(node.id);
 
-              if(this.props.graphType.indexOf("pcdc") == 0){
+              if(this.props.graphType.indexOf("pcdc") === 0){
                 isNodeFaded = this.props.highlightingNode.id !== node.id;
               }
               if (this.props.secondHighlightingNodeID) {
