@@ -366,7 +366,7 @@ const Search = () => {
                     <CheckboxBtn>
                       <CheckboxIcon icon={faCheck}/>
                     </CheckboxBtn>
-                    Pedriactic Cancer Data Model
+                    Pediatric Cancer Data Model
                   </CheckboxLabel>
                 </FormGroupStyled>
               </Col>

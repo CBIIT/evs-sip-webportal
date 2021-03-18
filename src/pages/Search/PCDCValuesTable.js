@@ -250,8 +250,9 @@ const PCDCValuesTable = (props) => {
 
       if(valuesObj[obj.category] === undefined) {
         valuesObj[obj.category] = [obj];
+      } else {
+        valuesObj[obj.category].push(obj);
       }
-      valuesObj[obj.category].push(obj);
 
       valuesObj = sortAlphabeticallyObject(valuesObj);
     }
@@ -543,9 +544,11 @@ const PCDCValuesTable = (props) => {
         <TableColLeft xs={2}>
           <DivCenter>
             <CodeSpan>{info[props.project] !== undefined ? info[props.project] : props.project}</CodeSpan>
-            <Button variant="outline-secondary" onClick={ToggleTableHandler}>
-              {isToggleOn === false ? 'Show More' : 'Show Less'}
-            </Button>
+            {props.values.length > 5 && 
+              <Button variant="outline-secondary" onClick={ToggleTableHandler}>
+                {isToggleOn === false ? 'Show More' : 'Show Less'}
+              </Button>
+            }
           </DivCenter>
         </TableColLeft>
         <TableColRight xs={10}>
