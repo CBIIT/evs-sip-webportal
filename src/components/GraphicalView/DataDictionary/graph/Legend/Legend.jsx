@@ -11,8 +11,7 @@ class Legend extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: true,
-      current_project: "AML"
+      show: true
     };
   }
 
@@ -20,6 +19,13 @@ class Legend extends React.Component {
     this.setState(state => ({
       show: !state.show,
     }));
+  }
+
+  componentDidMount() {
+    if(this.props.currentProject != ""){
+      this.switchProject(this.props.currentProject);
+    }
+    
   }
 
   switchProject = async (project) => {
@@ -37,7 +43,7 @@ class Legend extends React.Component {
         this.props.onSearchResultUpdated(result, summary);
       }
       
-      this.setState({current_project: project});
+      this.props.onCurrentProjectUpdated(project);
     }
   }
 
@@ -45,11 +51,11 @@ class Legend extends React.Component {
     let legend_content = "";
     if(this.props.graphType.indexOf("pcdc") === 0){
 
-      
+      const current_project = this.props.currentProject == "" ? "AML" : this.props.currentProject;
       legend_content = ["AML", "EWS", "GCT", "ALL"].map((project, i) => {
         const itemColor = getCategoryColor(project.toLowerCase());
         const IconSvg = getCategoryIconSVG(project.toLowerCase());
-        const active = this.state.current_project === project;
+        const active = current_project === project;
         return (
           <ListGroup.Item onClick={() => this.switchProject(project)} active={active}>
             <div
@@ -155,16 +161,20 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string),
+  currentProject: PropTypes.string,
   onInitiateGraph: PropTypes.func,
   onSearchResultUpdated: PropTypes.func,
+  onCurrentProjectUpdated: PropTypes.func,
   graphType: PropTypes.string,
   source: PropTypes.object,
 };
 
 Legend.defaultProps = {
   items: [],
+  currentProject: "",
   onInitiateGraph: () => {},
   onSearchResultUpdated: () => {},
+  onCurrentProjectUpdated: () => {},
   graphType: "gdc",
   source: [],
 };

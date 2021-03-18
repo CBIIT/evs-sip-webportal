@@ -860,7 +860,7 @@ const preloadPCDCDataMappings = async (req, res) => {
           let prop = {};
           prop.p_name = item[6] == undefined ? "" : item[6].trim();
           prop.p_n_code = item[3] == undefined ? "" : item[3].trim();
-          prop.p_desc = item[9] == undefined ? "" : item[9].trim();
+          prop.p_desc = item[8] == undefined ? "" : item[8].trim();
           if (item[13] == "code") {
             prop.p_type = "enum";
           } else if (item[13] != "") {
