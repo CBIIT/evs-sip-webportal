@@ -12,7 +12,9 @@ const ContainerStyled = styled(Container)`
   padding-right: 15px;
   background-color: var(--white-bkgd);
   border-radius: 1rem;
-  height: 45rem;
+  // height: 45rem;
+  min-height: 25rem;
+  max-height: 58rem;
   border: 2px solid #535F74;
   overflow: hidden;
 `;
@@ -35,7 +37,8 @@ const TableTh = styled.div`
 
 const TableBody = styled(Row)`
   overflow-y: auto;
-  max-height: 42rem;
+  // max-height: 42rem;
+  max-height: 55rem;
 `;
 
 const TableCol = styled(Col)`

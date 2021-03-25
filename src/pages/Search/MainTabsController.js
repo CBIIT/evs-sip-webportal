@@ -18,7 +18,7 @@ const TabNavsCol = styled(Col)`
 `;
 
 const TabNavTextCol= styled(Col)`
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 `;
 
 const TabNavText = styled.h2`
@@ -27,6 +27,7 @@ const TabNavText = styled.h2`
   color: #042A68;
   max-width: 100%;
   text-align: center;
+  margin: auto 0;
 `;
 
 const TabNavSpan = styled.span`
