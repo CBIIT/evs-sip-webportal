@@ -13,8 +13,7 @@ const ContainerStyled = styled(Container)`
   background-color: var(--white-bkgd);
   border-radius: 1rem;
   // height: 45rem;
-  min-height: 25rem;
-  max-height: 58rem;
+  min-height: 45rem;
   border: 2px solid #535F74;
   overflow: hidden;
 `;
@@ -141,6 +140,9 @@ const PreferredTerm = styled.div`
   color: #475162;
   font-size: 1rem;
   font-weight: bold;
+  width: 10.5rem;
+  margin: auto;
+  word-wrap: break-word;
 `;
 
 const TableStyled = styled(Table)`
@@ -724,7 +726,7 @@ const CrossValuesTable = (props) => {
             <CodeSpan>{props.cross.code}<br/>({props.cross.ref})</CodeSpan><br/>
             {props.cross.ncitPreferredTerm !== undefined && <PreferredTerm dangerouslySetInnerHTML={{ __html: `${props.cross.ncitPreferredTerm.termName} (${props.cross.ncitPreferredTerm.termGroup})` }}></PreferredTerm>}
             {(props.cross.icdo3PreferredTerm !== undefined) && <PreferredTerm>{props.cross.icdo3PreferredTerm.n} ({props.cross.icdo3PreferredTerm.t})</PreferredTerm>}
-        </DivCenter>
+          </DivCenter>
         </TableColLeft>
         <TableColRight data-class="TableColRight" xs={10}>
           {props.cross.values.gdcvalues.length !== 0 &&
@@ -790,7 +792,7 @@ const CrossValuesTable = (props) => {
 
   const LazyLoadContainer = (props) => {
     return (
-      <LazyLoad height={250} once overflow={true} offset={270} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
+      <LazyLoad height={250} once overflow={true} offset={500} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
         {props.children}
       </LazyLoad>
     );

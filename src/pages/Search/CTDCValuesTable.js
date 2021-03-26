@@ -12,8 +12,7 @@ const ContainerStyled = styled(Container)`
   background-color: var(--white-bkgd);
   border-radius: 1rem;
   // height: 45rem;
-  min-height: 25rem;
-  max-height: 58rem;
+  min-height: 45rem;
   border: 2px solid #535F74;
   overflow: hidden;
 `;
