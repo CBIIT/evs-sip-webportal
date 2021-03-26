@@ -8,7 +8,7 @@ import SuggestBox from './SuggestBox';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
-  padding: 3rem 0 2rem 0;
+  padding: 3rem 0 1rem 0;
   background-color: var(--gray-bkgd);
 `;
 
