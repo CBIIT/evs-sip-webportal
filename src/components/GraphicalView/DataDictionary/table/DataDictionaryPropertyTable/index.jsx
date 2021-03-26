@@ -173,7 +173,7 @@ class DataDictionaryPropertyTable extends React.Component {
                           {
                             hasValues ? (
                               <a href="javascript: void(0);" onClick={(e) => this.openOrCloseValuesTable(e, pKey)} >
-                                {properties[pKey].hits.length + ' Values Matched'}
+                                {properties[pKey].hits.length + (properties[pKey].hits.length < 2 ? ' Value Matched' :' Values Matched')}
                               </a>
                               
                             ) : ""

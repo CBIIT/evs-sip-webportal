@@ -719,7 +719,7 @@ const updateGDCDataMappings = async (req, res) => {
     "..",
     "data_files",
     "GDC",
-    "Revised Mapping.xlsx"
+    "New Mapping.xlsx"
   );
   let output_file_path = path.join(
     __dirname,
@@ -737,13 +737,13 @@ const updateGDCDataMappings = async (req, res) => {
   worksheet.eachRow(function (row, rowNumber) {
     let item = row.values;
     if (rowNumber > 1) {
-      let category = item[1];
-      let node = item[2];
-      let property = item[3];
-      let value = item[4];
-      let ncit = item[5];
-      let icdo = item[7];
-      let icdo_s = item[8];
+      let category = item[1] == undefined || item[1] == null ? "" : item[1];
+      let node = item[2] == undefined || item[2] == null ? "" : item[2];
+      let property = item[3] == undefined || item[3] == null ? "" : item[3];
+      let value = item[4] == undefined || item[4] == null ? "" : item[4];
+      let ncit = item[5] == undefined || item[5] == null ? "" : item[5];
+      let icdo = item[7] == undefined || item[7] == null ? "" : item[7];
+      let icdo_s = item[8] == undefined || item[8] == null ? "" : item[8];
 
       let prop_id = category + "." + node + "." + property;
 
