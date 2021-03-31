@@ -8479,6 +8479,19 @@
           ]
         },
         {
+          "p_name": "RESPONSE_METHOD",
+          "p_n_code": "C178148",
+          "p_desc": "The method used to assess the response to therapy.",
+          "p_type": "enum",
+          "values": [
+            { "v_name": "Tumor Marker", "v_n_code": "C17220", "v_PT": "" },
+            { "v_name": "Imaging", "v_n_code": "C17369", "v_PT": "" },
+            { "v_name": "Pathology", "v_n_code": "C18189", "v_PT": "" },
+            { "v_name": "Unknown", "v_n_code": "C17998", "v_PT": "" },
+            { "v_name": "Not Reported", "v_n_code": "C43234", "v_PT": "" }
+          ]
+        },
+        {
           "p_name": "RESPONSE_CRITERIA",
           "p_n_code": "C125932",
           "p_desc": "A standard from which a judgment concerning tumor response to therapy can be established.",
