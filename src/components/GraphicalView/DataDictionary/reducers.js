@@ -31,6 +31,7 @@ const ddgraphInitialState = {
   isSearching: false,
   highlightingMatchedNodeID: null,
   highlightingMatchedNodeOpened: false,
+  currentProject: "",
 };
 
 const ddgraphsInitialState = {};
@@ -359,6 +360,13 @@ const ddgraph = (state = ddgraphsInitialState, action) => {
     case "GRAPH_MATCHED_NODE_OPENED": {
       let toUpdate = {
         highlightingMatchedNodeOpened: action.opened,
+      };
+
+      return generateState(state, action.graphType, toUpdate);
+    }
+    case "GRAPH_SAVE_CURRENT_PROJECT": {
+      let toUpdate = {
+        currentProject: action.currentProject,
       };
 
       return generateState(state, action.graphType, toUpdate);
