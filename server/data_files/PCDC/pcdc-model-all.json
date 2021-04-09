@@ -8672,14 +8672,14 @@
           "values": []
         },
         {
-          "p_name": "SMN_MORPH_ICDO",
+          "p_name": "SMN_ICD_O_MORPH",
           "p_n_code": "C168862",
           "p_desc": "ICD-O morphology code of the secondary malignant neoplasm.",
           "p_type": "string",
           "values": []
         },
         {
-          "p_name": "SMN_TOP_ICDO",
+          "p_name": "SMN_ICD_O_TOP",
           "p_n_code": "C168863",
           "p_desc": "ICD-O topography code of the secondary malignant neoplasm.",
           "p_type": "string",
