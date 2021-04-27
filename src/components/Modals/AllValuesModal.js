@@ -245,38 +245,47 @@ const AllValuesModal = (props) => {
 
 
       // render table with items
-      const renderItems = currentItems.map((e) => {
-        return e.ncit.map((nc, index) => {
-          if(index === 0) {
-            return (
-              <tr key={index}>
-                <td rowSpan={e.ncit.length} dangerouslySetInnerHTML={{ __html: e.n }}></td>
-                <td rowSpan={e.ncit.length}>
-                  {e.icdo !== undefined &&
-                    <TableICDO3 icdo={e.icdo} />
-                  }
-                </td>
-                <td>
-                  <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
-                </td>
-                <td>
-                  <TableNCIt ncit={nc}/>
-                </td>
-              </tr>
-            );
-          } else {
-            return (
-              <tr key={index}>
-                <td>
-                  <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
-                </td>
-                <td>
-                  <TableNCIt ncit={nc}/>
-                </td>
-              </tr>
-            );
-          }  
-        });
+      const renderItems = currentItems.map((e, index) => {
+        if(e.ncit !== undefined && e.ncit.length !== 0) {
+          return e.ncit.map((nc, i) => {
+            if(i === 0) {
+              return (
+                <tr key={index}>
+                  <td rowSpan={e.ncit.length} dangerouslySetInnerHTML={{ __html: e.n }}></td>
+                  <td rowSpan={e.ncit.length}>
+                    {e.icdo !== undefined &&
+                      <TableICDO3 icdo={e.icdo} />
+                    }
+                  </td>
+                  <td>
+                    <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
+                  </td>
+                  <td>
+                    <TableNCIt ncit={nc}/>
+                  </td>
+                </tr>
+              );
+            } else {
+              return (
+                <tr key={index}>
+                  <td>
+                    <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + nc.c} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: nc.c }}></a>
+                  </td>
+                  <td>
+                    <TableNCIt ncit={nc}/>
+                  </td>
+                </tr>
+              );
+            }  
+          });
+        } else {
+          return (<tr key={index}>
+            <td dangerouslySetInnerHTML={{ __html: e.n }}></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>)
+        }
       });
 
       return (
