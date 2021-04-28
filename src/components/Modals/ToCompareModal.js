@@ -162,6 +162,10 @@ const ToCompareModal = (props) => {
           </Row>
         </Container>
         </ModalBodyStyled>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>Close</Button>
+          <Button variant="primary">Compare</Button>
+        </Modal.Footer>
       </ModalStyled>
     </>
   );
