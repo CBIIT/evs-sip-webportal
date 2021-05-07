@@ -121,7 +121,7 @@ const AllValuesModal = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
         <tr key={index}>
-          <td>{item.n}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
           <td>{item.src}</td>
           <td>{item.t}</td>
         </tr>
@@ -134,7 +134,7 @@ const AllValuesModal = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
         <tr key={index}>
-          <td>{item.n}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
           <td>{item.t}</td>
         </tr>
       );
@@ -197,7 +197,7 @@ const AllValuesModal = (props) => {
       <>
         <RowStyled>
           <Col xs={10}>
-            {props.icdo.c}
+            <span dangerouslySetInnerHTML={{ __html: props.icdo.c }}></span> 
           </Col>
           <ColRight xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
