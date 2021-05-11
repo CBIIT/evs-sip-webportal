@@ -83,6 +83,13 @@ export const searchFilter = (items, keyword) => {
       }
     }
 
+    if (item.ncit !== undefined) {
+      let tmpArr = item.ncit.map(function (x) { return x.l.trim().toLowerCase(); }).map(function (l) { return l.indexOf(keyword) >= 0; });
+      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+        newItem.push(item);
+      }
+    }
+
     if (item.icdo !== undefined) {
       if(item.icdo.c.trim().toLowerCase().indexOf(keyword) >= 0){
         newItem.push(item);
@@ -103,14 +110,13 @@ export const searchFilter = (items, keyword) => {
       item.icdo.s = item.icdo.s.map(function (x) { return { n: x.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>'), t: x.t, src: x.src }});
     }
 
-    if (item.ncit !== undefined && item.ncit.c !== undefined) {
-      item.ncit.c = item.ncit.c.map(function (x) { return { n: x.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>'), t: x.t, src: x.src }});
-    }
-
     if (item.ncit !== undefined) {
       item.ncit.forEach(nc => {
         if (nc.c !== undefined) {
           nc.c = nc.c.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
+        }
+        if (nc.l !== undefined) {
+          nc.l = nc.l.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
         }
         if (nc.s === undefined) return;
         nc.s = nc.s.map(function (x) { return { n: x.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>'), t: x.t, src: x.src }; });

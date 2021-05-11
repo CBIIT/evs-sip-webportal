@@ -519,7 +519,7 @@ const ToCompareModal = (props) => {
             :
             <ColStyled xs={12}>
               {result.length !== 0 ?
-                <Table striped bordered>
+                <Table bordered>
                   <tbody>
                     {result.map(item => 
                       <tr>

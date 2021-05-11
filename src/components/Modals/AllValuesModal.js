@@ -281,7 +281,11 @@ const AllValuesModal = (props) => {
         } else {
           return (<tr key={index}>
             <td dangerouslySetInnerHTML={{ __html: e.n }}></td>
-            <td></td>
+            <td>
+              {e.icdo !== undefined &&
+                <TableICDO3 icdo={e.icdo} />
+              }
+            </td>
             <td></td>
             <td></td>
           </tr>)
