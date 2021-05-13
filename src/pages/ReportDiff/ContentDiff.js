@@ -133,7 +133,7 @@ const ContentDiff = () => {
         //setSearchState(keyword);
         // setPageState(result.pageInfo.page);
         //setPageSizeState(result.pageInfo.pageSize);
-        //setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+        setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
       });
     }
   }
