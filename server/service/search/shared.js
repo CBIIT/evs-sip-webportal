@@ -1048,15 +1048,29 @@ const getCompareResult = async function(searchText, from , limit){
     await genearteCompareResult();
   }
   let result = {};
-  if(searchText.trim() != ""){
-    const reg = new RegExp(searchText, 'i');
-    result.total = await db.count({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]});
-    result.data = await db.find({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  if(limit < 0){
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]});
+      result.data = await db.find({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
+    else{
+      result.total = await db.count({});
+      result.data = await db.find({}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
   }
   else{
-    result.total = await db.count({});
-    result.data = await db.find({}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]});
+      result.data = await db.find({$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
+    else{
+      result.total = await db.count({});
+      result.data = await db.find({}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
   }
+  
   
   return result;
 }
@@ -1067,16 +1081,31 @@ const getCompareResult_unmapped = async function(searchText, from , limit) {
     await genearteCompareResult();
 	}
   let result = {};
-  if(searchText.trim() != ""){
-    const reg = new RegExp(searchText, 'i');
-    result.total = await db.count({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
-    result.data = await db.find({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]})
-                      .sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  if(limit < 0){
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]})
+                        .sort({c: 1, n: 1, p: 1}).skip(from);
+    }
+    else{
+      result.total = await db.count({t: 1});
+      result.data = await db.find({t: 1}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
   }
   else{
-    result.total = await db.count({t: 1});
-    result.data = await db.find({t: 1}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 1},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]})
+                        .sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
+    else{
+      result.total = await db.count({t: 1});
+      result.data = await db.find({t: 1}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
   }
+  
   
   return result;
 }
@@ -1087,14 +1116,27 @@ const getCompareResult_mapped = async function(searchText, from , limit) {
     await genearteCompareResult();
 	}
   let result = {};
-  if(searchText.trim() != ""){
-    const reg = new RegExp(searchText, 'i');
-    result.total = await db.count({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
-    result.data = await db.find({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  if(limit < 0){
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
+    else{
+      result.total = await db.count({t: 0});
+      result.data = await db.find({t: 0}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
   }
   else{
-    result.total = await db.count({t: 0});
-    result.data = await db.find({t: 0}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 0},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
+    else{
+      result.total = await db.count({t: 0});
+      result.data = await db.find({t: 0}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
   }
   
   return result;
@@ -1106,14 +1148,27 @@ const getCompareResult_conflict = async function(searchText, from , limit) {
     await genearteCompareResult();
 	}
   let result = {};
-  if(searchText.trim() != ""){
-    const reg = new RegExp(searchText, 'i');
-    result.total = await db.count({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
-    result.data = await db.find({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+  if(limit < 0){
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
+    else{
+      result.total = await db.count({t: 2});
+      result.data = await db.find({t: 2}).sort({c: 1, n: 1, p: 1}).skip(from);
+    }
   }
   else{
-    result.total = await db.count({t: 2});
-    result.data = await db.find({t: 2}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    if(searchText.trim() != ""){
+      const reg = new RegExp(searchText, 'i');
+      result.total = await db.count({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]});
+      result.data = await db.find({$and: [{t: 2},{$or: [{p: reg}, {n: reg}, {v_1: reg}, {n_1: reg}, {n_2: reg}]}]}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
+    else{
+      result.total = await db.count({t: 2});
+      result.data = await db.find({t: 2}).sort({c: 1, n: 1, p: 1}).skip(from).limit(limit);
+    }
   }
   
   return result;

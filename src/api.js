@@ -50,3 +50,10 @@ export const compareAllWithGDCDictionary = async(type ='all', page='1', pageSize
   const response = await fetch(`${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}&searchText=${search}`);
   return response.json();
 };
+
+export const exportCompareResult = async(type ='all', search='') => {
+  const response = await fetch(`${baseUrl}/exportCompareResult?type=${type}&searchText=${search}`);
+  //return response.json();
+
+  return response.blob();
+};
