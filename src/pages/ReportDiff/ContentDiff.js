@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { compareAllWithGDCDictionary, exportCompareResult } from '../../api';
 
+import LoadingAnimation from '../../components/LoadingAnimation';
 import FormDiff from './FormDiff';
 import TabController from './TabController';
 
@@ -54,6 +55,7 @@ const TitleContainer = styled.div`
 `;
 
 const ContentDiff = () => {
+  let [loadingState, setLoadingState] = useState(false);
   let [resultState, setResultState] = useState({});
   let [typeState, setTypeState] = useState('all');
   let [pageState, setPageState] = useState(1);
@@ -68,8 +70,10 @@ const ContentDiff = () => {
   });
 
   const reportTrigger = () => {
+    setLoadingState(true);
     compareAllWithGDCDictionary()
     .then(result => {
+      setLoadingState(false);
       setResultState(result.data);
       setPageState(result.pageInfo.page);
       setPageSizeState(result.pageInfo.pageSize);
@@ -179,6 +183,7 @@ const ContentDiff = () => {
         </>
       }
     </ContentBoxText>
+    {loadingState && <LoadingAnimation/>}
   </ContentBox>
 }
 
