@@ -14,7 +14,7 @@ const PageInfo = styled.div`
   justify-content: space-around;
 `;
 
-const TableDiff = (props) => {
+const PaginationController = (props) => {
   return (<PaginationContainer>
     <ReactPaginate
       previousLabel={'«'}
@@ -50,4 +50,4 @@ const TableDiff = (props) => {
   </PaginationContainer>);
 }
 
-export default TableDiff;
+export default PaginationController;

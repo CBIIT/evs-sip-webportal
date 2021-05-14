@@ -67,16 +67,16 @@ const TabsController = (props) => {
             <Col sm={12}>
               <Tab.Content transition="false" style={{"fontSize": "1rem", "border": "1px solid #535F74", "borderRadius": "5px", "padding": "5px 5px 0px 5px"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="all">
-                  <TableDiff result={props.result} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
+                  <TableDiff result={props.result} tabKey='all' search={props.search} setSearch={props.setSearch} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="unmapped">
-                  <TableDiff result={props.result} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
+                  <TableDiff result={props.result} tabKey='unmapped' search={props.search} setSearch={props.setSearch} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="mapped">
-                  <TableDiff result={props.result} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
+                  <TableDiff result={props.result} tabKey='mapped' search={props.search} setSearch={props.setSearch} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
                 </Tab.Pane>
                 <Tab.Pane unmountOnExit={true} eventKey="conflict">
-                  <TableDiff result={props.result} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
+                  <TableDiff result={props.result} tabKey='conflict' search={props.search} setSearch={props.setSearch} searchTrigger={props.searchTrigger} downloadResult={props.downloadResult}/>
                 </Tab.Pane>
                 <PaginationController pageClick={props.pageClick} pageSizeChange={props.pageSizeChange} currentPage={props.currentPage} pageSize={props.pageSize} pageCount={props.pageCount} total={props.total}/>
               </Tab.Content>
