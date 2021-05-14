@@ -101,7 +101,7 @@ const TableDiff = (props) => {
           onKeyDown={props.searchTrigger}
         />
       </InputGroupStyled>
-      <Button variant="success" onClick={props.reportTrigger} className="ml-auto">
+      <Button variant="success" onClick={props.downloadResult} className="ml-auto">
         Download Result
       </Button>
     </SearchContainer>

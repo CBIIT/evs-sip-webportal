@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
-import { compareAllWithGDCDictionary } from '../../api';
+import { compareAllWithGDCDictionary, exportCompareResult } from '../../api';
 
 import FormDiff from './FormDiff';
 import TabController from './TabController';
@@ -96,6 +96,21 @@ const ContentDiff = () => {
     });
   };
 
+  const handleDownloadResult = () => {
+    exportCompareResult(typeState, searchState)
+    .then(result => {
+      let a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      let url = window.URL.createObjectURL(result);
+      a.href = url;
+      a.download = "report_"+ typeState +".xlsx";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    });
+  };
+
   const handlePageClick = (data) => {
     const page = data.selected + 1;
     compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState[typeState])
@@ -163,6 +178,7 @@ const ContentDiff = () => {
             search={searchState}
             setSearch={setSearchState}
             searchTrigger={handleSearchText}
+            downloadResult={handleDownloadResult}
           />
         </>
       }
