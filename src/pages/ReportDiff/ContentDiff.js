@@ -97,7 +97,7 @@ const ContentDiff = () => {
   };
 
   const handleDownloadResult = () => {
-    exportCompareResult(typeState, searchState)
+    exportCompareResult(typeState, searchState[typeState])
     .then(result => {
       let a = document.createElement("a");
       document.body.appendChild(a);
@@ -136,14 +136,10 @@ const ContentDiff = () => {
   const handleSearchText = event => {
     if (event.keyCode === 13) {
       const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
-      //setSearchState(keyword);
-
-
       setSearchState({
         ...searchState,
         [typeState]: keyword
       });
-
       compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
       .then(result => {
         setResultState(result.data);
