@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Form, Button, Row, Table, Col, InputGroup, FormControl } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -47,7 +47,7 @@ const InputGroupStyled = styled(InputGroup)`
 const TableDiff = (props) => {
   let groupCount = {};
   let tableData = Object.assign([], props.result);
-  tableData.map((entry) => {
+  tableData.forEach((entry) => {
     entry.id = entry.p + '/' + entry.n + '/' + entry.c;
     if(groupCount[entry.id]){
       groupCount[entry.id]++;
@@ -56,6 +56,14 @@ const TableDiff = (props) => {
       groupCount[entry.id] = 1;
     }
   });
+
+  const handleSearchChange = (event) => {
+    props.setSearch({
+      ...props.search,
+      [props.tabKey]: event.target.value
+    });
+  };
+
   return <>
     {/* <Form>
       <Form.Row className="align-items-center">
@@ -88,6 +96,8 @@ const TableDiff = (props) => {
           placeholder="Search By Text"
           aria-label="Search By Text"
           aria-describedby="Search By Text"
+          value={props.search[props.tabKey]}
+          onChange={handleSearchChange}
           onKeyDown={props.searchTrigger}
         />
       </InputGroupStyled>

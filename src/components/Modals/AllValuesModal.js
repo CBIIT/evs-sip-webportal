@@ -153,9 +153,7 @@ const AllValuesModal = (props) => {
     return (
       <>
         <RowStyled>
-          <Col xs={10}>
-            {props.ncit.l}
-          </Col>
+          <Col xs={10} dangerouslySetInnerHTML={{ __html: props.ncit.l }}></Col>
           <ColRight xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true

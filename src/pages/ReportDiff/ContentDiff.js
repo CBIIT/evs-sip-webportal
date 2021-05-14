@@ -60,7 +60,12 @@ const ContentDiff = () => {
   let [pageSizeState, setPageSizeState] = useState(25);
   let [totalState, setTotalState] = useState(0);
   let [pageCountState, setPageCountState] = useState(0);
-  let [searchState, setSearchState] = useState('');
+  let [searchState, setSearchState] = useState({
+    all: '',
+    unmapped: '',
+    mapped: '',
+    conflict: ''
+  });
 
   const reportTrigger = () => {
     compareAllWithGDCDictionary()
@@ -71,12 +76,17 @@ const ContentDiff = () => {
       setTotalState(result.pageInfo.total);
       setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
       setTypeState('all');
-      setSearchState('');
+      setSearchState({
+        all: '',
+        unmapped: '',
+        mapped: '',
+        conflict: ''
+      });
     });
   };
 
   const handleSelectTab = (type) => {
-    compareAllWithGDCDictionary(type, pageState, pageSizeState, searchState)
+    compareAllWithGDCDictionary(type, pageState, pageSizeState, searchState[type])
     .then(result => {
       setResultState(result.data);
       setTypeState(type);
@@ -88,7 +98,7 @@ const ContentDiff = () => {
 
   const handlePageClick = (data) => {
     const page = data.selected + 1;
-    compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState)
+    compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState[typeState])
     .then(result => {
       setResultState(result.data);
       setPageState(result.pageInfo.page);
@@ -99,7 +109,7 @@ const ContentDiff = () => {
 
   const handlepageSizeChange = (event) => {
     const pageSize = event.target.value;
-    compareAllWithGDCDictionary(typeState, pageState, pageSize, searchState)
+    compareAllWithGDCDictionary(typeState, pageState, pageSize, searchState[typeState])
     .then(result => {
       setResultState(result.data);
       // setPageState(result.pageInfo.page);
@@ -111,7 +121,14 @@ const ContentDiff = () => {
   const handleSearchText = event => {
     if (event.keyCode === 13) {
       const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
-      setSearchState(keyword);
+      //setSearchState(keyword);
+
+
+      setSearchState({
+        ...searchState,
+        [typeState]: keyword
+      });
+
       compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
       .then(result => {
         setResultState(result.data);
@@ -128,7 +145,7 @@ const ContentDiff = () => {
     <ContentBoxText>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut sapien tellus. Duis sed dapibus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
       <FormDiff reportTrigger={reportTrigger}/>
-      { !_.isEmpty(resultState) &&
+      {!_.isEmpty(resultState) &&
         <>
           <TitleContainer>
             <h2>Result</h2>
