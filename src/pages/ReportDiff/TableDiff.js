@@ -40,8 +40,8 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const InputGroupStyled = styled(InputGroup)`
-  max-width: 30rem;
+const FormStyled = styled(Form)`
+  width: 30rem;
 `;
 
 const TableDiff = (props) => {
@@ -65,42 +65,29 @@ const TableDiff = (props) => {
   };
 
   return <>
-    {/* <Form>
-      <Form.Row className="align-items-center">
-        <Col sm={6} className="my-1">
-          <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
-            Search By Text
-          </Form.Label>
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control id="inlineFormInputGroupUsername" placeholder="Search By Text" />
-          </InputGroup>
-        </Col>
-        <Col sm={6} xs="auto" className="my-1 d-flex">
-          <Button variant="primary"onClick={props.reportTrigger} className="ml-auto">
-            Download Result
-          </Button>
-        </Col>
-      </Form.Row>
-    </Form> */}
     <SearchContainer>
-      <InputGroupStyled>
-        <InputGroup.Prepend>
-          <InputGroup.Text id="search-values-input">
-            <FontAwesomeIcon icon={faSearch}/>
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-        <FormControl
-          placeholder="Search By Text"
-          aria-label="Search By Text"
-          aria-describedby="Search By Text"
-          value={props.search[props.tabKey]}
-          onChange={handleSearchChange}
-          onKeyDown={props.searchTrigger}
-        />
-      </InputGroupStyled>
+      <FormStyled onSubmit={props.searchSubmit}>
+        <Form.Row>
+          <Col sm={12}>
+            <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
+              Search By Text
+            </Form.Label>
+            <InputGroup>
+              <Form.Control 
+                id="inlineFormInputGroupUsername"
+                placeholder="Search By Text" 
+                aria-label="Search By Text"  
+                aria-describedby="Search By Text"
+                value={props.search[props.tabKey]}
+                onChange={handleSearchChange}
+              />
+              <InputGroup.Append>
+                <Button type="submit" value="Submit"><FontAwesomeIcon icon={faSearch}/></Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Col>
+        </Form.Row>
+      </FormStyled>
       <Button variant="success" onClick={props.downloadResult} className="ml-auto">
         Download Result
       </Button>

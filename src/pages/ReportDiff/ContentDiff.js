@@ -137,22 +137,17 @@ const ContentDiff = () => {
     });
   }
 
-  const handleSearchText = event => {
-    if (event.keyCode === 13) {
-      const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
-      setSearchState({
-        ...searchState,
-        [typeState]: keyword
-      });
-      compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
-      .then(result => {
-        setResultState(result.data);
-        //setSearchState(keyword);
-        // setPageState(result.pageInfo.page);
-        //setPageSizeState(result.pageInfo.pageSize);
-        setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
-      });
-    }
+  const handleSearchSubmit = event => {
+    event.preventDefault();
+    const keyword = searchState[typeState].trim().replace(/[\ ]+/g, ' ').toLowerCase();
+    compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
+    .then(result => {
+      setResultState(result.data);
+      //setSearchState(keyword);
+      // setPageState(result.pageInfo.page);
+      //setPageSizeState(result.pageInfo.pageSize);
+      setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+    });
   }
 
   return <ContentBox>
@@ -177,7 +172,7 @@ const ContentDiff = () => {
             total={totalState}
             search={searchState}
             setSearch={setSearchState}
-            searchTrigger={handleSearchText}
+            searchSubmit={handleSearchSubmit}
             downloadResult={handleDownloadResult}
           />
         </>
