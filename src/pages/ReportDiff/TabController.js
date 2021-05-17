@@ -78,7 +78,9 @@ const TabsController = (props) => {
                 <Tab.Pane unmountOnExit={true} eventKey="conflict">
                   <TableDiff result={props.result} tabKey='conflict' search={props.search} setSearch={props.setSearch} searchSubmit={props.searchSubmit} downloadResult={props.downloadResult}/>
                 </Tab.Pane>
-                <PaginationController pageClick={props.pageClick} pageSizeChange={props.pageSizeChange} currentPage={props.currentPage} pageSize={props.pageSize} pageCount={props.pageCount} total={props.total}/>
+                {props.result.length !== 0 && 
+                  <PaginationController pageClick={props.pageClick} pageSizeChange={props.pageSizeChange} currentPage={props.currentPage} pageSize={props.pageSize} pageCount={props.pageCount} total={props.total}/>
+                }
               </Tab.Content>
             </Col>
           </Row>

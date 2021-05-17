@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Form, Button, Row, Table, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -43,6 +43,28 @@ const SpanIcon = styled.span`
 const FormStyled = styled(Form)`
   width: 30rem;
 `;
+
+const Indicator = styled.div`
+  position: relative;
+  padding-bottom: 36%;
+`;
+
+const IndicatorContent = styled.div`
+  width: 60%;
+  min-width: 550px;
+  text-align: center;
+  margin: auto;
+  padding: 1em 0;
+  background-color: #fff;
+  color: #535a60;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
 
 const TableDiff = (props) => {
   let groupCount = {};
@@ -88,11 +110,14 @@ const TableDiff = (props) => {
           </Col>
         </Form.Row>
       </FormStyled>
-      <Button variant="success" onClick={props.downloadResult} className="ml-auto">
-        Download Result
-      </Button>
+      {tableData.length !== 0 &&
+        <Button variant="success" onClick={props.downloadResult} className="ml-auto">
+          Download Result
+        </Button>
+      }
     </SearchContainer>
     <TableContainer>
+    {tableData.length !== 0 ?
       <Table bordered>
         <thead style={{backgroundColor:"#535F74", color: "white", textAlign: "center"}}>
           <tr>
@@ -151,6 +176,13 @@ const TableDiff = (props) => {
           }
         </tbody>
       </Table>
+    :
+      <Indicator>
+        <IndicatorContent>
+          Sorry, no results found.
+        </IndicatorContent>
+      </Indicator>
+    }
     </TableContainer>
   </>
 }

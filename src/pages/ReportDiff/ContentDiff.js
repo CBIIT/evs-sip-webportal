@@ -56,7 +56,8 @@ const TitleContainer = styled.div`
 
 const ContentDiff = () => {
   let [loadingState, setLoadingState] = useState(false);
-  let [resultState, setResultState] = useState({});
+  let [loadedDataStage, setLoadedDataStage] = useState(false);
+  let [resultState, setResultState] = useState([]);
   let [typeState, setTypeState] = useState('all');
   let [pageState, setPageState] = useState(1);
   let [pageSizeState, setPageSizeState] = useState(25);
@@ -74,6 +75,7 @@ const ContentDiff = () => {
     compareAllWithGDCDictionary()
     .then(result => {
       setLoadingState(false);
+      setLoadedDataStage(true);
       setResultState(result.data);
       setPageState(result.pageInfo.page);
       setPageSizeState(result.pageInfo.pageSize);
@@ -139,7 +141,7 @@ const ContentDiff = () => {
 
   const handleSearchSubmit = event => {
     event.preventDefault();
-    const keyword = searchState[typeState].trim().replace(/[\ ]+/g, ' ').toLowerCase();
+    const keyword = searchState[typeState].trim().replace(/\s{2,}/g, ' ').toLowerCase();
     compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
     .then(result => {
       setResultState(result.data);
@@ -155,7 +157,7 @@ const ContentDiff = () => {
     <ContentBoxText>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut sapien tellus. Duis sed dapibus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
       <FormDiff reportTrigger={reportTrigger}/>
-      {!_.isEmpty(resultState) &&
+      {loadedDataStage &&
         <>
           <TitleContainer>
             <h2>Result</h2>

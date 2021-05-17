@@ -88,9 +88,12 @@ const TextareaStyled = styled.textarea`
 // `;
 
 const RowStyled = styled(Row)`
+  padding: 0.3125rem 0;
+  border-bottom: 1px solid #dee2e6;
+`;
+
+const RowRight = styled(Row)`
   min-width: 25rem;
-  margin-right: -0.75rem;
-  margin-left: -0.75rem;
 `;
 
 const ColRight = styled(Col)`
@@ -169,17 +172,7 @@ const CheckboxInput = styled.input`
 
 const ToCompareModal = (props) => {
   const [show, setShow] = useState(false);
-  // const [data, setData] = useState([]);
-  //const [userValues, setUserValues] = useState('');
   const [items, setItems] = useState([]);
-  //const [resultReport, setResultReport] = useState();
-  //const [showReport, setShowReport] =  useState(false);
-  //const [keyword, setKeyword] = useState('');
-  // const [optionsStage, setOptionsStage] =  useState({
-  //     partial: true,
-  //     syns: false,
-  //     unmatched: false
-  // });
 
   const handleClose = () => {
     setShow(false);
@@ -214,7 +207,7 @@ const ToCompareModal = (props) => {
     }
   
     // const handleSearchChange = (event) => {
-    //   let keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+    //   let keyword = event.target.value.trim().replace(/\s{2,}/g, ' ').toLowerCase();
   
     //   if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
     //     let newItem = searchFilter(data[0]._source.enum, keyword);
@@ -326,8 +319,8 @@ const ToCompareModal = (props) => {
     
       let items = [];
       fromVArray.forEach(function (v) {
-        let caseSensitiveV = v.trim().replace(/[\ ]+/g, ' ');
-        v = v.trim().toLowerCase().replace(/[\ ]+/g, ' ');
+        let caseSensitiveV = v.trim().replace(/\s{2,}/g, ' ');
+        v = v.trim().toLowerCase().replace(/\s{2,}/g, ' ');
         // let reg_key = new RegExp(v, "ig");
         let tmp = v;
         if (tmp === '') {
@@ -495,7 +488,7 @@ const ToCompareModal = (props) => {
       };
       return (
         <>
-          <RowStyled>
+          <RowRight>
             <Col xs={10}>
               {props.name}
             </Col>
@@ -507,7 +500,7 @@ const ToCompareModal = (props) => {
                 }
               </a>
             </ColRight>
-          </RowStyled>
+          </RowRight>
           <Collapse in={isToggleOn} mountOnEnter={true}>
             <div>
               {props.ncit.map(ncit => 
@@ -517,7 +510,7 @@ const ToCompareModal = (props) => {
                   </Col>
                   <Col xs={10}>
                   <TableContainer>
-                    <TableStyled striped bordered condensed="true" hover>
+                    <TableStyled striped bordered>
                       <thead>
                         <tr>
                           <th>Term</th>
@@ -538,22 +531,73 @@ const ToCompareModal = (props) => {
         </>
       );
     };
-  
-    const TableEnums = (props) => {
-      if (props.items !== undefined && props.items !== []) {
-        return props.items.map((e, index) => {
-          return(
-            <Row key={index}>
-              <Col xs={10} dangerouslySetInnerHTML={{ __html: e.n }}></Col>
-              <ColRight xs={2}>
-                  <a href="/#">
-                    <FontAwesomeIcon icon={faPlus}/>
-                  </a>
-              </ColRight>
+
+    const NcitValues = (props) => {
+      if (props.ncit !== undefined) {
+        return props.ncit.map((item, index) =>
+          <div key={index} className="ncit-value-container">
+            <Row>
+              <Col xs={12}>
+                {item.c} (NCIt)
+              </Col>
             </Row>
-            // <div key={index} dangerouslySetInnerHTML={{ __html: e.n }}></div>
-          );
-        });
+            <Row>
+              <Col xs={12}>
+                <Table striped bordered size="sm">
+                  <thead>
+                    <tr>
+                      <th>Term</th>
+                      <th>Source</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <TableSynonyms synonyms={item.s}/>
+                  </tbody>
+                </Table>
+              </Col>
+            </Row>
+          </div>
+        );
+      }
+      return (null);
+    };
+  
+    const TableEnum = (props) => {
+      let [isToggleOn, setIsToggleOn] = useState(false);
+
+      const ToggleTableHandler = event => {
+        event.preventDefault();
+        setIsToggleOn(!isToggleOn);
+      };
+
+      if (props.item !== undefined) {
+        return(
+          <>
+            <RowStyled>
+              <Col xs={10}>{props.item.n}</Col>
+              <ColRight xs={2}>
+                {((props.item.ncit !== undefined && props.item.ncit.length !== 0) || props.item.icdo !== undefined) &&
+                  <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+                    {isToggleOn === true
+                      ? <FontAwesomeIcon icon={faMinus}/>
+                      : <FontAwesomeIcon icon={faPlus}/>
+                    }
+                  </a>
+                }
+              </ColRight>
+            </RowStyled>
+            {((props.item.ncit !== undefined && props.item.ncit.length !== 0) || props.item.icdo !== undefined) &&
+              <Collapse in={isToggleOn} mountOnEnter={true}>
+                <div className="ncit-values">
+                  {(props.item.ncit !== undefined && props.item.ncit.length !== 0) &&
+                    <NcitValues ncit={props.item.ncit} />
+                  }
+                </div>
+              </Collapse>
+            }
+          </>
+        );
       }
       return (null);
     };
@@ -620,7 +664,15 @@ const ToCompareModal = (props) => {
                   <CompareFormDivider/>
                   <CompareFormRight>
                     <Container>
-                      <TableEnums items={items}/>
+                      {(items !== undefined && items !== []) &&
+                        <>
+                          {items.map((item, index) => {
+                            return(
+                              <TableEnum key={index} item={item}/>
+                            )
+                          })}
+                        </>
+                      }
                     </Container>
                   </CompareFormRight>
                 </CompareFormContainer>
