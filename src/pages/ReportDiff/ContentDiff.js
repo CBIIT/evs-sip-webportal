@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import { compareAllWithGDCDictionary, exportCompareResult } from '../../api';
 
+import LoadingAnimation from '../../components/LoadingAnimation';
 import FormDiff from './FormDiff';
 import TabController from './TabController';
 
@@ -54,7 +55,9 @@ const TitleContainer = styled.div`
 `;
 
 const ContentDiff = () => {
-  let [resultState, setResultState] = useState({});
+  let [loadingState, setLoadingState] = useState(false);
+  let [loadedDataStage, setLoadedDataStage] = useState(false);
+  let [resultState, setResultState] = useState([]);
   let [typeState, setTypeState] = useState('all');
   let [pageState, setPageState] = useState(1);
   let [pageSizeState, setPageSizeState] = useState(25);
@@ -68,8 +71,11 @@ const ContentDiff = () => {
   });
 
   const reportTrigger = () => {
+    setLoadingState(true);
     compareAllWithGDCDictionary()
     .then(result => {
+      setLoadingState(false);
+      setLoadedDataStage(true);
       setResultState(result.data);
       setPageState(result.pageInfo.page);
       setPageSizeState(result.pageInfo.pageSize);
@@ -97,7 +103,7 @@ const ContentDiff = () => {
   };
 
   const handleDownloadResult = () => {
-    exportCompareResult(typeState, searchState)
+    exportCompareResult(typeState, searchState[typeState])
     .then(result => {
       let a = document.createElement("a");
       document.body.appendChild(a);
@@ -133,26 +139,17 @@ const ContentDiff = () => {
     });
   }
 
-  const handleSearchText = event => {
-    if (event.keyCode === 13) {
-      const keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+  const handleSearchSubmit = event => {
+    event.preventDefault();
+    const keyword = searchState[typeState].trim().replace(/\s{2,}/g, ' ').toLowerCase();
+    compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
+    .then(result => {
+      setResultState(result.data);
       //setSearchState(keyword);
-
-
-      setSearchState({
-        ...searchState,
-        [typeState]: keyword
-      });
-
-      compareAllWithGDCDictionary(typeState, pageState, pageSizeState, keyword)
-      .then(result => {
-        setResultState(result.data);
-        //setSearchState(keyword);
-        // setPageState(result.pageInfo.page);
-        //setPageSizeState(result.pageInfo.pageSize);
-        setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
-      });
-    }
+      // setPageState(result.pageInfo.page);
+      //setPageSizeState(result.pageInfo.pageSize);
+      setPageCountState(result.pageInfo.total / result.pageInfo.pageSize);
+    });
   }
 
   return <ContentBox>
@@ -160,7 +157,7 @@ const ContentDiff = () => {
     <ContentBoxText>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut sapien tellus. Duis sed dapibus diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
       <FormDiff reportTrigger={reportTrigger}/>
-      {!_.isEmpty(resultState) &&
+      {loadedDataStage &&
         <>
           <TitleContainer>
             <h2>Result</h2>
@@ -177,12 +174,13 @@ const ContentDiff = () => {
             total={totalState}
             search={searchState}
             setSearch={setSearchState}
-            searchTrigger={handleSearchText}
+            searchSubmit={handleSearchSubmit}
             downloadResult={handleDownloadResult}
           />
         </>
       }
     </ContentBoxText>
+    {loadingState && <LoadingAnimation/>}
   </ContentBox>
 }
 

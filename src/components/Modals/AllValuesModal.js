@@ -107,7 +107,7 @@ const AllValuesModal = (props) => {
 
 
   const handleSearchChange = (event) => {
-    let keyword = event.target.value.trim().replace(/[\ ]+/g, ' ').toLowerCase();
+    let keyword = event.target.value.trim().replace(/\s{2,}/g, ' ').toLowerCase();
 
     if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
       let newItem = searchFilter(data[0]._source.enum, keyword);

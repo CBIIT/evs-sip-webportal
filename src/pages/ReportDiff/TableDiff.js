@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Form, Button, Row, Table, Col, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -40,9 +40,31 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-const InputGroupStyled = styled(InputGroup)`
-  max-width: 30rem;
+const FormStyled = styled(Form)`
+  width: 30rem;
 `;
+
+const Indicator = styled.div`
+  position: relative;
+  padding-bottom: 36%;
+`;
+
+const IndicatorContent = styled.div`
+  width: 60%;
+  min-width: 550px;
+  text-align: center;
+  margin: auto;
+  padding: 1em 0;
+  background-color: #fff;
+  color: #535a60;
+  font-size: 1.2em;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+`;
+
 
 const TableDiff = (props) => {
   let groupCount = {};
@@ -65,47 +87,37 @@ const TableDiff = (props) => {
   };
 
   return <>
-    {/* <Form>
-      <Form.Row className="align-items-center">
-        <Col sm={6} className="my-1">
-          <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
-            Search By Text
-          </Form.Label>
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text><FontAwesomeIcon icon={faSearch}/></InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control id="inlineFormInputGroupUsername" placeholder="Search By Text" />
-          </InputGroup>
-        </Col>
-        <Col sm={6} xs="auto" className="my-1 d-flex">
-          <Button variant="primary"onClick={props.reportTrigger} className="ml-auto">
-            Download Result
-          </Button>
-        </Col>
-      </Form.Row>
-    </Form> */}
     <SearchContainer>
-      <InputGroupStyled>
-        <InputGroup.Prepend>
-          <InputGroup.Text id="search-values-input">
-            <FontAwesomeIcon icon={faSearch}/>
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-        <FormControl
-          placeholder="Search By Text"
-          aria-label="Search By Text"
-          aria-describedby="Search By Text"
-          value={props.search[props.tabKey]}
-          onChange={handleSearchChange}
-          onKeyDown={props.searchTrigger}
-        />
-      </InputGroupStyled>
-      <Button variant="success" onClick={props.downloadResult} className="ml-auto">
-        Download Result
-      </Button>
+      <FormStyled onSubmit={props.searchSubmit}>
+        <Form.Row>
+          <Col sm={12}>
+            <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
+              Search By Text
+            </Form.Label>
+            <InputGroup>
+              <Form.Control 
+                id="inlineFormInputGroupUsername"
+                placeholder="Search By Text" 
+                aria-label="Search By Text"  
+                aria-describedby="Search By Text"
+                value={props.search[props.tabKey]}
+                onChange={handleSearchChange}
+              />
+              <InputGroup.Append>
+                <Button type="submit" value="Submit"><FontAwesomeIcon icon={faSearch}/></Button>
+              </InputGroup.Append>
+            </InputGroup>
+          </Col>
+        </Form.Row>
+      </FormStyled>
+      {tableData.length !== 0 &&
+        <Button variant="success" onClick={props.downloadResult} className="ml-auto">
+          Download Result
+        </Button>
+      }
     </SearchContainer>
     <TableContainer>
+    {tableData.length !== 0 ?
       <Table bordered>
         <thead style={{backgroundColor:"#535F74", color: "white", textAlign: "center"}}>
           <tr>
@@ -164,6 +176,13 @@ const TableDiff = (props) => {
           }
         </tbody>
       </Table>
+    :
+      <Indicator>
+        <IndicatorContent>
+          Sorry, no results found.
+        </IndicatorContent>
+      </Indicator>
+    }
     </TableContainer>
   </>
 }
