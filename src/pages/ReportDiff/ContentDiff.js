@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
+import { Button } from 'react-bootstrap';
 import { compareAllWithGDCDictionary, exportCompareResult } from '../../api';
 
 import LoadingAnimation from '../../components/LoadingAnimation';
@@ -117,6 +117,22 @@ const ContentDiff = () => {
     });
   };
 
+  const handleDowloadAllValues = () => {
+    alert('Download Full Report');
+    // exportCompareResult(typeState, searchState[typeState])
+    // .then(result => {
+    //   let a = document.createElement("a");
+    //   document.body.appendChild(a);
+    //   a.style = "display: none";
+    //   let url = window.URL.createObjectURL(result);
+    //   a.href = url;
+    //   a.download = "report_"+ typeState +".xlsx";
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   a.remove();
+    // });
+  };
+
   const handlePageClick = (data) => {
     const page = data.selected + 1;
     compareAllWithGDCDictionary(typeState, page, pageSizeState, searchState[typeState])
@@ -161,6 +177,7 @@ const ContentDiff = () => {
         <>
           <TitleContainer>
             <h2>Result</h2>
+            <Button variant="secondary" onClick={handleDowloadAllValues}>Download All Values</Button>
           </TitleContainer>
           <TabController 
             selectTab={handleSelectTab} 
