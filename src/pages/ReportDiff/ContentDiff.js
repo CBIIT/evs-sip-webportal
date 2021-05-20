@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
-import { compareAllWithGDCDictionary, exportCompareResult } from '../../api';
+import { compareAllWithGDCDictionary, exportCompareResult, exportAllCompareResult } from '../../api';
 
 import LoadingAnimation from '../../components/LoadingAnimation';
 import FormDiff from './FormDiff';
@@ -117,20 +117,20 @@ const ContentDiff = () => {
     });
   };
 
-  const handleDowloadAllValues = () => {
-    alert('Download Full Report');
-    // exportCompareResult(typeState, searchState[typeState])
-    // .then(result => {
-    //   let a = document.createElement("a");
-    //   document.body.appendChild(a);
-    //   a.style = "display: none";
-    //   let url = window.URL.createObjectURL(result);
-    //   a.href = url;
-    //   a.download = "report_"+ typeState +".xlsx";
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   a.remove();
-    // });
+  const handleDowloadAllResults = () => {
+    //alert('Download Full Report');
+    exportAllCompareResult()
+    .then(result => {
+      let a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      let url = window.URL.createObjectURL(result);
+      a.href = url;
+      a.download = "full_report.xlsx";
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    });
   };
 
   const handlePageClick = (data) => {
@@ -177,7 +177,7 @@ const ContentDiff = () => {
         <>
           <TitleContainer>
             <h2>Result</h2>
-            <Button variant="secondary" onClick={handleDowloadAllValues}>Download All Values</Button>
+            <Button variant="secondary" onClick={handleDowloadAllResults}>Download All Results</Button>
           </TitleContainer>
           <TabController 
             selectTab={handleSelectTab} 

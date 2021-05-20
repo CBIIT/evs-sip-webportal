@@ -57,3 +57,10 @@ export const exportCompareResult = async(type ='all', search='') => {
 
   return response.blob();
 };
+
+export const exportAllCompareResult = async() => {
+  const response = await fetch(`${baseUrl}/exportAllCompareResult`);
+  //return response.json();
+
+  return response.blob();
+};

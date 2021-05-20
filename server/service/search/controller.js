@@ -841,6 +841,133 @@ const exportCompareResult = async function(req, res){
 	res.send(report);
 }
 
+const exportAllCompareResult = async function(req, res){
+	const searchText = "";
+
+	let result = {};
+	let all_mappings = await shared.getCompareResult(searchText, 0 , -1);
+	result.all_data = all_mappings.data;
+	let unmapped_mappings = await shared.getCompareResult_unmapped(searchText, 0 , -1);
+	result.unmapped_data = unmapped_mappings.data;
+	let mapped_mappings = await shared.getCompareResult_mapped(searchText, 0 , -1);
+	result.mapped_data = mapped_mappings.data;
+	let conflict_mappings = await shared.getCompareResult_conflict(searchText, 0 , -1);
+	result.conflict_data = conflict_mappings.data;
+
+	// You can define styles as json object
+	const styles = {
+		cellBlue_header: {
+			fill: {
+				fgColor: {
+					rgb: '00008bff'
+				}
+			},
+			font:{
+				sz: 14,
+				bold: true
+			}
+		},
+		cellBlue: {
+			fill: {
+				fgColor: {
+					rgb: '00008bff'
+				}
+			}
+		}
+	};
+	
+	//Array of objects representing heading rows (very top)
+	const heading = [
+		[{value: '', style: styles.cellBlue_header},{value: '', style: styles.cellBlue_header},{value: '', style: styles.cellBlue_header},{value: 'GDC Dictionary', style: styles.cellBlue_header},{value: 'GDC Dictionary', style: styles.cellBlue_header}, {value: 'Mapped GDC Values', style: styles.cellBlue_header}, {value: 'Mapped GDC Values', style: styles.cellBlue_header}]
+	];
+	
+	//Here you specify the export structure
+	const specification = {
+		c: { // <- the key should match the actual data key
+			displayName: 'Category', // <- Here you specify the column header
+			headerStyle: styles.cellBlue, // <- Header style
+			width: 220 // <- width in pixels
+		},
+		n: {
+			displayName: 'Node',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in chars (when the number is passed as string)
+		},
+		p: {
+			displayName: 'Property',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in pixels
+		},
+		v_1: {
+			displayName: 'Value',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in pixels
+		},
+		n_1: {
+			displayName: 'NCIt Code',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in pixels
+		},
+		v_2: {
+			displayName: 'Value',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in pixels
+		},
+		n_2: {
+			displayName: 'NCIt Code',
+			headerStyle: styles.cellBlue,
+			width: 220 // <- width in pixels
+		}
+	}
+	
+	// Define an array of merges. 1-1 = A:1
+	// The merges are independent of the data.
+	// A merge will overwrite all data _not_ in the top-left cell.
+	const merges = [
+		{ start: { row: 1, column: 4 }, end: { row: 1, column: 5 } },
+		{ start: { row: 1, column: 6 }, end: { row: 1, column: 7 } }
+	];
+	
+	// Create the excel report.
+	// This function will return Buffer
+	const report = excel.buildExport(
+	[ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
+		{
+		name: 'All', // <- Specify sheet name (optional)
+		heading: heading, // <- Raw heading array (optional)
+		merges: merges, // <- Merge cell ranges
+		specification: specification, // <- Report specification
+		data: result.all_data // <-- Report data
+		},
+		{
+		name: 'Unmapped', // <- Specify sheet name (optional)
+		heading: heading, // <- Raw heading array (optional)
+		merges: merges, // <- Merge cell ranges
+		specification: specification, // <- Report specification
+		data: result.unmapped_data // <-- Report data
+		},
+		{
+		name: 'Mapped', // <- Specify sheet name (optional)
+		heading: heading, // <- Raw heading array (optional)
+		merges: merges, // <- Merge cell ranges
+		specification: specification, // <- Report specification
+		data: result.mapped_data // <-- Report data
+		},
+		{
+		name: 'Conflict', // <- Specify sheet name (optional)
+		heading: heading, // <- Raw heading array (optional)
+		merges: merges, // <- Merge cell ranges
+		specification: specification, // <- Report specification
+		data: result.conflict_data // <-- Report data
+		}
+	]
+	);
+	
+	// You can then return this straight
+	res.attachment('report.xlsx'); // This is sails.js specific (in general you need to set headers)
+	res.send(report);
+}
+
 const generateProperties = async function(req, res) {
 	const dataset = [];
 	let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_values_updated.js');
@@ -939,5 +1066,6 @@ module.exports = {
 	preloadGDCDataMappings,
 	compareAllWithGDCDictionary,
 	exportCompareResult,
+	exportAllCompareResult,
 	generateProperties
 };

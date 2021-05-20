@@ -23,6 +23,7 @@ router.get('/p/local/vs', controller.getGDCData);
 //router.get('/compareWithGDCDictionary', controller.compareWithGDCDictionary);
 router.get('/compareAllWithGDCDictionary', controller.compareAllWithGDCDictionary);
 router.get('/exportCompareResult', controller.exportCompareResult);
+router.get('/exportAllCompareResult', controller.exportAllCompareResult);
 //router.get('/generateProperties', controller.generateProperties);
 
 module.exports = router;
