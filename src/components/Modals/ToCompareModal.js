@@ -197,7 +197,7 @@ const ToCompareModal = (props) => {
     const [showReport, setShowReport] =  useState(false);
     //const [keyword, setKeyword] = useState('');
     let [optionsState, setOptionsState] =  useState({
-        partial: false,
+        partial: true,
         syns: false,
         unmatched: false
     });
@@ -271,10 +271,10 @@ const ToCompareModal = (props) => {
     //     let checkerNC = {};
     //     text.forEach(em => {
     //       if (em.matched_s) em.matched_s = undefined; // remove matched_s from previous tmp
-    //       if (em.n_syn !== undefined && em.s === undefined) {
-    //         em.n_syn.forEach(nSyn => {
+    //       if (em.ncit !== undefined) {
+    //         em.ncit.forEach(nSyn => {
     //           if (nSyn.s === undefined) return;
-    //           nSyn.s = nSyn.s.map(x => { return { termName: x.termName.toLowerCase(), termGroup: x.termGroup, termSource: x.termSource }; });
+    //           nSyn.s = nSyn.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src }));
     //           nSyn.s.forEach(tmpSyn => {
     //             let sIdx = tmpSyn.termName.indexOf(tmp);
     //             if (sIdx >= 0) {
@@ -313,7 +313,11 @@ const ToCompareModal = (props) => {
       let vMatched = [];
       toV.forEach(function (v) {
         vLowercase.push(v.n.trim().toLowerCase());
-        // letif (v.s && v.s.length > 0) v.s = v.s.map(function (x) { return { termName: x.termName.toLowerCase(), termSource: x.termSource, termGroup: x.termGroup }; });
+       // if (v.s && v.s.length > 0) v.s = v.s.map(function (x) { return { termName: x.termName.toLowerCase(), termSource: x.termSource, termGroup: x.termGroup }; });
+
+        // if (v.ncit !== undefined && v.ncit.length !== 0){
+        //   v.ncit = v.ncit.map(n => n.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src })));
+        // }
         //if (v.all_syn && v.all_syn.length > 0) v.all_syn = v.all_syn.map(function (x) { return x.toLowerCase(); });
       });
     
@@ -336,8 +340,8 @@ const ToCompareModal = (props) => {
             checkerN.push(toV[idx].n);
             vMatched.push(idx);
           }
-          // if (option.synonyms === true) {
-          //   toV.forEach((em, i) => {
+          if (option.syns === true) {
+            toV.forEach((em, i) => {
           //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
           //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
           //         text.push(toV[i]);
@@ -345,16 +349,19 @@ const ToCompareModal = (props) => {
           //         vMatched.push(i);
           //       }
           //     }
-          //     if (em.s) {
-          //       em.s.forEach(s => {
-          //         if (s.termName.trim().toLowerCase() === tmp && checkerN.indexOf(toV[i].n) === -1) {
-          //           text.push(toV[i]);
-          //           checkerN.push(toV[i].n);
-          //           vMatched.push(i);
-          //         }
-          //       });
-          //     }
-          //   });
+              if (em.ncit !== undefined) {
+                em.ncit.forEach(n => {
+                    n.forEach(s => {
+                      if (s.n.trim().toLowerCase() === tmp && checkerN.indexOf(toV[i].n) === -1) {
+                        toV[i].match = caseSensitiveV;
+                        text.push(toV[i]);
+                        checkerN.push(toV[i].n);
+                        vMatched.push(i);
+                      }
+                    })
+                });
+              }
+            });
           //   let checkerNC = getMatchedSynonyms(text, tmp, option);
           //   text.forEach(em => {
           //     em.match = caseSensitiveV;
@@ -388,72 +395,74 @@ const ToCompareModal = (props) => {
           //       }
           //     }
           //   });
-          // }
+            }
           } else { // If it's partial match
-          let checkerN = [];
+            let checkerName = [];
             vLowercase.forEach((vTmp, index) => {
               let idx = vTmp.indexOf(tmp);
-              if (idx >= 0 && checkerN.indexOf(toV[index].n) === -1) {
+              if (idx >= 0 && checkerName.indexOf(toV[index].n) === -1) {
                 toV[index].match = caseSensitiveV;
                 text.push(toV[index]);
-                checkerN.push(toV[index].n);
+                checkerName.push(toV[index].n);
                 vMatched.push(index);
               }
-        //     if (option.synonyms === true) {
-        //       toV.forEach((em, i) => {
-        //         if (em.all_syn) {
-        //           em.all_syn.forEach(syn => { // If it's a ICDO3 code it will have all_syn
-        //             if (syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-        //               text.push(toV[i]);
-        //               checkerN.push(toV[i].n);
-        //               vMatched.push(i);
-        //             }
-        //           });
-        //         }
-        //         if (em.s) {
-        //           em.s.forEach(syn => {
-        //             if (syn.termName.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-        //               text.push(toV[i]);
-        //               checkerN.push(toV[i].n);
-        //               vMatched.push(i);
-        //             }
-        //           });
-        //         }
-        //       });
-        //       let checkerNC = getMatchedSynonyms(text, tmp, option);
-        //       text.forEach(em => {
-        //         em.match = caseSensitiveV;
-        //         if (em.n_syn !== undefined && em.s === undefined) {
-        //           em.n_syn.forEach(nSyn => {
-        //             if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
-        //               em.matched_s = [];
-        //               em.chk_n_c = [];
-        //               em.chk_n_c.push(nSyn.n_c);
-        //               em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
-        //             } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
-        //               let tmpObj = {};
-        //               tmpObj.n_c = nSyn.n_c;
-        //               tmpObj.s = checkerNC[nSyn.n_c];
-        //               em.matched_s.push(tmpObj);
-        //               em.chk_n_c.push(nSyn.n_c);
-        //             }
-        //           });
-        //         } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
-        //           if (em.matched_s === undefined) {
-        //             em.matched_s = [];
-        //             em.chk_n_c = [];
-        //             em.chk_n_c.push(em.n_c);
-        //             em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
-        //           } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
-        //             let tmpObj = {};
-        //             tmpObj.n_c = em.n_c;
-        //             tmpObj.s = checkerNC[em.n_c];
-        //             em.matched_s.push(tmpObj);
-        //             em.chk_n_c.push(em.n_c);
-        //           }
-        //         }
-        //       });
-        //     }
+              if (option.syns === true) {
+                toV.forEach((em, i) => {
+                  //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
+                  //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
+                  //         text.push(toV[i]);
+                  //         checkerN.push(toV[i].n);
+                  //         vMatched.push(i);
+                  //       }
+                  //     }
+                  if (em.ncit !== undefined) {
+                    em.ncit.forEach(n => {
+                        if (n.s === undefined) return;
+                        n.s.forEach(s => {
+                          if (s.n.trim().toLowerCase().indexOf(tmp) >= 0  && checkerName.indexOf(toV[i].n) === -1) {
+                            toV[i].match = caseSensitiveV;
+                            text.push(toV[i]);
+                            checkerName.push(toV[i].n);
+                            vMatched.push(i);
+                          }
+                        })
+                    });
+                  }
+                });
+              //let checkerNC = getMatchedSynonyms(text, tmp, option);
+              // text.forEach(em => {
+              //   em.match = caseSensitiveV;
+              //   if (em.n_syn !== undefined && em.s === undefined) {
+              //     em.n_syn.forEach(nSyn => {
+              //       if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
+              //         em.matched_s = [];
+              //         em.chk_n_c = [];
+              //         em.chk_n_c.push(nSyn.n_c);
+              //         em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
+              //       } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
+              //         let tmpObj = {};
+              //         tmpObj.n_c = nSyn.n_c;
+              //         tmpObj.s = checkerNC[nSyn.n_c];
+              //         em.matched_s.push(tmpObj);
+              //         em.chk_n_c.push(nSyn.n_c);
+              //       }
+              //     });
+              //   } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
+              //     if (em.matched_s === undefined) {
+              //       em.matched_s = [];
+              //       em.chk_n_c = [];
+              //       em.chk_n_c.push(em.n_c);
+              //       em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
+              //     } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
+              //       let tmpObj = {};
+              //       tmpObj.n_c = em.n_c;
+              //       tmpObj.s = checkerNC[em.n_c];
+              //       em.matched_s.push(tmpObj);
+              //       em.chk_n_c.push(em.n_c);
+              //     }
+              //   }
+              // });
+            }
           });
         }
         if (text.length > 0) text = sortAlphabetically(text);
@@ -467,9 +476,10 @@ const ToCompareModal = (props) => {
   
     const TableSynonyms = (props) => {
       if (props.synonyms !== undefined) {
+        let regKey = new RegExp(props.match, 'ig');
         return props.synonyms.map((item, index) =>
           <tr key={index}>
-            <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
+            <td dangerouslySetInnerHTML={{ __html: item.n.replace(regKey, '<b>$&</b>')}}></td>
             <td>{item.src}</td>
             <td>{item.t}</td>
           </tr>
@@ -479,55 +489,59 @@ const ToCompareModal = (props) => {
     };
   
     const TableNCIt = (props) => {
-  
+    
       let [isToggleOn, setIsToggleOn] = useState(false);
   
       const ToggleTableHandler = event => {
         event.preventDefault();
         setIsToggleOn(!isToggleOn);
       };
+
+      let regKey = new RegExp(props.match, 'ig');
       return (
         <>
           <RowRight>
-            <Col xs={10}>
-              {props.name}
-            </Col>
+            <Col xs={10} dangerouslySetInnerHTML={{ __html: props.name.replace(regKey, '<b>$&</b>')}}></Col>
             <ColRight xs={2}>
+            {props.ncit !== undefined && props.ncit.length !== 0 &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
                 }
               </a>
+            }
             </ColRight>
           </RowRight>
-          <Collapse in={isToggleOn} mountOnEnter={true}>
-            <div>
-              {props.ncit.map(ncit => 
-                <Row>
-                  <Col xs={2}>
-                    {ncit.c}
-                  </Col>
-                  <Col xs={10}>
-                  <TableContainer>
-                    <TableStyled striped bordered>
-                      <thead>
-                        <tr>
-                          <th>Term</th>
-                          <th>Source</th>
-                          <th>Type</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <TableSynonyms synonyms={ncit.s}/>
-                      </tbody>
-                    </TableStyled>
-                  </TableContainer>
-                  </Col>
-                </Row>
-              )}
-            </div>
-          </Collapse>
+          {props.ncit !== undefined && props.ncit.length !== 0 &&
+            <Collapse in={isToggleOn} mountOnEnter={true}>
+              <div>
+                {props.ncit.map(ncit => 
+                  <Row>
+                    <Col xs={2}>
+                      {ncit.c}
+                    </Col>
+                    <Col xs={10}>
+                    <TableContainer>
+                      <TableStyled striped bordered>
+                        <thead>
+                          <tr>
+                            <th>Term</th>
+                            <th>Source</th>
+                            <th>Type</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TableSynonyms synonyms={ncit.s} match={props.match}/>
+                        </tbody>
+                      </TableStyled>
+                    </TableContainer>
+                    </Col>
+                  </Row>
+                )}
+              </div>
+            </Collapse>
+          }
         </>
       );
     };
@@ -695,7 +709,7 @@ const ToCompareModal = (props) => {
                     <tr>
                       <td>{item.match}</td>
                       <td>
-                        <TableNCIt name={item.n} ncit={item.ncit}/>
+                        <TableNCIt name={item.n} ncit={item.ncit} match={item.match}/>
                       </td>
                     </tr>
                   )}
