@@ -9,7 +9,7 @@ import { apiGetGDCDataById } from '../../api';
 
 
 const ModalBodyStyled = styled(Modal.Body)`
-  padding: 0 0 1rem 0;
+  padding: 0;
 `;
 
 const ButtonStyled = styled(Button)`
@@ -45,14 +45,48 @@ const ColStyled = styled(Col)`
   padding-left: 0;
 `;
 
+const ColBackgroundStyled = styled(ColStyled)`
+  background: #535F74;
+`;
+
 const TableStyled = styled(Table)`
   margin-bottom: 0;
+`;
+
+const TableOverFlow = styled(Table)`
+  width: calc(100% - 2px);
+
+  &&>thead>tr>th{
+    padding: 0;
+  }
+`;
+
+const TableThTitle = styled.div`
+  margin-top: -2.75rem;
+  position: absolute;
+  padding: 0.625rem 0.75rem;
+  font-family: 'Lato-Bold',sans-serif;
+  font-size: 1rem;
+  color: var(--white);
+`;
+
+const CodeValue = styled.div`
+  padding-top: 0.5rem;
+`;
+
+const TableContainerOverFlow = styled.div`
+  background-color: #fff;
+  margin-top: 2.75rem;
+  width: 100%;
+  height: 35rem;
+  overflow: auto;
+  display: block;
 `;
 
 const CompareFormContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: 1rem;
+  padding: 1rem 0;
 `;
 
 const CompareFormLeft = styled.div`
@@ -197,7 +231,7 @@ const ToCompareModal = (props) => {
     const [showReport, setShowReport] =  useState(false);
     //const [keyword, setKeyword] = useState('');
     let [optionsState, setOptionsState] =  useState({
-        partial: false,
+        partial: true,
         syns: false,
         unmatched: false
     });
@@ -271,10 +305,10 @@ const ToCompareModal = (props) => {
     //     let checkerNC = {};
     //     text.forEach(em => {
     //       if (em.matched_s) em.matched_s = undefined; // remove matched_s from previous tmp
-    //       if (em.n_syn !== undefined && em.s === undefined) {
-    //         em.n_syn.forEach(nSyn => {
+    //       if (em.ncit !== undefined) {
+    //         em.ncit.forEach(nSyn => {
     //           if (nSyn.s === undefined) return;
-    //           nSyn.s = nSyn.s.map(x => { return { termName: x.termName.toLowerCase(), termGroup: x.termGroup, termSource: x.termSource }; });
+    //           nSyn.s = nSyn.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src }));
     //           nSyn.s.forEach(tmpSyn => {
     //             let sIdx = tmpSyn.termName.indexOf(tmp);
     //             if (sIdx >= 0) {
@@ -313,7 +347,11 @@ const ToCompareModal = (props) => {
       let vMatched = [];
       toV.forEach(function (v) {
         vLowercase.push(v.n.trim().toLowerCase());
-        // letif (v.s && v.s.length > 0) v.s = v.s.map(function (x) { return { termName: x.termName.toLowerCase(), termSource: x.termSource, termGroup: x.termGroup }; });
+       // if (v.s && v.s.length > 0) v.s = v.s.map(function (x) { return { termName: x.termName.toLowerCase(), termSource: x.termSource, termGroup: x.termGroup }; });
+
+        // if (v.ncit !== undefined && v.ncit.length !== 0){
+        //   v.ncit = v.ncit.map(n => n.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src })));
+        // }
         //if (v.all_syn && v.all_syn.length > 0) v.all_syn = v.all_syn.map(function (x) { return x.toLowerCase(); });
       });
     
@@ -328,16 +366,16 @@ const ToCompareModal = (props) => {
         }
         let text = [];
         if (option.partial === false) { // If exact match is checked
-          let checkerN = [];
+          let checkerName = [];
           let idx = vLowercase.indexOf(tmp);
           if (idx >= 0) {
             toV[idx].match = caseSensitiveV;
             text.push(toV[idx]);
-            checkerN.push(toV[idx].n);
+            checkerName.push(toV[idx].n);
             vMatched.push(idx);
           }
-          // if (option.synonyms === true) {
-          //   toV.forEach((em, i) => {
+          if (option.syns === true) {
+            toV.forEach((em, i) => {
           //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
           //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
           //         text.push(toV[i]);
@@ -345,16 +383,30 @@ const ToCompareModal = (props) => {
           //         vMatched.push(i);
           //       }
           //     }
-          //     if (em.s) {
-          //       em.s.forEach(s => {
-          //         if (s.termName.trim().toLowerCase() === tmp && checkerN.indexOf(toV[i].n) === -1) {
-          //           text.push(toV[i]);
-          //           checkerN.push(toV[i].n);
-          //           vMatched.push(i);
-          //         }
-          //       });
-          //     }
-          //   });
+              if (em.icdo !== undefined && em.icdo.s !== undefined) {
+                em.icdo.s.forEach(s => {
+                  if (s.n.trim().toLowerCase() === tmp && checkerName.indexOf(toV[i].n) === -1) {
+                    toV[i].match = caseSensitiveV;
+                    text.push(toV[i]);
+                    checkerName.push(toV[i].n);
+                    vMatched.push(i);
+                  }
+                });
+              }
+              if (em.ncit !== undefined) {
+                em.ncit.forEach(n => {
+                  if (n.s === undefined) return;
+                    n.s.forEach(s => {
+                      if (s.n.trim().toLowerCase() === tmp && checkerName.indexOf(toV[i].n) === -1) {
+                        toV[i].match = caseSensitiveV;
+                        text.push(toV[i]);
+                        checkerName.push(toV[i].n);
+                        vMatched.push(i);
+                      }
+                    });
+                });
+              }
+            });
           //   let checkerNC = getMatchedSynonyms(text, tmp, option);
           //   text.forEach(em => {
           //     em.match = caseSensitiveV;
@@ -388,72 +440,85 @@ const ToCompareModal = (props) => {
           //       }
           //     }
           //   });
-          // }
+            }
           } else { // If it's partial match
-          let checkerN = [];
+            let checkerName = [];
             vLowercase.forEach((vTmp, index) => {
               let idx = vTmp.indexOf(tmp);
-              if (idx >= 0 && checkerN.indexOf(toV[index].n) === -1) {
+              if (idx >= 0 && checkerName.indexOf(toV[index].n) === -1) {
                 toV[index].match = caseSensitiveV;
                 text.push(toV[index]);
-                checkerN.push(toV[index].n);
+                checkerName.push(toV[index].n);
                 vMatched.push(index);
               }
-        //     if (option.synonyms === true) {
-        //       toV.forEach((em, i) => {
-        //         if (em.all_syn) {
-        //           em.all_syn.forEach(syn => { // If it's a ICDO3 code it will have all_syn
-        //             if (syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-        //               text.push(toV[i]);
-        //               checkerN.push(toV[i].n);
-        //               vMatched.push(i);
-        //             }
-        //           });
-        //         }
-        //         if (em.s) {
-        //           em.s.forEach(syn => {
-        //             if (syn.termName.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-        //               text.push(toV[i]);
-        //               checkerN.push(toV[i].n);
-        //               vMatched.push(i);
-        //             }
-        //           });
-        //         }
-        //       });
-        //       let checkerNC = getMatchedSynonyms(text, tmp, option);
-        //       text.forEach(em => {
-        //         em.match = caseSensitiveV;
-        //         if (em.n_syn !== undefined && em.s === undefined) {
-        //           em.n_syn.forEach(nSyn => {
-        //             if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
-        //               em.matched_s = [];
-        //               em.chk_n_c = [];
-        //               em.chk_n_c.push(nSyn.n_c);
-        //               em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
-        //             } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
-        //               let tmpObj = {};
-        //               tmpObj.n_c = nSyn.n_c;
-        //               tmpObj.s = checkerNC[nSyn.n_c];
-        //               em.matched_s.push(tmpObj);
-        //               em.chk_n_c.push(nSyn.n_c);
-        //             }
-        //           });
-        //         } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
-        //           if (em.matched_s === undefined) {
-        //             em.matched_s = [];
-        //             em.chk_n_c = [];
-        //             em.chk_n_c.push(em.n_c);
-        //             em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
-        //           } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
-        //             let tmpObj = {};
-        //             tmpObj.n_c = em.n_c;
-        //             tmpObj.s = checkerNC[em.n_c];
-        //             em.matched_s.push(tmpObj);
-        //             em.chk_n_c.push(em.n_c);
-        //           }
-        //         }
-        //       });
-        //     }
+              if (option.syns === true) {
+                toV.forEach((em, i) => {
+                  //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
+                  //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
+                  //         text.push(toV[i]);
+                  //         checkerN.push(toV[i].n);
+                  //         vMatched.push(i);
+                  //       }
+                  //     }
+
+                  if (em.icdo !== undefined && em.icdo.s !== undefined) {
+                    em.icdo.s.forEach(s => {
+                      if (s.n.trim().toLowerCase().indexOf(tmp) >= 0  && checkerName.indexOf(toV[i].n) === -1) {
+                        toV[i].match = caseSensitiveV;
+                        text.push(toV[i]);
+                        checkerName.push(toV[i].n);
+                        vMatched.push(i);
+                      }
+                    });
+                  }
+                  if (em.ncit !== undefined) {
+                    em.ncit.forEach(n => {
+                        if (n.s === undefined) return;
+                        n.s.forEach(s => {
+                          if (s.n.trim().toLowerCase().indexOf(tmp) >= 0  && checkerName.indexOf(toV[i].n) === -1) {
+                            toV[i].match = caseSensitiveV;
+                            text.push(toV[i]);
+                            checkerName.push(toV[i].n);
+                            vMatched.push(i);
+                          }
+                        });
+                    });
+                  }
+                });
+              //let checkerNC = getMatchedSynonyms(text, tmp, option);
+              // text.forEach(em => {
+              //   em.match = caseSensitiveV;
+              //   if (em.n_syn !== undefined && em.s === undefined) {
+              //     em.n_syn.forEach(nSyn => {
+              //       if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
+              //         em.matched_s = [];
+              //         em.chk_n_c = [];
+              //         em.chk_n_c.push(nSyn.n_c);
+              //         em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
+              //       } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
+              //         let tmpObj = {};
+              //         tmpObj.n_c = nSyn.n_c;
+              //         tmpObj.s = checkerNC[nSyn.n_c];
+              //         em.matched_s.push(tmpObj);
+              //         em.chk_n_c.push(nSyn.n_c);
+              //       }
+              //     });
+              //   } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
+              //     if (em.matched_s === undefined) {
+              //       em.matched_s = [];
+              //       em.chk_n_c = [];
+              //       em.chk_n_c.push(em.n_c);
+              //       em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
+              //     } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
+              //       let tmpObj = {};
+              //       tmpObj.n_c = em.n_c;
+              //       tmpObj.s = checkerNC[em.n_c];
+              //       em.matched_s.push(tmpObj);
+              //       em.chk_n_c.push(em.n_c);
+              //     }
+              //   }
+              // });
+            }
           });
         }
         if (text.length > 0) text = sortAlphabetically(text);
@@ -467,9 +532,10 @@ const ToCompareModal = (props) => {
   
     const TableSynonyms = (props) => {
       if (props.synonyms !== undefined) {
+        let regKey = new RegExp(props.match, 'ig');
         return props.synonyms.map((item, index) =>
           <tr key={index}>
-            <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
+            <td dangerouslySetInnerHTML={{ __html: item.n.replace(regKey, '<b>$&</b>')}}></td>
             <td>{item.src}</td>
             <td>{item.t}</td>
           </tr>
@@ -479,88 +545,88 @@ const ToCompareModal = (props) => {
     };
   
     const TableNCIt = (props) => {
-  
+    
       let [isToggleOn, setIsToggleOn] = useState(false);
   
       const ToggleTableHandler = event => {
         event.preventDefault();
         setIsToggleOn(!isToggleOn);
       };
+
+      let regKey = new RegExp(props.match, 'ig');
       return (
         <>
           <RowRight>
-            <Col xs={10}>
-              {props.name}
-            </Col>
+            <Col xs={10} dangerouslySetInnerHTML={{ __html: props.name.replace(regKey, '<b>$&</b>')}}></Col>
             <ColRight xs={2}>
+            {((props.ncit !== undefined && props.ncit.length !== 0) || props.icdo !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
                   ? <FontAwesomeIcon icon={faMinus}/>
                   : <FontAwesomeIcon icon={faPlus}/>
                 }
               </a>
+            }
             </ColRight>
           </RowRight>
-          <Collapse in={isToggleOn} mountOnEnter={true}>
-            <div>
-              {props.ncit.map(ncit => 
-                <Row>
-                  <Col xs={2}>
-                    {ncit.c}
-                  </Col>
-                  <Col xs={10}>
-                  <TableContainer>
-                    <TableStyled striped bordered>
-                      <thead>
-                        <tr>
-                          <th>Term</th>
-                          <th>Source</th>
-                          <th>Type</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <TableSynonyms synonyms={ncit.s}/>
-                      </tbody>
-                    </TableStyled>
-                  </TableContainer>
-                  </Col>
-                </Row>
-              )}
-            </div>
-          </Collapse>
+          {((props.ncit !== undefined && props.ncit.length !== 0) || props.icdo !== undefined) &&
+            <Collapse in={isToggleOn} mountOnEnter={true}>
+              <div>
+                {props.icdo !== undefined &&
+                  <Row>
+                    <Col xs={2}>
+                      <CodeValue>{props.icdo.c}</CodeValue>
+                    </Col>
+                    <Col xs={10}>
+                    <TableContainer>
+                      <TableStyled striped bordered>
+                        <thead>
+                          <tr>
+                            <th>Term</th>
+                            <th>Source</th>
+                            <th>Type</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TableSynonyms synonyms={props.icdo.s}  match={optionsState['syns'] === true ? props.match : undefined}/>
+                        </tbody>
+                      </TableStyled>
+                    </TableContainer>
+                    </Col>
+                  </Row>
+                }
+                {props.ncit !== undefined && props.ncit.length !== 0 &&
+                  <>
+                    {props.ncit.map(ncit => 
+                      <Row>
+                        <Col xs={2}>
+                          <CodeValue>{ncit.c}</CodeValue>
+                        </Col>
+                        <Col xs={10}>
+                        <TableContainer>
+                          <TableStyled striped bordered>
+                            <thead>
+                              <tr>
+                                <th>Term</th>
+                                <th>Source</th>
+                                <th>Type</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <TableSynonyms synonyms={ncit.s} match={optionsState['syns'] === true ? props.match : undefined}/>
+                            </tbody>
+                          </TableStyled>
+                        </TableContainer>
+                        </Col>
+                      </Row>
+                    )}
+                  </>
+                }
+              </div>
+            </Collapse>
+          }
         </>
       );
-    };
-
-    const NcitValues = (props) => {
-      if (props.ncit !== undefined) {
-        return props.ncit.map((item, index) =>
-          <div key={index} className="ncit-value-container">
-            <Row>
-              <Col xs={12}>
-                {item.c} (NCIt)
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12}>
-                <Table striped bordered size="sm">
-                  <thead>
-                    <tr>
-                      <th>Term</th>
-                      <th>Source</th>
-                      <th>Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <TableSynonyms synonyms={item.s}/>
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
-          </div>
-        );
-      }
-      return (null);
     };
   
     const TableEnum = (props) => {
@@ -587,15 +653,62 @@ const ToCompareModal = (props) => {
                 }
               </ColRight>
             </RowStyled>
-            {((props.item.ncit !== undefined && props.item.ncit.length !== 0) || props.item.icdo !== undefined) &&
-              <Collapse in={isToggleOn} mountOnEnter={true}>
-                <div className="ncit-values">
-                  {(props.item.ncit !== undefined && props.item.ncit.length !== 0) &&
-                    <NcitValues ncit={props.item.ncit} />
-                  }
-                </div>
-              </Collapse>
-            }
+              {((props.item.ncit !== undefined && props.item.ncit.length !== 0) || props.item.icdo !== undefined) &&
+                <Collapse in={isToggleOn} mountOnEnter={true}>
+                  <div>
+                    {props.item.icdo !== undefined &&
+                      <Row>
+                        <Col xs={2}>
+                          <CodeValue>{props.item.icdo.c}</CodeValue>
+                        </Col>
+                        <Col xs={10}>
+                        <TableContainer>
+                          <TableStyled striped bordered size="sm">
+                            <thead>
+                              <tr>
+                                <th>Term</th>
+                                <th>Source</th>
+                                <th>Type</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <TableSynonyms synonyms={props.item.icdo.s}/>
+                            </tbody>
+                          </TableStyled>
+                        </TableContainer>
+                        </Col>
+                      </Row>
+                    }
+                    {props.item.ncit !== undefined && props.item.ncit.length !== 0 &&
+                      <>
+                        {props.item.ncit.map(ncit => 
+                          <Row>
+                            <Col xs={2}>
+                              <CodeValue>{ncit.c}</CodeValue>
+                            </Col>
+                            <Col xs={10}>
+                            <TableContainer>
+                              <TableStyled striped bordered size="sm">
+                                <thead>
+                                  <tr>
+                                    <th>Term</th>
+                                    <th>Source</th>
+                                    <th>Type</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <TableSynonyms synonyms={ncit.s}/>
+                                </tbody>
+                              </TableStyled>
+                            </TableContainer>
+                            </Col>
+                          </Row>
+                        )}
+                      </>
+                    }
+                  </div>
+                </Collapse>
+              }
           </>
         );
       }
@@ -646,66 +759,68 @@ const ToCompareModal = (props) => {
       <ModalBodyStyled>
         <Container>
           {showReport === false ?
-          <>
-            <TableThead>
-              <Col xs={6}>
-                <TableTh>User Defined Values</TableTh>
-              </Col>
-              <Col xs={6}>
-                <TableTh>Matched Values</TableTh>
-              </Col>
-            </TableThead>
-            <Row>
-              <Col xs={12}>
-                <CompareFormContainer>
-                  <CompareFormLeft>
-                    <TextareaStyled rows="10" cols="20" placeholder="Input values line by line" autocomplete="off" value={userValues} onChange={userInputUpdate}></TextareaStyled>
-                  </CompareFormLeft>
-                  <CompareFormDivider/>
-                  <CompareFormRight>
-                    <Container>
-                      {(items !== undefined && items !== []) &&
-                        <>
-                          {items.map((item, index) => {
-                            return(
-                              <TableEnum key={index} item={item}/>
-                            )
-                          })}
-                        </>
-                      }
-                    </Container>
-                  </CompareFormRight>
-                </CompareFormContainer>
-              </Col>
-            </Row>
-          </>
+            <>
+              <TableThead>
+                <Col xs={6}>
+                  <TableTh>User Defined Values</TableTh>
+                </Col>
+                <Col xs={6}>
+                  <TableTh>Matched Values</TableTh>
+                </Col>
+              </TableThead>
+              <Row>
+                <Col xs={12}>
+                  <CompareFormContainer>
+                    <CompareFormLeft>
+                      <TextareaStyled rows="10" cols="20" placeholder="Input values line by line" autocomplete="off" value={userValues} onChange={userInputUpdate}></TextareaStyled>
+                    </CompareFormLeft>
+                    <CompareFormDivider/>
+                    <CompareFormRight>
+                      <Container>
+                        {(items !== undefined && items !== []) &&
+                          <>
+                            {items.map((item, index) => {
+                              return(
+                                <TableEnum key={index} item={item}/>
+                              )
+                            })}
+                          </>
+                        }
+                      </Container>
+                    </CompareFormRight>
+                  </CompareFormContainer>
+                </Col>
+              </Row>
+            </>
           :
-          <Row>
-            <ColStyled xs={12}>
-              {resultReport.length !== 0 ?
-              <Table bordered>
-                <thead>
-                  <tr>
-                    <th>User Defined Values</th>
-                    <th>Matched Values</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {resultReport.map(item => 
-                    <tr>
-                      <td>{item.match}</td>
-                      <td>
-                        <TableNCIt name={item.n} ncit={item.ncit}/>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </Table>
-              :
-              <Indicator>Sorry, no results found.</Indicator>
-              }
-            </ColStyled>
-          </Row>
+            <Row>
+              <ColBackgroundStyled xs={12}>
+                <TableContainerOverFlow>
+                  {resultReport.length !== 0 ?
+                  <TableOverFlow bordered>
+                    <thead>
+                      <tr>
+                        <th><TableThTitle>User Defined Values</TableThTitle></th>
+                        <th><TableThTitle>Matched Values</TableThTitle></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {resultReport.map(item => 
+                        <tr>
+                          <td>{item.match}</td>
+                          <td>
+                            <TableNCIt name={item.n} ncit={item.ncit} icdo={item.icdo} match={item.match}/>
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </TableOverFlow>
+                  :
+                  <Indicator>Sorry, no results found.</Indicator>
+                  }
+                </TableContainerOverFlow>
+              </ColBackgroundStyled>
+            </Row>
           }
         </Container>
       </ModalBodyStyled>
