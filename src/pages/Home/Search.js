@@ -142,7 +142,6 @@ const SelectBtn = styled(Button)`
 
 const FormGroupStyled = styled(Form.Group)`
   width: 30rem;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -211,11 +210,12 @@ const Search = () => {
   let [searchState, setSearchState] = useState('');
   let [suggestState, setSuggestState] = useState([]);
   let [selectIndexState, setSelectIndexState] = useState(-1);
-  let [isToggleOnSource, setIsToggleOnSource] = useState(true);
+  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
   let [selectDataSource, setSelectDataSource] = useState({
-    ctdc: true,
-    gdc: true,
-    icdc: true
+    ctdc: false,
+    gdc: false,
+    icdc: false,
+    pcdc: false
   });
 
   const history = useHistory();
@@ -282,13 +282,15 @@ const Search = () => {
       setSelectDataSource({
         ctdc: true,
         gdc: true,
-        icdc: true
+        icdc: true,
+        pcdc: true
       });
     } else {
       setSelectDataSource({
         ctdc: false,
         gdc: false,
-        icdc: false
+        icdc: false,
+        pcdc: false
       });
     }
     setIsToggleOnSource(!isToggleOnSource);
@@ -356,6 +358,15 @@ const Search = () => {
                       <CheckboxIcon icon={faCheck}/>
                     </CheckboxBtn>
                     Integrated Canine Data Commons
+                  </CheckboxLabel>
+                </FormGroupStyled>
+                <FormGroupStyled>
+                  <CheckboxLabel>
+                    <CheckboxInput name="pcdc" type="checkbox" checked={selectDataSource['pcdc']} onClick={selectDataToggleHandler}/>
+                    <CheckboxBtn>
+                      <CheckboxIcon icon={faCheck}/>
+                    </CheckboxBtn>
+                    Pediatric Cancer Data Model
                   </CheckboxLabel>
                 </FormGroupStyled>
               </Col>

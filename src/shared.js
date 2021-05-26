@@ -1,3 +1,4 @@
+
 import _ from 'lodash';
 
 export const sortAlphabetically = (values) => {
@@ -9,6 +10,12 @@ export const sortAlphabetically = (values) => {
     return 0;
   });
   return values;
+};
+
+export const sortAlphabeticallyObject = (object) => {
+  let ordered = {}
+  Object.keys(object).sort().forEach(key => ordered[key] = object[key])
+  return ordered;
 };
 
 export const sortSynonyms = (synonyms) => {
@@ -42,7 +49,6 @@ export const getAllValueHighlight = (enumHits) => {
   });
   return highlightValueObj;
 };
-
 
 export const getAllSyn = (items) => {
   items.forEach(item => {
