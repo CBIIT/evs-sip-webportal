@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
-import { Button, Modal, Container, Row, Col, Collapse, InputGroup, FormControl, Table, Form} from 'react-bootstrap';
+import { Button, Modal, Container, Row, Col, Collapse, Table, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faSearch, faCheck} from '@fortawesome/free-solid-svg-icons';
-import { searchFilter, sortAlphabetically} from '../../shared';
+import { faPlus, faMinus, faCheck} from '@fortawesome/free-solid-svg-icons';
+import { sortAlphabetically} from '../../shared';
 import { apiGetGDCDataById } from '../../api';
 
+import PaginationController from './PaginationController';
 
 const ModalBodyStyled = styled(Modal.Body)`
   padding: 0;
@@ -116,11 +116,6 @@ const TextareaStyled = styled.textarea`
   padding: .2em 0.9375rem;
 `;
 
-// const InputGroupStyled = styled(InputGroup)`
-//   max-width: 23rem;
-//   padding-left: 2rem;
-// `;
-
 const RowStyled = styled(Row)`
   padding: 0.3125rem 0;
   border-bottom: 1px solid #dee2e6;
@@ -211,6 +206,7 @@ const ToCompareModal = (props) => {
   const handleClose = () => {
     setShow(false);
   };
+
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
       // setData(result);
@@ -222,14 +218,13 @@ const ToCompareModal = (props) => {
     });
   };
 
-
   const ModalContainer = (props) => {
 
     const [userValues, setUserValues] = useState('');
-    // const [items, setItems] = useState([]);
-    const [resultReport, setResultReport] = useState();
+    const [resultReport, setResultReport] = useState([]);
+    const [resultPagination, setResultPagination] = useState([]);
+    const [pageCountStage, setPageCountStage] = useState(0);
     const [showReport, setShowReport] =  useState(false);
-    //const [keyword, setKeyword] = useState('');
     let [optionsState, setOptionsState] =  useState({
         partial: true,
         syns: false,
@@ -239,21 +234,15 @@ const ToCompareModal = (props) => {
     const userInputUpdate =  (event) => {
       setUserValues(event.target.value);
     }
-  
-    // const handleSearchChange = (event) => {
-    //   let keyword = event.target.value.trim().replace(/\s{2,}/g, ' ').toLowerCase();
-  
-    //   if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
-    //     let newItem = searchFilter(data[0]._source.enum, keyword);
-    //     setItems(newItem);
-    //   } else {
-    //     setItems(data[0]._source.enum);
-    //   }
-    // };
-  
+
     const handleCompare = () => {
       if(showReport === false) setShowReport(true);
-      setResultReport(compareGDCvalues(userValues, props.items, optionsState));
+      const results = compareGDCvalues(userValues, props.items, optionsState);
+      setResultReport(results);
+      if(results.length !== 0){
+        setPageCountStage(results.length / 12);
+        setResultPagination(results.slice(0,11));
+      }
     }
   
     const handleButtonBack = () => {
@@ -268,78 +257,6 @@ const ToCompareModal = (props) => {
       });
     };
   
-    // const getMatchedSynonyms = (text, tmp, option) => {
-    //   if (option.partial === false) {
-    //     let checkerNC = {};
-    //     text.forEach(em => {
-    //       if (em.matched_s) em.matched_s = undefined; // remove matched_s from previous tmp
-    //       if (em.n_syn !== undefined && em.s === undefined) {
-    //         em.n_syn.forEach(nSyn => {
-    //           if (nSyn.s === undefined) return;
-    //           nSyn.s.forEach(x => {
-    //             if (x.termName.trim().toLowerCase() === tmp) {
-    //               if (checkerNC[nSyn.n_c] === undefined) {
-    //                 checkerNC[nSyn.n_c] = [];
-    //                 checkerNC[nSyn.n_c].push(x);
-    //               } else if (checkerNC[nSyn.n_c] !== undefined && !_.some(checkerNC[nSyn.n_c], x)) {
-    //                 checkerNC[nSyn.n_c].push(x);
-    //               }
-    //             }
-    //           });
-    //         });
-    //       } else if (em.s !== undefined && em.n_syn === undefined) {
-    //         em.s.forEach(x => {
-    //           if (x.termName.trim().toLowerCase() === tmp) {
-    //             if (checkerNC[em.n_c] === undefined) {
-    //               checkerNC[em.n_c] = [];
-    //               checkerNC[em.n_c].push(x);
-    //             } else if (checkerNC[em.n_c] !== undefined && !_.some(checkerNC[em.n_c], x)) {
-    //               checkerNC[em.n_c].push(x);
-    //             }
-    //           }
-    //         });
-    //       }
-    //     });
-    //     return checkerNC;
-    //   } else {
-    //     let checkerNC = {};
-    //     text.forEach(em => {
-    //       if (em.matched_s) em.matched_s = undefined; // remove matched_s from previous tmp
-    //       if (em.ncit !== undefined) {
-    //         em.ncit.forEach(nSyn => {
-    //           if (nSyn.s === undefined) return;
-    //           nSyn.s = nSyn.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src }));
-    //           nSyn.s.forEach(tmpSyn => {
-    //             let sIdx = tmpSyn.termName.indexOf(tmp);
-    //             if (sIdx >= 0) {
-    //               if (checkerNC[nSyn.n_c] === undefined) {
-    //                 checkerNC[nSyn.n_c] = [];
-    //                 checkerNC[nSyn.n_c].push(tmpSyn);
-    //               } else if (checkerNC[nSyn.n_c] !== undefined && !_.some(checkerNC[nSyn.n_c], tmpSyn)) {
-    //                 checkerNC[nSyn.n_c].push(tmpSyn);
-    //               }
-    //             }
-    //           });
-    //         });
-    //       } else if (em.s !== undefined && em.n_syn === undefined) {
-    //         em.s = em.s.map(x => { return { termName: x.termName.toLowerCase(), termGroup: x.termGroup, termSource: x.termSource }; });
-    //         em.s.forEach(tmpSyn => {
-    //           let sIdx = tmpSyn.termName.indexOf(tmp);
-    //           if (sIdx >= 0) {
-    //             if (checkerNC[em.n_c] === undefined) {
-    //               checkerNC[em.n_c] = [];
-    //               checkerNC[em.n_c].push(tmpSyn);
-    //             } else if (checkerNC[em.n_c] !== undefined && !_.some(checkerNC[em.n_c], tmpSyn)) {
-    //               checkerNC[em.n_c].push(tmpSyn);
-    //             }
-    //           }
-    //         });
-    //       }
-    //     });
-    //     return checkerNC;
-    //   }
-    // };
-  
     const compareGDCvalues = (fromV, toV, option) => {
       let fromVArray = fromV.split(/\n/);
       toV = JSON.parse(JSON.stringify(toV));
@@ -347,12 +264,6 @@ const ToCompareModal = (props) => {
       let vMatched = [];
       toV.forEach(function (v) {
         vLowercase.push(v.n.trim().toLowerCase());
-       // if (v.s && v.s.length > 0) v.s = v.s.map(function (x) { return { termName: x.termName.toLowerCase(), termSource: x.termSource, termGroup: x.termGroup }; });
-
-        // if (v.ncit !== undefined && v.ncit.length !== 0){
-        //   v.ncit = v.ncit.map(n => n.s.map(x => ({ n: x.n.toLowerCase(), t: x.t, src: x.src })));
-        // }
-        //if (v.all_syn && v.all_syn.length > 0) v.all_syn = v.all_syn.map(function (x) { return x.toLowerCase(); });
       });
     
       let items = [];
@@ -376,13 +287,6 @@ const ToCompareModal = (props) => {
           }
           if (option.syns === true) {
             toV.forEach((em, i) => {
-          //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
-          //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-          //         text.push(toV[i]);
-          //         checkerN.push(toV[i].n);
-          //         vMatched.push(i);
-          //       }
-          //     }
               if (em.icdo !== undefined && em.icdo.s !== undefined) {
                 em.icdo.s.forEach(s => {
                   if (s.n.trim().toLowerCase() === tmp && checkerName.indexOf(toV[i].n) === -1) {
@@ -407,39 +311,6 @@ const ToCompareModal = (props) => {
                 });
               }
             });
-          //   let checkerNC = getMatchedSynonyms(text, tmp, option);
-          //   text.forEach(em => {
-          //     em.match = caseSensitiveV;
-          //     if (em.n_syn !== undefined && em.s === undefined) {
-          //       em.n_syn.forEach(nSyn => {
-          //         if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
-          //           em.matched_s = [];
-          //           em.chk_n_c = [];
-          //           em.chk_n_c.push(nSyn.n_c);
-          //           em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
-          //         } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
-          //           let tmpObj = {};
-          //           tmpObj.n_c = nSyn.n_c;
-          //           tmpObj.s = checkerNC[nSyn.n_c];
-          //           em.matched_s.push(tmpObj);
-          //           em.chk_n_c.push(nSyn.n_c);
-          //         }
-          //       });
-          //     } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
-          //       if (em.matched_s === undefined) {
-          //         em.matched_s = [];
-          //         em.chk_n_c = [];
-          //         em.chk_n_c.push(em.n_c);
-          //         em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
-          //       } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
-          //         let tmpObj = {};
-          //         tmpObj.n_c = em.n_c;
-          //         tmpObj.s = checkerNC[em.n_c];
-          //         em.matched_s.push(tmpObj);
-          //         em.chk_n_c.push(em.n_c);
-          //       }
-          //     }
-          //   });
             }
           } else { // If it's partial match
             let checkerName = [];
@@ -453,14 +324,6 @@ const ToCompareModal = (props) => {
               }
               if (option.syns === true) {
                 toV.forEach((em, i) => {
-                  //     if (em.all_syn) { // If it's a ICDO3 code it will have all_syn
-                  //       if (em.all_syn.indexOf(tmp) !== -1 && checkerN.indexOf(toV[i].n) === -1) {
-                  //         text.push(toV[i]);
-                  //         checkerN.push(toV[i].n);
-                  //         vMatched.push(i);
-                  //       }
-                  //     }
-
                   if (em.icdo !== undefined && em.icdo.s !== undefined) {
                     em.icdo.s.forEach(s => {
                       if (s.n.trim().toLowerCase().indexOf(tmp) >= 0  && checkerName.indexOf(toV[i].n) === -1) {
@@ -485,39 +348,6 @@ const ToCompareModal = (props) => {
                     });
                   }
                 });
-              //let checkerNC = getMatchedSynonyms(text, tmp, option);
-              // text.forEach(em => {
-              //   em.match = caseSensitiveV;
-              //   if (em.n_syn !== undefined && em.s === undefined) {
-              //     em.n_syn.forEach(nSyn => {
-              //       if (em.matched_s === undefined && checkerNC[nSyn.n_c] !== undefined) {
-              //         em.matched_s = [];
-              //         em.chk_n_c = [];
-              //         em.chk_n_c.push(nSyn.n_c);
-              //         em.matched_s.push({ n_c: nSyn.n_c, s: checkerNC[nSyn.n_c] });
-              //       } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(nSyn.n_c) === -1 && checkerNC[nSyn.n_c] !== undefined) {
-              //         let tmpObj = {};
-              //         tmpObj.n_c = nSyn.n_c;
-              //         tmpObj.s = checkerNC[nSyn.n_c];
-              //         em.matched_s.push(tmpObj);
-              //         em.chk_n_c.push(nSyn.n_c);
-              //       }
-              //     });
-              //   } else if (em.s !== undefined && em.n_syn === undefined && checkerNC[em.n_c] !== undefined) {
-              //     if (em.matched_s === undefined) {
-              //       em.matched_s = [];
-              //       em.chk_n_c = [];
-              //       em.chk_n_c.push(em.n_c);
-              //       em.matched_s.push({ n_c: em.n_c, s: checkerNC[em.n_c] });
-              //     } else if (em.matched_s !== undefined && em.chk_n_c.indexOf(em.n_c) === -1 && checkerNC[em.n_c] !== undefined) {
-              //       let tmpObj = {};
-              //       tmpObj.n_c = em.n_c;
-              //       tmpObj.s = checkerNC[em.n_c];
-              //       em.matched_s.push(tmpObj);
-              //       em.chk_n_c.push(em.n_c);
-              //     }
-              //   }
-              // });
             }
           });
         }
@@ -715,23 +545,17 @@ const ToCompareModal = (props) => {
       return (null);
     };
 
+    const handlePageClick = (data) => {
+      const position = data.selected * 12;
+      if (resultReport.length !== 0) {
+        setResultPagination(resultReport.slice(position, position + 11));
+      };
+    };
+
     return (
       <>
         <Modal.Header closeButton>
         <Modal.Title id="to-compare-modal">Compare Your Values</Modal.Title>
-        {/* <InputGroupStyled>
-          <InputGroup.Prepend>
-            <InputGroup.Text id="search-values-input">
-              <FontAwesomeIcon icon={faSearch}/>
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            placeholder="Type at least 3 characters"
-            aria-label="Search"
-            aria-describedby="Search"
-            onChange={handleSearchChange}
-          />
-        </InputGroupStyled> */}
         <FormGroupStyled>
           <CheckboxLabel>
             <CheckboxInput name="partial" type="checkbox" checked={optionsState['partial']}  onClick={checkedToggleHandler}/>
@@ -805,7 +629,7 @@ const ToCompareModal = (props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {resultReport.map(item => 
+                      {resultPagination.map(item => 
                         <tr>
                           <td>{item.match}</td>
                           <td>
@@ -831,7 +655,10 @@ const ToCompareModal = (props) => {
           <Button variant="primary"onClick={handleCompare}>Compare</Button>
         </>
         :
-        <Button variant="secondary" onClick={handleButtonBack}>Back</Button>
+        <>
+          <PaginationController pageCount={pageCountStage} pageClick={handlePageClick}/>
+          <Button variant="secondary" onClick={handleButtonBack}>Back</Button>
+        </>
       }
       </Modal.Footer>
     </>
