@@ -9,6 +9,7 @@ const path = require("path");
 const shared = require("./shared");
 // const git = require('nodegit');
 //const Excel = require("exceljs");
+const export_excel = require('node-excel-export');
 const dataFilesPath = path.join(__dirname, "..", "..", "data_files");
 var syns = {};
 
@@ -992,45 +993,6 @@ const preloadPCDCDataMappings = async (req, res) => {
   res.json({ result: "success" });
 };
 
-const processGDCDictionaryEnumData = (prop) => {
-	const enums = prop.enum;
-	const enumsDef = prop.enumDef;
-	let result = enums ? enums.map((value) => {
-		let tmp = {};
-		tmp.n = value.replace(/(?:\r\n|\r|\n)/g, ' ');
-		if(enumsDef && enumsDef[tmp.n] && enumsDef[tmp.n].termDef){
-			let term = enumsDef[tmp.n].termDef;
-			if(term.source == "NCIt" && term.term_id !== ""){
-				tmp.gdc_ncit = term.term_id;
-			}
-			else{
-				tmp.gdc_ncit = "";
-			}
-		}
-		else{
-			tmp.gdc_ncit = "";
-		}
-		tmp.n = tmp.n.replace(/\s+/g,' ');
-		return tmp;
-	}) : [];
-	return result;
-};
-
-const processEVSSIPEnumData = (enums) => {
-	let result = {};
-	if(enums) {
-		enums.map((entry) => {
-			let value = entry.n.replace(/\s+/g,' ');
-			result[value] = [];
-			let ncits = entry.ncit;
-			ncits.map((ncit) => {
-				result[value].push(ncit.c);
-			});
-		});
-	}
-	return result;
-};
-
 const compareAllWithGDCDictionary = async function(req, res){
 	const params = req.query;
 	const searchText = params.searchText ? params.searchText : "";
@@ -1182,7 +1144,7 @@ const exportCompareResult = async function(req, res){
 	
 	// Create the excel report.
 	// This function will return Buffer
-	const report = excel.buildExport(
+	const report = export_excel.buildExport(
 	[ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
 		{
 		name: 'Report', // <- Specify sheet name (optional)
@@ -1288,7 +1250,7 @@ const exportAllCompareResult = async function(req, res){
 	
 	// Create the excel report.
 	// This function will return Buffer
-	const report = excel.buildExport(
+	const report = export_excel.buildExport(
 	[ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
 		{
 		name: 'All', // <- Specify sheet name (optional)
@@ -1373,7 +1335,7 @@ const generateProperties = async function(req, res) {
       node: {
         displayName: 'Node',
         headerStyle: styles.cellPink,
-        width: '220' // <- width in chars (when the number is passed as string)
+        width: 220 // <- width in chars (when the number is passed as string)
       },
       property: {
         displayName: 'Property',
@@ -1394,7 +1356,7 @@ const generateProperties = async function(req, res) {
     
     // Create the excel report.
     // This function will return Buffer
-    const report = excel.buildExport(
+    const report = export_excel.buildExport(
     [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
       {
       name: 'Report', // <- Specify sheet name (optional)
@@ -1409,7 +1371,164 @@ const generateProperties = async function(req, res) {
     // You can then return this straight
     res.attachment('report.xlsx'); // This is sails.js specific (in general you need to set headers)
     res.send(report);
-  }
+}
+
+const updateGDCPropertyMappings = async function(req, res) {
+  /*
+  let file_path = path.join(
+    __dirname,
+    "..",
+    "..",
+    "data_files",
+    "GDC",
+    "GDC_Property.xlsx"
+  );
+
+  let output_file_path = path.join(__dirname, '..', '..', 'data_files', 'GDC', 'gdc_props.js');
+  
+  const workbook = new Excel.Workbook();
+  await workbook.xlsx.readFile(file_path.replace(/\\/g, "/"));
+  let worksheet = workbook.worksheets[0];
+
+  let prop_mapping = {};
+
+  let prop_mapping_count = 0;
+  let prop_mapped_count = 0;
+  let prop_unmapped_count = 0;
+
+  worksheet.eachRow(function (row, rowNumber) {
+    let item = row.values;
+    if (rowNumber > 1) {
+      let property = item[6] == undefined || item[6] == null ? "" : item[6];
+      let ncit = item[3] == undefined || item[3] == null ? "" : item[3];
+      if(property != ""){
+        if(property.indexOf(" || ") > -1){
+          property.split(" || ").forEach((p) => {
+            prop_mapping[p.trim()] = ncit;
+            prop_mapping_count++;
+          })
+        }
+        else{
+          prop_mapping[property] = ncit;
+          prop_mapping_count ++;
+        }
+      }
+      
+    }
+  });
+  
+  const mapped_props = [];
+	const dataset = {};
+  const dataoutput = [];
+	let GDCDict = await shared.getGDCDictionaryByVersion("2.3.0");
+	
+	for(let node in GDCDict){
+		let entry = GDCDict[node];
+		if(entry.properties){
+			let prop_dict = entry.properties;
+			for(let prop in prop_dict){
+				let tmp = {};
+				tmp.category = entry.category;
+				tmp.node = node;
+				tmp.property = prop;
+        tmp.desc = prop_dict[prop].description;
+        
+        if(prop in prop_mapping){
+          //console.log("Found mapping: <", prop, node, category, ">");
+          let p_id = tmp.category + "."+ tmp.node + "." + prop;
+          if(mapped_props.indexOf(prop) == -1){
+            mapped_props.push(prop);
+          }
+          dataset[p_id] = prop_mapping[prop];
+          tmp.ncit = prop_mapping[prop];
+          prop_mapped_count++;
+        }
+        else{
+          //console.log("don't have mapping for <", prop, node, category, ">");
+          tmp.ncit = "";
+          prop_unmapped_count++;
+        }
+
+        dataoutput.push(tmp);
+
+			}
+		} 
+	}
+
+  console.log(prop_mapping_count, prop_mapped_count, prop_unmapped_count);
+
+  fs.writeFileSync(output_file_path, JSON.stringify(dataset), (err) => {
+    if (err) return logger.error(err);
+  });
+
+  // You can define styles as json object
+	const styles = {
+    cellPink: {
+      fill: {
+      fgColor: {
+        rgb: 'FF00FF00'
+      }
+      }
+    }
+    };
+    
+    //Array of objects representing heading rows (very top)
+    const heading = [
+    ];
+    
+    //Here you specify the export structure
+    const specification = {
+      category: { // <- the key should match the actual data key
+        displayName: 'Category', // <- Here you specify the column header
+        headerStyle: styles.cellPink, // <- Header style
+        width: 220 // <- width in pixels
+      },
+      node: {
+        displayName: 'Node',
+        headerStyle: styles.cellPink,
+        width: 220 // <- width in chars (when the number is passed as string)
+      },
+      property: {
+        displayName: 'Property',
+        headerStyle: styles.cellPink,
+        width: 220 // <- width in pixels
+      },
+      desc: {
+        displayName: 'Property Description',
+        headerStyle: styles.cellPink,
+        width: 220 // <- width in pixels
+      },
+      ncit: {
+        displayName: 'NCIt Code',
+        headerStyle: styles.cellPink,
+        width: 220 // <- width in pixels
+      }
+    }
+    
+    // Define an array of merges. 1-1 = A:1
+    // The merges are independent of the data.
+    // A merge will overwrite all data _not_ in the top-left cell.
+    const merges = [];
+    
+    // Create the excel report.
+    // This function will return Buffer
+    const report = export_excel.buildExport(
+    [ // <- Notice that this is an array. Pass multiple sheets to create multi sheet report
+      {
+      name: 'Report', // <- Specify sheet name (optional)
+      heading: heading, // <- Raw heading array (optional)
+      merges: merges, // <- Merge cell ranges
+      specification: specification, // <- Report specification
+      data: dataoutput // <-- Report data
+      }
+    ]
+    );
+    
+    // You can then return this straight
+    res.attachment('report.xlsx'); // This is sails.js specific (in general you need to set headers)
+    res.send(report);
+    */ 
+}
 
 
 
@@ -1431,5 +1550,6 @@ module.exports = {
 	compareAllWithGDCDictionary,
 	exportCompareResult,
 	exportAllCompareResult,
-	generateProperties
+	generateProperties,
+  updateGDCPropertyMappings
 };

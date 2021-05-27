@@ -429,6 +429,11 @@ const readGDCValues = () => {
   return JSON.parse(content);
 };
 
+const readGDCProps = () => {
+  let content = fs.readFileSync(dataFilesDir + "/gdc_props.js").toString();
+  return JSON.parse(content);
+};
+
 const readGDCNodes = () => {
   let content = fs.readFileSync(dataFilesDir + "/gdc_nodes.js").toString();
 return JSON.parse(content);
@@ -1326,6 +1331,7 @@ module.exports = {
   readNCItDetails,
   preProcess,
   readGDCValues,
+  readGDCProps,
   readGDCNodes,
   readCDEData,
   readCTDCMapping,
@@ -1343,5 +1349,6 @@ module.exports = {
   getCompareResult,
   getCompareResult_unmapped,
   getCompareResult_mapped,
-  getCompareResult_conflict
+  getCompareResult_conflict,
+  getGDCDictionaryByVersion
 };

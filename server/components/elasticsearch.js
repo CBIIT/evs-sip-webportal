@@ -17,6 +17,7 @@ var allTerm = {};
 var icdo_mapping = shared.getICDOMapping();
 var icdo2Exclude = shared.getParentICDO();
 var gdc_values = {};
+var gdc_props = {};
 var gdc_nodes = {};
 var allProperties = [];
 var unloaded_ncits = [];
@@ -73,6 +74,33 @@ const helper_gdc = (fileJson, syns) => {
     p.prop.n = prop;
     p.prop.d = entryRaw.description;
     p.id = p.prop.n + "/" + p.node.n + "/" + p.category;
+    
+    let p_id = p.category + "." + p.node.n + "." + p.prop.n;
+    if(p_id in gdc_props){
+      p.prop.ncit = [];
+      let tmp = {};
+      tmp.c = gdc_props[p_id].toUpperCase();
+      tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
+      let synonyms = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].synonyms : []);
+      if(syns[tmp.c] == undefined){
+        console.log("Don't have the ncit data for:" + tmp.c);
+        if(unloaded_ncits.indexOf(tmp.c) == -1){
+          unloaded_ncits.push(tmp.c);
+        }
+      }
+      if(synonyms.length > 0){
+        tmp.s = [];
+        synonyms.forEach(s => {
+          tmp.s.push({
+            n: s.termName,
+            t: s.termGroup,
+            src: s.termSource
+          });
+        });
+      }
+      p.prop.ncit.push(tmp);
+    }
+    
     p.type = entryRaw.type;
 
     entry.enum = extend([], entryRaw.enum || (entryRaw.items && entryRaw.items.enum ? entryRaw.items.enum : []));
@@ -87,30 +115,6 @@ const helper_gdc = (fileJson, syns) => {
         p.prop.cde.c = entry.termDef.cde_id;
         p.prop.cde.url = entry.termDef.term_url;
         p.prop.cde.src = 'CDE';
-      }
-      else if(entry.termDef.source === 'NCIt'){
-        p.prop.ncit = [];
-        let tmp = {};
-        tmp.c = entry.termDef.cde_id.toUpperCase();
-        tmp.l = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].label : "");
-        let synonyms = (tmp.c !== '' && syns[tmp.c] ? syns[tmp.c].synonyms : []);
-        if(syns[tmp.c] == undefined){
-          console.log("Don't have the ncit data for:" + tmp.c);
-          if(unloaded_ncits.indexOf(tmp.c) == -1){
-            unloaded_ncits.push(tmp.c);
-          }
-        }
-        if(synonyms.length > 0){
-          tmp.s = [];
-          synonyms.forEach(s => {
-            tmp.s.push({
-              n: s.termName,
-              t: s.termGroup,
-              src: s.termSource
-            });
-          });
-        }
-        p.prop.ncit.push(tmp);
       }
     }
 
@@ -1051,6 +1055,7 @@ const helper_pcdc = (pcdc_data, syns) => {
 const bulkIndex = async function(next){
 
   gdc_values = shared.readGDCValues();
+  gdc_props = shared.readGDCProps();
   gdc_nodes = shared.readGDCNodes();
   let syns = shared.readNCItDetails();
 
@@ -1105,7 +1110,7 @@ const bulkIndex = async function(next){
 
   allProperties.forEach(ap => {
     if (ap.prop.cde && ap.prop.d) { // ADD CDE ID to all property description.
-      ap.prop.d = ap.prop.d + " (" + ap.prop.cde.src + " - " + ap.prop.cde.id + ")"
+      ap.prop.d = ap.prop.d + " (" + ap.prop.cde.src + " - " + ap.prop.cde.c + ")"
     }
     let doc = extend(ap, {});
     doc.id = ap.prop.n + "/" + ap.node.n + "/" + ap.category + "/" + ap.source;
@@ -1124,7 +1129,6 @@ const bulkIndex = async function(next){
       return next(err_p);
     }
     let errorCount_p = 0;
-    console.log(data_p.items[0]);
     data_p.items.forEach(item => {
       if (item.index && item.index.error) {
         logger.error(++errorCount_p, item.index.error);
