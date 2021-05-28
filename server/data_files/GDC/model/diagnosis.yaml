@@ -5,8 +5,8 @@ title: Diagnosis
 type: object
 namespace: https://gdc.cancer.gov
 category: clinical
-project: '*'
-program: '*'
+project: "*"
+program: "*"
 description: >-
   Data from the investigation, analysis and recognition of the presence and nature
   of disease, condition, or injury from expressed signs and symptoms; also, the scientific
@@ -50,7 +50,6 @@ deprecated:
   - papillary_renal_cell_type
 
 properties:
-
   $ref:
     - "_definitions.yaml#/ubiquitous_properties"
 
@@ -7391,10 +7390,8 @@ properties:
       - B lymphoblastic leukemia/lymphoma, NOS
       - B-ALL
       - B-cell lymphocytic leukemia/small lymphocytic lymphoma
-      - B-cell lymphoma, unclassifiable, with features intermediate between diffuse
-        large B-cell lymphoma and Burkitt lymphoma
-      - B-cell lymphoma, unclassifiable, with features intermediate between diffuse
-        large B-cell lymphoma and classical Hodgkin lymphoma
+      - B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and Burkitt lymphoma
+      - B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and classical Hodgkin lymphoma
       - Balloon cell melanoma
       - Balloon cell nevus
       - BALT lymphoma
@@ -7804,8 +7801,7 @@ properties:
       - Embryonal tumor with multilayered rosettes C19MC-altered
       - Embryonal tumor with multilayered rosettes, NOS
       - Embryonal tumor with rhabdoid features
-      - Encapsulated follicular variant of papillary thyroid carcinoma, NOS (EFVPTC,
-        NOS)
+      - Encapsulated follicular variant of papillary thyroid carcinoma, NOS (EFVPTC, NOS)
       - Encapsulated papillary carcinoma
       - Encapsulated papillary carcinoma with invasion
       - Enchondroma
@@ -8272,8 +8268,7 @@ properties:
       - Intraductal papillary adenocarcinoma with invasion
       - Intraductal papillary adenocarcinoma, NOS
       - Intraductal papillary carcinoma
-      - Intraductal papillary mucinous neoplasm (IPMN) with an associated invasive
-        carcinoma
+      - Intraductal papillary mucinous neoplasm (IPMN) with an associated invasive carcinoma
       - Intraductal papillary mucinous neoplasm with an associated invasive carcinoma
       - Intraductal papillary mucinous neoplasm with high grade dysplasia
       - Intraductal papillary neoplasm with associated invasive carcinoma
@@ -8319,8 +8314,7 @@ properties:
       - Intravascular leiomyomatosis
       - Invasive carcinoma of no special type
       - Invasive carcinoma, NST
-      - Invasive encapsulated follicular variant of papillary thyroid carcinoma (invasive
-        EFVPTC)
+      - Invasive encapsulated follicular variant of papillary thyroid carcinoma (invasive EFVPTC)
       - Invasive fibroma
       - Invasive hydatidiform mole
       - Invasive lobular carcinoma
@@ -8908,10 +8902,8 @@ properties:
       - Nodular melanoma
       - Non-Hodgkin lymphoma, NOS
       - Non-invasive EFVPTC
-      - Non-invasive encapsulated follicular variant of papillary thyroid carcinoma
-        (non-invasive EFVPTC)
-      - Non-invasive follicular thyroid neoplasm with papillary-like nuclear features
-        (NIFTP)
+      - Non-invasive encapsulated follicular variant of papillary thyroid carcinoma (non-invasive EFVPTC)
+      - Non-invasive follicular thyroid neoplasm with papillary-like nuclear features (NIFTP)
       - Non-invasive FTP
       - Non-invasive low grade serous carcinoma
       - Non-invasive mammary carcinoma
@@ -8926,11 +8918,9 @@ properties:
       - Noninfiltrating intraductal papillary adenocarcinoma
       - Noninfiltrating intraductal papillary carcinoma
       - Noninvasive pancreatobiliary papillary neoplasm with high grade dysplasia
-      - Noninvasive pancreatobiliary papillary neoplasm with high grade intraepithelial
-        neoplasia
+      - Noninvasive pancreatobiliary papillary neoplasm with high grade intraepithelial neoplasia
       - Noninvasive pancreatobiliary papillary neoplasm with low grade dysplasia
-      - Noninvasive pancreatobiliary papillary neoplasm with low grade intraepithelial
-        neoplasia
+      - Noninvasive pancreatobiliary papillary neoplasm with low grade intraepithelial neoplasia
       - Nonlipid reticuloendotheliosis
       - Nonpigmented nevus
       - NUT carcinoma
@@ -8997,8 +8987,7 @@ properties:
       - Pancreatic endocrine tumor, nonfunctioning
       - Pancreatic endocrine tumor, NOS
       - Pancreatic microadenoma
-      - Pancreatic peptide and pancreatic peptide-like peptide within terminal tyrosine
-        amide producing tumor
+      - Pancreatic peptide and pancreatic peptide-like peptide within terminal tyrosine amide producing tumor
       - Pancreatobiliary neoplasm, non-invasive
       - Pancreatobiliary-type carcinoma
       - Pancreatoblastoma
@@ -9032,8 +9021,7 @@ properties:
       - Papillary mucinous cystadenoma, borderline malignancy
       - Papillary mucinous cystadenoma, NOS
       - Papillary mucinous tumor of low malignant potential
-      - Papillary neoplasm, pancreatobiliary-type, with high grade intraepithelial
-        neoplasia
+      - Papillary neoplasm, pancreatobiliary-type, with high grade intraepithelial neoplasia
       - Papillary pseudomucinous cystadenocarcinoma
       - Papillary pseudomucinous cystadenoma, borderline malignancy
       - Papillary pseudomucinous cystadenoma, NOS
@@ -9090,8 +9078,7 @@ properties:
       - Peripheral neuroectodermal tumor
       - Peripheral odontogenic fibroma
       - Peripheral primitive neuroectodermal tumor, NOS
-      - Peripheral T-cell lymphoma, AILD (Angioimmunoblastic Lymphadenopathy with
-        Dysproteinemia)
+      - Peripheral T-cell lymphoma, AILD (Angioimmunoblastic Lymphadenopathy with Dysproteinemia)
       - Peripheral T-cell lymphoma, large cell
       - Peripheral T-cell lymphoma, NOS
       - Peripheral T-cell lymphoma, pleomorphic medium and large cell
@@ -9195,8 +9182,7 @@ properties:
       - Primary cutaneous CD30+ large T-cell lymphoma
       - Primary cutaneous CD30+ T-cell lymphoproliferative disorder
       - Primary cutaneous CD4-positive small/medium T-cell lymphoma
-      - Primary cutaneous CD8-positive aggressive epidermotropic cytotoxic T-cell
-        lymphoma
+      - Primary cutaneous CD8-positive aggressive epidermotropic cytotoxic T-cell lymphoma
       - Primary cutaneous DLBCL, leg type
       - Primary cutaneous follicle centre lymphoma
       - Primary cutaneous gamma-delta T-cell lymphoma
@@ -9354,8 +9340,7 @@ properties:
       - Sertoli cell tumor with lipid storage
       - Sertoli cell tumor, NOS
       - Sertoli-Leydig cell tumor of intermediate differentiation
-      - Sertoli-Leydig cell tumor, intermediate differentiation, with heterologous
-        elements
+      - Sertoli-Leydig cell tumor, intermediate differentiation, with heterologous elements
       - Sertoli-Leydig cell tumor, NOS
       - Sertoli-Leydig cell tumor, poorly differentiated
       - Sertoli-Leydig cell tumor, poorly differentiated, with heterologous elements
@@ -9870,10 +9855,10 @@ properties:
       Acute myeloid leukemia (megakaryoblastic) with t(1;22)(p13;q13); RBM15-MKL1:
         $ref:
           - "_terms.yaml#/acute_myeloid_leukemia_megakaryoblastic_with_t122p13q13_rbm15mkl1/common"
-      Acute myeloid leukemia with abnormal marrow eosinophils (includes all variants):
+      Acute myeloid leukemia with abnormal marrow eosinophils (includes all variants): 
         $ref:
           - "_terms.yaml#/acute_myeloid_leukemia_with_abnormal_marrow_eosinophils_includes_all_variants/common"
-      Acute myeloid leukemia with inv(3)(q21q26.2) or t(3;3)(q21;q26.2); RPN1-EVI1:
+      Acute myeloid leukemia with inv(3)(q21q26.2) or t(3;3)(q21;q26.2); RPN1-EVI1: 
         $ref:
           - "_terms.yaml#/acute_myeloid_leukemia_with_inv3q21q262_or_t33q21q262_rpn1evi1/common"
       Acute myeloid leukemia with maturation:
@@ -10518,10 +10503,10 @@ properties:
       B lymphoblastic leukemia/lymphoma with hypodiploidy (Hypodiploid ALL):
         $ref:
           - "_terms.yaml#/b_lymphoblastic_leukemialymphoma_with_hypodiploidy_hypodiploid_all/common"
-      B lymphoblastic leukemia/lymphoma with t(1;19)(q23;p13.3); E2A-PBX1 (TCF3-PBX1):
+      B lymphoblastic leukemia/lymphoma with t(1;19)(q23;p13.3); E2A-PBX1 (TCF3-PBX1): 
         $ref:
           - "_terms.yaml#/b_lymphoblastic_leukemialymphoma_with_t119q23p133_e2apbx1_tcf3pbx1/common"
-      B lymphoblastic leukemia/lymphoma with t(12;21)(p13;q22); TEL-AML1 (ETV6-RUNX1):
+      B lymphoblastic leukemia/lymphoma with t(12;21)(p13;q22); TEL-AML1 (ETV6-RUNX1): 
         $ref:
           - "_terms.yaml#/b_lymphoblastic_leukemialymphoma_with_t1221p13q22_telaml1_etv6runx1/common"
       B lymphoblastic leukemia/lymphoma with t(5;14)(q31;q32); IL3-IGH:
@@ -10542,10 +10527,10 @@ properties:
       B-cell lymphocytic leukemia/small lymphocytic lymphoma:
         $ref:
           - "_terms.yaml#/bcell_lymphocytic_leukemiasmall_lymphocytic_lymphoma/common"
-      B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and Burkitt lymphoma:
+      B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and Burkitt lymphoma: 
         $ref:
           - "_terms.yaml#/bcell_lymphoma_unclassifiable_with_features_intermediate_between_diffuse_large_bcell_lymphoma_and_burkitt_lymphoma/common"
-      B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and classical Hodgkin lymphoma:
+      B-cell lymphoma, unclassifiable, with features intermediate between diffuse large B-cell lymphoma and classical Hodgkin lymphoma: 
         $ref:
           - "_terms.yaml#/bcell_lymphoma_unclassifiable_with_features_intermediate_between_diffuse_large_bcell_lymphoma_and_classical_hodgkin_lymphoma/common"
       Balloon cell melanoma:
@@ -12810,7 +12795,7 @@ properties:
       Intracystic papillary adenoma:
         $ref:
           - "_terms.yaml#/intracystic_papillary_adenoma/common"
-      Intracystic papillary neoplasm with intermediate grade intraepithelial neoplasia:
+      Intracystic papillary neoplasm with intermediate grade intraepithelial neoplasia: 
         $ref:
           - "_terms.yaml#/intracystic_papillary_neoplasm_with_intermediate_grade_intraepithelial_neoplasia/common"
       Intracystic papillary neoplasm with low grade intraepithelial neoplasia:
@@ -12846,7 +12831,7 @@ properties:
       Intraductal papillary carcinoma:
         $ref:
           - "_terms.yaml#/intraductal_papillary_carcinoma/common"
-      Intraductal papillary mucinous neoplasm (IPMN) with an associated invasive carcinoma:
+      Intraductal papillary mucinous neoplasm (IPMN) with an associated invasive carcinoma: 
         $ref:
           - "_terms.yaml#/intraductal_papillary_mucinous_neoplasm_ipmn_with_an_associated_invasive_carcinoma/common"
       Intraductal papillary mucinous neoplasm with high grade dysplasia:
@@ -12894,7 +12879,7 @@ properties:
       Intraepithelial squamous cell carcinoma:
         $ref:
           - "_terms.yaml#/intraepithelial_squamous_cell_carcinoma/common"
-      Intraglandular papillary neoplasm with low grade intraepithelial neoplasia:
+      Intraglandular papillary neoplasm with low grade intraepithelial neoplasia: 
         $ref:
           - "_terms.yaml#/intraglandular_papillary_neoplasm_with_low_grade_intraepithelial_neoplasia/common"
       Intramuscular hemangioma:
@@ -12918,7 +12903,7 @@ properties:
       Intravascular large B-cell lymphoma:
         $ref:
           - "_terms.yaml#/intravascular_large_bcell_lymphoma/common"
-      Invasive encapsulated follicular variant of papillary thyroid carcinoma (invasive EFVPTC):
+      Invasive encapsulated follicular variant of papillary thyroid carcinoma (invasive EFVPTC): 
         $ref:
           - "_terms.yaml#/invasive_encapsulated_follicular_variant_of_papillary_thyroid_carcinoma_invasive_efvptc/common"
       Invasive fibroma:
@@ -13071,7 +13056,7 @@ properties:
       Langerhans cell sarcoma:
         $ref:
           - "_terms.yaml#/langerhans_cell_sarcoma/common"
-      Large B-cell lymphoma arising in HHV8-associated multicentric Castleman disease:
+      Large B-cell lymphoma arising in HHV8-associated multicentric Castleman disease: 
         $ref:
           - "_terms.yaml#/large_bcell_lymphoma_arising_in_hhv8associated_multicentric_castleman_disease/common"
       Large cell (Ki-1+) lymphoma:
@@ -13563,7 +13548,7 @@ properties:
       Malignant peripheral nerve sheath tumor:
         $ref:
           - "_terms.yaml#/malignant_peripheral_nerve_sheath_tumor/common"
-      Malignant peripheral nerve sheath tumor with rhabdomyoblastic differentiation:
+      Malignant peripheral nerve sheath tumor with rhabdomyoblastic differentiation: 
         $ref:
           - "_terms.yaml#/malignant_peripheral_nerve_sheath_tumor_with_rhabdomyoblastic_differentiation/common"
       Malignant perivascular epithelial cell tumor:
@@ -13614,7 +13599,7 @@ properties:
       MANEC:
         $ref:
           - "_terms.yaml#/manec/common"
-      Mantle cell lymphoma (Includes all variants blastic, pleomorphic, small cell):
+      Mantle cell lymphoma (Includes all variants blastic, pleomorphic, small cell): 
         $ref:
           - "_terms.yaml#/mantle_cell_lymphoma_includes_all_variants_blastic_pleomorphic_small_cell/common"
       Mantle zone lymphoma:
@@ -14403,10 +14388,10 @@ properties:
       Non-invasive EFVPTC:
         $ref:
           - "_terms.yaml#/noninvasive_efvptc/common"
-      Non-invasive encapsulated follicular variant of papillary thyroid carcinoma (non-invasive EFVPTC):
+      Non-invasive encapsulated follicular variant of papillary thyroid carcinoma (non-invasive EFVPTC): 
         $ref:
           - "_terms.yaml#/noninvasive_encapsulated_follicular_variant_of_papillary_thyroid_carcinoma_noninvasive_efvptc/common"
-      Non-invasive follicular thyroid neoplasm with papillary-like nuclear features (NIFTP):
+      Non-invasive follicular thyroid neoplasm with papillary-like nuclear features (NIFTP): 
         $ref:
           - "_terms.yaml#/noninvasive_follicular_thyroid_neoplasm_with_papillarylike_nuclear_features_niftp/common"
       Non-invasive FTP:
@@ -14442,13 +14427,13 @@ properties:
       Noninvasive pancreatobiliary papillary neoplasm with high grade dysplasia:
         $ref:
           - "_terms.yaml#/noninvasive_pancreatobiliary_papillary_neoplasm_with_high_grade_dysplasia/common"
-      Noninvasive pancreatobiliary papillary neoplasm with high grade intraepithelial neoplasia:
+      Noninvasive pancreatobiliary papillary neoplasm with high grade intraepithelial neoplasia: 
         $ref:
           - "_terms.yaml#/noninvasive_pancreatobiliary_papillary_neoplasm_with_high_grade_intraepithelial_neoplasia/common"
       Noninvasive pancreatobiliary papillary neoplasm with low grade dysplasia:
         $ref:
           - "_terms.yaml#/noninvasive_pancreatobiliary_papillary_neoplasm_with_low_grade_dysplasia/common"
-      Noninvasive pancreatobiliary papillary neoplasm with low grade intraepithelial neoplasia:
+      Noninvasive pancreatobiliary papillary neoplasm with low grade intraepithelial neoplasia: 
         $ref:
           - "_terms.yaml#/noninvasive_pancreatobiliary_papillary_neoplasm_with_low_grade_intraepithelial_neoplasia/common"
       Nonpigmented nevus:
@@ -14700,7 +14685,7 @@ properties:
       Papillary mucinous tumor of low malignant potential:
         $ref:
           - "_terms.yaml#/papillary_mucinous_tumor_of_low_malignant_potential/common"
-      Papillary neoplasm, pancreatobiliary-type, with high grade intraepithelial neoplasia:
+      Papillary neoplasm, pancreatobiliary-type, with high grade intraepithelial neoplasia: 
         $ref:
           - "_terms.yaml#/papillary_neoplasm_pancreatobiliarytype_with_high_grade_intraepithelial_neoplasia/common"
       Papillary pseudomucinous cystadenocarcinoma:
@@ -14862,7 +14847,7 @@ properties:
       Peripheral primitive neuroectodermal tumor, NOS:
         $ref:
           - "_terms.yaml#/peripheral_primitive_neuroectodermal_tumor_nos/common"
-      Peripheral T-cell lymphoma, AILD (Angioimmunoblastic Lymphadenopathy with Dysproteinemia):
+      Peripheral T-cell lymphoma, AILD (Angioimmunoblastic Lymphadenopathy with Dysproteinemia): 
         $ref:
           - "_terms.yaml#/peripheral_tcell_lymphoma_aild_angioimmunoblastic_lymphadenopathy_with_dysproteinemia/common"
       Peripheral T-cell lymphoma, large cell:
@@ -15150,7 +15135,7 @@ properties:
       Primary cutaneous CD4-positive small/medium T-cell lymphoma:
         $ref:
           - "_terms.yaml#/primary_cutaneous_cd4positive_smallmedium_tcell_lymphoma/common"
-      Primary cutaneous CD8-positive aggressive epidermotropic cytotoxic T-cell lymphoma:
+      Primary cutaneous CD8-positive aggressive epidermotropic cytotoxic T-cell lymphoma: 
         $ref:
           - "_terms.yaml#/primary_cutaneous_cd8positive_aggressive_epidermotropic_cytotoxic_tcell_lymphoma/common"
       Primary cutaneous DLBCL, leg type:
@@ -15288,7 +15273,7 @@ properties:
       Refractory anemia with excess blasts in transformation:
         $ref:
           - "_terms.yaml#/refractory_anemia_with_excess_blasts_in_transformation/common"
-      Refractory anemia with ring sideroblasts associated with marked thrombocytosis:
+      Refractory anemia with ring sideroblasts associated with marked thrombocytosis: 
         $ref:
           - "_terms.yaml#/refractory_anemia_with_ring_sideroblasts_associated_with_marked_thrombocytosis/common"
       Refractory anemia with ringed sideroblasts:
@@ -16029,7 +16014,7 @@ properties:
       Systemic mastocytosis with AHNMD:
         $ref:
           - "_terms.yaml#/systemic_mastocytosis_with_ahnmd/common"
-      Systemic mastocytosis with associated hematological clonal non-mast cell disorder:
+      Systemic mastocytosis with associated hematological clonal non-mast cell disorder: 
         $ref:
           - "_terms.yaml#/systemic_mastocytosis_with_associated_hematological_clonal_nonmast_cell_disorder/common"
       Systemic tissue mast cell disease:
