@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Button, Modal, Container, Row, Col, Collapse, Table, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faCheck} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faCheck, faDownload} from '@fortawesome/free-solid-svg-icons';
 import { sortAlphabetically} from '../../shared';
 import { apiGetGDCDataById } from '../../api';
 
@@ -58,6 +58,10 @@ const TableOverFlow = styled(Table)`
 
   &&>thead>tr>th{
     padding: 0;
+  }
+
+  &&>tbody>tr>td{
+    min-width: 10rem;
   }
 `;
 
@@ -134,6 +138,12 @@ const Indicator = styled.div`
   padding: 3rem 0;
   text-align: center;
   font-size: 1.2rem;
+`;
+const OptionsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 55rem;
 `;
 
 const FormGroupStyled = styled(Form.Group)`
@@ -427,8 +437,8 @@ const ToCompareModal = (props) => {
                 }
                 {props.ncit !== undefined && props.ncit.length !== 0 &&
                   <>
-                    {props.ncit.map(ncit => 
-                      <Row>
+                    {props.ncit.map((ncit, index) => 
+                      <Row key={index}>
                         <Col xs={2}>
                           <CodeValue>{ncit.c}</CodeValue>
                         </Col>
@@ -511,8 +521,8 @@ const ToCompareModal = (props) => {
                     }
                     {props.item.ncit !== undefined && props.item.ncit.length !== 0 &&
                       <>
-                        {props.item.ncit.map(ncit => 
-                          <Row>
+                        {props.item.ncit.map((ncit, index) => 
+                          <Row key={index}>
                             <Col xs={2}>
                               <CodeValue>{ncit.c}</CodeValue>
                             </Col>
@@ -552,33 +562,80 @@ const ToCompareModal = (props) => {
       };
     };
 
+    const downloadCompareCVS = (items) => {
+      let csv = 'User Defined Values, Matched GDC Values, ICDO3 code, NCIt code, ICDO3 Strings/Synonyms,\n';
+      items.forEach((item, index) => {
+        let newLine = true;
+        let match = item.match;
+        if (item.match !== undefined && index !== 0 && items[index - 1].match === items[index].match) match = '';
+        if (item.match === undefined) match = '--';
+        csv += '"' + match + '","' + item.n + '",';
+        csv += item.icdo !== undefined ? '"' + item.icdo.c + '",' : '"",';
+        if (item.icdo !== undefined && item.icdo.s !== undefined && item.icdo.s.length !== 0) {
+          item.icdo.s.forEach((s, i) => {
+            csv += i === 0 ? '"","' + s.n + '",' : '"' + s.n + '",';
+          });
+        }
+
+        if (item.ncit && item.ncit.length !== 0) {
+          item.ncit.forEach((nc, tmpIndex) => {
+            if (nc.s.length !== 0) {
+              csv += tmpIndex === 0 ? '\n"","","","' + nc.c + '",' : '"","","","' + nc.c + '",';
+              nc.s.forEach(s => {
+                csv += '"' + s.n + '",';
+              });
+              csv += '\n';
+              newLine = false;
+            }
+          });
+        }
+        if (newLine === true) {
+          csv += '\n';
+        }
+      });
+
+      let csvData = new Blob([csv], { type: 'data:text/csv;charset=utf-8,' });
+      let csvUrl = URL.createObjectURL(csvData);
+      let link = document.createElement('a');
+      link.href = csvUrl;
+      link.target = '_blank';
+      link.download = 'Compare_Values_GDC.csv';
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
     return (
       <>
         <Modal.Header closeButton>
         <Modal.Title id="to-compare-modal">Compare Your Values</Modal.Title>
-        <FormGroupStyled>
-          <CheckboxLabel>
-            <CheckboxInput name="partial" type="checkbox" checked={optionsState['partial']}  onClick={checkedToggleHandler}/>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Partial match
-          </CheckboxLabel>
-          <CheckboxLabel>
-            <CheckboxInput name="syns" type="checkbox" checked={optionsState['syns']} onClick={checkedToggleHandler}/>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Synonyms
-          </CheckboxLabel>
-          <CheckboxLabel>
-            <CheckboxInput name="unmatched" type="checkbox" checked={optionsState['unmatched']} onClick={checkedToggleHandler}/>
-            <CheckboxSpan>
-              <CheckboxIcon icon={faCheck}/>
-            </CheckboxSpan>
-            Show Unmatched Values
-          </CheckboxLabel>
-        </FormGroupStyled>
+        <OptionsHeader>
+          <FormGroupStyled>
+            <CheckboxLabel>
+              <CheckboxInput name="partial" type="checkbox" checked={optionsState['partial']}  onClick={checkedToggleHandler}/>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Partial match
+            </CheckboxLabel>
+            <CheckboxLabel>
+              <CheckboxInput name="syns" type="checkbox" checked={optionsState['syns']} onClick={checkedToggleHandler}/>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Synonyms
+            </CheckboxLabel>
+            <CheckboxLabel>
+              <CheckboxInput name="unmatched" type="checkbox" checked={optionsState['unmatched']} onClick={checkedToggleHandler}/>
+              <CheckboxSpan>
+                <CheckboxIcon icon={faCheck}/>
+              </CheckboxSpan>
+              Show Unmatched Values
+            </CheckboxLabel>
+          </FormGroupStyled>
+          {showReport === true && <Button onClick={() => downloadCompareCVS(resultReport)}><FontAwesomeIcon icon={faDownload}/> Dowload Result</Button>}
+        </OptionsHeader>
       </Modal.Header>
       <ModalBodyStyled>
         <Container>
@@ -603,11 +660,9 @@ const ToCompareModal = (props) => {
                       <Container>
                         {(items !== undefined && items !== []) &&
                           <>
-                            {items.map((item, index) => {
-                              return(
-                                <TableEnum key={index} item={item}/>
-                              )
-                            })}
+                            {items.map((item, index) => 
+                              <TableEnum key={index} item={item}/>
+                            )}
                           </>
                         }
                       </Container>
@@ -629,8 +684,8 @@ const ToCompareModal = (props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {resultPagination.map(item => 
-                        <tr>
+                      {resultPagination.map((item, index) => 
+                        <tr key={index}>
                           <td>{item.match}</td>
                           <td>
                             <TableNCIt name={item.n} ncit={item.ncit} icdo={item.icdo} match={item.match}/>
