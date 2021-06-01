@@ -311,7 +311,7 @@ const PropsTable = (props) => {
     return (
       <p>
         <span dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc.substring(0, 138)}}></span>
-        {props.desc.length >= 138 ?? 
+        {props.desc.length >= 138 &&
           <>
             <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
             <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>

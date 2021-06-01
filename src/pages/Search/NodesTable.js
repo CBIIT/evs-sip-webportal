@@ -133,6 +133,8 @@ const NodesTable = (props) => {
       let nodeHits = node.hits.hits;
 
       nodeHits.forEach((hits) => {
+        if((nodes.findIndex(n => n.node.n === item._source.node.n)) !== -1) return;
+
         let hl = hits.highlight;
 
         let highlightNode = ('node.n' in hl) || ('node.n.have' in hl) ? hl['node.n'] || hl['node.n.have'] : undefined;
@@ -288,10 +290,14 @@ const NodesTable = (props) => {
     return (
       <p>
         <span dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc.substring(0, 138)}}></span>
-        <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
-        <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
-          {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
-        </LinkDesc>
+        {props.desc.length >= 138 &&
+          <>
+            <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
+            <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+              {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
+            </LinkDesc>
+          </>
+        }
       </p>
     );
   };
