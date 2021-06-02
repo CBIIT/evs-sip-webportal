@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import styled from 'styled-components';
 import { Button, Modal, Container, Row, Col, Collapse, Table, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -229,8 +229,6 @@ const ToCompareModal = (props) => {
   };
 
   const ModalContainer = (props) => {
-
-    const [userValues, setUserValues] = useState('');
     const [resultReport, setResultReport] = useState([]);
     const [resultPagination, setResultPagination] = useState([]);
     const [pageCountStage, setPageCountStage] = useState(0);
@@ -241,13 +239,12 @@ const ToCompareModal = (props) => {
         unmatched: false
     });
 
-    const userInputUpdate =  (event) => {
-      setUserValues(event.target.value);
-    }
+    const userValuesRef = useRef(null);
 
     const handleCompare = () => {
       if(showReport === false) setShowReport(true);
-      const results = compareGDCvalues(userValues, props.items, optionsState);
+      const valueRef = userValuesRef.current.value;
+      const results = compareGDCvalues(valueRef, props.items, optionsState);
       setResultReport(results);
       if(results.length !== 0){
         setPageCountStage(results.length / 12);
@@ -653,7 +650,7 @@ const ToCompareModal = (props) => {
                 <Col xs={12}>
                   <CompareFormContainer>
                     <CompareFormLeft>
-                      <TextareaStyled rows="10" cols="20" placeholder="Input values line by line" autocomplete="off" value={userValues} onChange={userInputUpdate}></TextareaStyled>
+                      <TextareaStyled rows="10" cols="20" placeholder="Input values line by line" autocomplete="off" ref={userValuesRef}></TextareaStyled>
                     </CompareFormLeft>
                     <CompareFormDivider/>
                     <CompareFormRight>
