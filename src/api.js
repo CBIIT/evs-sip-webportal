@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_DEV_API_URL;
+const baseUrl = process.env.EVSSIP_DEV_API_URL;
 
 export const apiSuggest = async (keyword) => {
   let encoded_keyword = keyword.replace(/\+/g, "%2B").replace(/&/g, "%26");
