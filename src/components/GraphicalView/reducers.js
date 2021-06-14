@@ -71,9 +71,5 @@ const submission = (state = {}, action) => {
   }
 };
 
-const reducers = combineReducers({ 
-   submission,
-   ddgraph
-});
+export default submission;
 
-export default reducers;
