@@ -12,12 +12,12 @@ import Footer from './components/Footer';
 import Layout from './components/Layout';
 
 // Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Search from './pages/Search';
-import DataModel from './pages/DataModel';
-import ReportDiff from './pages/ReportDiff';
-import NotFound from './pages/NotFound';
+import Home from './features/Home';
+import About from './features/About';
+import Search from './features/Search';
+import DataModel from './features/DataModel';
+import ReportDiff from './features/ReportDiff';
+import NotFound from './features/NotFound';
 
 
 const MainContainer = styled.div`
