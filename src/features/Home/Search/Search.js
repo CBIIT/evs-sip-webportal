@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, InputGroup, Button, Form} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
-import SuggestBox from '../../Search/SuggestBox';
+import SuggestBox from '../../Search/SuggestBox/SuggestBox';
 
 import bkgd from '../../../assets/img/search-bkgd.jpg';
 

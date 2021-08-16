@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 import { apiSuggest, apiSearchAll } from '../../../api';
 import { InputGroup, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
-import SuggestBox from '../SuggestBox';
+import SuggestBox from '../SuggestBox/SuggestBox';
 import LoadingAnimation from '../../../components/LoadingAnimation';
 // import GDCValues from './dialogs/GDCValues';
 
@@ -297,7 +298,7 @@ const SearchBox = (props) => {
         props.setIsSearching(false);
       });
   };
-  
+
   const suggestClickHandler = (id, event) => {
     props.setKeyword(id);
     setSuggestState([]);
@@ -339,9 +340,16 @@ const SearchBox = (props) => {
     setSelectIndexState(-1);
   };
 
+  // const suggestHandlerDebounce = useRef(
+  //   debounce((value) => {
+  //     apiSuggest(value).then(result => setSuggestState(result));
+  //   }, 300)
+  // ).current;
+
   const suggestHandler = event => {
-    props.setKeyword(event.target.value);
-    apiSuggest(event.target.value).then(result => setSuggestState(result));
+    let value =  event.target.value;
+    props.setKeyword(value);
+    //suggestHandlerDebounce(value);
   };
 
   const matchOptionsHandler = event => {

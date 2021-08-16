@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import SuggestItem from './SuggestItem';
 
 const Suggest = styled.div`
   position: relative;
@@ -19,30 +20,6 @@ const SuggestContent = styled.div`
   z-index: 100;
 `;
 
-const SuggestObject = styled.div`
-  line-height: 1.8em;
-  font-size: 1em;
-  display: flex;
-  justify-content: space-between;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-
-  &.selected {
-    background-color: #f0f0f0;
-  }
-`;
-
-const SuggestName = styled.div`
-  margin: 0 .9em;
-`;
-
-const SuggestType = styled.div`
-  font-weight: 700;
-  margin-right: .9em;
-`;
-
 const SuggestBox = (props) => {
   const node = useRef();
 
@@ -58,20 +35,10 @@ const SuggestBox = (props) => {
     return () => document.body.removeEventListener('click', clickHandler);
   }, [props]);
 
-  const suggestItems = props.suggest.map((item, index) =>
-    <SuggestObject
-      key={item.id}
-      onClick={e => props.suggestClick(item.id, e)}
-      className={index === props.suggestSelected ? 'selected' : ''}>
-      <SuggestName>{item.id}</SuggestName>
-      <SuggestType>{item.type.join(', ')}</SuggestType>
-    </SuggestObject>
-  );
-
   return (
     <Suggest>
       <SuggestContent ref={node} style={props.suggest.length === 0 ? {} : { display: 'block' }}>
-        {suggestItems}
+        {props.suggest.map((item, index) => <SuggestItem item={item} key={index} selected={props.suggestSelected}/>)}
       </SuggestContent>
     </Suggest>
   );
