@@ -340,16 +340,20 @@ const SearchBox = (props) => {
     setSelectIndexState(-1);
   };
 
-  // const suggestHandlerDebounce = useRef(
-  //   debounce((value) => {
-  //     apiSuggest(value).then(result => setSuggestState(result));
-  //   }, 300)
-  // ).current;
+  const suggestHandlerDebounce = useRef(
+    debounce((value) => {
+      apiSuggest(value)
+        .then(result => setSuggestState(result))
+        .catch(error => {
+          console.log(error);
+        });
+    }, 300)
+  ).current;
 
   const suggestHandler = event => {
     let value =  event.target.value;
     props.setKeyword(value);
-    //suggestHandlerDebounce(value);
+    suggestHandlerDebounce(value);
   };
 
   const matchOptionsHandler = event => {
