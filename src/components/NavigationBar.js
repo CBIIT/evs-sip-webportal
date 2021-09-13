@@ -20,6 +20,10 @@ const NavbarStyled = styled(Navbar)`
 
   && .navbar-nav .nav-link:focus, 
   && .navbar-nav .nav-link:hover {
+    text-decoration: underline;
+  }
+
+  && .navbar-nav .nav-item.show .nav-link{
     background-color: #195d9c;
   }
 `;
@@ -76,6 +80,23 @@ const NavDropdownItem = styled(NavDropdown.Item)`
   }
 `;
 
+const NavDropdownSubTitle = styled.div`
+    display: block;
+    width: 100%;
+    margin: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    color: var(--sub-title);
+    border: 0;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+`;
+
 const NavigationBar = () => (
   <NavbarStyled bg="dark" expand="lg" role="navigation">
     <NavbarContainer>
@@ -111,6 +132,12 @@ const NavigationBar = () => (
             }}>PCDC</NavDropdownItem>
           </NavDropdownStyled>
           <Nav.Link as={Link} to="/about">About</Nav.Link>
+          <NavDropdownStyled title="Login">
+            <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
+            <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
+            <NavDropdownItem as={Link} to='#'>Dashboard</NavDropdownItem>
+            <NavDropdownItem as={Link} to='#'>Log out</NavDropdownItem>
+          </NavDropdownStyled>
         </Nav>
       </Navbar.Collapse>
     </NavbarContainer>
