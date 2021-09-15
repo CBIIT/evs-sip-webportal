@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
-import { Container, Row, ListGroup, Col,  Table } from 'react-bootstrap';
+import { Container, Row, ListGroup, Col, Table, Pagination } from 'react-bootstrap';
 
 
 const Page = styled.div`
@@ -50,13 +50,31 @@ const SectionContainer =  styled.div`
   border: solid #e4e8ed 1px;
 `;
 
-
-
-
-const TableStyled = styled(Table)`
+const TableContainer = styled.div`
   background-color: #fff;
-`
+  padding: 1rem;
+  border: solid #e4e8ed 1px;
+`;
 
+// const TableStyled = styled(Table)`
+//   background-color: #fff;
+// `;
+
+const SectionTitle =  styled.h2`
+  font-family: 'Raleway-Medium',sans-serif;
+  font-weight: 500;
+  color: #042a68;
+`;
+
+const PaginationContainer =  styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: right;
+
+  && > .pagination {
+    margin-bottom: 0; 
+  }
+`;
 
 const Dashboard = (props) => {
 
@@ -82,35 +100,49 @@ const Dashboard = (props) => {
         </Col>
         <Col sm={9}>
         <SectionContainer>
-          <TableStyled bordered>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td colSpan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </TableStyled>
+          <SectionTitle>Genomic Data Commons</SectionTitle>
+          <TableContainer>
+            <Table bordered>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td colSpan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </Table>
+            <PaginationContainer>
+              <Pagination>
+                <Pagination.First />
+                <Pagination.Item active>{1}</Pagination.Item>
+                <Pagination.Item>{2}</Pagination.Item>
+                <Pagination.Item>{3}</Pagination.Item>
+                <Pagination.Item>{4}</Pagination.Item>
+                <Pagination.Item>{5}</Pagination.Item>
+                <Pagination.Last />
+              </Pagination>
+            </PaginationContainer>
+          </TableContainer>
         </SectionContainer>
         </Col>
         </Row>
