@@ -20,15 +20,18 @@ const PageContainer = styled.div`
   margin-top: 3rem;
 `;
 
+const TitleContanier = styled.h1`
+  padding: 3rem 2rem 0.5rem 2rem;
+`;
+
 const PageTitle = styled.h1`
   font-family: 'Raleway-Medium',sans-serif;
   font-size: 1.625rem;
   color: #35393a;
-  padding: 3rem 0 1rem 2rem;
   font-weight: 500;
-  margin-bottom: 0;
   text-transform: uppercase;
-  /*border-bottom: 0.1rem solid #09a58a;*/
+  border-bottom: 0.2rem solid #35393a;;
+  width: fit-content;
 `;
 
 const ContainerStyled = styled(Container)`
@@ -63,7 +66,9 @@ const Dashboard = (props) => {
 
   return <Page>
     <PageContainer>
-      <PageTitle>My Dashboard</PageTitle>
+      <TitleContanier>
+        <PageTitle>My Dashboard</PageTitle>
+      </TitleContanier>
       <ContainerStyled>
         <Row>
         <Col sm={3}>
