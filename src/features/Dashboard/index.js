@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
-import { Container, Row, ListGroup, Col, Table, Pagination } from 'react-bootstrap';
+import { Container, Row, Button, ListGroup, Col, Table, Pagination } from 'react-bootstrap';
 
 
 const Page = styled.div`
@@ -42,7 +42,13 @@ const ListGroupItemStyled = styled(ListGroup.Item)`
   border-top: 1px solid rgba(0,0,0,.125) !important;
   border-right: solid #176bd3 5px !important;
   margin-bottom: 3px;
-`
+`;
+
+const SectionHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
 
 const SectionContainer =  styled.div`
   padding: 1rem;
@@ -64,6 +70,7 @@ const SectionTitle =  styled.h2`
   font-family: 'Raleway-Medium',sans-serif;
   font-weight: 500;
   color: #042a68;
+  width: fit-content;
 `;
 
 const PaginationContainer =  styled.div`
@@ -75,6 +82,41 @@ const PaginationContainer =  styled.div`
     margin-bottom: 0; 
   }
 `;
+
+const ButtonStyled = styled(Button)`
+  font-size: 0.87rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+
+  &&:hover,
+  &&:focus {
+    background-color: #6fc0d9;
+    border-color: #34859d;
+  }
+`;
+
+const ButtonBlue = styled(ButtonStyled)`
+  background-color: #6fc0d9;
+  border-color: #34859d;
+`;
+
+const ButtonGray = styled(ButtonStyled)`
+  background-color: #858d8f;
+  border-color: #424242;
+`;
+
+const ButtonGreen = styled(ButtonStyled)`
+  background-color: #00e097;
+  border-color: #0a8867;
+`;
+
+const ButtonDarkBlue = styled(ButtonStyled)`
+  background-color: #34859d;
+  border-color: #34859d;
+`;
+
+
 
 const Dashboard = (props) => {
 
@@ -100,7 +142,16 @@ const Dashboard = (props) => {
         </Col>
         <Col sm={9}>
         <SectionContainer>
-          <SectionTitle>Genomic Data Commons</SectionTitle>
+          <SectionHeader>
+            <SectionTitle>Genomic Data Commons</SectionTitle>
+            <div>
+              <ButtonBlue>Graphic View</ButtonBlue>{' '}
+              <ButtonGray>Model Update</ButtonGray>{' '}
+              <br/>
+              <ButtonGreen>Batch Update</ButtonGreen>{' '}
+              <ButtonDarkBlue>Change Report</ButtonDarkBlue>{' '}
+            </div>
+          </SectionHeader>
           <TableContainer>
             <Table bordered>
               <thead>
