@@ -18,6 +18,9 @@ import Search from './features/Search';
 import DataModel from './features/DataModel';
 import ReportDiff from './features/ReportDiff';
 import Dashboard from './features/Dashboard';
+import Profile from './features/Profile';
+import ModelBuilder from './features/ModelBuilder';
+import UserManagement from './features/UserManagement';
 import NotFound from './features/NotFound';
 
 
@@ -40,6 +43,9 @@ function App() {
               <Route path="/about" component={About} />
               <Route path="/reportdiff" component={ReportDiff} />
               <Route path="/dashboard" component={Dashboard} />
+              <Route path="/profile" component={Profile} />
+              <Route path="/modelbuilder" component={ModelBuilder} />
+              <Route path="/usermanagement" component={UserManagement} />
               <Route component={NotFound} />
             </Switch>
           </Layout>

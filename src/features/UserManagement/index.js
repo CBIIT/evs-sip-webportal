@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
-import BatchUpdateModal from '../../components/Modals/BatchUpdateModal';
-
+import AddNewUserModal from '../../components/Modals/AddNewUserModal';
 
 const Page = styled.div`
   background-color: #e7edf4;
@@ -222,35 +221,13 @@ const InputGroupIcon = styled(FontAwesomeIcon)`
   vertical-align: 0;
 `;
 
-
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
-const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
-`;
-
-
 const ActionLink = styled.a`
   margin-left: .5rem;
   font-size: 1.1rem;
 `;
 
 
-const Dashboard = (props) => {
+const UserManagement = (props) => {
 
   useEffect(()=> {
     window.scrollTo(0, 0);
@@ -278,8 +255,8 @@ const Dashboard = (props) => {
             <NavDropdownItemStyled>PCDC</NavDropdownItemStyled>
           </NavDropdownStyled>
           <NavDropdownStyled title="Unpublished Data Sources" id="nav-dropdown">
-            <NavDropdownItemStyled>PDC</NavDropdownItemStyled>
-            <NavDropdownItemStyled>IDC</NavDropdownItemStyled>
+            <NavDropdownItemStyled>Link 1</NavDropdownItemStyled>
+            <NavDropdownItemStyled>Link 2</NavDropdownItemStyled>
           </NavDropdownStyled>
           <Nav.Item>
             <NavLinkStyled>User Management</NavLinkStyled>
@@ -293,13 +270,9 @@ const Dashboard = (props) => {
         <Col sm={9}>
         <SectionContainer>
           <SectionHeader>
-            <SectionTitle>Genomic Data Commons</SectionTitle>
+            <SectionTitle>User Management</SectionTitle>
             <div>
-              <ButtonBlue>Graphic View</ButtonBlue>{' '}
-              <ButtonGray>Model Update</ButtonGray>{' '}
-              <br/>
-              <BatchUpdateModal/>{' '}
-              <ButtonDarkBlue>Change Report</ButtonDarkBlue>{' '}
+              <AddNewUserModal />
             </div>
           </SectionHeader>
           <TableContainer>
@@ -315,32 +288,22 @@ const Dashboard = (props) => {
               <InputGroupIcon icon={faSearch}/>
             </InputGroupTextStyled>
           </InputGroupStyled>
-          <Tabs defaultActiveKey="values" id="uncontrolled-tab-example">
-            <Tab eventKey="values" title="Values">
-              <div>
                 <Table bordered>
                   <thead>
                     <tr>
-                      <th>Category/Node/Property</th>
-                      <th>Values</th>
-                      <th>NCItcode</th>
-                      <th></th>
+                      <th>Name</th>
+                      <th>User Account</th>
+                      <th>Role</th>
+                      <th>Last Login</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td rowSpan="3">
-                        {'biospecimen'}
-                        <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
-                            <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'chipseq_antibody'}</TableLi>
-                            </TableUl>
-                          </TableLi>
-                        </TableUl>
-                      </td>
-                      <td>Not allowed to collect</td>
-                      <td>C141478</td>
+                      <td>Mark</td>
+                      <td>mark@nih.org</td>
+                      <td>Otto</td>
+                      <td>6/15/2020</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
@@ -351,8 +314,10 @@ const Dashboard = (props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td>Unknown</td>
-                      <td>C17998</td>
+                      <td>Ben</td>
+                      <td>ben@nih.org</td>
+                      <td>Thornton</td>
+                      <td>6/15/2020</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
@@ -363,8 +328,10 @@ const Dashboard = (props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td>Not Reported</td>
-                      <td>C43234</td>
+                      <td>Jacob</td>
+                      <td>jacob@nih.org</td>
+                      <td>Thornton</td>
+                      <td>6/15/2020</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
@@ -375,78 +342,10 @@ const Dashboard = (props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td rowSpan="6">
-                        {'biospecimen'}
-                        <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
-                            <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'chipseq_antibody'}</TableLi>
-                            </TableUl>
-                          </TableLi>
-                        </TableUl>
-                      </td>
-                      <td>H3K4me1</td>
-                      <td>C141478</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Input Control</td>
-                      <td>C17998</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>H3K27ac</td>
-                      <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>H3K27ac</td>
-                      <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>H3K27ac</td>
-                      <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>H3K27me3</td>
-                      <td>C43234</td>
+                      <td>Larry</td>
+                      <td>larry@nih.org</td>
+                      <td>Thornton</td>
+                      <td>6/15/2020</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
@@ -469,16 +368,6 @@ const Dashboard = (props) => {
                     <Pagination.Last />
                   </Pagination>
                 </PaginationContainer>
-              </div>
-            </Tab>
-            <Tab eventKey="props" title="Properties">
-              <p>test 2</p>
-            </Tab>
-            <Tab eventKey="nodes" title="Nodes">
-              <p>test 3</p>
-            </Tab>
-          </Tabs>
- 
           </TableContainer>
         </SectionContainer>
         </Col>
@@ -488,4 +377,4 @@ const Dashboard = (props) => {
   </Page>
 }
 
-export default Dashboard;
+export default UserManagement;

@@ -2,8 +2,9 @@ const baseUrl = process.env.REACT_APP_DEV_API_URL;
 
 export const apiSuggest = async (keyword) => {
   let encoded_keyword = keyword.replace(/\+/g, "%2B").replace(/&/g, "%26");
-  const response = await fetch(`${baseUrl}/suggest?keyword=${encoded_keyword}`);
-  return await response.json();
+  //const response = await fetch(`${baseUrl}/suggest?keyword=${encoded_keyword}`);
+  //return await response.json();
+  return await [];
 };
 
 export const apiSearchAll = async (keyword, match, options, dataSources) => {
@@ -15,8 +16,9 @@ export const apiSearchAll = async (keyword, match, options, dataSources) => {
     }
   }
   let encoded_keyword = keyword.replace(/\+/g, "%2B").replace(/&/g, "%26");
-  const response = await fetch(`${baseUrl}/all/p?keyword=${encoded_keyword}&options=${opts}&sources=${sources.join()}`);
-  return await response.json();
+  //const response = await fetch(`${baseUrl}/all/p?keyword=${encoded_keyword}&options=${opts}&sources=${sources.join()}`);
+  //return await response.json();
+  return await {};
 };
 
 export const apiGetGDCDataById = async(id) => {

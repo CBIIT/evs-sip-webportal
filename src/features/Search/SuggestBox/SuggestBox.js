@@ -38,7 +38,9 @@ const SuggestBox = (props) => {
   return (
     <Suggest>
       <SuggestContent ref={node} style={props.suggest.length === 0 ? {} : { display: 'block' }}>
-        {props.suggest.map((item, index) => <SuggestItem item={item} key={index} selected={props.suggestSelected}/>)}
+        {props.suggest.length !== 0 &&
+          props.suggest.map((item, index) => <SuggestItem item={item} key={index} selected={props.suggestSelected}/>)
+        }
       </SuggestContent>
     </Suggest>
   );
