@@ -6,9 +6,6 @@ import { faSearch, faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
-import BatchUpdateModal from '../../components/Modals/BatchUpdateModal';
-
-
 const Page = styled.div`
   background-color: #e7edf4;
   overflow: auto;
@@ -243,14 +240,15 @@ const SpanIcon = styled.span`
   transform: rotate(45deg);
 `;
 
-
-const ActionLink = styled.a`
-  margin-left: .5rem;
-  font-size: 1.1rem;
+const TabsStyles = styled(Tabs)`
+  && > a {
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+  }
 `;
 
 
-const Dashboard = (props) => {
+const MappingReport = (props) => {
 
   useEffect(()=> {
     window.scrollTo(0, 0);
@@ -293,38 +291,38 @@ const Dashboard = (props) => {
         <Col sm={9}>
         <SectionContainer>
           <SectionHeader>
-            <SectionTitle>Genomic Data Commons</SectionTitle>
+            <SectionTitle>Mapping Report</SectionTitle>
             <div>
-              <ButtonBlue>Graphic View</ButtonBlue>{' '}
-              <ButtonGray>Model Update</ButtonGray>{' '}
-              <br/>
-              <BatchUpdateModal/>{' '}
-              <ButtonDarkBlue>Change Report</ButtonDarkBlue>{' '}
+              <ButtonGreen>Dowload Results</ButtonGreen>{' '}
             </div>
           </SectionHeader>
-          <TableContainer>
-
-          <InputGroupStyled>
-            <FormControlStyled
-              type="text"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="btnGroupAddon"
-            />
-            <InputGroupTextStyled id="btnGroupAddon">
-              <InputGroupIcon icon={faSearch}/>
-            </InputGroupTextStyled>
-          </InputGroupStyled>
-          <Tabs defaultActiveKey="values" id="uncontrolled-tab-example">
-            <Tab eventKey="values" title="Values">
-              <div>
+          
+          <TabsStyles defaultActiveKey="all" id="uncontrolled-tab-example">
+            <Tab eventKey="all" title="All">
+              <TableContainer>
+                <InputGroupStyled>
+                  <FormControlStyled
+                    type="text"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="btnGroupAddon"
+                  />
+                  <InputGroupTextStyled id="btnGroupAddon">
+                    <InputGroupIcon icon={faSearch}/>
+                  </InputGroupTextStyled>
+                </InputGroupStyled>
                 <Table bordered>
                   <thead>
                     <tr>
-                      <th>Category/Node/Property</th>
+                      <th rowSpan="2" style={{verticalAlign: "middle"}}>Category/Node/Property</th>
+                      <th colSpan="2">GDC Dictionay</th>
+                      <th colSpan="2">Mapped GDC Values</th>
+                    </tr>
+                    <tr>
                       <th>Values</th>
                       <th>NCItcode</th>
-                      <th></th>
+                      <th>Values</th>
+                      <th>NCItcode</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -341,38 +339,20 @@ const Dashboard = (props) => {
                       </td>
                       <td>Not allowed to collect</td>
                       <td>C141478</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>Not allowed to collect</td>
+                      <td>C141478</td>
                     </tr>
                     <tr>
                       <td>Unknown</td>
                       <td>C17998</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>Unknown</td>
+                      <td>C17998</td>
                     </tr>
                     <tr>
                       <td>Not Reported</td>
                       <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>Not Reported</td>
+                      <td>C43234</td>
                     </tr>
                     <tr>
                       <td rowSpan="6">
@@ -387,74 +367,38 @@ const Dashboard = (props) => {
                       </td>
                       <td>H3K4me1</td>
                       <td>C141478</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>H3K4me1</td>
+                      <td>C141478</td>
                     </tr>
-                    <tr style={{backgroundColor: "#fff496"}}>
+                    <tr>
                       <td>Input Control</td>
                       <td>C17998</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>Input Control</td>
+                      <td>C17998</td>
                     </tr>
                     <tr>
                       <td>H3K27ac</td>
                       <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
-                    </tr>
-                    <tr style={{backgroundColor: "#fff496"}}>
                       <td>H3K27ac</td>
                       <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
                     </tr>
                     <tr>
                       <td>H3K27ac</td>
                       <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>H3K27ac</td>
+                      <td>C43234</td>
+                    </tr>
+                    <tr>
+                      <td>H3K27ac</td>
+                      <td>C43234</td>
+                      <td>H3K27ac</td>
+                      <td>C43234</td>
                     </tr>
                     <tr>
                       <td>H3K27me3</td>
                       <td>C43234</td>
-                      <td>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </ActionLink>
-                        <ActionLink href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </ActionLink>
-                      </td>
+                      <td>H3K27me3</td>
+                      <td>C43234</td>
                     </tr>
                   </tbody>
                 </Table>
@@ -469,17 +413,18 @@ const Dashboard = (props) => {
                     <Pagination.Last />
                   </Pagination>
                 </PaginationContainer>
-              </div>
+              </TableContainer>
             </Tab>
-            <Tab eventKey="props" title="Properties">
+            <Tab eventKey="unmapped" title="Unmapped">
               <p>test 2</p>
             </Tab>
-            <Tab eventKey="nodes" title="Nodes">
+            <Tab eventKey="mapped" title="Mapped">
               <p>test 3</p>
             </Tab>
-          </Tabs>
- 
-          </TableContainer>
+            <Tab eventKey="conflict" title="Conflict">
+              <p>test 4</p>
+            </Tab>
+          </TabsStyles>
         </SectionContainer>
         </Col>
         </Row>
@@ -488,4 +433,4 @@ const Dashboard = (props) => {
   </Page>
 }
 
-export default Dashboard;
+export default MappingReport;

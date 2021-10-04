@@ -17,7 +17,9 @@ import About from './features/About';
 import Search from './features/Search';
 import DataModel from './features/DataModel';
 import ReportDiff from './features/ReportDiff';
+import ChangeReport from './features/ChangeReport';
 import Dashboard from './features/Dashboard';
+import MappingReport from './features/MappingReport';
 import Profile from './features/Profile';
 import ModelBuilder from './features/ModelBuilder';
 import UserManagement from './features/UserManagement';
@@ -42,7 +44,9 @@ function App() {
               <Route path="/datamodel" component={DataModel} />
               <Route path="/about" component={About} />
               <Route path="/reportdiff" component={ReportDiff} />
+              <Route path="/changereport" component={ChangeReport} />
               <Route path="/dashboard" component={Dashboard} />
+              <Route path="/mappingreport" component={MappingReport} />
               <Route path="/profile" component={Profile} />
               <Route path="/modelbuilder" component={ModelBuilder} />
               <Route path="/usermanagement" component={UserManagement} />

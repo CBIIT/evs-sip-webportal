@@ -37,6 +37,9 @@ const ButtonSubmit = styled(ButtonStyled)`
   border-color: #176bd3;
   margin: 1.5rem 0;
   border: 0.375rem double white;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  padding: 0.5rem 1.5rem;
 
   &&:hover,
   &&:focus {
@@ -78,10 +81,33 @@ const FormLabel = styled(Form.Label)`
   padding-left: 0.2rem;
 `;
 
+
+// const ModalStyled = styled(Modal)`
+//   border: 5px solid blue;
+// `;
+
+
 const ModalBodyStyled = styled(Modal.Body)`
-  padding: 4rem 5rem;
+  padding: 2rem 5rem;
+  border: 5px solid #628CBD;
 `;
 
+
+const TitleContainer = styled.div`
+  padding-bottom: 2rem;
+`;
+
+
+const ModelTitleStyled = styled(Modal.Title)`
+  font-family: 'Raleway-Bold';
+  padding: 0.5rem 0;
+  inline-size: 16rem;
+  text-transform: uppercase;
+  margin: auto;
+  text-align: center;
+  border-bottom: 1px solid var(--black);
+  font-size: 1.25rem;
+`;
 
 
 const AddNewUserModal = (props) => {
@@ -97,12 +123,11 @@ const AddNewUserModal = (props) => {
       </ButtonBlue>
 
       <Modal size="lg" show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Batch Update</Modal.Title>
-        </Modal.Header>
         <ModalBodyStyled>
-
-        <Form>
+          <TitleContainer>
+            <ModelTitleStyled>Add New User</ModelTitleStyled>
+          </TitleContainer>
+          <Form>
             <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
               <FormLabel>First Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter first name" />
@@ -131,7 +156,7 @@ const AddNewUserModal = (props) => {
               <FormControlStyled type="text" placeholder="Enter user name" />
             </FormGroupStyled>
             <ButtonSubmit type="submit">
-              Update
+              Add User
             </ButtonSubmit>
           </Form>
 
