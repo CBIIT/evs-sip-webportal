@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
+import allActions from '../actions';
 
 const NavbarStyled = styled(Navbar)`
   background-color: var(--nav-back-color-style) !important;
@@ -97,51 +99,63 @@ const NavDropdownSubTitle = styled.div`
     font-size: 0.8rem;
 `;
 
-const NavigationBar = () => (
-  <NavbarStyled bg="dark" expand="lg" role="navigation">
-    <NavbarContainer>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav>
-          <Nav.Link as={Link} to="/" >Home</Nav.Link>
-          <Nav.Link as={Link} to="/search">Search</Nav.Link>
-          <NavDropdownStyled title="Data Model">
-            <NavDropdownItem as={Link} to={{
-              pathname: '/datamodel',
-              state: {
-                fromDataModel: 'gdc'
-              }
-            }}>GDC</NavDropdownItem>
-            <NavDropdownItem as={Link} to={{
-              pathname: '/datamodel',
-              state: {
-                fromDataModel: 'ctdc'
-              }
-            }}>CTDC</NavDropdownItem>
-            <NavDropdownItem as={Link} to={{
-              pathname: '/datamodel',
-              state: {
-                fromDataModel: 'icdc'
-              }
-            }}>ICDC</NavDropdownItem>
-            <NavDropdownItem as={Link} to={{
-              pathname: '/datamodel',
-              state: {
-                fromDataModel: 'pcdc'
-              }
-            }}>PCDC</NavDropdownItem>
-          </NavDropdownStyled>
-          <Nav.Link as={Link} to="/about">About</Nav.Link>
-          <NavDropdownStyled title="Login">
-            <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
-            <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
-            <NavDropdownItem as={Link} to='#'>Dashboard</NavDropdownItem>
-            <NavDropdownItem as={Link} to='#'>Log out</NavDropdownItem>
-          </NavDropdownStyled>
-        </Nav>
-      </Navbar.Collapse>
-    </NavbarContainer>
-  </NavbarStyled>
-)
+const NavigationBar = () => {
+
+  const user = {name: "John"};
+
+  const currentUser = useSelector(state => state.currentUser);
+
+  const dispatch = useDispatch();
+
+  return (<NavbarStyled bg="dark" expand="lg" role="navigation">
+      <NavbarContainer>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav>
+            <Nav.Link as={Link} to="/" >Home</Nav.Link>
+            <Nav.Link as={Link} to="/search">Search</Nav.Link>
+            <NavDropdownStyled title="Data Model">
+              <NavDropdownItem as={Link} to={{
+                pathname: '/datamodel',
+                state: {
+                  fromDataModel: 'gdc'
+                }
+              }}>GDC</NavDropdownItem>
+              <NavDropdownItem as={Link} to={{
+                pathname: '/datamodel',
+                state: {
+                  fromDataModel: 'ctdc'
+                }
+              }}>CTDC</NavDropdownItem>
+              <NavDropdownItem as={Link} to={{
+                pathname: '/datamodel',
+                state: {
+                  fromDataModel: 'icdc'
+                }
+              }}>ICDC</NavDropdownItem>
+              <NavDropdownItem as={Link} to={{
+                pathname: '/datamodel',
+                state: {
+                  fromDataModel: 'pcdc'
+                }
+              }}>PCDC</NavDropdownItem>
+            </NavDropdownStyled>
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            {currentUser.loggedIn ? 
+              <NavDropdownStyled title={currentUser.user.name}>
+                <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
+                <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
+                <NavDropdownItem as={Link} to='/dashboard'>Dashboard</NavDropdownItem>
+                <NavDropdownItem onClick={() => dispatch(allActions.userActions.logOut())}>Logout</NavDropdownItem>
+              </NavDropdownStyled>
+              : 
+              <Nav.Link onClick={() => dispatch(allActions.userActions.setUser(user))}>Login</Nav.Link>
+            }
+          </Nav>
+        </Navbar.Collapse>
+      </NavbarContainer>
+    </NavbarStyled>
+  )
+}
 
 export default NavigationBar;

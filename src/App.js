@@ -10,6 +10,7 @@ import Header from './components/Header';
 import NavigationBar from './components/NavigationBar';
 import Footer from './components/Footer';
 import Layout from './components/Layout';
+import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization';
 
 // Pages
 import Home from './features/Home';
@@ -45,7 +46,10 @@ function App() {
               <Route path="/about" component={About} />
               <Route path="/reportdiff" component={ReportDiff} />
               <Route path="/changereport" component={ChangeReport} />
-              <Route path="/dashboard" component={Dashboard} />
+              <Route exact path="/dashboard" render={() => 
+                <RequireAuthorization>
+                  <Dashboard />
+                </RequireAuthorization>} />
               <Route path="/mappingreport" component={MappingReport} />
               <Route path="/profile" component={Profile} />
               <Route path="/modelbuilder" component={ModelBuilder} />
