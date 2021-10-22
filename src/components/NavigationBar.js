@@ -101,11 +101,21 @@ const NavDropdownSubTitle = styled.div`
 
 const NavigationBar = () => {
 
-  const user = {name: "John"};
+  const user = {name: "John"};  
 
   const currentUser = useSelector(state => state.currentUser);
 
   const dispatch = useDispatch();
+
+  const logout = e => {
+    e.preventDefault();
+    dispatch(allActions.userActions.logOut());
+    // can not use normal 301 response, since session is not properly cleared
+    //const response = await fetch('/api/logout');
+    //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
+    window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+  }
+
 
   return (<NavbarStyled bg="dark" expand="lg" role="navigation">
       <NavbarContainer>
@@ -146,7 +156,7 @@ const NavigationBar = () => {
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
                 <NavDropdownItem as={Link} to='/dashboard'>Dashboard</NavDropdownItem>
-                <NavDropdownItem onClick={() => dispatch(allActions.userActions.logOut())}>Logout</NavDropdownItem>
+                <NavDropdownItem onClick={logout}>Logout</NavDropdownItem>
               </NavDropdownStyled>
               : 
               <Nav.Link onClick={() => dispatch(allActions.userActions.setUser(user))}>Login</Nav.Link>
