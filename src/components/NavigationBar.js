@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
+//import { baseUrl } from '../api';
 import allActions from '../actions';
 
 const NavbarStyled = styled(Navbar)`
@@ -101,17 +102,28 @@ const NavDropdownSubTitle = styled.div`
 
 const NavigationBar = () => {
 
-  const user = {name: "John"};  
+  //const user = {name: "John"};  
 
   const currentUser = useSelector(state => state.currentUser);
 
   const dispatch = useDispatch();
 
-  const logout = e => {
+  // const login = async e => {
+  //   e.preventDefault();
+  //   const response = await fetch(`/dashboard/login`);
+  //   dispatch(allActions.userActions.setUser(user));
+  //   // can not use normal 301 response, since session is not properly cleared
+  //   //const response = await fetch('/api/logout');
+  //   //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
+  //   //window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+  // }
+
+  const logout = async e => {
     e.preventDefault();
     dispatch(allActions.userActions.logOut());
     // can not use normal 301 response, since session is not properly cleared
-    //const response = await fetch('/api/logout');
+    const response = await fetch('/dashboard/logout');
+    console.log(response);
     //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
     window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
   }
@@ -159,7 +171,11 @@ const NavigationBar = () => {
                 <NavDropdownItem onClick={logout}>Logout</NavDropdownItem>
               </NavDropdownStyled>
               : 
-              <Nav.Link onClick={() => dispatch(allActions.userActions.setUser(user))}>Login</Nav.Link>
+              <a
+                href="/dashboard/login"
+                target="_self">
+                Login
+              </a>
             }
           </Nav>
         </Navbar.Collapse>
