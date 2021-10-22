@@ -102,12 +102,16 @@ const NavDropdownSubTitle = styled.div`
 
 const NavigationBar = () => {
 
-  //const user = {name: "John"};  
+  //const user = {name: "John"};
+
+  const baseUrl = "http://localhost:3001"
 
   const currentUser = useSelector(state => state.currentUser);
-
+  console.dir(useSelector(state => state))
+  const isLoggedIn = Object.keys(currentUser).length > 0;
   const dispatch = useDispatch();
-
+  console.log(currentUser)
+  console.log( " isLoggedin ", isLoggedIn)
   // const login = async e => {
   //   e.preventDefault();
   //   const response = await fetch(`/dashboard/login`);
@@ -163,7 +167,7 @@ const NavigationBar = () => {
               }}>PCDC</NavDropdownItem>
             </NavDropdownStyled>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
-            {currentUser.loggedIn ? 
+            {isLoggedIn ? 
               <NavDropdownStyled title={currentUser.user.name}>
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
@@ -172,7 +176,7 @@ const NavigationBar = () => {
               </NavDropdownStyled>
               : 
               <a
-                href="/dashboard/login"
+                href={`${baseUrl}/dashboard/login`}
                 target="_self">
                 Login
               </a>
