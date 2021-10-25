@@ -176,11 +176,7 @@ const NavigationBar = () => {
                 <NavDropdownItem onClick={logout}>Logout</NavDropdownItem>
               </NavDropdownStyled>
               : 
-              <a
-                href={`${baseServer}/private/login`}
-                target="_self">
-                Login
-              </a>
+              <a href={`${baseServer}/private/login`} target="_self" className="nav-link">Login</a>
             }
           </Nav>
         </Navbar.Collapse>

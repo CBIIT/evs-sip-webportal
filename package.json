@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "/evssip/",
   "//": "proxy attribute below is only for development purpose",
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3000",
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
