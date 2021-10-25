@@ -1,5 +1,4 @@
 export const initialState = {};
-const baseUrl = "http://localhost:3001";
 
 export const actions = {
     SET_USER: 'USER.SET_USER',
@@ -24,8 +23,9 @@ export function fetchUser() {
    
     return async function(dispatch) {
         try {
-            const response = await fetch(`${baseUrl}/service/user-session`)
+            const response = await fetch(`/service/user-session`)
             const value = await response.json();
+            console.log(response)
             console.log(value)
             dispatch(setUser(value));
         } catch(e) {
@@ -38,7 +38,7 @@ export function fetchUser() {
 export function updateUserSession() {
     return async function(dispatch) {
         try {
-            const response = await fetch(`${baseUrl}/service/update-session`)
+            const response = await fetch(`/service/update-session`)
             const value = await response.json();
             dispatch(setUser(value));
         } catch(e) {

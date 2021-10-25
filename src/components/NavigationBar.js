@@ -168,7 +168,7 @@ const NavigationBar = () => {
             </NavDropdownStyled>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             {isLoggedIn ? 
-              <NavDropdownStyled title={currentUser.user.name}>
+              <NavDropdownStyled title={currentUser.name}>
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
                 <NavDropdownItem as={Link} to='/dashboard'>Dashboard</NavDropdownItem>
