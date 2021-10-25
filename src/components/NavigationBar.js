@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-//import { baseUrl } from '../api';
+import { baseServer } from '../api';
 import allActions from '../actions';
 
 const NavbarStyled = styled(Navbar)`
@@ -104,7 +104,7 @@ const NavigationBar = () => {
 
   //const user = {name: "John"};
 
-  const baseUrl = "http://localhost:3001"
+  //const baseUrl = "http://localhost:3001"
 
   const currentUser = useSelector(state => state.currentUser);
   console.dir(useSelector(state => state))
@@ -126,10 +126,11 @@ const NavigationBar = () => {
     e.preventDefault();
     dispatch(allActions.userActions.logOut());
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch('/private/logout');
+    const response = await fetch(`${baseServer}/private/logout`);
     console.log(response);
-    //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
-    window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+   //window.location.href = `${await response.json()}?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+    window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
+    //window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
   }
 
 
@@ -176,7 +177,7 @@ const NavigationBar = () => {
               </NavDropdownStyled>
               : 
               <a
-                href={`${baseUrl}/private/login`}
+                href={`${baseServer}/private/login`}
                 target="_self">
                 Login
               </a>
