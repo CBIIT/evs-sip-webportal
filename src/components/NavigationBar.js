@@ -126,7 +126,7 @@ const NavigationBar = () => {
     e.preventDefault();
     dispatch(allActions.userActions.logOut());
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/private/logout`);
+    const response = await fetch(`${baseServer}/dashboard/logout`);
     console.log(response);
    //window.location.href = `${await response.json()}?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
     window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
@@ -172,11 +172,11 @@ const NavigationBar = () => {
               <NavDropdownStyled title={currentUser.name}>
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
-                <NavDropdownItem as={Link} to='/dashboard'>Dashboard</NavDropdownItem>
+                <NavDropdownItem as={Link} to='/mainboard'>Dashboard</NavDropdownItem>
                 <NavDropdownItem onClick={logout}>Logout</NavDropdownItem>
               </NavDropdownStyled>
               : 
-              <a href={`${baseServer}/private/login`} target="_self" className="nav-link">Login</a>
+              <a href={`${baseServer}/dashboard/login`} target="_self" className="nav-link">Login</a>
             }
           </Nav>
         </Navbar.Collapse>

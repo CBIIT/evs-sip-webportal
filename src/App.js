@@ -46,7 +46,7 @@ function App() {
               <Route path="/about" component={About} />
               <Route path="/reportdiff" component={ReportDiff} />
               <Route path="/changereport" component={ChangeReport} />
-              <Route exact path="/dashboard" render={() => 
+              <Route exact path="/mainboard" render={() => 
                 <RequireAuthorization>
                   <Dashboard />
                 </RequireAuthorization>} />
