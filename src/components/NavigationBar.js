@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
-//import { baseUrl } from '../api';
+import { baseServer } from '../api';
 import allActions from '../actions';
 
 const NavbarStyled = styled(Navbar)`
@@ -102,12 +102,16 @@ const NavDropdownSubTitle = styled.div`
 
 const NavigationBar = () => {
 
-  //const user = {name: "John"};  
+  //const user = {name: "John"};
+
+  //const baseUrl = "http://localhost:3001"
 
   const currentUser = useSelector(state => state.currentUser);
-
+  console.dir(useSelector(state => state))
+  const isLoggedIn = Object.keys(currentUser).length > 0;
   const dispatch = useDispatch();
-
+  console.log(currentUser)
+  console.log( " isLoggedin ", isLoggedIn)
   // const login = async e => {
   //   e.preventDefault();
   //   const response = await fetch(`/dashboard/login`);
@@ -122,10 +126,11 @@ const NavigationBar = () => {
     e.preventDefault();
     dispatch(allActions.userActions.logOut());
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch('/dashboard/logout');
+    const response = await fetch(`${baseServer}/private/logout`);
     console.log(response);
-    //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
-    window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+   //window.location.href = `${await response.json()}?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+    window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
+    //window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
   }
 
 
@@ -163,8 +168,8 @@ const NavigationBar = () => {
               }}>PCDC</NavDropdownItem>
             </NavDropdownStyled>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
-            {currentUser.loggedIn ? 
-              <NavDropdownStyled title={currentUser.user.name}>
+            {isLoggedIn ? 
+              <NavDropdownStyled title={currentUser.name}>
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
                 <NavDropdownItem as={Link} to='/dashboard'>Dashboard</NavDropdownItem>
@@ -172,7 +177,7 @@ const NavigationBar = () => {
               </NavDropdownStyled>
               : 
               <a
-                href="/dashboard/login"
+                href={`${baseServer}/private/login`}
                 target="_self">
                 Login
               </a>

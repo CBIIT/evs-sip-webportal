@@ -6,10 +6,21 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'; 
-import reducers from './reducers';
+import { configureStore } from '@reduxjs/toolkit';
+import reducer from './reducers';
+import { fetchUser } from './reducers/currentUser';
 
 async function init() {
-  const store = createStore(reducers);
+  const store = configureStore({
+		reducer,
+		middleware: (getDefaultMiddleware) =>
+			getDefaultMiddleware({
+				thunk: true,
+				serializableCheck: false,
+				immutableCheck: false,
+			}),
+	});
+  await store.dispatch(fetchUser());
 
   ReactDOM.render(
     
