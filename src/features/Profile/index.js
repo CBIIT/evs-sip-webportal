@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Container, Form, Nav, NavDropdown, Row, Button, Col, InputGroup, FormControl} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Container, Form, Row, Button, Col, FormControl} from 'react-bootstrap';
 import Select from 'react-select'
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';

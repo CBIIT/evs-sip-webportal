@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
+import { Container, Nav, NavDropdown, Row, Col, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -64,10 +64,6 @@ const TableContainer = styled.div`
   border: solid #e4e8ed 1px;
 `;
 
-// const TableStyled = styled(Table)`
-//   background-color: #fff;
-// `;
-
 const SectionTitle =  styled.h2`
   font-family: 'Raleway-Medium',sans-serif;
   font-weight: 500;
@@ -82,59 +78,6 @@ const PaginationContainer =  styled.div`
 
   && > .pagination {
     margin-bottom: 0; 
-  }
-`;
-
-const ButtonStyled = styled(Button)`
-  font-size: 0.87rem;
-  border-radius: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-
-  &&:hover,
-  &&:focus {
-    background-color: #6fc0d9;
-    border-color: #34859d;
-  }
-`;
-
-const ButtonBlue = styled(ButtonStyled)`
-  background-color: #6fc0d9;
-  border-color: #34859d;
-
-  &&:hover,
-  &&:focus {
-    background-color: #5b9baf;
-  }
-`;
-
-const ButtonGray = styled(ButtonStyled)`
-  background-color: #858d8f;
-  border-color: #424242;
-
-  &&:hover,
-  &&:focus {
-    background-color: #63696b;
-  }
-`;
-
-const ButtonGreen = styled(ButtonStyled)`
-  background-color: #00e097;
-  border-color: #0a8867;
-
-  &&:hover,
-  &&:focus {
-    background-color: #00a770;
-  }
-`;
-
-const ButtonDarkBlue = styled(ButtonStyled)`
-  background-color: #34859d;
-  border-color: #34859d;
-
-  &&:hover,
-  &&:focus {
-    background-color: #245b6b;
   }
 `;
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
+import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
@@ -104,36 +104,6 @@ const ButtonBlue = styled(ButtonStyled)`
   &&:hover,
   &&:focus {
     background-color: #5b9baf;
-  }
-`;
-
-const ButtonGray = styled(ButtonStyled)`
-  background-color: #858d8f;
-  border-color: #424242;
-
-  &&:hover,
-  &&:focus {
-    background-color: #63696b;
-  }
-`;
-
-const ButtonGreen = styled(ButtonStyled)`
-  background-color: #00e097;
-  border-color: #0a8867;
-
-  &&:hover,
-  &&:focus {
-    background-color: #00a770;
-  }
-`;
-
-const ButtonDarkBlue = styled(ButtonStyled)`
-  background-color: #34859d;
-  border-color: #34859d;
-
-  &&:hover,
-  &&:focus {
-    background-color: #245b6b;
   }
 `;
 

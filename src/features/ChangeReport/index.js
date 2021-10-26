@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 

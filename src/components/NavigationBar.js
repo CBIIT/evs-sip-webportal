@@ -141,6 +141,9 @@ const NavigationBar = () => {
           <Nav>
             <Nav.Link as={Link} to="/" >Home</Nav.Link>
             <Nav.Link as={Link} to="/search">Search</Nav.Link>
+            {isLoggedIn &&
+              <Nav.Link as={Link} to="/mainboard">Dashboard</Nav.Link>
+            }
             <NavDropdownStyled title="Data Model">
               <NavDropdownItem as={Link} to={{
                 pathname: '/datamodel',

@@ -1,3 +1,5 @@
+import { baseServer } from '../api';
+
 export const initialState = {};
 
 export const actions = {
@@ -23,7 +25,7 @@ export function fetchUser() {
    
     return async function(dispatch) {
         try {
-            const response = await fetch(`/evssip/service/user-session`)
+            const response = await fetch(`${baseServer}/service/user-session`)
             const value = await response.json();
             console.log(response)
             console.log(value)
@@ -38,7 +40,7 @@ export function fetchUser() {
 export function updateUserSession() {
     return async function(dispatch) {
         try {
-            const response = await fetch(`/evssip/service/update-session`)
+            const response = await fetch(`${baseServer}/service/update-session`)
             const value = await response.json();
             dispatch(setUser(value));
         } catch(e) {

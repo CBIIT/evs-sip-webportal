@@ -119,16 +119,6 @@ const ButtonGray = styled(ButtonStyled)`
   }
 `;
 
-const ButtonGreen = styled(ButtonStyled)`
-  background-color: #00e097;
-  border-color: #0a8867;
-
-  &&:hover,
-  &&:focus {
-    background-color: #00a770;
-  }
-`;
-
 const ButtonDarkBlue = styled(ButtonStyled)`
   background-color: #34859d;
   border-color: #34859d;

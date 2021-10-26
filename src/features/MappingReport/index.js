@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
@@ -96,26 +96,6 @@ const ButtonStyled = styled(Button)`
   }
 `;
 
-const ButtonBlue = styled(ButtonStyled)`
-  background-color: #6fc0d9;
-  border-color: #34859d;
-
-  &&:hover,
-  &&:focus {
-    background-color: #5b9baf;
-  }
-`;
-
-const ButtonGray = styled(ButtonStyled)`
-  background-color: #858d8f;
-  border-color: #424242;
-
-  &&:hover,
-  &&:focus {
-    background-color: #63696b;
-  }
-`;
-
 const ButtonGreen = styled(ButtonStyled)`
   background-color: #00e097;
   border-color: #0a8867;
@@ -123,16 +103,6 @@ const ButtonGreen = styled(ButtonStyled)`
   &&:hover,
   &&:focus {
     background-color: #00a770;
-  }
-`;
-
-const ButtonDarkBlue = styled(ButtonStyled)`
-  background-color: #34859d;
-  border-color: #34859d;
-
-  &&:hover,
-  &&:focus {
-    background-color: #245b6b;
   }
 `;
 

@@ -12,7 +12,9 @@ const logOut = () => {
   }
 }
 
-export default {
+const userActions = {
   setUser,
   logOut
 }
+
+export default userActions;
