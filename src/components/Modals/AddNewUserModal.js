@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Button, Modal, Form, FormControl} from 'react-bootstrap';
 import Select from 'react-select'
 
+import DButton from '../Button/Button'
+
 const optionsOrganizations = [
   { value: 'nci', label: 'National Cancer Institute (NCI)' },
   { value: 'nih', label: 'National  Institutes of Health (NIH)' }
@@ -21,16 +23,6 @@ const ButtonStyled = styled(Button)`
   }
 `;
 
-// const ButtonGreen = styled(ButtonStyled)`
-//   background-color: #00e097;
-//   border-color: #0a8867;
-
-//   &&:hover,
-//   &&:focus {
-//     background-color: #00a770;
-//   }
-// `;
-
 
 const ButtonSubmit = styled(ButtonStyled)`
   background-color: #176bd3;
@@ -47,15 +39,15 @@ const ButtonSubmit = styled(ButtonStyled)`
   }
 `;
 
-const ButtonBlue = styled(ButtonStyled)`
-  background-color: #6fc0d9;
-  border-color: #34859d;
+// const ButtonBlue = styled(ButtonStyled)`
+//   background-color: #6fc0d9;
+//   border-color: #34859d;
 
-  &&:hover,
-  &&:focus {
-    background-color: #5b9baf;
-  }
-`;
+//   &&:hover,
+//   &&:focus {
+//     background-color: #5b9baf;
+//   }
+// `;
 
 
 const FormGroupStyled = styled(Form.Group)`
@@ -114,13 +106,15 @@ const AddNewUserModal = (props) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {  
+    setShow(true)
+  };
 
   return (
     <>
-      <ButtonBlue onClick={handleShow}>
+      <DButton onClick={handleShow}>
         Add New User
-      </ButtonBlue>
+      </DButton>
 
       <Modal size="lg" show={show} onHide={handleClose}>
         <ModalBodyStyled>
@@ -161,11 +155,6 @@ const AddNewUserModal = (props) => {
           </Form>
 
         </ModalBodyStyled>
-        {/* <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Update
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </>
   );

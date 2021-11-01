@@ -1,0 +1,14 @@
+
+.button {
+  font-size: 0.87rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  background-color: #6fc0d9;
+  border-color: #34859d;
+} 
+
+.button:hover,
+.button:focus {
+  background-color: #5b9baf;
+}

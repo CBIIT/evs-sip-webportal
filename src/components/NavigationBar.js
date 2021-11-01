@@ -127,10 +127,7 @@ const NavigationBar = () => {
     dispatch(allActions.userActions.logOut());
     // can not use normal 301 response, since session is not properly cleared
     const response = await fetch(`${baseServer}/dashboard/logout`);
-    console.log(response);
-   //window.location.href = `${await response.json()}?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
     window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
-    //window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
   }
 
 
