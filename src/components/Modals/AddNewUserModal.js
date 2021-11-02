@@ -5,9 +5,16 @@ import Select from 'react-select'
 
 import DButton from '../Button/Button'
 
-const optionsOrganizations = [
-  { value: 'nci', label: 'National Cancer Institute (NCI)' },
-  { value: 'nih', label: 'National  Institutes of Health (NIH)' }
+// const optionsOrganizations = [
+//   { value: 'nci', label: 'National Cancer Institute (NCI)' },
+//   { value: 'nih', label: 'National  Institutes of Health (NIH)' }
+// ]
+
+const optionsProjects = [
+  { value: 'gdc', label: 'GDC' },
+  { value: 'ctdc', label: 'CTDC' },
+  { value: 'icdc', label: 'ICDC' },
+  { value: 'pcdc', label: 'PCDC' }
 ]
 
 const ButtonStyled = styled(Button)`
@@ -126,28 +133,43 @@ const AddNewUserModal = (props) => {
               <FormLabel>First Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter first name" />
             </FormGroupStyled>
-            <FormGroupStyled  required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
               <FormLabel>Last Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter last name" />
             </FormGroupStyled>
-            <FormGroupStyled  required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+              <FormLabel>NIH User Name</FormLabel>
+              <FormControlStyled type="text" placeholder="Enter user name" />
+            </FormGroupStyled>
+            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
               <FormLabel>Email Address</FormLabel>
               <FormControlStyled type="email" placeholder="Enter email" />
             </FormGroupStyled>
             <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
-              <FormLabel>Organization(s)</FormLabel>
+              <FormLabel>Project(s)</FormLabel>
               <Select 
-                defaultValue={[optionsOrganizations[0]]}
+                defaultValue={[]}
                 name="organizations"
                 isMulti
-                options={optionsOrganizations}
+                options={optionsProjects}
                 className="basic-multi-select"
                 classNamePrefix="select"
               />
             </FormGroupStyled>
-            <FormGroupStyled  required className="mb-3" controlId="formBasicEmail">
-              <FormLabel>NIH User Name</FormLabel>
-              <FormControlStyled type="text" placeholder="Enter user name" />
+            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+              <FormLabel>Role</FormLabel>
+              <FormControlStyled as="select" className="form-control" placeholder="Enter Role">
+                <option>Enter a role</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+              </FormControlStyled>
+            </FormGroupStyled>
+            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+              <Form.Check 
+                type='checkbox'
+                id='default-checkbox'
+                label='Active'
+              />
             </FormGroupStyled>
             <ButtonSubmit type="submit">
               Add User

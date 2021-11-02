@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 
 import ddgraph from './components/GraphicalView/DataDictionary/reducers';
 import submission from './components/GraphicalView/reducers';
-import currentUser from './reducers/currentUser'
+import currentUser from './reducers/currentUser';
+import usersList from './reducers/usersList';
 
 const initialState = { 
   keyword: '',
@@ -79,6 +80,7 @@ const ddsearch = (state = initialState, action) => {
 const reducers = combineReducers({
     ddsearch,
     currentUser,
+    usersList,
     ddgraph,
     submission
 });

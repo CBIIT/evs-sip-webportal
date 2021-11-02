@@ -1,6 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
+import { Tabs, Tab, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -77,6 +78,10 @@ const ActionLink = styled.a`
 
 const UserManagement = (props) => {
 
+  const users = useSelector(state => state.usersList.users);
+
+  console.log(users);
+
   return (
     <DashboardContainer>
       <SectionContainer>
@@ -98,86 +103,111 @@ const UserManagement = (props) => {
             <InputGroupIcon icon={faSearch}/>
           </InputGroupTextStyled>
         </InputGroupStyled>
-              <Table bordered>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>User Account</th>
-                    <th>Role</th>
-                    <th>Last Login</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>mark@nih.org</td>
-                    <td>Otto</td>
-                    <td>6/15/2020</td>
-                    <td>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faEdit}/>
-                      </ActionLink>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faTimes}/>
-                      </ActionLink>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Ben</td>
-                    <td>ben@nih.org</td>
-                    <td>Thornton</td>
-                    <td>6/15/2020</td>
-                    <td>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faEdit}/>
-                      </ActionLink>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faTimes}/>
-                      </ActionLink>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Jacob</td>
-                    <td>jacob@nih.org</td>
-                    <td>Thornton</td>
-                    <td>6/15/2020</td>
-                    <td>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faEdit}/>
-                      </ActionLink>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faTimes}/>
-                      </ActionLink>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Larry</td>
-                    <td>larry@nih.org</td>
-                    <td>Thornton</td>
-                    <td>6/15/2020</td>
-                    <td>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faEdit}/>
-                      </ActionLink>
-                      <ActionLink href="/#" aria-label="edit">
-                        <FontAwesomeIcon icon={faTimes}/>
-                      </ActionLink>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-              <PaginationContainer>
-                <Pagination>
-                  <Pagination.First />
-                  <Pagination.Item active>{1}</Pagination.Item>
-                  <Pagination.Item>{2}</Pagination.Item>
-                  <Pagination.Item>{3}</Pagination.Item>
-                  <Pagination.Item>{4}</Pagination.Item>
-                  <Pagination.Item>{5}</Pagination.Item>
-                  <Pagination.Last />
-                </Pagination>
-              </PaginationContainer>
+
+        <Tabs defaultActiveKey="activeUsers" id="uncontrolled-tab-example">
+            <Tab eventKey="activeUsers" title="Active">
+              <div>
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>User Account</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user, index) => {
+                      if (user.active === 'N') return null;
+                      return(
+                        <tr key={index}>
+                          <td>{user.first_name} {user.last_name}</td>
+                          <td>{user.nci_username}</td>
+                          <td>{user.email}</td>
+                          <td>{user.role}</td>
+                          <td>{user.active === 'Y' ? 'active': 'suspend'}</td>
+                          <td>
+                            <ActionLink href="/#" aria-label="edit">
+                              <FontAwesomeIcon icon={faEdit}/>
+                            </ActionLink>
+                            <ActionLink href="/#" aria-label="edit">
+                              <FontAwesomeIcon icon={faTimes}/>
+                            </ActionLink>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </Table>
+                <PaginationContainer>
+                  <Pagination>
+                    <Pagination.First />
+                    <Pagination.Item active>{1}</Pagination.Item>
+                    <Pagination.Item>{2}</Pagination.Item>
+                    <Pagination.Item>{3}</Pagination.Item>
+                    <Pagination.Item>{4}</Pagination.Item>
+                    <Pagination.Item>{5}</Pagination.Item>
+                    <Pagination.Last />
+                  </Pagination>
+                </PaginationContainer>
+              </div>
+            </Tab>
+            <Tab eventKey="suspendUsers" title="Suspend">
+              <div>
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>User Account</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user, index) => {
+                      if (user.active === 'Y') return null;
+                      return(
+                        <tr key={index}>
+                          <td>{user.first_name} {user.last_name}</td>
+                          <td>{user.nci_username}</td>
+                          <td>{user.email}</td>
+                          <td>{user.role}</td>
+                          <td>{user.active === 'Y' ? 'active': 'suspend'}</td>
+                          <td>
+                            <ActionLink href="/#" aria-label="edit">
+                              <FontAwesomeIcon icon={faEdit}/>
+                            </ActionLink>
+                            <ActionLink href="/#" aria-label="edit">
+                              <FontAwesomeIcon icon={faTimes}/>
+                            </ActionLink>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </Table>
+                <PaginationContainer>
+                  <Pagination>
+                    <Pagination.First />
+                    <Pagination.Item active>{1}</Pagination.Item>
+                    <Pagination.Item>{2}</Pagination.Item>
+                    <Pagination.Item>{3}</Pagination.Item>
+                    <Pagination.Item>{4}</Pagination.Item>
+                    <Pagination.Item>{5}</Pagination.Item>
+                    <Pagination.Last />
+                  </Pagination>
+                </PaginationContainer>
+              </div>
+            </Tab>
+          </Tabs>
+
+
+
+
         </TableContainer>
       </SectionContainer>
     </DashboardContainer>
