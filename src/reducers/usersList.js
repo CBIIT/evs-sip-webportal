@@ -13,7 +13,7 @@ export default function reducer(state = initialState, action = {type: null}) {
           [user.id]: user,
         }
       }
-
+      
       case 'users/changedStatus': {
         const userId = action.payload
         const user = state[userId]

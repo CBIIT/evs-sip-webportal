@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Tabs, Tab, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import AddNewUserModal from '../../components/Modals/AddNewUserModal';
+import EditUserModal from '../../components/Modals/EditUserModal/EditUserModal';
 import DashboardContainer from '../../components/DashboardContainer/DashboardContainer';
 
 const SectionHeader = styled.div`
@@ -80,7 +81,23 @@ const UserManagement = (props) => {
 
   const users = useSelector(state => state.usersList.users);
 
-  console.log(users);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+
+  useEffect(() => {
+    const results = users.filter(user =>
+      user.nci_username.includes(searchTerm) || 
+      user.first_name.toLowerCase().includes(searchTerm) ||
+      user.last_name.toLowerCase().includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm)
+    );
+    setSearchResults(results);
+  }, [users, searchTerm]);
+
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <DashboardContainer>
@@ -98,6 +115,8 @@ const UserManagement = (props) => {
             placeholder="Search"
             aria-label="Search"
             aria-describedby="btnGroupAddon"
+            value={searchTerm}
+            onChange={handleSearch}
           />
           <InputGroupTextStyled id="btnGroupAddon">
             <InputGroupIcon icon={faSearch}/>
@@ -119,7 +138,7 @@ const UserManagement = (props) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user, index) => {
+                    {searchResults.map((user, index) => {
                       if (user.active === 'N') return null;
                       return(
                         <tr key={index}>
@@ -129,9 +148,7 @@ const UserManagement = (props) => {
                           <td>{user.role}</td>
                           <td>{user.active === 'Y' ? 'active': 'suspend'}</td>
                           <td>
-                            <ActionLink href="/#" aria-label="edit">
-                              <FontAwesomeIcon icon={faEdit}/>
-                            </ActionLink>
+                            <EditUserModal userid={user.id}/>
                             <ActionLink href="/#" aria-label="edit">
                               <FontAwesomeIcon icon={faTimes}/>
                             </ActionLink>
@@ -168,7 +185,7 @@ const UserManagement = (props) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.map((user, index) => {
+                    {searchResults.map((user, index) => {
                       if (user.active === 'Y') return null;
                       return(
                         <tr key={index}>

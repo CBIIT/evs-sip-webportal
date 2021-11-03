@@ -10,6 +10,7 @@ const LogoContainer = styled.div`
 
 const Logo = styled.img`
   height: 5rem;
+  padding: 1rem;
 `;
 
 const Header = () => {
