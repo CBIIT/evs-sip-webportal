@@ -19,7 +19,11 @@ import Search from './features/Search';
 import DataModel from './features/DataModel';
 import ReportDiff from './features/ReportDiff';
 import ChangeReport from './features/ChangeReport';
-import Dashboard from './features/Dashboard';
+import DataSources from './features/DataSources/GDCSource';
+import GDCSource from './features/DataSources/GDCSource';
+import CTDCSource from './features/DataSources/CTDCSource';
+import ICDCSource from './features/DataSources/ICDCSource';
+import PCDCSource from './features/DataSources/PCDCSource';
 import MappingReport from './features/MappingReport';
 import Profile from './features/Profile';
 import ModelBuilder from './features/ModelBuilder';
@@ -48,7 +52,23 @@ function App() {
               <Route path="/changereport" component={ChangeReport} />
               <Route exact path="/mainboard" render={() => 
                 <RequireAuthorization>
-                  <Dashboard />
+                  <DataSources />
+                </RequireAuthorization>} />
+              <Route exact path="/mainboard/gdc" render={() => 
+                <RequireAuthorization>
+                  <GDCSource />
+                </RequireAuthorization>} />
+              <Route exact path="/mainboard/ctdc" render={() => 
+                <RequireAuthorization>
+                  <CTDCSource />
+                </RequireAuthorization>} />
+              <Route exact path="/mainboard/icdc" render={() => 
+                <RequireAuthorization>
+                  <ICDCSource />
+                </RequireAuthorization>} />
+              <Route exact path="/mainboard/pcdc" render={() => 
+                <RequireAuthorization>
+                  <PCDCSource />
                 </RequireAuthorization>} />
               <Route path="/mappingreport" component={MappingReport} />
               <Route path="/profile" component={Profile} />

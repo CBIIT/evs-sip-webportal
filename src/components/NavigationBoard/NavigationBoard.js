@@ -28,10 +28,10 @@ const NavigationBoard = () => {
           <Nav.Link className={styles.navLink} as={Link} to="/changereport">Change Report</Nav.Link>
         </Nav.Item>
         <NavDropdown className={`${styles.navDropdown}`} title="Published Data Sources" id="nav-dropdown" data-toggle="collapse" renderMenuOnMount>
-          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">GDC</NavDropdown.Item>
-          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">CTDC</NavDropdown.Item>
-          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">ICDC</NavDropdown.Item>
-          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">PCDC</NavDropdown.Item>
+          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard/gdc">GDC</NavDropdown.Item>
+          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard/ctdc">CTDC</NavDropdown.Item>
+          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard/icdc">ICDC</NavDropdown.Item>
+          <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard/pcdc">PCDC</NavDropdown.Item>
         </NavDropdown>
         <NavDropdown className={`${styles.navDropdown}`} title="Unpublished Data Sources" id="nav-dropdown" renderMenuOnMount>
           <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">PDC</NavDropdown.Item>

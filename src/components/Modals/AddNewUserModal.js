@@ -129,23 +129,23 @@ const AddNewUserModal = (props) => {
             <ModelTitleStyled>Add New User</ModelTitleStyled>
           </TitleContainer>
           <Form>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formFirstName">
               <FormLabel>First Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter first name" />
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formLastName">
               <FormLabel>Last Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter last name" />
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formNIHUserName">
               <FormLabel>NIH User Name</FormLabel>
               <FormControlStyled type="text" placeholder="Enter user name" />
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formEmailAddress">
               <FormLabel>Email Address</FormLabel>
               <FormControlStyled type="email" placeholder="Enter email" />
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formProjects">
               <FormLabel>Project(s)</FormLabel>
               <Select 
                 defaultValue={[]}
@@ -156,7 +156,7 @@ const AddNewUserModal = (props) => {
                 classNamePrefix="select"
               />
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formRole">
               <FormLabel>Role</FormLabel>
               <FormControlStyled as="select" className="form-control" placeholder="Enter Role">
                 <option>Enter a role</option>
@@ -164,10 +164,10 @@ const AddNewUserModal = (props) => {
                 <option value="User">User</option>
               </FormControlStyled>
             </FormGroupStyled>
-            <FormGroupStyled required className="mb-3" controlId="formBasicEmail">
+            <FormGroupStyled required className="mb-3" controlId="formCheckboxStatus">
               <Form.Check 
                 type='checkbox'
-                id='default-checkbox'
+                id='checkbox-status'
                 label='Active'
               />
             </FormGroupStyled>

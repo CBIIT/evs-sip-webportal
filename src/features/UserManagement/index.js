@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
+import { baseUrl } from '../../api';
 import styled from 'styled-components';
-import { Tabs, Tab, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
+import { Tabs, Tab, Table, Pagination, InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,17 +50,17 @@ const InputGroupStyled = styled(InputGroup)`
   max-width: 20rem;
 `;
 
-const InputGroupTextStyled = styled(InputGroup.Text)`
-    position: relative;
-    left: -2.5rem;
-    z-index: 3;
-    background-color: transparent;
-    border: none;
+// const InputGroupTextStyled = styled(InputGroup.Text)`
+//     position: relative;
+//     left: -2.5rem;
+//     z-index: 3;
+//     background-color: transparent;
+//     border: none;
 
-    &&>.form-control {
-      border-radius: .25rem;
-    }
-`;
+//     &&>.form-control {
+//       border-radius: .25rem;
+//     }
+// `;
 
 const FormControlStyled = styled(FormControl)`
   border-radius: 1rem !important;
@@ -79,25 +80,31 @@ const ActionLink = styled.a`
 
 const UserManagement = (props) => {
 
-  const users = useSelector(state => state.usersList.users);
+  //const users = useSelector(state => state.usersList.users);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
 
   useEffect(() => {
-    const results = users.filter(user =>
-      user.nci_username.includes(searchTerm) || 
-      user.first_name.toLowerCase().includes(searchTerm) ||
-      user.last_name.toLowerCase().includes(searchTerm) ||
-      user.email.toLowerCase().includes(searchTerm)
-    );
-    setSearchResults(results);
-  }, [users, searchTerm]);
+    fetchUsers();
+  }, []);
+
+  const fetchUsers =  async () => {
+    const response = await fetch(`${baseUrl}/user/allusers`);
+    const data = await response.json();
+    setSearchResults(data);
+  }
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
   };
+
+  const handleSearchTrigger = async (value) => {
+    const response = await fetch(`${baseUrl}/user/allusers?search=${value}`);
+    const data = await response.json();
+    setSearchResults(data);
+  }
 
   return (
     <DashboardContainer>
@@ -118,9 +125,9 @@ const UserManagement = (props) => {
             value={searchTerm}
             onChange={handleSearch}
           />
-          <InputGroupTextStyled id="btnGroupAddon">
+          <Button onClick={() => handleSearchTrigger(searchTerm)}>
             <InputGroupIcon icon={faSearch}/>
-          </InputGroupTextStyled>
+          </Button>
         </InputGroupStyled>
 
         <Tabs defaultActiveKey="activeUsers" id="uncontrolled-tab-example">
