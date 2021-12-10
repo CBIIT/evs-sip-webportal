@@ -1,0 +1,9 @@
+.form {
+  margin-bottom: 1rem;
+  max-width: 20rem;
+}
+
+.formControl {
+  border-radius: 1rem !important;
+  padding-right: 2rem;
+}

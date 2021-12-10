@@ -21,13 +21,13 @@ import ReportDiff from './features/ReportDiff';
 import ChangeReport from './features/ChangeReport';
 import DataSources from './features/DataSources/GDCSource';
 import GDCSource from './features/DataSources/GDCSource';
-import CTDCSource from './features/DataSources/CTDCSource';
+import CTDCSource from './features/DataSources/CTDCSource/CTDCSource';
 import ICDCSource from './features/DataSources/ICDCSource';
 import PCDCSource from './features/DataSources/PCDCSource';
 import MappingReport from './features/MappingReport';
 import Profile from './features/Profile';
 import ModelBuilder from './features/ModelBuilder';
-import UserManagement from './features/UserManagement';
+import UserManagement from './features/UserManagement/UserManagement';
 import NotFound from './features/NotFound';
 
 
@@ -73,7 +73,10 @@ function App() {
               <Route path="/mappingreport" component={MappingReport} />
               <Route path="/profile" component={Profile} />
               <Route path="/modelbuilder" component={ModelBuilder} />
-              <Route path="/usermanagement" component={UserManagement} />
+              <Route exact path="/usermanagement" render={() => 
+                <RequireAuthorization>
+                  <UserManagement />
+                </RequireAuthorization>} />
               <Route component={NotFound} />
             </Switch>
           </Layout>

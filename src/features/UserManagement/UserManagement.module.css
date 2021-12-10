@@ -1,0 +1,43 @@
+.form {
+  margin-bottom: 1rem;
+  max-width: 20rem;
+}
+
+.formGroup {
+  display: flex;
+}
+
+.formControl {
+  border-radius: 1rem !important;
+  padding-right: 2rem;
+}
+
+.sectionContainer {
+  padding: 1rem;
+  background-color: #f7fbff;
+  border: solid #e4e8ed 1px;
+}
+
+.sectionHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sectionTitle {
+  font-family: 'Raleway-Medium',sans-serif;
+  font-weight: 500;
+  color: #042a68;
+  width: fit-content;
+}
+
+.tableContainer {
+  background-color: #fff;
+  padding: 1rem;
+  border: solid #e4e8ed 1px;
+}
+
+.tableLink {
+  margin-left: .5rem;
+  font-size: 1.1rem;
+}

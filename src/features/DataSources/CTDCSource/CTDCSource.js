@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { baseUrl } from '../../api';
+import { baseUrl } from '../../../api';
+import styles from './CTDCSource.module.css';
 import styled from 'styled-components';
-import { Button, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
+import { Button, Table, InputGroup, Form, FormControl, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import BatchUpdateModal from '../../components/Modals/BatchUpdateModal';
-import DashboardContainer from '../../components/DashboardContainer/DashboardContainer';
-import PaginationController from '../../components/PaginationController/PaginationController';
+import BatchUpdateModal from '../../../components/Modals/BatchUpdateModal';
+import DashboardContainer from '../../../components/DashboardContainer/DashboardContainer';
+import PaginationController from '../../../components/PaginationController/PaginationController';
 
 
 const SectionHeader = styled.div`
@@ -35,15 +36,15 @@ const SectionTitle =  styled.h2`
   width: fit-content;
 `;
 
-const PaginationContainer =  styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: right;
+// const PaginationContainer =  styled.div`
+//   width: 100%;
+//   display: flex;
+//   justify-content: right;
 
-  && > .pagination {
-    margin-bottom: 0; 
-  }
-`;
+//   && > .pagination {
+//     margin-bottom: 0; 
+//   }
+// `;
 
 const ButtonStyled = styled(Button)`
   font-size: 0.87rem;
@@ -93,17 +94,17 @@ const InputGroupStyled = styled(InputGroup)`
   max-width: 20rem;
 `;
 
-const InputGroupTextStyled = styled(InputGroup.Text)`
-    position: relative;
-    left: -2.5rem;
-    z-index: 3;
-    background-color: transparent;
-    border: none;
+// const InputGroupTextStyled = styled(InputGroup.Text)`
+//     position: relative;
+//     left: -2.5rem;
+//     z-index: 3;
+//     background-color: transparent;
+//     border: none;
 
-    &&>.form-control {
-      border-radius: .25rem;
-    }
-`;
+//     &&>.form-control {
+//       border-radius: .25rem;
+//     }
+// `;
 
 const FormControlStyled = styled(FormControl)`
   border-radius: 1rem !important;
@@ -143,7 +144,7 @@ const ActionLink = styled.a`
 `;
 
 
-const CTDCSource = (props) => {
+const CTDCSource = () => {
   const [nodeState, setNodeState] = useState({
     type: "node",
     message: "No matched data in nodes."
@@ -182,14 +183,14 @@ const CTDCSource = (props) => {
       setPropState(data[1]);
       setValueState(data[2]);
       setPageCountState({
-        values: Math.ceil(data[2].total_values / 10),
-        props: Math.ceil(data[1].total_props / 10),
-        nodes: Math.ceil(data[0].total_nodes / 10),
+        values: Math.ceil(data[2].total_values / pageSizeState['values']),
+        props: Math.ceil(data[1].total_props / pageSizeState['props']),
+        nodes: Math.ceil(data[0].total_nodes / pageSizeState['nodes']),
       })
     }
 
     fetchData();
-  }, []);
+  }, [pageSizeState]);
 
   const switchSetResponse = (type, data) => {
     switch(type) {
@@ -203,7 +204,7 @@ const CTDCSource = (props) => {
         setValueState(data[0]);
         break;
     }
-    setPageCountState({ ...setPageCountState, [type]: data[0][`total_${type}`]});
+    setPageCountState({ ...pageCountState, [type]: data[0][`total_${type}`] / pageSizeState[type]});
   } 
 
   const selectTabHandle = async (type) => {
@@ -225,8 +226,10 @@ const CTDCSource = (props) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchTrigger = async (keyword) => {
-    const response = await fetch(`${baseUrl}/datamodel/search?keyword=${searchTerm}&model=CTDC&type=${tabState}&page=page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`);
+  const handleSubmitSearch = async (event) => {
+    event.preventDefault();
+    const value = event.target[0].value;
+    const response = await fetch(`${baseUrl}/datamodel/search?keyword=${value}&model=CTDC&type=${tabState}&page=page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`);
     const data = await response.json();
     switchSetResponse(tabState, data);
   }
@@ -245,20 +248,18 @@ const CTDCSource = (props) => {
           </div>
         </SectionHeader>
         <TableContainer>
-
-        <InputGroupStyled>
-          <FormControlStyled
-            type="text"
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="btnGroupAddon"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <Button onClick={() => handleSearchTrigger(searchTerm)}>
-            <InputGroupIcon icon={faSearch}/>
-          </Button>
-        </InputGroupStyled>
+        <Form className={styles.form} onSubmit={handleSubmitSearch}>
+          <Form.Group role="form">
+            <Form.Control 
+              type="text"
+              placeholder="Search"
+              aria-label="Search"
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+            <Button type="submit">Send</Button>
+          </Form.Group>
+        </Form>
         <Tabs defaultActiveKey="values" id="uncontrolled-tab-example" activeKey={tabState} onSelect={selectTabHandle}>
           <Tab eventKey="values" title="Values">
             <div>

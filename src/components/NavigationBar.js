@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import styled from 'styled-components';
 import { baseServer } from '../api';
-import allActions from '../actions';
+import { setUser } from '../reducers/currentUser';
 
 const NavbarStyled = styled(Navbar)`
   background-color: var(--nav-back-color-style) !important;
@@ -102,29 +102,20 @@ const NavDropdownSubTitle = styled.div`
 
 const NavigationBar = () => {
 
-  //const user = {name: "John"};
-
-  //const baseUrl = "http://localhost:3001"
+  //const user = {name: ''};
 
   const currentUser = useSelector(state => state.currentUser);
-  console.dir(useSelector(state => state))
   const isLoggedIn = Object.keys(currentUser).length > 0;
   const dispatch = useDispatch();
-  console.log(currentUser)
-  console.log( " isLoggedin ", isLoggedIn)
-  // const login = async e => {
+  
+  // const login = e => {
   //   e.preventDefault();
-  //   const response = await fetch(`/dashboard/login`);
-  //   dispatch(allActions.userActions.setUser(user));
-  //   // can not use normal 301 response, since session is not properly cleared
-  //   //const response = await fetch('/api/logout');
-  //   //window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
-  //   //window.location.href = `https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?TARGET=https://sip-dev.evs.cancer.gov/evssip`;
+  //   dispatch(setUser(user));
   // }
 
   const logout = async e => {
     e.preventDefault();
-    dispatch(allActions.userActions.logOut());
+    dispatch(setUser({}));
     // can not use normal 301 response, since session is not properly cleared
     const response = await fetch(`${baseServer}/dashboard/logout`);
     window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
@@ -173,10 +164,11 @@ const NavigationBar = () => {
                 <NavDropdownSubTitle>Model Owner</NavDropdownSubTitle>
                 <NavDropdownItem as={Link} to='#'>Profile</NavDropdownItem>
                 <NavDropdownItem as={Link} to='/mainboard'>Dashboard</NavDropdownItem>
-                <NavDropdownItem onClick={logout}>Logout</NavDropdownItem>
+                <NavDropdownItem onClick={logout}>Sign Out</NavDropdownItem>
               </NavDropdownStyled>
               : 
               <a href={`${baseServer}/dashboard/login`} target="_self" className="nav-link">Login</a>
+              //<a href='/#' onClick={login} target="_self" className="nav-link">Login</a>
             }
           </Nav>
         </Navbar.Collapse>

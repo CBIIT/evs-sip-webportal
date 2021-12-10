@@ -27,8 +27,6 @@ export function fetchUser() {
         try {
             const response = await fetch(`${baseServer}/service/user-session`)
             const value = await response.json();
-            console.log(response)
-            console.log(value)
             dispatch(setUser(value));
         } catch(e) {
             console.log(e);

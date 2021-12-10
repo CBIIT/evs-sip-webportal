@@ -4,7 +4,7 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styles from './NavigationBoard.module.css';
 import { baseServer } from '../../api';
-import allActions from '../../actions';
+import { setUser } from '../../reducers/currentUser';
 
 
 const NavigationBoard = () => {
@@ -12,7 +12,7 @@ const NavigationBoard = () => {
 
   const logout = async e => {
     e.preventDefault();
-    dispatch(allActions.userActions.logOut());
+    dispatch(setUser({}));
     // can not use normal 301 response, since session is not properly cleared
     const response = await fetch(`${baseServer}/dashboard/logout`);
     window.location.href = `${await response.json()}?TARGET=${window.location.origin}`;
