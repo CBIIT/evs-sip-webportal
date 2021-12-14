@@ -101,16 +101,13 @@ const NavDropdownSubTitle = styled.div`
 `;
 
 const NavigationBar = () => {
-
-  //const user = {name: ''};
-
   const currentUser = useSelector(state => state.currentUser);
-  const isLoggedIn = Object.keys(currentUser).length > 0;
+  const isLoggedIn = Object.keys(currentUser).length > 0 && !currentUser.error;
   const dispatch = useDispatch();
   
   // const login = e => {
   //   e.preventDefault();
-  //   dispatch(setUser(user));
+  //   dispatch(setUser({name: ''}));
   // }
 
   const logout = async e => {

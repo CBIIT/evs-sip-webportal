@@ -15,8 +15,7 @@ const optionsProjects = [
   { value: 'PCDC', label: 'PCDC' }
 ];
 
-const EditUserModal = (props) => {
-  //const users = useSelector(state => state.usersList.users);
+const EditUserModal = ({updateUserList, username}) => {
   const currentUser = useSelector(state => state.currentUser);
   const [userState, setUserState] = useState({});
   const [formErrors, setFormErrors] = useState({});
@@ -25,19 +24,19 @@ const EditUserModal = (props) => {
 
   const handleClose = () => setShow(false);
 
-  const handleShow = async (event) => {  
-    event.preventDefault();
+  const handleShow = async e => {  
+    e.preventDefault();
     setShow(true);
     setIsLoading(true);
-    const response = await fetch(`${baseUrl}/user/userprofile?username=${props.nci_username}`);
+    const response = await fetch(`${baseUrl}/user/userprofile?username=${username}`);
     const data = await response.json();
     setUserState(data.results[0]);
     setFormErrors({});
     setIsLoading(false);
   };
 
-  const handleOnSubmitUser = async (event) => {
-    event.preventDefault();
+  const handleOnSubmitUser = async e => {
+    e.preventDefault();
     const errors = findFormErrors();
 
     if ( Object.keys(errors).length > 0 ) { 
@@ -65,26 +64,27 @@ const EditUserModal = (props) => {
       });
       const data = await response.json();
       setUserState(data.user);
-      props.updateUserList();
+      //refresh user list
+      updateUserList();
       handleClose();
     }
   }
 
-  const handleFormOnChange = event => {
-    setUserState({ ...userState, [event.target.name]: event.target.value });
-    setFormErrors({ ...formErrors, [event.target.name]: ''});
+  const handleFormOnChange = e => {
+    setUserState({ ...userState, [e.target.name]: e.target.value });
+    setFormErrors({ ...formErrors, [e.target.name]: ''});
   };
 
-  const handleFormOnChangeCheckbox = event => {
-    setUserState({ ...userState, [event.target.name]: event.target.checked ? 'Y' : 'N'  });
+  const handleFormOnChangeCheckbox = e => {
+    setUserState({ ...userState, [e.target.name]: e.target.checked ? 'Y' : 'N'  });
   };
 
   const handleMultiOnChange = options => {
-    const projects = options.map((e) => e.value).join(',');
+    const projects = options.map(e => e.value).join(',');
     setUserState({ ...userState, projects: projects });
   };
 
-  const splitProjects = (projects) => {
+  const splitProjects = projects => {
     const sp = projects ? projects.split(',') : [];
     return optionsProjects.filter((op) => {
      return sp.some(pj => pj === op.value);
@@ -144,7 +144,7 @@ const EditUserModal = (props) => {
                   defaultValue={userState.first_name}
                   required
                 />
-                <Form.Control.Feedback type='invalid'>{ formErrors.first_name }</Form.Control.Feedback>
+                <Form.Control.Feedback type='invalid'>{formErrors.first_name}</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className={`mb-3 ${styles.formGroup} ${styles.required}`} controlId="formLastName">
                 <Form.Label className={styles.formLabel}>Last Name</Form.Label>
@@ -171,7 +171,7 @@ const EditUserModal = (props) => {
                   defaultValue={userState.nci_username}
                   required
                 />
-                <Form.Control.Feedback type='invalid'>{ formErrors.nci_username }</Form.Control.Feedback>
+                <Form.Control.Feedback type='invalid'>{formErrors.nci_username}</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className={`mb-3 ${styles.formGroup} ${styles.required}`} controlId="formBasicEmail">
                 <Form.Label className={styles.formLabel}>Email Address</Form.Label>
@@ -185,7 +185,7 @@ const EditUserModal = (props) => {
                   defaultValue={userState.email}
                   required
                 />
-                <Form.Control.Feedback type='invalid'>{ formErrors.email }</Form.Control.Feedback>
+                <Form.Control.Feedback type='invalid'>{formErrors.email}</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className={`mb-3 ${styles.formGroup} ${styles.required}`} controlId="formSelectProject">
                 <Form.Label className={styles.formLabel}>Project(s)</Form.Label>

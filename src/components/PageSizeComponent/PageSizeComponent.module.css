@@ -1,0 +1,8 @@
+.label {
+  padding: .375rem .75rem;
+  font-size: 0.9375rem;
+}
+.control {
+  display: inline-block;
+  width: 7rem;
+} 

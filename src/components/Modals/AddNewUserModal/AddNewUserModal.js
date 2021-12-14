@@ -14,8 +14,7 @@ const optionsProjects = [
   { value: 'PCDC', label: 'PCDC' }
 ];
 
-const AddNewUserModal = (props) => {
-  //const users = useSelector(state => state.usersList.users);
+const AddNewUserModal = ({updateUserList}) => {
   const currentUser = useSelector(state => state.currentUser);
   const [userState, setUserState] = useState({});
   const [formErrors, setFormErrors] = useState({});
@@ -33,7 +32,7 @@ const AddNewUserModal = (props) => {
     event.preventDefault();
     const errors = findFormErrors();
  
-    if ( Object.keys(errors).length > 0 ) { 
+    if (Object.keys(errors).length > 0) { 
       setFormErrors(errors);
     } else {
       const body = {
@@ -59,9 +58,12 @@ const AddNewUserModal = (props) => {
       });
       const data = await response.json();
       console.log(data);
+      // clear state values
       setUserState({});
       setFormErrors({});
-      props.updateUserList();
+      //refresh user liet
+      updateUserList();
+      //close modal
       handleClose();
     }
   }

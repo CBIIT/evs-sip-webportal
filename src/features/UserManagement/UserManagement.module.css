@@ -1,17 +1,3 @@
-.form {
-  margin-bottom: 1rem;
-  max-width: 20rem;
-}
-
-.formGroup {
-  display: flex;
-}
-
-.formControl {
-  border-radius: 1rem !important;
-  padding-right: 2rem;
-}
-
 .sectionContainer {
   padding: 1rem;
   background-color: #f7fbff;
@@ -41,3 +27,40 @@
   margin-left: .5rem;
   font-size: 1.1rem;
 }
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .form {
+  margin-bottom: 1rem;
+  max-width: 20rem;
+}
+
+.formGroup {
+  position: relative;
+}
+
+.formControl {
+  display: inline-block;
+  border-radius: 1rem !important;
+  padding-right: 2rem;
+}
+
+.searchButton {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  color: #1B6BEE;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.searchButton:hover,
+.searchButton:focus,
+.searchButton:active {
+  color: #0056b3;
+  background-color: transparent;
+  border-color: transparent;
+} */

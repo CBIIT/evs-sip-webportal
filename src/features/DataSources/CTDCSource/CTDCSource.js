@@ -289,7 +289,7 @@ const CTDCSource = () => {
                             </TableUl>
                           </td>
                           <td>{v.Value}</td>
-                          <td></td>
+                          <td>{v.Term_Ncitcode}</td>
                           <td>
                             <ActionLink href="/#" aria-label="edit">
                               <FontAwesomeIcon icon={faEdit}/>
@@ -330,7 +330,7 @@ const CTDCSource = () => {
                         </TableUl>
                       </td>
                       <td>{p.Property_Name}</td>
-                      <td></td>
+                      <td>{p.Property_Ncitcode}</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
@@ -368,7 +368,7 @@ const CTDCSource = () => {
                         {'Category_Name'}
                       </td>
                       <td>{n.Node_Name}</td>
-                      <td></td>
+                      <td>{n.Node_Ncitcode}</td>
                       <td>
                         <ActionLink href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
