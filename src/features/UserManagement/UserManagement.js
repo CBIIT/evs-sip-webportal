@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { baseUrl } from '../../api';
 import styles from './UserManagement.module.css';
 import { Tabs, Tab, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import AddNewUserModal from '../../components/Modals/AddNewUserModal/AddNewUserModal';
 import EditUserModal from '../../components/Modals/EditUserModal/EditUserModal';
@@ -15,7 +15,7 @@ import PageSizeComponent from '../../components/PageSizeComponent/PageSizeCompon
 
 
 const UserManagement = () => {
-
+  const currentUser = useSelector(state => state.currentUser);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeUsersState, setActiveUsersState] = useState({});
   const [suspendUsersState, setSuspendUsersState] = useState({});
@@ -59,6 +59,34 @@ const UserManagement = () => {
     setCurrentPageState({ ...currentPageState, [tabState]: 1 });
   };
 
+  const handleStatusUpdated = async (e, user) => {
+    e.preventDefault();
+    const body = {
+        "requester": currentUser.name,
+        "user": {
+          "role": user.role,
+          "projects": user.projects,
+          "nci_username": user.nci_username,
+          "first_name": user.first_name,
+          "last_name": user.last_name,
+          "active": 'N',
+          "email": user.email
+      }
+    };
+    const response = await fetch(`${baseUrl}/user/updateuser`, 
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    console.log(data);
+    //refresh user list
+    fetchUsers();
+  }
+
   return (
     <DashboardContainer>
       <div className={styles.sectionContainer}>
@@ -98,7 +126,7 @@ const UserManagement = () => {
                           <td>{user.active === 'Y' ? 'active': 'suspend'}</td>
                           <td>
                             <EditUserModal updateUserList={fetchUsers} username={user.nci_username}/>
-                            <a className={styles.tableLink} href="/#" aria-label="edit">
+                            <a className={styles.tableLink} href="/#" aria-label="suspend" onClick={(e) => handleStatusUpdated(e, user)}>
                               <FontAwesomeIcon icon={faTimes}/>
                             </a>
                           </td>

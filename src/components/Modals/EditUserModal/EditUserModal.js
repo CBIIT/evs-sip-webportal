@@ -60,7 +60,7 @@ const EditUserModal = ({updateUserList, username}) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body) 
+        body: JSON.stringify(body)
       });
       const data = await response.json();
       setUserState(data.user);
@@ -123,11 +123,11 @@ const EditUserModal = ({updateUserList, username}) => {
         <FontAwesomeIcon icon={faEdit}/>
       </a>
 
-      <Modal size="lg" show={show} onHide={handleClose} animation={false}>
+      <Modal size="lg" show={show} onHide={handleClose} animation={false} className={styles.modal}>
+        <Modal.Header closeButton className={styles.modalHeader}>
+          <Modal.Title className={styles.title}>Update User</Modal.Title>
+        </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          <div className={styles.titleContainer}>
-            <Modal.Title className={styles.title}>Edit User</Modal.Title>
-          </div>
           {isLoading === true
           ? <div>Loading...</div>
           : 
@@ -236,8 +236,11 @@ const EditUserModal = ({updateUserList, username}) => {
                   defaultChecked={userState.active === 'Y' ? true : false}
                 />
               </Form.Group>
-              <Button className={styles.submitButton} type="submit" form="form-edit-user">
-                Edit User
+              <Button className={[styles.button, styles.cancelButton]} type="button" onClick={handleClose}>
+                Cancel
+              </Button>
+              <Button className={[styles.button, styles.submitButton]} type="submit" form="form-edit-user">
+                Update User
               </Button>
             </Form>
           }

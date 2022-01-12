@@ -122,10 +122,10 @@ const AddNewUserModal = ({updateUserList}) => {
       </NewUserButton>
 
       <Modal size="lg" show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton className={styles.modalHeader}>
+          <Modal.Title className={styles.title}>Add New User</Modal.Title>
+        </Modal.Header>
         <Modal.Body className={styles.modalBody}>
-          <div className={styles.titleContainer}>
-            <Modal.Title className={styles.title}>Add New User</Modal.Title>
-          </div>
           <Form onSubmit={handleOnSubmitUser} id="form-new-user">
             <Form.Group className={`mb-3 ${styles.formGroup} ${styles.required}`} controlId="formFirstName">
               <Form.Label className={styles.formLabel}>First Name</Form.Label>
@@ -231,7 +231,10 @@ const AddNewUserModal = ({updateUserList}) => {
                 defaultChecked={userState.active === 'Y' ? true : false}
               />
             </Form.Group>
-            <Button className={styles.submitButton} type="submit" form="form-new-user">
+            <Button className={[styles.button, styles.cancelButton]} type="button" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button className={[styles.button, styles.submitButton]} type="submit" form="form-new-user">
               Add User
             </Button>
           </Form>
