@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { baseUrl } from '../../../api';
-import styles from './CTDCSource.module.css';
+import styles from './ICDCSource.module.css';
 import { Table, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ import Button from '../../../components/Button/Button';
 import PaginationController from '../../../components/PaginationController/PaginationController';
 import PageSizeComponent from '../../../components/PageSizeComponent/PageSizeComponent';
 
-const CTDCSource = () => {
+const ICDCSource = () => {
   const [nodeState, setNodeState] = useState({});
   const [propState, setPropState] = useState({});
   const [valueState, setValueState] = useState({});
@@ -38,7 +38,7 @@ const CTDCSource = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${baseUrl}/datamodel/search?keyword=${searchTerm}&model=CTDC&type=${tabState}&page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`);
+      const response = await fetch(`${baseUrl}/datamodel/search?keyword=${searchTerm}&model=ICDC&type=${tabState}&page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`);
       const data = await response.json();
       switch(tabState) {
         case 'nodes':
@@ -268,4 +268,4 @@ const CTDCSource = () => {
     </DashboardContainer>
 )};
 
-export default CTDCSource;
+export default ICDCSource;

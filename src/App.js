@@ -22,7 +22,7 @@ import ChangeReport from './features/ChangeReport';
 import DataSources from './features/DataSources/GDCSource';
 import GDCSource from './features/DataSources/GDCSource';
 import CTDCSource from './features/DataSources/CTDCSource/CTDCSource';
-import ICDCSource from './features/DataSources/ICDCSource';
+import ICDCSource from './features/DataSources/ICDCSource/ICDCSource';
 import PCDCSource from './features/DataSources/PCDCSource';
 import MappingReport from './features/MappingReport';
 import Profile from './features/Profile';
