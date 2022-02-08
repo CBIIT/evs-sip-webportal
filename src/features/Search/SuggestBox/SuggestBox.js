@@ -39,7 +39,7 @@ const SuggestBox = (props) => {
     <Suggest>
       <SuggestContent ref={node} style={props.suggest.length === 0 ? {} : { display: 'block' }}>
         {props.suggest.length !== 0 &&
-          props.suggest.map((item, index) => <SuggestItem item={item} key={index} selected={props.suggestSelected}/>)
+          props.suggest.map((item, index) => <SuggestItem item={item} key={index} suggestClick={props.suggestClick} index={index} selected={props.suggestSelected}/>)
         }
       </SuggestContent>
     </Suggest>

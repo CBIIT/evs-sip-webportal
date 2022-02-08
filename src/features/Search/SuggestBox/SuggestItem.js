@@ -7,6 +7,7 @@ const SuggestObject = styled.div`
   font-size: 1em;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 
   &:hover {
     background-color: #f0f0f0;
@@ -29,7 +30,7 @@ const SuggestType = styled.div`
 const SuggestItem = (props) => {
   return (
     <SuggestObject
-      onClick={e => props.suggestClick(props.id, e)}
+      onClick={e => props.suggestClick(props.item.id, e)}
       className={props.index === props.selected ? 'selected' : ''}>
       <SuggestName>{props.item.id}</SuggestName>
       <SuggestType>{props.item.type.join(', ')}</SuggestType>
