@@ -1,0 +1,81 @@
+.modal :global(.modal-content) {
+  border: 5px solid #628CBD;
+}
+
+.modalHeader {
+  border-bottom: none;
+}
+
+.modalHeader :global(.close) {
+  margin: -1rem;
+}
+
+.modalBody {
+  padding: 2rem 5rem;
+}
+
+.title {
+  font-family: 'Raleway-Bold';
+  padding: 0.5rem 0;
+  inline-size: 16rem;
+  text-transform: uppercase;
+  margin: auto;
+  text-align: center;
+  border-bottom: 1px solid var(--black);
+  font-size: 1.25rem;
+  padding-top: 2rem;
+}
+
+.actionLink {
+  font-size: .9rem;
+  font-weight: 400;
+  padding: 0.25rem 0.375rem;
+  margin-top: 1.5rem;
+}
+
+.formGroup.required > :global(.form-label:after) {
+  content:"*";
+  color:red;
+  padding: 0 0.2rem;
+}
+
+.formLabel {
+  font-size: 14px;
+  color: #597f8b;
+  font-weight: 600;
+  padding-left: 0.2rem;
+}
+
+.formControl {
+  border-radius: 1rem !important;
+}
+
+.button {
+  font-size: 0.87rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  margin: 1.5rem 0;
+  border-radius: 2rem;
+  text-transform: uppercase;
+  padding: 0.5rem 1.5rem;
+  border: 0.375rem double white !important;
+}
+
+.cancelButton {
+  background-color: #666;
+}
+
+.cancelButton:hover,
+.cancelButton:focus {
+  background-color: #444;
+}
+
+.submitButton {
+  background-color: #176bd3;
+}
+
+.submitButton:hover,
+.submitButton:focus {
+  background-color: #0b376d;
+}

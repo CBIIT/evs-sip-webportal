@@ -11,6 +11,8 @@ import SearchFormComponent from '../../../components/SearchFormComponet/SearchFo
 import Button from '../../../components/Button/Button';
 import PaginationController from '../../../components/PaginationController/PaginationController';
 import PageSizeComponent from '../../../components/PageSizeComponent/PageSizeComponent';
+import AddNewValueModal from '../../../components/Modals/AddNewValueModal/AddNewValueModal';
+import AddNewPropertyModal from '../../../components/Modals/AddNewPropertyModal/AddNewPropertyModal';
 
 const ICDCSource = () => {
   const [nodeState, setNodeState] = useState({});
@@ -51,8 +53,8 @@ const ICDCSource = () => {
           setValueState(data[0]);
           break;
       }
-      rowSpanCount(data[0].result,tabState, tabState)
-      setPageCountState(prevPageCountState => ({ ...prevPageCountState, [tabState]: data[0][`total_${tabState}`] / pageSizeState[tabState]}))
+      rowSpanCount(data[0].result,tabState);
+      setPageCountState(prevPageCountState => ({ ...prevPageCountState, [tabState]: data[0][`total_${tabState}`] / pageSizeState[tabState]}));
     }
 
     fetchData();
@@ -80,6 +82,7 @@ const ICDCSource = () => {
   };
 
   const rowSpanCount = (result, type) => {
+    if(result === undefined || result.length === 0) return;
     let rowSpan = {};
     switch(tabState) {
       case 'nodes':
@@ -151,14 +154,17 @@ const ICDCSource = () => {
                         <tr key={v.Node_Name + "-" + v.Property_Name + "-" + i}>
                           {(i === 0 || valueState.result[i - 1].Node_Name !== v.Node_Name || valueState.result[i - 1].Property_Name !== v.Property_Name) &&
                             <td rowSpan={rowSpanState[v.Category + "-" + v.Node_Name + "-" + v.Property_Name]}>
-                              {'Category_Name'}
-                              <ul className={styles.tableUl}>
-                                <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{v.Node_Name}
-                                  <ul className={styles.tableUl}>
-                                    <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{v.Property_Name}</li>
-                                  </ul>
-                                </li>
-                              </ul>
+                              <div>
+                                {'Category_Name'}
+                                <ul className={styles.tableUl}>
+                                  <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{v.Node_Name}
+                                    <ul className={styles.tableUl}>
+                                      <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{v.Property_Name}</li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                              </div>
+                              <AddNewValueModal/>
                             </td>
                           }
                           <td>{v.Value}</td>
@@ -196,23 +202,28 @@ const ICDCSource = () => {
                   {propState.result.map((p, i) => { 
                     return(
                       <tr>
-                      <td>
-                        {'Category_Name'}
-                        <ul className={styles.tableUl}>
-                          <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{p.Node_Name}</li>
-                        </ul>
-                      </td>
-                      <td>{p.Property_Name}</td>
-                      <td>{p.Property_Ncitcode}</td>
-                      <td>
-                        <a class="tableLink" href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faEdit}/>
-                        </a>
-                        <a class="tableLink" href="/#" aria-label="edit">
-                          <FontAwesomeIcon icon={faTimes}/>
-                        </a>
-                      </td>
-                    </tr>   
+                        {(i === 0 || propState.result[i - 1].Category !== p.Category || propState.result[i - 1].Node_Name !== p.Node_Name) &&
+                        <td rowSpan={rowSpanState[p.Category + "-" + p.Node_Name]}>
+                          <div>
+                            {'Category_Name'}
+                            <ul className={styles.tableUl}>
+                              <li className={styles.tableLi}><span className={styles.spanIcon}><FontAwesomeIcon icon={faAngleDown}/></span>{p.Node_Name}</li>
+                            </ul>
+                          </div>
+                          <AddNewPropertyModal/>
+                        </td>
+                        }
+                        <td>{p.Property_Name}</td>
+                        <td>{p.Property_Ncitcode}</td>
+                        <td>
+                          <a class="tableLink" href="/#" aria-label="edit">
+                            <FontAwesomeIcon icon={faEdit}/>
+                          </a>
+                          <a class="tableLink" href="/#" aria-label="edit">
+                            <FontAwesomeIcon icon={faTimes}/>
+                          </a>
+                        </td>
+                      </tr>   
                     )
                   })}
                 </tbody>
