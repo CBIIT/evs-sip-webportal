@@ -73,6 +73,7 @@ const ICDCSource = () => {
     e.preventDefault();
     const value = e.target[0].value;
     setSearchTerm(value);
+    setCurrentPageState({ ...currentPageState, [tabState]: 1 });
   }
 
   const handlePageSize = async e => {

@@ -120,10 +120,6 @@ const ColRight = styled(Col)`
   text-align: right;
 `;
 
-const LinkDesc = styled.a`
-  padding-left: 0.5rem;
-`;
-
 const Indicator = styled.div`
   position: relative;
   padding-bottom: 36%;
@@ -143,6 +139,26 @@ const IndicatorContent = styled.div`
   left: 0;
   right: 0;
   transform: translateY(-50%);
+`;
+
+const Description = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0;
+`;
+
+const LinkDesc = styled.a`
+  // position: absolute;
+  // right: 0;
+  // bottom: 0;
+`;
+
+const DescriptionContent = styled.div`
+  position: relative;
 `;
 
 const PropsTable = (props) => {
@@ -305,7 +321,6 @@ const PropsTable = (props) => {
   };
 
   const DescCollapse = (props) => {
-
     let [isToggleOn, setIsToggleOn] = useState(false);
 
     const ToggleTableHandler = event => {
@@ -314,17 +329,12 @@ const PropsTable = (props) => {
     };
 
     return (
-      <p>
-        <span dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc.substring(0, 138)}}></span>
-        {props.desc.length >= 138 &&
-          <>
-            <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
-            <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
-              {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
-            </LinkDesc>
-          </>
-        }
-      </p>
+      <DescriptionContent>
+        <Description style={{'WebkitLineClamp': isToggleOn === true ? 'initial' : 3}} dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc}}></Description>
+        <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+          {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
+        </LinkDesc>
+      </DescriptionContent>
     );
   };
 
