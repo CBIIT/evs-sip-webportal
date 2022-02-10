@@ -171,10 +171,10 @@ const ICDCSource = () => {
                           <td>{v.Value}</td>
                           <td>{v.Term_Ncitcode}</td>
                           <td>
-                            <a class="tableLink" href="/#" aria-label="edit">
+                            <a className={styles.tableLink} href="/#" aria-label="edit">
                               <FontAwesomeIcon icon={faEdit}/>
                             </a>
-                            <a class="tableLink" href="/#" aria-label="edit">
+                            <a className={styles.tableLink} href="/#" aria-label="edit">
                               <FontAwesomeIcon icon={faTimes}/>
                             </a>
                           </td>
@@ -217,10 +217,10 @@ const ICDCSource = () => {
                         <td>{p.Property_Name}</td>
                         <td>{p.Property_Ncitcode}</td>
                         <td>
-                          <a class="tableLink" href="/#" aria-label="edit">
+                          <a className={styles.tableLink} href="/#" aria-label="edit">
                             <FontAwesomeIcon icon={faEdit}/>
                           </a>
-                          <a class="tableLink" href="/#" aria-label="edit">
+                          <a className={styles.tableLink} href="/#" aria-label="edit">
                             <FontAwesomeIcon icon={faTimes}/>
                           </a>
                         </td>
@@ -255,10 +255,10 @@ const ICDCSource = () => {
                       <td>{n.Node_Name}</td>
                       <td>{n.Node_Ncitcode}</td>
                       <td>
-                        <a class="tableLink" href="/#" aria-label="edit">
+                        <a className={styles.tableLink} href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faEdit}/>
                         </a>
-                        <a class="tableLink" href="/#" aria-label="edit">
+                        <a className={styles.tableLink} href="/#" aria-label="edit">
                           <FontAwesomeIcon icon={faTimes}/>
                         </a>
                       </td>
