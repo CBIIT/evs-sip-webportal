@@ -331,9 +331,12 @@ const PropsTable = (props) => {
     return (
       <DescriptionContent>
         <Description style={{'WebkitLineClamp': isToggleOn === true ? 'initial' : 3}} dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc}}></Description>
-        <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
-          {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
-        </LinkDesc>
+        {props.desc.replace(/<b>/g, "").replace(/<\/b>/g, "").length > 200 &&
+          <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+            {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
+          </LinkDesc> 
+        }
+
       </DescriptionContent>
     );
   };
