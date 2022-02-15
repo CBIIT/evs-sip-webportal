@@ -26,6 +26,7 @@ const SearchBar = styled.div`
 
 const SearchFormControl = styled(Form.Control)`
   width: 100% !important;
+  padding: 0.375rem 7.5rem 0.375rem 0.75rem;
   border-radius: 0;
   background-color: transparent;
   border: 1px solid transparent;
