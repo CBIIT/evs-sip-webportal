@@ -15,6 +15,7 @@ import RequireAuthorization from './components/RequireAuthorization/RequireAutho
 // Pages
 import Home from './features/Home';
 import About from './features/About';
+import APIDocs from './features/APIDocs';
 import Search from './features/Search';
 import DataModel from './features/DataModel';
 import ReportDiff from './features/ReportDiff';
@@ -48,6 +49,7 @@ function App() {
               <Route path="/search" component={Search} />
               <Route path="/datamodel" component={DataModel} />
               <Route path="/about" component={About} />
+              <Route path="/apidocs" component={APIDocs} />
               <Route path="/reportdiff" component={ReportDiff} />
               <Route path="/changereport" component={ChangeReport} />
               <Route exact path="/mainboard" render={() => 

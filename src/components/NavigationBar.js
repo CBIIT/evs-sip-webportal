@@ -155,6 +155,7 @@ const NavigationBar = () => {
                 }
               }}>PCDC</NavDropdownItem>
             </NavDropdownStyled>
+            <Nav.Link as={Link} to="/apidocs">API</Nav.Link>
             <Nav.Link as={Link} to="/about">About</Nav.Link>
             {isLoggedIn ? 
               <NavDropdownStyled title={currentUser.name}>
