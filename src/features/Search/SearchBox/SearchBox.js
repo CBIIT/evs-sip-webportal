@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 import { apiSuggest, apiSearchAll } from '../../../api';
-import { InputGroup, Form, Button } from 'react-bootstrap';
+import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from '../SuggestBox/SuggestBox';
@@ -24,7 +24,7 @@ const SearchBar = styled.div`
   margin: 0 auto;
 `;
 
-const SearchFormControl = styled(Form.Control)`
+const SearchFormControl = styled(FormControl)`
   width: 100% !important;
   padding: 0.375rem 7.5rem 0.375rem 0.75rem;
   border-radius: 0;
@@ -52,12 +52,12 @@ const SearchFormControl = styled(Form.Control)`
 `;
 
 const SearchButton = styled(Button)`
-  position: absolute;
+  position: absolute !important;
+  z-index: 3 !important;
   right: 0rem;
   bottom: 0;
   top: 0;
   margin: auto;
-  z-index: 3;
   background-color: #A1A0A0;
   border-radius: 2rem !important;
   color: var(--white);
@@ -106,16 +106,13 @@ const SearchOptionsLabel = styled.label`
   margin-bottom: 0.7rem;
 `;
 
-const FormGroupStyled = styled(Form.Group)`
-  // display: flex;
-  // justify-content: space-between;
-  // align-items: flex-start;
+const FormGroupStyled = styled.div`
   margin-left: 3rem;
   margin-bottom: 0;
   width: 33rem;
 `;
 
-const FormGroupRadio = styled(Form.Group)`
+const FormGroupRadio = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
@@ -159,8 +156,8 @@ const SpanNormal = styled.span`
 `; 
 
 const CheckboxInput = styled.input`
-  margin: 0!important;
-  position: absolute!important;
+  margin: 0 !important;
+  position: absolute !important;
   top: 0.5rem;
   left: 0.35rem;
 
@@ -364,14 +361,14 @@ const SearchBox = (props) => {
   const checkedToggleHandler = event => {
     props.setOptionsSearch({
       ...props.options,
-      [event.target.name]: !event.target.checked
+      [event.target.name]: event.target.checked
     })
   };
 
   const selectDataToggleHandler = event => {
     props.setDataSources({
       ...props.dataSources,
-      [event.target.name]: !event.target.checked
+      [event.target.name]: event.target.checked
     });
   };
 

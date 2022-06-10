@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { apiSuggest } from '../../../api';
 import styled from 'styled-components';
-import { Container, Row, Col, InputGroup, Button, Form} from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, Button, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import SuggestBox from '../../Search/SuggestBox/SuggestBox';
@@ -57,7 +57,7 @@ const SearchBox = styled.div`
   width: 100%;
 `;
 
-const InputBox = styled(Form.Control)`
+const InputBox = styled(FormControl)`
   font-family: 'Lato-Bold', sans-serif;
   font-size: 1.125rem;
   padding: 0.5rem 1rem;
@@ -72,15 +72,12 @@ const InputBox = styled(Form.Control)`
   }
 `;
 
-const InputBoxBtnContainer = styled(InputGroup.Append)`
-  position: absolute;
+const InputBoxButton = styled(Button)`
+  position: absolute !important;
+  z-index: 3 !important;
   right: 0.3125rem;
   top: 0.3125rem;
   bottom: 0.3125rem;
-  z-index: 10;
-`;
-
-const InputBoxButton = styled(Button)`
   background-color: #D2D2D2;
   border-radius: 2rem !important;
   color: var(--white);
@@ -136,12 +133,12 @@ const SelectBtn = styled(Button)`
   }
 `;
 
-const FormGroupStyled = styled(Form.Group)`
+const FormGroupStyled = styled.div`
   width: 30rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
 `;
 
 const CheckboxLabel = styled.label`
@@ -152,6 +149,7 @@ const CheckboxLabel = styled.label`
   width: 8rem;
   inline-size: 8rem;
   line-height: 1rem;
+  cursor: pointer;
 `;
 
 const CheckboxBtn = styled.span`
@@ -259,7 +257,7 @@ const Search = (props) => {
   const selectDataToggleHandler = event => {
     props.setDataSources({
       ...props.dataSources,
-      [event.target.name]: !event.target.checked
+      [event.target.name]: event.target.checked
     });
   };
 
@@ -305,11 +303,9 @@ const Search = (props) => {
                 onChange={suggestHandler}
                 onKeyDown={suggestKeyPressHandler}
               />
-              <InputBoxBtnContainer>
-                <InputBoxButton aria-label="search" onClick={() => searchHandler(props.keyword, props.dataSources)}>
-                  <InputBoxIcon icon={faArrowRight}/>
-                </InputBoxButton>
-              </InputBoxBtnContainer>
+              <InputBoxButton aria-label="search" onClick={() => searchHandler(props.keyword, props.dataSources)}>
+                <InputBoxIcon icon={faArrowRight}/>
+              </InputBoxButton>
             </InputGroup>
             <SuggestBox
               suggest={suggestState}

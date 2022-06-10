@@ -3,8 +3,6 @@ import React, {useState} from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 //import Select from 'react-select';
 import styles from './AddNewValueModal.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 //import { baseUrl } from '../../../api';
 
