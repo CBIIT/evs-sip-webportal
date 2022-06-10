@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
-import { baseServer } from '../../api';
+import { baseHomeUrl } from '../../api';
 
 const ContentBox =  styled.div`
   padding: 1rem 0;
@@ -18,7 +18,7 @@ const ContentBox =  styled.div`
 
 const SwaggerContainer = () => {
   return <ContentBox>
-      <SwaggerUI url={baseServer + '/api/swaggerjson/'}/>
+      <SwaggerUI url={baseHomeUrl + '/api/swaggerjson/'}/>
   </ContentBox>
 }
 
