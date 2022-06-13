@@ -1,60 +1,10 @@
-import styled from 'styled-components'
-
-import bkgd from '../../assets/img/integrate-evs.jpg'
-
-const ContentBox = styled.div`
-  padding: 2.5rem;
-  margin-bottom: 2.5rem;
-  background-color: var(--white-bkgd);
-`
-
-const ContentBoxIntegrate = styled(ContentBox)`
-  background-image: url(${bkgd});
-  background-position: right;
-  background-repeat: no-repeat;
-  background-size: contain;
-`
-
-const ContentBoxTitle = styled.h2`
-  font-family: 'Raleway-Bold', sans-serif;
-  font-size: 1.5rem;
-  color: var(--sub-title);
-  text-transform: uppercase;
-
-  &&::after {
-    content: '';
-    border: 1px solid var(--black);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: block;
-    max-width: 24rem;
-  }
-`
-
-const ContentBoxText = styled.div`
-  margin-top: 2rem;
-  max-width: 44rem;
-
-  && > p {
-    font-size: 1.0625rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-  }
-
-  && > p:last-child {
-    margin-bottom: 0;
-  }
-
-  && a {
-    color: var(--link);
-  }
-`
+import styles from './Integrate.module.css'
 
 const Integrate = () => {
   return (
-    <ContentBoxIntegrate>
-      <ContentBoxTitle>EVS-SIP Data Integration Process</ContentBoxTitle>
-      <ContentBoxText>
+    <div className={styles.box}>
+      <h2 className={styles.title}>EVS-SIP Data Integration Process</h2>
+      <div className={styles.content}>
         <p>
           EVS-SIP is an open platform and can integrate data models from any sources into the platform. Please execute
           the following steps:
@@ -93,8 +43,8 @@ const Integrate = () => {
           performed by terminology experts. Please contact EVS team @{' '}
           <a href="mailto:ncithesaurus@mail.nih.gov">ncithesaurus@mail.nih.gov</a> with questions or for assistance.
         </p>
-      </ContentBoxText>
-    </ContentBoxIntegrate>
+      </div>
+    </div>
   )
 }
 

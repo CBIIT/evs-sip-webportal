@@ -1,60 +1,10 @@
-import styled from 'styled-components'
-
-import bkgd from '../../assets/img/about-evs.jpg'
-
-const ContentBox = styled.div`
-  padding: 2.5rem;
-  margin-bottom: 2.5rem;
-  background-color: var(--white-bkgd);
-`
-
-const ContentBoxAbout = styled(ContentBox)`
-  background-image: url(${bkgd});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`
-
-const ContentBoxTitle = styled.h2`
-  font-family: 'Raleway-Bold', sans-serif;
-  font-size: 1.5rem;
-  color: var(--sub-title);
-  text-transform: uppercase;
-
-  &&::after {
-    content: '';
-    border: 1px solid var(--black);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: block;
-    max-width: 24rem;
-  }
-`
-
-const ContentBoxText = styled.div`
-  margin-top: 2rem;
-  max-width: 34rem;
-
-  && > p {
-    font-size: 1.0625rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-  }
-
-  && > p:last-child {
-    margin-bottom: 0;
-  }
-
-  && a {
-    color: var(--link);
-  }
-`
+import styles from './Description.module.css'
 
 const Description = () => {
   return (
-    <ContentBoxAbout>
-      <ContentBoxTitle>About EVS-SIP</ContentBoxTitle>
-      <ContentBoxText>
+    <div className={styles.box}>
+      <div className={styles.title}>About EVS-SIP</div>
+      <div className={styles.content}>
         <p>
           The EVS Semantic Integration Platform (EVS-SIP) is a service developed and maintained by the National Cancer
           Institute (NCI){' '}
@@ -77,8 +27,8 @@ const Description = () => {
           multiple data repositories by providing relationships between the terms in each catalogue and visual
           representations of the models used for data collection.
         </p>
-      </ContentBoxText>
-    </ContentBoxAbout>
+      </div>
+    </div>
   )
 }
 

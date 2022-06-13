@@ -1,4 +1,15 @@
 build
 src/components
-src/features
+src/features/APIDocs
+src/features/ChangeReport
+src/features/Dashboard
+src/features/DataModel
+src/features/DataSources
+src/features/Home
+src/features/MappingReport
+src/features/ModelBuilder
+src/features/NotFound
+src/features/Profile
+src/features/ReportDiff
+src/features/Search
 src/**/*.test.js

@@ -1,0 +1,40 @@
+.box {
+  padding: 2.5rem;
+  margin-bottom: 2.5rem;
+  background-color: var(--white-bkgd);
+}
+
+.title {
+  font-family: 'Raleway-Bold', sans-serif;
+  font-size: 1.5rem;
+  color: var(--sub-title);
+  text-transform: uppercase;
+}
+
+.title::after {
+  content: '';
+  border: 1px solid var(--black);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: block;
+  max-width: 24rem;
+}
+
+.content {
+  margin-top: 2rem;
+  max-width: 100%;
+}
+
+.content > p {
+  font-size: 1.0625rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--black);
+}
+
+.content > p:last-child {
+  margin-bottom: 0;
+}
+
+.content a {
+  color: var(--link);
+}
