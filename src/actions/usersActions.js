@@ -10,11 +10,10 @@ const usersLoaded = (users) => ({
   payload: users,
 })
 
-
 const usersActions = {
   userAdded,
   changedStatus,
-  usersLoaded
+  usersLoaded,
 }
 
-export default usersActions;
+export default usersActions
