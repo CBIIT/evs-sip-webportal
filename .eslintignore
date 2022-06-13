@@ -8,7 +8,6 @@ src/features/DataSources
 src/features/Home
 src/features/MappingReport
 src/features/ModelBuilder
-src/features/NotFound
 src/features/Profile
 src/features/ReportDiff
 src/features/Search

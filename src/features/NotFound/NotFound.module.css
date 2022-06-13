@@ -1,0 +1,30 @@
+.page {
+  background-color: #f9f9f9;
+  overflow: auto;
+  padding-bottom: 18rem;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rem 0;
+}
+
+.content {
+  text-align: center;
+}
+
+.title {
+  font-family: 'Raleway-Medium', sans-serif;
+  font-size: 6rem;
+  margin: 0 auto;
+}
+
+.subtitle {
+  font-family: 'Raleway-Medium', sans-serif;
+  font-size: 2rem;
+  margin: 0 auto;
+}

@@ -26,7 +26,7 @@ import MappingReport from './features/MappingReport'
 import Profile from './features/Profile'
 import ModelBuilder from './features/ModelBuilder'
 import UserManagement from './features/UserManagement/UserManagement'
-import NotFound from './features/NotFound'
+import NotFound from './features/NotFound/NotFound'
 
 const MainContainer = styled.div`
   position: relative;
