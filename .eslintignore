@@ -1,0 +1,6 @@
+build
+src/actions
+src/assets
+src/components
+src/features
+src/**/*.test.js
