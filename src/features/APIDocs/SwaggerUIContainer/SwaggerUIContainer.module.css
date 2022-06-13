@@ -1,0 +1,12 @@
+.box {
+  padding: 1rem 0;
+  margin: 2.5rem 0;
+  background-color: var(--white-bkgd);
+}
+
+.box h1,
+.box h2,
+.box h3,
+.box h4 {
+  line-height: initial;
+}

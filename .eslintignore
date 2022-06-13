@@ -1,6 +1,5 @@
 build
 src/components
-src/features/APIDocs
 src/features/ChangeReport
 src/features/Dashboard
 src/features/DataModel

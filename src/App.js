@@ -13,7 +13,7 @@ import RequireAuthorization from './components/RequireAuthorization/RequireAutho
 // Pages
 import Home from './features/Home'
 import About from './features/About/About'
-import APIDocs from './features/APIDocs'
+import APIDocs from './features/APIDocs/APIDocs'
 import Search from './features/Search'
 import DataModel from './features/DataModel'
 import ReportDiff from './features/ReportDiff'
