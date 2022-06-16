@@ -1,0 +1,79 @@
+.section {
+  height: 38rem;
+}
+
+.wrap-bkgd {
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.bkgd {
+  display: flex;
+  align-items: stretch;
+  height: 38rem;
+  width: 100%;
+  position: absolute;
+}
+
+.bkgd-left {
+  background: url('../../../assets/img/graph-bkgd.jpg') no-repeat center;
+  background-size: cover;
+  background-color: #042a68;
+  width: 66.666667%;
+}
+
+.bkgd-right {
+  background-color: var(--graphic-blue);
+  width: 33.333333%;
+}
+
+.container {
+  max-width: 80rem;
+  height: 100%;
+  position: relative;
+}
+
+.row {
+  height: 100%;
+}
+
+.diagram {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.diagram-img {
+  max-width: 95%;
+}
+
+.graph-container {
+  background-color: var(--graphic-blue);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.graph-title {
+  font-family: 'Raleway-Medium', sans-serif;
+  width: 22rem;
+  inline-size: 22rem;
+  font-size: 1.875rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.graph-paragraph {
+  font-family: 'Inter', sans-serif;
+  width: 22rem;
+  inline-size: 22rem;
+  font-size: 1.0625rem;
+  color: #b9fee6;
+  margin-top: 1.5rem;
+}

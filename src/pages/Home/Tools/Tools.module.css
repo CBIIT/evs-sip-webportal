@@ -1,0 +1,116 @@
+.section {
+  height: 50rem;
+  background-color: var(--tools-green);
+  background: linear-gradient(90deg, var(--white-bkgd) 40%, var(--tools-green) 40%);
+}
+
+.container {
+  max-width: 80rem;
+  background: url(../../../assets/img/tools-bkgd.jpg) no-repeat top;
+  height: 100%;
+}
+
+.row {
+  height: 100%;
+}
+
+.tools {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 3rem;
+}
+
+.tools-container {
+  height: 36rem;
+  width: 40rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolbox {
+  width: 17rem;
+  margin: 0.8rem 1rem;
+}
+
+.toolbox .toolbox-link-container .toolbox-link {
+  background-color: var(--toolbox-link);
+  color: var(--white);
+  border-radius: 0 0 1rem 1rem;
+  border: var(--toolbox-link) 0.125rem solid;
+  font-size: 0.6875rem;
+  padding: 0;
+}
+
+.toolbox .toolbox-link-container .toolbox-link:hover,
+.toolbox .toolbox-link-container .toolbox-link:focus {
+  background-color: var(--toolbox-link-select);
+  border: var(--toolbox-link-select) 0.125rem solid;
+  color: #b9fee6;
+  text-decoration: underline;
+}
+
+.toolbox-container {
+  width: 100%;
+  height: 14rem;
+  border: #B7B7B7 0.125rem solid;
+  border-bottom: none;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.toolbox-link-container{
+  display: block;
+  width: 100%;
+}
+
+.toolbox-link {
+  display: block;
+  line-height: 2rem;
+  font-family: 'Raleway-ExtraBold', sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.0625rem;
+}
+
+.toolbox-img {
+  max-width: 5rem;
+  margin: 3rem auto 1.5rem;
+  display: block;
+}
+
+.toolbox-title-container {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.toolbox-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--toolbox-title);
+  text-transform: uppercase;
+  width: 8rem;
+  inline-size: 8rem;
+  margin: auto;
+  text-align: center;
+  line-height: 1rem;
+  letter-spacing: 0.03125rem;
+}
+
+.tools-title-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tools-title {
+  font-family: 'Raleway-Medium', sans-serif;
+  width: 10rem;
+  inline-size: 10rem;
+  font-size: 2.25rem;
+  line-height: 2.8rem;
+  font-weight: 500;
+}

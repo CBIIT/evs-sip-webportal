@@ -11,7 +11,7 @@ import Layout from './components/Layout'
 import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization'
 
 // Pages
-import Home from './pages/Home'
+import Home from './pages/Home/Home'
 import About from './pages/About/About'
 import APIDocs from './pages/APIDocs/APIDocs'
 import Search from './pages/Search'
