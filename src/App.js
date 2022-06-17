@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 // components
-import Header from './components/Header'
+import Header from './components/Header/Header'
 import NavigationBar from './components/NavigationBar'
-import Footer from './components/Footer'
-import Layout from './components/Layout'
+import Footer from './components/Footer/Footer'
+import Layout from './components/Layout/Layout'
 import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization'
 
 // Pages

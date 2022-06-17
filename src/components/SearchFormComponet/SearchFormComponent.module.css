@@ -17,7 +17,7 @@
   display: inline-block;
   position: absolute;
   right: 0;
-  color: #1B6BEE;
+  color: #1b6bee;
   background-color: transparent;
   border-color: transparent;
   border-radius: 2rem;
@@ -26,14 +26,14 @@
 .searchButton:hover,
 .searchButton:focus {
   color: #0056b3;
-  background-color: rgba(0, 0, 0, 0.10);
+  background-color: rgba(0, 0, 0, 0.1);
   border-color: transparent;
   box-shadow: none;
 }
 
 .searchButton:active {
   color: #0056b3 !important;
-  background-color: rgba(0, 0, 0, 0.20) !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }

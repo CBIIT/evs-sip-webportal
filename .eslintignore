@@ -1,5 +1,14 @@
 build
-src/components
+src/components/Button
+src/components/DashboardContainer
+src/components/GraphicalView
+src/components/Modals
+src/components/PaginationController
+src/components/RequireAuthorization
+src/components/Unauthorized
+src/components/Header.js
+src/components/LoadingAnimation.js
+src/components/NavigationBar.js
 src/pages/ChangeReport
 src/pages/Dashboard
 src/pages/DataModel

@@ -1,0 +1,9 @@
+.header {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.logo {
+  height: 5rem;
+  padding: 1rem;
+}
