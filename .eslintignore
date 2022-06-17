@@ -6,14 +6,10 @@ src/components/Modals
 src/components/PaginationController
 src/components/RequireAuthorization
 src/components/Unauthorized
-src/components/Header.js
-src/components/LoadingAnimation.js
-src/components/NavigationBar.js
 src/pages/ChangeReport
 src/pages/Dashboard
 src/pages/DataModel
 src/pages/DataSources
-src/pages/Home
 src/pages/MappingReport
 src/pages/ModelBuilder
 src/pages/Profile

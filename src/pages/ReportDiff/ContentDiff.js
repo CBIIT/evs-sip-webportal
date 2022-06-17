@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import { compareAllWithGDCDictionary, exportCompareResult, exportAllCompareResult } from '../../api';
 
-import LoadingAnimation from '../../components/LoadingAnimation';
+import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 import FormDiff from './FormDiff';
 import TabController from './TabController';
 

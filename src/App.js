@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 // components
 import Header from './components/Header/Header'
-import NavigationBar from './components/NavigationBar'
+import NavigationBar from './components/NavigationBar/NavigationBar'
 import Footer from './components/Footer/Footer'
 import Layout from './components/Layout/Layout'
 import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization'

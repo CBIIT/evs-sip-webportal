@@ -6,7 +6,7 @@ import { InputGroup, FormControl, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from '../SuggestBox/SuggestBox';
-import LoadingAnimation from '../../../components/LoadingAnimation';
+import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation';
 // import GDCValues from './dialogs/GDCValues';
 
 const SearchBoxContainer = styled.div`
