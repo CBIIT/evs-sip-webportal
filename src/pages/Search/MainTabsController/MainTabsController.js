@@ -157,7 +157,7 @@ const MainTabsController = (props) => {
                     <SingleTabsController source={props.result.returnList} info={props.result.info}/>
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="graph">
-                    <GraphTabsController keyword={props.keyword} source={props.result.returnList}/>
+                    <GraphTabsController keyword={props.searchTerm} source={props.result.returnList}/>
                   </Tab.Pane>
                 </TabContentStyled>
               </Col>
@@ -175,7 +175,7 @@ const MainTabsController = (props) => {
               <TabNavTextCol sm={12}>
                 <Indicator>
                   <h2>
-                    Sorry, no results found for keyword: <span>{props.keyword}</span>
+                    Sorry, no results found for keyword: <span>{props.searchTerm}</span>
                   </h2>
                 </Indicator>
               </TabNavTextCol>
@@ -190,7 +190,7 @@ const MainTabsController = (props) => {
           <Container>
             <Row className="clearfix">
               <TabNavTextCol sm={12}>
-                <TabNavText>Search Results for <TabNavSpan>{props.keyword}</TabNavSpan> in:</TabNavText>
+                <TabNavText>Search Results for <TabNavSpan>{props.searchTerm}</TabNavSpan> in:</TabNavText>
                   <AlertContainer>
                   <Alert variant="danger">
                     <Alert.Heading>Error!</Alert.Heading>

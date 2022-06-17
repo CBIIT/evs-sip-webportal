@@ -1,6 +1,4 @@
 build
-src/components/Button
-src/components/DashboardContainer
 src/components/GraphicalView
 src/components/Modals
 src/components/PaginationController

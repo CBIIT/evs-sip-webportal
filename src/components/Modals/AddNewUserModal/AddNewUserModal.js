@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import styles from './AddNewUserModal.module.css';
-import NewUserButton from '../../Button/Button';
+import NewUserButton from '../../DashboardButton/DashboardButton';
 
 import { baseUrl } from '../../../api';
 

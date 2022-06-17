@@ -4,7 +4,7 @@
   padding-bottom: 18rem;
 }
 
-.pagesContainer {
+.page-container {
   max-width: 80rem;
   margin: 0 auto;
   background: #fff url(../../assets/img/dash-bkgd.jpg) no-repeat top right;
@@ -12,17 +12,17 @@
   margin-top: 3rem;
 }
 
-.titleContanier {
+.title-contanier {
   padding: 3rem 2rem 0.5rem 2rem;
 }
 
-.pageTitle {
-  font-family: 'Raleway-Medium',sans-serif;
+.title {
+  font-family: 'Raleway-Medium', sans-serif;
   font-size: 1.625rem;
   color: #35393a;
   font-weight: 500;
   text-transform: uppercase;
-  border-bottom: 0.2rem solid #35393a;;
+  border-bottom: 0.2rem solid #35393a;
   width: fit-content;
 }
 
