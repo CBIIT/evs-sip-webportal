@@ -157,7 +157,7 @@ const Search = () => {
                           name="gdc"
                           type="checkbox"
                           checked={dataSources.gdc}
-                          onClick={selectDataToggleHandler}
+                          onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
                           <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
@@ -170,7 +170,7 @@ const Search = () => {
                           name="ctdc"
                           type="checkbox"
                           checked={dataSources.ctdc}
-                          onClick={selectDataToggleHandler}
+                          onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
                           <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
@@ -183,7 +183,7 @@ const Search = () => {
                           name="icdc"
                           type="checkbox"
                           checked={dataSources.icdc}
-                          onClick={selectDataToggleHandler}
+                          onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
                           <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
@@ -198,7 +198,7 @@ const Search = () => {
                           name="pcdc"
                           type="checkbox"
                           checked={dataSources.pcdc}
-                          onClick={selectDataToggleHandler}
+                          onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
                           <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
