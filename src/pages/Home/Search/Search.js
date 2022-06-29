@@ -21,8 +21,8 @@ const Search = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const searchHandler = (kw, sources) => {
-    const keywordCase = kw.trim()
+  const searchHandler = (kywd) => {
+    const keywordCase = kywd.trim()
     dispatch(setKeyword(keywordCase))
     dispatch(setIsSearching(true))
     history.push('./search')
@@ -37,12 +37,12 @@ const Search = () => {
     if (event.keyCode === 13 && selectIndexState === -1) {
       dispatch(setKeyword(event.target.value))
       setSuggestState([])
-      searchHandler(event.target.value, dataSources)
+      searchHandler(event.target.value)
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
       dispatch(setKeyword(suggestState[selectIndexState].id))
       setSuggestState([])
-      searchHandler(suggestState[selectIndexState].id, dataSources)
+      searchHandler(suggestState[selectIndexState].id)
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState
@@ -60,7 +60,7 @@ const Search = () => {
   const suggestClickHandler = (id, event) => {
     dispatch(setKeyword(id))
     setSuggestState([])
-    searchHandler(id, dataSources)
+    searchHandler(id)
   }
 
   const cleanSuggestHandler = () => {
@@ -125,7 +125,7 @@ const Search = () => {
                   <Button
                     className={styles['input-box-btn']}
                     aria-label="search"
-                    onClick={() => searchHandler(keyword, dataSources)}
+                    onClick={() => searchHandler(keyword)}
                   >
                     <FontAwesomeIcon className={styles['input-box-icon']} icon={faArrowRight} />
                   </Button>

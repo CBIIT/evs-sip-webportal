@@ -413,7 +413,7 @@ const SearchBox = (props) => {
         desc: false,
         syns: false
       });
-      searchHandler(props.keyword, props.match, props.options, props.dataSource);
+      searchHandler(props.keyword, props.match, props.options, props.dataSources);
     }
   });
 
