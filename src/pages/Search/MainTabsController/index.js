@@ -3,9 +3,9 @@ import MainTabsController from './MainTabsController'
 
 const ReduxMainTabsController = (() => {
   const mapStateToProps = (state) => ({
-    searchTerm: state.ddsearch.searchTerm,
-    result: state.ddsearch.result,
-    error: state.ddsearch.error,
+    searchTerm: state.searchReducer.searchTerm,
+    result: state.searchReducer.result,
+    error: state.searchReducer.error,
   });
 
   return connect(mapStateToProps)(MainTabsController);

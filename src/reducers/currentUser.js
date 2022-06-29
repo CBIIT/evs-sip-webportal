@@ -28,7 +28,6 @@ export function fetchUser() {
       const value = await response.json()
       dispatch(setUser(value))
     } catch (e) {
-      console.log(e)
       dispatch(setUser({ error: String(e) }))
     }
   }
@@ -41,7 +40,6 @@ export function updateUserSession() {
       const value = await response.json()
       dispatch(setUser(value))
     } catch (e) {
-      console.log(e)
       dispatch(setUser({ error: String(e) }))
     }
   }

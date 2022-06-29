@@ -1,10 +1,3 @@
-import { combineReducers } from 'redux'
-
-import ddgraph from './components/GraphicalView/DataDictionary/reducers'
-import submission from './components/GraphicalView/reducers'
-import currentUser from './reducers/currentUser'
-import usersList from './reducers/usersList'
-
 const initialState = {
   keyword: '',
   match: 'partial',
@@ -25,7 +18,7 @@ const initialState = {
   isSerching: false,
 }
 
-const ddsearch = (state = initialState, action) => {
+const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_KEYWORD':
       return {
@@ -77,12 +70,4 @@ const ddsearch = (state = initialState, action) => {
   }
 }
 
-const reducers = combineReducers({
-  ddsearch,
-  currentUser,
-  usersList,
-  ddgraph,
-  submission,
-})
-
-export default reducers
+export default searchReducer

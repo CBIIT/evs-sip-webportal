@@ -15,15 +15,15 @@ import {
 
 const ReduxSearchBox = (() => {
   const mapStateToProps = state => ({
-    keyword: state.ddsearch.keyword,
-    result: state.ddsearch.result,
-    error: state.ddsearch.error,
-    match: state.ddsearch.match,
-    options: state.ddsearch.options,
-    dataSources: state.ddsearch.dataSources,
-    searchTerm: state.ddsearch.searchTerm,
-    isLoading: state.ddsearch.isLoading,
-    isSearching: state.ddsearch.isSearching,
+    keyword: state.searchReducer.keyword,
+    result: state.searchReducer.result,
+    error: state.searchReducer.error,
+    match: state.searchReducer.match,
+    options: state.searchReducer.options,
+    dataSources: state.searchReducer.dataSources,
+    searchTerm: state.searchReducer.searchTerm,
+    isLoading: state.searchReducer.isLoading,
+    isSearching: state.searchReducer.isSearching,
   });
 
   const mapDispatchToProps = dispatch => ({

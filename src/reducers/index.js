@@ -1,9 +1,15 @@
 import { combineReducers } from 'redux'
+
+import ddgraph from '../components/GraphicalView/DataDictionary/reducers'
+import submission from '../components/GraphicalView/reducers'
 import currentUser from './currentUser'
-import usersList from './usersList'
+import searchReducer from './searchReducer'
 
 const rootReducer = combineReducers({
+  searchReducer,
   currentUser,
-  usersList,
+  ddgraph,
+  submission,
 })
+
 export default rootReducer

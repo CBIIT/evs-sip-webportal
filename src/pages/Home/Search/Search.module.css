@@ -1,0 +1,187 @@
+.container {
+  max-width: 80rem;
+  height: 100%;
+}
+
+.row {
+  height: 100%;
+}
+
+.section {
+  height: 30rem;
+  background: url('../../../assets/img/search-bkgd.jpg') no-repeat top;
+  background-color: #fff;
+}
+
+.title-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-family: 'Raleway-Medium', sans-serif;
+  width: 16rem;
+  inline-size: 16rem;
+  font-size: 2.3125rem;
+  margin-bottom: 3rem;
+  letter-spacing: 0.03125rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.search-box-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-box {
+  margin: auto 2rem;
+  width: 100%;
+}
+
+.input-box {
+  font-family: 'Lato-Bold', sans-serif;
+  font-size: 1.125rem;
+  padding: 0.5rem 1rem;
+  padding-right: 5rem;
+  border-radius: 2rem !important;
+  height: 3rem;
+  border: 2px solid #397ded;
+  line-height: 27px;
+}
+
+.input-box::placeholder {
+  color: #3a9cf7;
+}
+
+.input-box-btn {
+  position: absolute !important;
+  z-index: 3 !important;
+  right: 0.3125rem;
+  top: 0.3125rem;
+  bottom: 0.3125rem;
+  background-color: #d2d2d2;
+  border-radius: 2rem !important;
+  color: var(--white);
+  font-size: 1.25rem;
+  width: 4rem;
+  height: 2.375rem;
+  border-color: transparent;
+}
+
+.input-box-btn:hover,
+.input-box-btn:focus {
+  background-color: #397ded;
+  color: var(--white);
+  box-shadow: none;
+}
+
+.input-box-icon {
+  font-size: 1.25rem;
+  vertical-align: 0;
+}
+
+.options-container {
+  margin-top: 3rem;
+}
+
+.select-container {
+  text-align: right;
+  border-right: 1px solid #898989;
+  padding-right: 2rem;
+}
+
+.select-title {
+  font-family: 'Lato-Bold', sans-serif;
+  font-size: 0.875rem;
+}
+
+.select-btn {
+  font-family: 'Lato-Regular', sans-serif;
+  border: 1px solid #154c5e;
+  background-color: #f5f5f5;
+  border-radius: 2em;
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  color: #154c5e;
+  padding: 0.25rem 0.75rem;
+}
+
+.select-btn:hover,
+.select-btn:focus {
+  background-color: #f5f5f5;
+  border: 1px solid #154c5e;
+  color: #154c5e;
+}
+
+.checkbox-group {
+  width: 30rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox-label {
+  font-family: 'Lato-Regular', sans-serif;
+  position: relative;
+  font-size: 0.75rem;
+  color: #154c5e;
+  width: 8rem;
+  inline-size: 8rem;
+  line-height: 1rem;
+  cursor: pointer;
+}
+
+.checkbox-btn {
+  position: relative;
+  display: block;
+  border: 1px solid var(--checkbox-border);
+  background-color: var(--checkbox-bkgd);
+  border-radius: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  float: left;
+  margin-right: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.checkbox-icon {
+  position: absolute;
+  font-size: 0.7rem;
+  line-height: 0;
+  top: 0.3125rem;
+  left: 0.3125rem;
+}
+
+.checkbox-input {
+  margin: 0 !important;
+  position: absolute !important;
+  top: 0.5rem;
+  left: 0.35rem;
+}
+
+.checkbox-input:checked + .checkbox-btn {
+  background-color: var(--checkbox-green);
+  border-color: var(--checkbox-green);
+}
+
+.checkbox-input + .checkbox-btn > .checkbox-icon {
+  opacity: 0;
+}
+
+.checkbox-input:checked + .checkbox-btn > .checkbox-icon {
+  opacity: 1;
+  color: var(--white);
+}
+
+.checkbox-input:focus + .checkbox-btn {
+  border: 1px solid #042a68;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
