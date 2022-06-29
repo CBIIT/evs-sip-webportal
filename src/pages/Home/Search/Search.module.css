@@ -79,7 +79,6 @@
 .input-box-btn:focus {
   background-color: #397ded;
   color: var(--white);
-  box-shadow: none;
 }
 
 .input-box-icon {

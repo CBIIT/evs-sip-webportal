@@ -4,6 +4,7 @@ const initialState = {
   options: {
     desc: false,
     syns: false,
+    npsyns: false,
   },
   dataSources: {
     ctdc: false,

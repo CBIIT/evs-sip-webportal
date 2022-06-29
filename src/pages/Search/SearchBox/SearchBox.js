@@ -71,7 +71,6 @@ const SearchButton = styled(Button)`
   &&:focus {
     background-color: #397ded;
     color: var(--white);
-    box-shadow: none;
   }
 `;
 
@@ -376,12 +375,14 @@ const SearchBox = (props) => {
     if(isToggleOnOptions === false){
       props.setOptionsSearch({
         desc: true,
-        syns: true
+        syns: true,
+        npsyns: true
       });
     } else {
       props.setOptionsSearch({
         desc: false,
-        syns: false
+        syns: false,
+        npsyns: false
       });
     }
     setIsToggleOnOptions(!isToggleOnOptions);
@@ -411,7 +412,8 @@ const SearchBox = (props) => {
       props.setMatchOptions('partial');
       props.setOptionsSearch({
         desc: false,
-        syns: false
+        syns: false,
+        npsyns: false
       });
       searchHandler(props.keyword, props.match, props.options, props.dataSources);
     }
@@ -486,7 +488,7 @@ const SearchBox = (props) => {
                   Search Synonyms of Values
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <CheckboxInput name="p_syns" type="checkbox"/>
+                  <CheckboxInput name="npsyns" checked={props.options['npsyns']} onClick={checkedToggleHandler} type="checkbox"/>
                   <CheckboxSpan>
                     <CheckboxIcon icon={faCheck}/>
                   </CheckboxSpan>
