@@ -80,6 +80,14 @@ const nodeCategoryList = {
     icon: IconIndexFile,
     color: "#26D9B1",
   },
+  study: {
+    icon: IconNotation,
+    color: "#E74C3C",
+  },
+  clinical_trial: {
+    icon: IconIndexFile,
+    color: "#26D9B1",
+  },
   aml: {
     icon: IconMetadata,
     color: "#F4B940",
