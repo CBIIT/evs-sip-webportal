@@ -5,24 +5,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
-import reducer from './reducers';
+import store from './store';
 import { fetchUser } from './reducers/currentUser';
 
 async function init() {
-  const store = configureStore({
-		reducer,
-		middleware: (getDefaultMiddleware) =>
-			getDefaultMiddleware({
-				thunk: true,
-				serializableCheck: false,
-				immutableCheck: false,
-			}),
-	});
   await store.dispatch(fetchUser());
 
   ReactDOM.render(
-    
     <React.StrictMode>
       <Provider store={store}>
         <App />

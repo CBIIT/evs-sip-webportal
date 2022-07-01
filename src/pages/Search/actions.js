@@ -1,44 +1,44 @@
 export const setKeyword = keyword => ({
   type: 'SET_KEYWORD',
-  keyword: keyword
+  payload: keyword
 });
 
 export const setResult = result => ({
   type: 'SET_RESULT',
-  result: result
+  payload: result
 });
 
 export const setError = error => ({
   type: 'SET_ERROR',
-  error: error
+  payload: error
 });
 
 export const setMatchOptions = match => ({
   type: 'SET_MATCH_OPTIONS',
-  match: match
+  payload: match
 });
 
 export const setOptionsSearch = options => ({
   type: 'SET_OPTIONS_SEARCH',
-  options: options
+  payload: options
 });
 
 export const setDataSources = dataSources => ({
   type: 'SET_DATA_SOURCES',
-  dataSources: dataSources
+  payload: dataSources
 });
 
 export const setSearchTerm = searchTerm => ({
   type: 'SET_SEARCH_TERM',
-  searchTerm: searchTerm
+  payload: searchTerm
 });
 
 export const setIsLoading = isLoading => ({
   type: 'IS_LOADING',
-  isLoading: isLoading
+  payload: isLoading
 });
 
 export const setIsSearching = isSearching => ({
   type: 'IS_SERCHING',
-  isSearching: isSearching
+  payload: isSearching
 });

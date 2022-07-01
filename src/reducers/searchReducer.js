@@ -24,47 +24,47 @@ const searchReducer = (state = initialState, action) => {
     case 'SET_KEYWORD':
       return {
         ...state,
-        keyword: action.keyword,
+        keyword: action.payload,
       }
     case 'SET_RESULT':
       return {
         ...state,
-        result: action.result,
+        result: action.payload,
       }
     case 'SET_ERROR':
       return {
         ...state,
-        error: action.error,
+        error: action.payload,
       }
     case 'SET_MATCH_OPTIONS':
       return {
         ...state,
-        match: action.match,
+        match: action.payload,
       }
     case 'SET_OPTIONS_SEARCH':
       return {
         ...state,
-        options: action.options,
+        options: action.payload,
       }
     case 'SET_DATA_SOURCES':
       return {
         ...state,
-        dataSources: action.dataSources,
+        dataSources: action.payload,
       }
     case 'SET_SEARCH_TERM':
       return {
         ...state,
-        searchTerm: action.searchTerm,
+        searchTerm: action.payload,
       }
     case 'IS_LOADING':
       return {
         ...state,
-        isLoading: action.isLoading,
+        isLoading: action.payload,
       }
     case 'IS_SERCHING':
       return {
         ...state,
-        isSearching: action.isSearching,
+        isSearching: action.payload,
       }
     default:
       return state
