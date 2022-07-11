@@ -24,7 +24,7 @@ const NavigationBar = () => {
   }
 
   return (
-    <Navbar className={styles.navbar} bg="dark" expand="lg" role="navigation">
+    <Navbar className={styles.navbar} bg="dark" role="navigation">
       <div className={styles.container}>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
