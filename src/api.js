@@ -1,6 +1,6 @@
-export const baseUrl = process.env.REACT_APP_DEV_API_URL || 'http://localhost:3000/service/search'
-export const baseServer = process.env.REACT_APP_SERVER || 'http://localhost:3000'
-export const baseHomeUrl = process.env.REACT_APP_HOME_URL || 'http://localhost:3000'
+export const baseUrl = import.meta.env.EVSSIP_SEARCH || 'http://localhost:3000/service/search'
+export const baseServer = import.meta.env.EVSSIP_SERVER || 'http://localhost:3000'
+export const baseHomeUrl = import.meta.env.EVSSIP_HOME_URL || 'http://localhost:3000'
 
 export const apiSuggest = async (keyword) => {
   const encodedKeyword = keyword.replace(/\+/g, '%2B').replace(/&/g, '%26')

@@ -97,7 +97,7 @@ const AllValuesModal = (props) => {
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
       setData(result);
-      if (result !== [] && result[0]._source.enum !== undefined) {
+      if (result.length == 0 && result[0]._source.enum !== undefined) {
         setItems(result[0]._source.enum);
       }
     }).then(() => {
@@ -109,7 +109,7 @@ const AllValuesModal = (props) => {
   const handleSearchChange = (event) => {
     let keyword = event.target.value.trim().replace(/\s{2,}/g, ' ').toLowerCase();
 
-    if (keyword.length >= 3 && data !== [] && data[0]._source.enum !== undefined) {
+    if (keyword.length >= 3 && data !== undefined && data.length !== 0 && data[0]._source.enum !== undefined) {
       let newItem = searchFilter(data[0]._source.enum, keyword);
       setItems(newItem);
     } else {
@@ -233,7 +233,7 @@ const AllValuesModal = (props) => {
       setCurrentPage(data.selected + 1);
     }
 
-    if (props.items !== undefined && props.items !== []) {
+    if (props.items !== undefined && props.items.length !== 0) {
 
       // Logic for displaying current items
       const indexOfLastItem = currentPage * itemsPerPage;
@@ -337,7 +337,7 @@ const AllValuesModal = (props) => {
 
 
   const TitleModal = (props) => {
-    if (props.data !== [] && props.data[0]._source.prop !== undefined) {
+    if (props.data !== undefined && props.data.length !== 0 && props.data[0]._source.prop !== undefined) {
       return(<>Values from {props.data[0]._source.prop.n}</>);
     }
     return (null);
@@ -345,7 +345,7 @@ const AllValuesModal = (props) => {
 
 
   const TotalLabel = (props) => {
-    if (props.data !== [] && props.data[0]._source.enum !== undefined) {
+    if (props.data !== undefined && props.data.length !== 0 && props.data[0]._source.enum !== undefined) {
       return(
         <BadgeStyled variant="primary">{props.data[0]._source.enum.length}</BadgeStyled>
       );
@@ -384,7 +384,7 @@ const AllValuesModal = (props) => {
           </InputGroupStyled>
         </Modal.Header>
         <ModalBodyStyled>
-          {(items !== [] && items.length !== 0) ? (
+          {(items !== undefined && items.length !== 0) ? (
             <TableEnums items={items}/>
           ) : (
             <Indicator>Sorry, no results found.</Indicator>

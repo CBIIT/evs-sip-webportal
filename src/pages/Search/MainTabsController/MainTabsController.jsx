@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap';
+import { Tabs, Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap';
 import TabsController from '../TabsController';
 import GraphTabsController from '../GraphTabsController';
 import SingleTabsController from '../SingleTabsController';
@@ -115,7 +115,7 @@ const MainTabsController = (props) => {
   if (Object.keys(props.result).length !== 0 && props.result.returnList !== undefined && props.result.returnList.length !== 0) {
     return (
       <Result>
-        <Tab.Container id="main-tabs-controller" defaultActiveKey="cross">
+        <Tab.Container id="main-tabs-controller" defaultActiveKey="cross" transition={false}>
           <Container>
             <Row className="clearfix">
               <TabNavTextCol sm={12}>
@@ -149,7 +149,7 @@ const MainTabsController = (props) => {
                 </NavStyled>
               </TabNavsCol>
               <Col sm={12}>
-                <TabContentStyled transition="false">
+                <TabContentStyled>
                   <Tab.Pane unmountOnExit={false} eventKey="cross">
                     <TabsController source={props.result.returnList}/>
                   </Tab.Pane>

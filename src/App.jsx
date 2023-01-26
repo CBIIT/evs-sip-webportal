@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-import styled from 'styled-components'
+import styles from './App.module.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 // components
@@ -28,15 +28,10 @@ import ModelBuilder from './pages/ModelBuilder'
 import UserManagement from './pages/UserManagement/UserManagement'
 import NotFound from './pages/NotFound/NotFound'
 
-const MainContainer = styled.div`
-  position: relative;
-  min-height: 100vh;
-`
-
 const App = () => {
   return (
     <Router basename={'/evssip'}>
-      <MainContainer>
+      <div id='test1' className={styles.main}>
         <Header />
         <NavigationBar />
         <Layout>
@@ -109,7 +104,7 @@ const App = () => {
           </Switch>
         </Layout>
         <Footer />
-      </MainContainer>
+      </div>
     </Router>
   )
 }

@@ -815,7 +815,7 @@ const CrossValuesTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          {(crossValues.length < 25 || browserDetection.isEdge)
+          {(crossValues.length < 25)
           ? 
           <Col xs={12}>
             {crossValues.map((cross, index) => 

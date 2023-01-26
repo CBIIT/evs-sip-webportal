@@ -220,7 +220,7 @@ const ToCompareModal = (props) => {
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
       // setData(result);
-      if (result !== [] && result[0]._source.enum !== undefined) {
+      if (result !== undefined && result.length !== 0 && result[0]._source.enum !== undefined) {
         setItems(result[0]._source.enum);
       }
     }).then(() => {
@@ -672,7 +672,7 @@ const ToCompareModal = (props) => {
                     <CompareFormDivider/>
                     <CompareFormRight>
                       <Container>
-                        {(items !== undefined && items !== []) &&
+                        {(items !== undefined && items.length !== 0) &&
                           <>
                             {items.map((item, index) => 
                               <TableEnum key={index} item={item}/>

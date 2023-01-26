@@ -1,16 +1,19 @@
 {
-  "name": "evs-sip",
-  "version": "v3.0.0-alpha.1",
+  "name": "evs-sip-vitedemo",
   "private": true,
-  "homepage": "/evssip/",
-  "//": "proxy attribute below is only for development purpose",
-  "proxy": "http://localhost:3000",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.18",
     "@reduxjs/toolkit": "^1.6.2",
-    "bootstrap": "^5.2.0",
+    "bootstrap": "^5.2.3",
     "d3-array": "^1.2.4",
     "d3-ease": "^1.0.7",
     "d3-force": "^1.2.1",
@@ -20,14 +23,12 @@
     "d3-zoom": "^1.8.3",
     "file-saver": "^1.3.8",
     "fuse.js": "^3.6.1",
-    "http-proxy-middleware": "^2.0.1",
     "jszip": "^3.10.0",
     "lodash": "^4.17.21",
     "prop-types": "^15.6.0",
-    "react": "17.0.2",
-    "react-app-polyfill": "^2.0.0",
-    "react-bootstrap": "^2.4.0",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-dom": "^18.2.0",
     "react-lazyload": "^3.2.0",
     "react-paginate": "^7.1.5",
     "react-redux": "^7.2.8",
@@ -39,49 +40,14 @@
     "redux-thunk": "^2.4.1",
     "string-similarity": "^3.0.0",
     "styled-components": "^5.3.5",
-    "swagger-ui-react": "^4.12.0",
+    "swagger-ui-react": "^4.15.5",
     "underscore": "^1.13.4",
     "viz.js": "^2.1.2"
   },
-  "overrides": {
-    "autoprefixer": "10.4.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier -write .",
-    "lint": "eslint --fix . --ext .js,.jsx"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "devDependencies": {
-    "@apidevtools/json-schema-ref-parser": "^9.0.9",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.5",
-    "@testing-library/user-event": "^7.2.1",
-    "eslint": "^8.0.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0",
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-react": "^7.30.0",
-    "prettier": "^2.6.2",
-    "react-scripts": "^5.0.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ]
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react": "^3.0.0",
+    "vite": "^4.0.0"
   }
 }
