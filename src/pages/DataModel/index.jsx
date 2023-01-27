@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TabsController from './TabsController'
+import TabsController from './TabsController/TabsController'
 
 const Page = styled.div`
   background-color: var(--page-bkgd);

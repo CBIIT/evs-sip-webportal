@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import MainTabsController from './MainTabsController'
 
 const ReduxMainTabsController = (() => {
@@ -6,9 +6,9 @@ const ReduxMainTabsController = (() => {
     searchTerm: state.searchReducer.searchTerm,
     result: state.searchReducer.result,
     error: state.searchReducer.error,
-  });
+  })
 
-  return connect(mapStateToProps)(MainTabsController);
-})();
+  return connect(mapStateToProps)(MainTabsController)
+})()
 
-export default ReduxMainTabsController;
+export default ReduxMainTabsController

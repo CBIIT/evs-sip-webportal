@@ -1,0 +1,49 @@
+.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  padding: 1.125rem 1.5rem;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.nav-tabs .nav-link:global(.active) {
+  border-top: 0.125rem solid #397ded;
+  border-left: 0.125rem solid #397ded;
+  border-right: 0.125rem solid #397ded;
+  border-bottom: 0;
+  background-color: #DDEAFF;
+  position: relative;
+  bottom: -0.0625rem;
+  z-index: 10;
+  padding-bottom: 1.1rem;
+}
+
+.nav-item {
+  position: relative;
+  display: block;
+  float: left;
+}
+
+.nav-link {
+  font-family: 'Raleway-Medium', sans-serif;
+  font-size: 1.125rem;
+  color: #042a68;
+  width: 18rem;
+  text-transform: uppercase;
+  background-color: #ebebeb;
+  padding: 0.7rem 1rem;
+  text-align: center;
+  margin: 0 0.0625rem;
+  cursor: pointer;
+}
+
+.nav-link:global(.active) {
+  font-family: 'Raleway-Bold', sans-serif;
+  font-size: 1.3125rem;
+  background-color: #ddeaff;
+  color: #042a68;
+  padding: 1rem 1.5rem;
+}

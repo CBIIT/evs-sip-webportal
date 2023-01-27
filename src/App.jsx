@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
-import styles from './App.module.css';
+import styles from './App.module.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 // components
