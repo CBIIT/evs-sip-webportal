@@ -3,7 +3,7 @@ export const baseServer = import.meta.env.EVSSIP_SERVER || 'http://localhost:300
 export const baseHomeUrl = import.meta.env.EVSSIP_HOME_URL || 'http://localhost:3000'
 
 export const apiSuggest = async (keyword) => {
-  const encodedKeyword = keyword.replace(/\+/g, '%2B').replace(/&/g, '%26')
+  const encodedKeyword = keyword.replace(/\+/g, "%2B").replace(/&/g, "%26").replace(/%/g, "%25");
   const response = await fetch(`${baseUrl}/suggest?keyword=${encodedKeyword}`)
   return await response.json()
 }
@@ -18,7 +18,7 @@ export const apiSearchAll = async (keyword, match, options, dataSources) => {
       sources.push(key)
     }
   }
-  const encodedKeyword = keyword.replace(/\+/g, '%2B').replace(/&/g, '%26')
+  const encodedKeyword = keyword.replace(/\+/g, "%2B").replace(/&/g, "%26").replace(/%/g, "%25");
   const response = await fetch(`${baseUrl}/all/p?keyword=${encodedKeyword}&options=${opts}&sources=${sources.join()}`)
   return await response.json()
 }
