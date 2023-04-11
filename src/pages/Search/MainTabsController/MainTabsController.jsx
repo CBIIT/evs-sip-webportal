@@ -4,7 +4,7 @@ import styles from './MainTabsController.module.css'
 import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap'
 import TabsController from '../TabsController/TabsController'
 import GraphTabsController from '../GraphTabsController'
-import SingleTabsController from '../SingleTabsController'
+import SingleTabsController from '../SingleTabsController/SingleTabsController'
 
 const Result = styled.div`
   border-radius: 5px;
