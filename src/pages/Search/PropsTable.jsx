@@ -116,6 +116,10 @@ const CodeSpan = styled.span`
   font-weight: bold;
 `;
 
+const RowWithEnum = styled(Row)`
+  align-items: end;
+`;
+
 const ColRight = styled(Col)`
   text-align: right;
 `;
@@ -144,21 +148,18 @@ const IndicatorContent = styled.div`
 const Description = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: justify;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   margin-bottom: 0;
 `;
 
-const LinkDesc = styled.a`
-  // position: absolute;
-  // right: 0;
-  // bottom: 0;
-`;
-
 const DescriptionContent = styled.div`
   position: relative;
+`;
+
+const PropType = styled.span`
+  font-size: 14px;
 `;
 
 const PropsTable = (props) => {
@@ -321,6 +322,7 @@ const PropsTable = (props) => {
   };
 
   const DescCollapse = (props) => {
+
     let [isToggleOn, setIsToggleOn] = useState(false);
 
     const ToggleTableHandler = event => {
@@ -332,13 +334,13 @@ const PropsTable = (props) => {
       <DescriptionContent>
         <Description style={{'WebkitLineClamp': isToggleOn === true ? 'initial' : 3}} dangerouslySetInnerHTML={{ __html: '<b>Definition:</b> ' + props.desc}}></Description>
         {props.desc.replace(/<b>/g, "").replace(/<\/b>/g, "").length > 200 &&
-          <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+          <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
             {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
-          </LinkDesc> 
+          </a> 
         }
-
       </DescriptionContent>
     );
+
   };
 
 
@@ -391,13 +393,20 @@ const PropsTable = (props) => {
                     }
                   </div>
                 </Collapse>
-                {props.item.type !== undefined && props.item.type === 'enum' &&
-                  <Row>
-                    <ColRight xs={12}>
-                      <AllValuesModal idterm={props.item.id}/>
-                      <ToCompareModal idterm={props.item.id}/>
+                {props.item.type !== undefined && 
+                  <RowWithEnum>
+                    <Col xs={4}>
+                      <PropType>type: {props.item.type}</PropType>
+                    </Col>
+                    <ColRight xs={8}>
+                    {(props.item.type === 'enum' || props.item.type === 'array') &&
+                      <>
+                        <AllValuesModal idterm={props.item.id}/>
+                        <ToCompareModal idterm={props.item.id}/>
+                      </>
+                    }
                     </ColRight>
-                  </Row>
+                  </RowWithEnum>
                 }
               </TableColProps>
             </TableRow>
