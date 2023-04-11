@@ -145,11 +145,13 @@ const TableStyled = styled(Table)`
   margin-bottom: 0;
 `;
 
-const RowCenter = styled(Row)`
-    height: 250px;
-    align-content: center;
-    justify-content: center;
-    color: #888;
+const Center = styled.div`
+  height: 180px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  color: #888;
 `;
 
 const CrossValuesTable = (props) => {
@@ -429,9 +431,11 @@ const CrossValuesTable = (props) => {
 
   const PlaceholderComponent = () => {
     return (<Col sm={12}>
-        <RowCenter>
-          <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-        </RowCenter>
+        <Row>
+          <Center>
+            <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
+          </Center>
+        </Row>
       </Col>);
   }
 
