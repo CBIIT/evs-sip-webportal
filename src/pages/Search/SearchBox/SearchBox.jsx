@@ -53,7 +53,7 @@ const SearchFormControl = styled(FormControl)`
 
 const SearchButton = styled(Button)`
   position: absolute !important;
-  z-index: 3 !important;
+  z-index: 5 !important;
   right: 0rem;
   bottom: 0;
   top: 0;
