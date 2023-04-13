@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus , faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { searchFilter } from '../../shared';
 import { apiGetGDCDataById } from '../../api';
 
@@ -97,7 +97,7 @@ const AllValuesModal = (props) => {
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
       setData(result);
-      if (result.length == 0 && result[0]._source.enum !== undefined) {
+      if (result.length !== 0 && result[0]._source.enum !== undefined) {
         setItems(result[0]._source.enum);
       }
     }).then(() => {
@@ -370,11 +370,9 @@ const AllValuesModal = (props) => {
             <TotalLabel data={data}/>  
           </Modal.Title>
           <InputGroupStyled>
-            <InputGroup.Prepend>
-              <InputGroup.Text id="search-values-input">
-                <FontAwesomeIcon icon={faSearch}/>
-              </InputGroup.Text>
-            </InputGroup.Prepend>
+            <InputGroup.Text id="search-values-input">
+              <FontAwesomeIcon icon={faSearch}/>
+            </InputGroup.Text>
             <FormControl
               placeholder="Type at least 3 characters"
               aria-label="Search"
