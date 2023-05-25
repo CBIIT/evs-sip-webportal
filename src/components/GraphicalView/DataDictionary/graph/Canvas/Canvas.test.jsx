@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { vi } from 'vitest';
 import Canvas from './Canvas';
 import GraphDrawer from '../GraphDrawer/GraphDrawer';
 
@@ -10,9 +11,9 @@ const resizeWindow = (x, y) => {
 };
 
 describe('Canvas', () => {
-  const resizeFunc = jest.fn();
-  const clickFunc = jest.fn();
-  const resetFunc = jest.fn();
+  const resizeFunc = vi.fn();
+  const clickFunc = vi.fn();
+  const resetFunc = vi.fn();
   const canvas = mount(
     <Canvas
       onCanvasBoundingBoxUpdate={resizeFunc}

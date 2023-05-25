@@ -7,5 +7,11 @@ export default defineConfig({
   base: `/evssip/`,
   build: {
       outDir: './build'
+  },
+  test: {
+    environment: 'jsdom',
+    testMatch: ['./tests/**/*.test.tsx'],
+    setupFiles: ['./vitest.setup.js'],
+    globals: true
   }
 })
