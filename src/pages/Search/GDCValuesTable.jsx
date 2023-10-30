@@ -1,118 +1,10 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj, sortAlphabetically, sortSynonyms, browserDetection } from '../../shared';
-
-const ContainerStyled = styled(Container)`
-  font-size: 1rem;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: var(--white-bkgd);
-  border-radius: 1rem;
-  height: 45rem;
-  border: 2px solid #535F74;
-  overflow: hidden;
-`;
-
-const TableThead = styled(Row)`
-  background: #535F74;
-  display: flex;
-  align-items: center;
-  border-radius: 0.8rem 0.8rem 0 0;
-`;
-
-const TableTh = styled.div`
-  font-family: 'Lato-Bold', sans-serif;
-  font-size: 1rem;
-  text-align: center;
-  color: var(--white);
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-`;
-
-const TableBody = styled(Row)`
-  overflow-y: auto;
-  max-height: 42rem;
-`;
-
-const TableRow = styled(Row)`
-  border-bottom: 1px solid #BBC5CD;
-  display: flex;
-  align-items: stretch;
-`;
-
-const TableRowValue = styled(TableRow)`
-  border-bottom: 1px solid #ecf0f1;
-`;
-
-const TableCol = styled(Col)`
-  text-align: left;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  line-height: 1.428571;
-`;
-
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
-const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
-`;
-
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
-`;
-
-const ColRight = styled(Col)`
-  text-align: right;
-`;
-
-
-const Indicator = styled.div`
-  position: relative;
-  padding-bottom: 36%;
-`;
-
-const IndicatorContent = styled.div`
-  width: 60%;
-  min-width: 550px;
-  text-align: center;
-  margin: auto;
-  padding: 1em 0;
-  background-color: #fff;
-  color: #535a60;
-  font-size: 1.2em;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-`;
-
-const Center = styled.div`
-  height: 180px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  color: #888;
-`;
+import styles from './ValuesTable.module.css';
 
 
 const GDCValuesTable = (props) => {
@@ -215,9 +107,9 @@ const GDCValuesTable = (props) => {
   const PlaceholderComponent = () => {
     return (<Col sm={12}>
         <Row>
-          <Center>
+          <div className={styles['center']}>
             <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-          </Center>
+          </div>
         </Row>
       </Col>);
   }
@@ -253,13 +145,13 @@ const GDCValuesTable = (props) => {
       return (
         <div className="ncit-value-container">
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <b>NCI Thesaurus Code: </b>
               <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + props.synonym.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: props.synonym.n_c }}></a>
-            </TableCol>
+            </Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -272,7 +164,7 @@ const GDCValuesTable = (props) => {
                   <TableSynonyms synonyms={props.synonym.s}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -285,13 +177,13 @@ const GDCValuesTable = (props) => {
       return props.ncit.map((item, index) =>
         <div key={index} className="ncit-value-container">
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <b>NCI Thesaurus Code: </b>
               <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.n_c }}></a>
-            </TableCol>
+            </Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -304,7 +196,7 @@ const GDCValuesTable = (props) => {
                   <TableSynonyms synonyms={item.s}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -361,10 +253,10 @@ const GDCValuesTable = (props) => {
       return (
         <div className="icdo3-value-container">
           <Row>
-            <TableCol xs={12} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></TableCol>
+            <Col className={styles['table-col']} xs={12} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -377,7 +269,7 @@ const GDCValuesTable = (props) => {
                   <TableICDO3Syns synonyms={props.icemun}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -394,7 +286,7 @@ const GDCValuesTable = (props) => {
     };
 
     return (
-      <TableCol xs={12}>
+      <Col className={styles['table-col']} xs={12}>
         <Row>
           <Col xs={10}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) 
@@ -402,7 +294,7 @@ const GDCValuesTable = (props) => {
               : <span dangerouslySetInnerHTML={{ __html: props.name }}></span>
             }
           </Col>
-          <ColRight xs={2}>
+          <Col className={styles['col-right']} xs={2}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
@@ -411,7 +303,7 @@ const GDCValuesTable = (props) => {
                 }
               </a>
             }
-          </ColRight>
+          </Col>
         </Row>
         {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
           <Collapse in={isToggleOn} mountOnEnter={true}>
@@ -428,7 +320,7 @@ const GDCValuesTable = (props) => {
             </div>
           </Collapse>
         }
-      </TableCol>
+      </Col>
     );
   };
 
@@ -441,25 +333,25 @@ const GDCValuesTable = (props) => {
     };
 
     return(
-      <TableRow key={props.index}>
-        <TableCol xs={3}>
+      <Row className={styles['table-row']} key={props.index}>
+        <Col className={styles['table-col']} xs={3}>
           {props.item.category}
-          <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
-              <TableUl>
-                <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
-              </TableUl>
-            </TableLi>
-          </TableUl>
-        </TableCol>
+          <ul className={styles['table-ul']}>
+            <li className={styles['table-li']}><span className={styles['span-icon']}><FontAwesomeIcon icon={faAngleDown}/></span>{props.item.node.n}
+              <ul className={styles['table-ul']}>
+                <li className={styles['table-li']}><span className={styles['span-icon']}><FontAwesomeIcon icon={faAngleDown}/></span>{props.item.property.n}</li>
+              </ul>
+            </li>
+          </ul>
+        </Col>
 
-        <TableValues xs={9}>
+        <Col className={styles['table-values']} xs={9}>
           <div>
             {props.item.vs.slice(0,5).map((value, index) => {
               return(
-                <TableRowValue data-class="TableRowValue" key={index}>
+                <Row className={styles['table-row-value']} data-class="TableRowValue" key={index}>
                   <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                </TableRowValue>
+                </Row>
               )
             })}
             {props.item.vs.length > 5 && 
@@ -468,9 +360,9 @@ const GDCValuesTable = (props) => {
                 {props.item.vs.map((value, index) => {
                   if (index >= 5) {
                     return(
-                      <TableRowValue data-class="TableRowValue" key={index}>
+                      <Row className={styles['table-row-value']} data-class="TableRowValue" key={index}>
                         <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                      </TableRowValue>
+                      </Row>
                     )
                   }
                   return null;
@@ -480,8 +372,8 @@ const GDCValuesTable = (props) => {
             }
           </div>
           {props.item.vs.length > 5 && 
-            <TableRowValue data-class="TableRowValue">
-              <TableCol data-class="TableCol" xs={12}>
+            <Row className={styles['table-row-value']} data-class="TableRowValue">
+              <Col className={styles['table-col']} data-class="TableCol" xs={12}>
               {isToggleOn === false ? (
                 <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
                   <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
@@ -491,11 +383,11 @@ const GDCValuesTable = (props) => {
                   <FontAwesomeIcon icon={faAngleUp}/> Show Less
                 </a>
               )}
-              </TableCol>
-            </TableRowValue>
+              </Col>
+            </Row>
           }
-        </TableValues>
-      </TableRow>
+        </Col>
+      </Row>
     );
   }
 
@@ -509,16 +401,16 @@ const GDCValuesTable = (props) => {
 
   if (values.length !== 0) {
     return (
-    <ContainerStyled>
-      <TableThead>
+    <Container className={styles['container']}>
+      <Row className={styles['table-thead']}>
         <Col xs={3}>
-          <TableTh>Category / Node / Property</TableTh>
+          <div className={styles['table-th']}>Category / Node / Property</div>
         </Col>
         <Col xs={9}>
-          <TableTh>Matched GDC Values</TableTh>
+          <div className={styles['table-th']}>Matched GDC Values</div>
         </Col>
-      </TableThead>
-      <TableBody>
+      </Row>
+      <Row className={styles['table-body']}>
         {(values.length < 6 || browserDetection.isEdge)
           ? 
           <Col xs={12}>
@@ -535,18 +427,18 @@ const GDCValuesTable = (props) => {
             )}
           </Col>
         }
-      </TableBody>
-    </ContainerStyled>
+      </Row>
+    </Container>
     );
   } else {
     return (
-      <ContainerStyled>
-        <Indicator>
-          <IndicatorContent>
+      <Container className={styles['container']}>
+        <div className={styles['indicator']}>
+          <div className={styles['indicator-content']}>
             Sorry, no results found.
-          </IndicatorContent>
-        </Indicator>
-      </ContainerStyled>
+          </div>
+        </div>
+      </Container>
     );
   }
 };
