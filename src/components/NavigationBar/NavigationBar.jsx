@@ -7,7 +7,8 @@ import { setUser } from '../../reducers/currentUser'
 
 const NavigationBar = () => {
   const currentUser = useSelector((state) => state.currentUser)
-  const isLoggedIn = Object.keys(currentUser).length > 0 && !currentUser.error
+  //const isLoggedIn = Object.keys(currentUser).length > 0 && !currentUser.error && currentUser.authenticated
+  const isLoggedIn = currentUser.authenticated;
   const dispatch = useDispatch()
 
   // const login = e => {
@@ -19,8 +20,8 @@ const NavigationBar = () => {
     e.preventDefault()
     dispatch(setUser({}))
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/dashboard/logout`)
-    window.location.href = `${await response.json()}?TARGET=${window.location.origin}`
+    const response = await fetch(`${baseServer}/evssip/auth/logout`)
+    window.location.href = response.url;
   }
 
   return (
@@ -97,8 +98,8 @@ const NavigationBar = () => {
               About
             </Nav.Link>
             {
-              isLoggedIn ? (
-                <NavDropdown className={styles.dropdown} title={currentUser.name}>
+              isLoggedIn || currentUser.authenticated ? (
+                <NavDropdown className={styles.dropdown} title={`user: ${currentUser.user.userid}`}>
                   <div className={styles.subtitle}>Model Owner</div>
                   <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="#">
                     Profile
@@ -111,7 +112,7 @@ const NavigationBar = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <a href={`${baseServer}/dashboard/login`} target="_self" className="nav-link">
+                <a href={`${baseServer}/evssip/auth/login`} target="_self" className="nav-link">
                   Login
                 </a>
               )

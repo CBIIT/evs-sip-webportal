@@ -12,7 +12,7 @@ const NavigationBoard = () => {
     e.preventDefault()
     dispatch(setUser({}))
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/dashboard/logout`)
+    const response = await fetch(`${baseServer}/evssip/auth/logout`)
     window.location.href = `${await response.json()}?TARGET=${window.location.origin}`
   }
 

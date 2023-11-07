@@ -30,7 +30,7 @@ import NotFound from './pages/NotFound/NotFound'
 
 const App = () => {
   return (
-    <Router basename={'/evssip'}>
+    <Router basename={'/sip'}>
       <div id='test1' className={styles.main}>
         <Header />
         <NavigationBar />

@@ -24,7 +24,7 @@ export function resetUser() {
 export function fetchUser() {
   return async function (dispatch) {
     try {
-      const response = await fetch(`${baseServer}/service/user-session`)
+      const response = await fetch(`${baseServer}/evssip/auth/session`)
       const value = await response.json()
       dispatch(setUser(value))
     } catch (e) {
@@ -36,7 +36,7 @@ export function fetchUser() {
 export function updateUserSession() {
   return async function (dispatch) {
     try {
-      const response = await fetch(`${baseServer}/service/update-session`)
+      const response = await fetch(`${baseServer}/evssip/auth/update-session`)
       const value = await response.json()
       dispatch(setUser(value))
     } catch (e) {
