@@ -1,5 +1,5 @@
-export const baseUrl = import.meta.env.VITE_EVSSIP_SEARCH || 'http://localhost:3000/service/search'
-export const baseServer = import.meta.env.VITE_EVSSIP_SERVER || 'http://localhost:3000'
+export const baseUrl = 'http://localhost:3000/service/search'
+export const baseServer = 'http://localhost:3000'
 
 export const apiSuggest = async (keyword) => {
   const encodedKeyword = keyword.replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/&/g, "%26");

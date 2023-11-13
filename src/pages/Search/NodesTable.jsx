@@ -1,126 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styles from './NodesTable.module.css';
 import { Container, Row, Col, Table, Collapse} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { getHighlightObj } from '../../shared';
-
-const ContainerStyled = styled(Container)`
-  font-size: 1rem;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: var(--white-bkgd);
-  border-radius: 1rem;
-  height: 45rem;
-  border: 2px solid #535F74;
-  overflow: hidden;
-`;
-
-const TableThead = styled(Row)`
-  background: #535F74;
-  display: flex;
-  align-items: center;
-  border-radius: 0.8rem 0.8rem 0 0;
-`;
-
-const TableTh = styled.div`
-  font-family: 'Lato-Bold', sans-serif;
-  font-size: 1rem;
-  text-align: center;
-  color: var(--white);
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-`;
-
-const TableBody = styled(Row)`
-  overflow-y: auto;
-  max-height: 42rem;
-`;
-
-const TableRow = styled(Row)`
-  height: auto;
-  flex-basis: auto;
-  flex-grow: 1;
-`;
-
-const TableCol = styled(Col)`
-  text-align: left;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  line-height: 1.428571;
-`;
-
-const TableColLeft = styled(TableCol)`
-  border-bottom: 1px solid #BBC5CD;
-`;
-
-const TableColRight = styled(Col)`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-left: 1px solid #BBC5CD;
-`;
-
-const TableColFlex = styled(Col)`
-  display: flex;
-`;
-
-const TableRowProps = styled(Row)`
-  height: 100%;
-  flex-basis: auto;
-  flex-grow: 1;
-  border-bottom: 1px solid #BBC5CD;
-`;
-
-const TableColProps = styled(TableCol)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const TableStyled = styled(Table)`
-  margin-bottom: 0;
-`;
-
-const DivCenter = styled.div`
-  text-align: center;
-  padding: 1rem 0;
-`;
-
-const CodeSpan = styled.span`
-  color: #475162;
-  font-size: 1.25rem;
-  font-weight: bold;
-`;
-
-const ColRight = styled(Col)`
-  text-align: right;
-`;
-
-const LinkDesc = styled.a`
-  padding-left: 0.5rem;
-`;
-
-const Indicator = styled.div`
-  position: relative;
-  padding-bottom: 36%;
-`;
-
-const IndicatorContent = styled.div`
-  width: 60%;
-  min-width: 550px;
-  text-align: center;
-  margin: auto;
-  padding: 1em 0;
-  background-color: #fff;
-  color: #535a60;
-  font-size: 1.2em;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-`;
 
 const NodesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.nodes));
@@ -256,14 +139,14 @@ const NodesTable = (props) => {
       return props.ncit.map((item, index) =>
         <div key={index} data-class="ncit-value-container">
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <b>NCI Thesaurus Code: </b>
               <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.c }}></a>
-            </TableCol>
+            </Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
-              <TableStyled striped bordered condensed="true" hover>
+            <Col className={styles['table-col']} xs={12}>
+              <Table className={styles['table-styled']} striped bordered condensed="true" hover>
                 <thead>
                   <tr>
                     <th>Term</th>
@@ -274,8 +157,8 @@ const NodesTable = (props) => {
                 <tbody>
                   <TableSynonyms synonyms={item.s}/>
                 </tbody>
-              </TableStyled>
-            </TableCol>
+              </Table>
+            </Col>
           </Row>
         </div>
       );
@@ -298,9 +181,9 @@ const NodesTable = (props) => {
         {props.desc.length >= 138 &&
           <>
             <span className={isToggleOn === true ? '' : 'd-none'} dangerouslySetInnerHTML={{ __html: props.desc.substring(138)}}></span>
-            <LinkDesc href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
+            <a className={styles['link-desc']} href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true ? <span>Less...</span> : <span>More... </span>}
-            </LinkDesc>
+            </a>
           </>
         }
       </p>
@@ -317,34 +200,34 @@ const NodesTable = (props) => {
     };
 
     return (
-      <TableColFlex data-class="TableColFlex" sx={12}>
-        <TableRow>
-          <TableCol data-class="TableCol" xs={3}>
+      <Col className={styles['table-col-flex']} data-class="TableColFlex" sx={12}>
+        <Row className={styles['table-row']}>
+          <Col className={styles['table-col']} data-class="TableCol" xs={3}>
             {props.item.category}
-          </TableCol>
-          <TableColRight data-class="TableColRight" xs={9}>
-            <TableRow data-class="TableRowProps">
-              <TableColProps data-class="TableCol" xs={12}>
+          </Col>
+          <Col className={styles['table-col-right']} data-class="TableColRight" xs={9}>
+            <Row className={styles['table-row']} data-class="TableRowProps">
+              <Col className={styles['table-col-props']} data-class="TableCol" xs={12}>
                 <Row>
                   <Col xs={10}>
                     <a href="/#" dangerouslySetInnerHTML={{ __html: props.item.node.n}} onClick={ToggleTableHandler}></a>
                   </Col>
-                  <ColRight xs={2}>
+                  <Col className={styles['col-right']} xs={2}>
                     <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                       {isToggleOn === true
                         ? <FontAwesomeIcon icon={faMinus}/>
                         : <FontAwesomeIcon icon={faPlus}/>
                       }
                     </a>
-                  </ColRight>
+                  </Col>
                 </Row>
                 <Collapse in={isToggleOn} mountOnEnter={true}>
                   <div data-class="ncit-node-container">
                     {props.item.node.d !== undefined && props.item.node.d !== '' &&
                       <Row>
-                        <TableCol data-class="TableCol" xs={12}>
+                        <Col className={styles['table-col']} data-class="TableCol" xs={12}>
                           <DescCollapse desc={props.item.node.d}/>
-                        </TableCol>
+                        </Col>
                       </Row>
                     }
                     {props.item.node.ncit !== undefined &&
@@ -352,80 +235,80 @@ const NodesTable = (props) => {
                     }
                   </div>
                 </Collapse>
-              </TableColProps>
-            </TableRow>
-          </TableColRight>
-        </TableRow>
-      </TableColFlex>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Col>
     )
   };
 
   const NodesItemsContainer = (props) => {
     return(
       <Row key={props.index}>
-        <TableColLeft data-class="TableColLeft" xs={2}>
-          <DivCenter>
-            <CodeSpan>{props.cross.code}<br/>({props.cross.ref})</CodeSpan>
-          </DivCenter>
-        </TableColLeft>
-        <TableColRight data-class="TableColRight" xs={10}>
+        <Col className={styles['table-col-left']} data-class="TableColLeft" xs={2}>
+          <div className={styles['div-center']}>
+            <span className={styles['code-span']}>{props.cross.code}<br/>({props.cross.ref})</span>
+          </div>
+        </Col>
+        <Col className={styles['table-col-right']} data-class="TableColRight" xs={10}>
           {props.cross.nodes.gdc.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Genomic Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
+            <Row className={styles['table-row']}>
+              <Col className={styles['table-col-left']} data-class="TableColLeft" xs={2}>
+                <div className={styles['div-center']}>Genomic Data Commons</div>
+              </Col>
+              <Col className={styles['table-col-right']} data-class="TableColRight" xs={10}>
                 {props.cross.nodes.gdc.map((node, index) =>
-                  <TableRowProps data-class="TableRowValues" key={index}>
+                  <Row className={styles['table-row-props']} data-class="TableRowValues" key={index}>
                     <PropsItems item={node}/>
-                  </TableRowProps>
+                  </Row>
                 )}
-              </TableColRight>
-            </TableRow>
+              </Col>
+            </Row>
           }
           {props.cross.nodes.ctdc.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Clinical Trials Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
+            <Row className={styles['table-row']}>
+              <Col className={styles['table-col-left']} data-class="TableColLeft" xs={2}>
+                <div className={styles['div-center']}>Clinical Trials Data Commons</div>
+              </Col>
+              <Col className={styles['table-col-right']} data-class="TableColRight" xs={10}>
                 {props.cross.nodes.ctdc.map((node, index) =>
-                  <TableRowProps data-class="TableRowValues" key={index}>
+                  <Row className={styles['table-row-props']} data-class="TableRowValues" key={index}>
                     <PropsItems item={node}/>
-                  </TableRowProps>
+                  </Row>
                 )}
-              </TableColRight>
-            </TableRow>
+              </Col>
+            </Row>
           }
           {props.cross.nodes.icdc.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Integrated Canine Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
+            <Row className={styles['table-row']}>
+              <Col className={styles['table-col-left']} data-class="TableColLeft" xs={2}>
+                <div className={styles['div-center']}>Integrated Canine Data Commons</div>
+              </Col>
+              <Col className={styles['table-col-right']} data-class="TableColRight" xs={10}>
                 {props.cross.nodes.icdc.map((node, index) =>
-                  <TableRowProps data-class="TableRowValues" key={index}>
+                  <Row className={styles['table-row-props']} data-class="TableRowValues" key={index}>
                     <PropsItems item={node}/>
-                  </TableRowProps>
+                  </Row>
                 )}
-              </TableColRight>
-            </TableRow>
+              </Col>
+            </Row>
           }
           {props.cross.nodes.pcdc.length !== 0 &&
-            <TableRow>
-              <TableColLeft data-class="TableColLeft" xs={2}>
-                <DivCenter>Pediatric Cancer Data Commons</DivCenter>
-              </TableColLeft>
-              <TableColRight data-class="TableColRight" xs={10}>
+            <Row className={styles['table-row']}>
+              <Col className={styles['table-col-left']} data-class="TableColLeft" xs={2}>
+                <div className={styles['div-center']}>Pediatric Cancer Data Commons</div>
+              </Col>
+              <Col className={styles['table-col-right']} data-class="TableColRight" xs={10}>
                 {props.cross.nodes.pcdc.map((node, index) =>
-                  <TableRowProps data-class="TableRowValues" key={index}>
+                  <Row className={styles['table-row-props']} data-class="TableRowValues" key={index}>
                     <PropsItems item={node}/>
-                  </TableRowProps>
+                  </Row>
                 )}
-              </TableColRight>
-            </TableRow>
+              </Col>
+            </Row>
           }
-        </TableColRight>
+        </Col>
       </Row>
     )
   };
@@ -433,43 +316,43 @@ const NodesTable = (props) => {
 
   if (crossNodes.length !== 0) {
     return (
-      <ContainerStyled>
-        <TableThead>
+      <Container className={styles['container']}>
+        <Row className={styles['table-thead']}>
           <Col xs={2}>
-            <TableTh>Terminology Reference</TableTh>
+            <div className={styles['table-th']}>Terminology Reference</div>
           </Col>
           <Col xs={10}>
             <Row>
               <Col xs={2}>
-                <TableTh>Data Sources</TableTh>
+                <div className={styles['table-th']}>Data Sources</div>
               </Col>
               <Col xs={2}>
-                <TableTh>Category</TableTh>
+                <div className={styles['table-th']}>Category</div>
               </Col>
               <Col xs={8}>
-                <TableTh>Matched Nodes</TableTh>
+                <div className={styles['table-th']}>Matched Nodes</div>
               </Col>
             </Row>
           </Col>
-        </TableThead>
-        <TableBody>
+        </Row>
+        <Row className={styles['table-body']}>
           <Col xs={12}>
             {crossNodes.map((cross, index) => 
               <NodesItemsContainer cross={cross} key={index} />
             )}
           </Col>
-        </TableBody>
-      </ContainerStyled>
+        </Row>
+      </Container>
     );
   } else {
     return (
-      <ContainerStyled>
-        <Indicator>
-          <IndicatorContent>
+      <Container className={styles['container']}>
+        <div className={styles['indicator']}>
+          <div className={styles['indicator-content']}>
             Sorry, no results found.
-          </IndicatorContent>
-        </Indicator>
-      </ContainerStyled>
+          </div>
+        </div>
+      </Container>
     );
   }
 };

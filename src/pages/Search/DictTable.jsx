@@ -1,84 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styles from './DietTable.module.css';
 import { getHighlightObj, getAllValueHighlight } from '../../shared';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
-
-const ContainerStyled = styled(Container)`
-  font-size: 1.3rem;
-  padding-left: 15px;
-  padding-right: 15px;
-`;
-
-const TableThead = styled(Row)`
-  background: #f1f1f1;
-`;
-
-const TableTh = styled.div`
-  font-weight: 700;
-  text-align: left;
-  padding-top: 15px;
-  padding-bottom: 15px;
-`;
-
-const TableBody = styled(Row)`
-  overflow-y: auto;
-  max-height: 40rem;
-`;
-
-const TableRow = styled(Row)`
-  border-bottom: 1px solid #ecf0f1;
-  text-align: left;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  line-height: 1.428571;
-`;
-
-const TableCol = styled(Col)`
-  display: inline-block;
-`;
-
-const Ul = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const GlyphiconStyled = styled(FontAwesomeIcon)`
-  font-size: 10px;
-`;
-
-const Categories = styled.li`
-  & .treeindenter {
-    position: relative;
-    padding-left: 25px;
-  }
-
-  & .treetoggle {
-    padding-left: 8px;
-    padding-right: 8px;
-    position: absolute;
-    right: 0;
-  }
-`;
-
-const Nodes = styled.li`
-  & .treeindenter {
-    padding-left: 40px;
-  }
-`;
-
-const Properties = styled.li`
-  & .treeindenter {
-    padding-left: 55px;
-  }
-`;
-
-const Values = styled.li`
-  & .treeindenter {
-    padding-left: 85px;
-  }
-`;
 
 const DictTable = (props) => {
   let data = JSON.parse(JSON.stringify(props.dictionary));
@@ -273,12 +198,12 @@ const DictTable = (props) => {
   const HighlightValues = (props) => {
     if (props.hlvalues !== undefined || props.hlvalues.length !== 0) {
       return props.hlvalues.map((item, index) =>
-        <Values key={index}>
-          <TableRow>
-            <TableCol className="treeindenter" xs={4} dangerouslySetInnerHTML={{ __html: item }}></TableCol>
-            <TableCol xs={8}></TableCol>
-          </TableRow>
-        </Values>
+        <li className={styles['values']} key={index}>
+          <Row className={styles['table-row']}>
+            <Col className={`treeindenter ${styles['table-col']}`} xs={4} dangerouslySetInnerHTML={{ __html: item }}></Col>
+            <Col className={styles['table-col']} xs={8}></Col>
+          </Row>
+        </li>
       );
     }
     return (null);
@@ -308,23 +233,23 @@ const DictTable = (props) => {
 
     if (props.properties !== undefined || props.properties.length !== 0) {
       return props.properties.map((item, index) =>
-        <Properties key={index}>
-          <TableRow>
-            <TableCol xs={4}>
+        <li className={styles['properties']} key={index}>
+          <Row className={styles['table-row']}>
+            <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <GlyphiconStyled glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
+                  <FontAwesomeIcon className={styles['glyphicon-styled']} glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
                 </a>
               </span>
               <a href="/#">{item.property} ({item.length})</a>
-            </TableCol>
-            <TableCol xs={8}>{item.property_desc}</TableCol>
-          </TableRow>
-          <Ul style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
+            </Col>
+            <Col className={styles['table-col']} xs={8}>{item.property_desc}</Col>
+          </Row>
+          <ul className={styles['ul']} style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
             <HighlightValues hlvalues={item.hl_values}/>
-          </Ul>
+          </ul>
           {/* <Ul><AllValues allvalues={item.all_values}/></Ul> */}
-        </Properties>
+        </li>
       );
     }
     return (null);
@@ -340,22 +265,22 @@ const DictTable = (props) => {
 
     if (props.nodes !== undefined || props.nodes.length !== 0) {
       return props.nodes.map((item, index) =>
-        <Nodes key={index}>
-          <TableRow>
-            <TableCol xs={4}>
+        <li className={styles['nodes']} key={index}>
+          <Row className={styles['table-row']}>
+            <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <GlyphiconStyled glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
+                  <FontAwesomeIcon className={styles['glyphicon-styled']} glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
                 </a>
               </span>
               <a href="/#">{item.node} ({item.length})</a>
-            </TableCol>
-            <TableCol xs={8}>{item.node_desc}</TableCol>
-          </TableRow>
-          <Ul style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
+            </Col>
+            <Col className={styles['table-col']} xs={8}>{item.node_desc}</Col>
+          </Row>
+          <ul className={styles['ul']} style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
             <PropertiesTable properties={item.properties} />
-          </Ul>
-        </Nodes>
+          </ul>
+        </li>
       );
     }
     return (null);
@@ -371,45 +296,45 @@ const DictTable = (props) => {
 
     if (props.categories !== undefined || props.categories.length !== 0) {
       return props.categories.map((item, index) =>
-        <Categories key={index}>
-          <TableRow>
-            <TableCol xs={4}>
+        <li className={styles['categories']} key={index}>
+          <Row className={styles['table-row']}>
+            <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <GlyphiconStyled icon={isToggleOn === true ? faAngleUp : faAngleDown} />
+                  <FontAwesomeIcon className={styles['glyphicon-styled']} icon={isToggleOn === true ? faAngleUp : faAngleDown} />
                 </a>
               </span>
               <a href="/#">{item.category} ({item.length})</a>
-            </TableCol>
-            <TableCol xs={8}></TableCol>
-          </TableRow>
-          <Ul style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
+            </Col>
+            <Col className={styles['table-col']} xs={8}></Col>
+          </Row>
+          <ul className={styles['ul']} style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
             <NodesTable nodes={item.nodes}/>
-          </Ul>
-        </Categories>
+          </ul>
+        </li>
       );
     }
     return (null);
   };
 
   return (
-    <ContainerStyled>
-      <TableThead>
+    <Container className={styles['container']}>
+      <Row className={styles['table-thead']}>
         <Col xs={3}>
-          <TableTh>Name</TableTh>
+          <div className={styles['table-th']}>Name</div>
         </Col>
         <Col xs={9}>
-          <TableTh>Description</TableTh>
+          <div className={styles['table-th']}>Description</div>
         </Col>
-      </TableThead>
-      <TableBody>
+      </Row>
+      <Row className={styles['table-body']}>
         <Col xs={12}>
-          <Ul className="treeview">
+          <ul className={`treeview ${styles['ul']}`}>
             <CategoriesTable categories={dictionary} />
-          </Ul>
+          </ul>
         </Col>
-      </TableBody>
-    </ContainerStyled>
+      </Row>
+    </Container>
   );
 };
 
