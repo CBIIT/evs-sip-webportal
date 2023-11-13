@@ -20,7 +20,7 @@ const NavigationBar = () => {
     e.preventDefault()
     dispatch(setUser({}))
     // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/evssip/auth/logout`)
+    const response = await fetch(`${baseServer}/auth/logout`)
     window.location.href = response.url;
   }
 
@@ -112,7 +112,7 @@ const NavigationBar = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <a href={`${baseServer}/evssip/auth/login`} target="_self" className="nav-link">
+                <a href={`${baseServer}/auth/login`} target="_self" className="nav-link">
                   Login
                 </a>
               )
