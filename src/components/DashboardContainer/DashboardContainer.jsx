@@ -7,7 +7,7 @@ import NavigationBoard from '../NavigationBoard/NavigationBoard'
 
 const DashboardContainer = ({ children }) => {
   return (
-    <>
+    <div className={styles['dashboard-container']}>
       <NavigationBoard/>
       <div className={styles.page}>
         <div className={styles['page-container']}>
@@ -26,7 +26,7 @@ const DashboardContainer = ({ children }) => {
           </Container>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

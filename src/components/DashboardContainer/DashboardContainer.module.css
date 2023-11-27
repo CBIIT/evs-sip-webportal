@@ -1,7 +1,11 @@
+.dashboard-container {
+  position: relative;
+}
+
 .page {
   background-color: #fff;
   overflow: auto;
-  margin-left: 15.5rem;
+  margin-left: 16rem;
   padding-bottom: 18rem;
 }
 

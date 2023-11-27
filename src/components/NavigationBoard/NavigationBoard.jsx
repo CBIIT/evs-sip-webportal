@@ -17,7 +17,7 @@ const NavigationBoard = () => {
   }
 
   return (
-    <>
+    <aside className={styles.aside}>
       <Nav className="flex-column">
         <Nav.Item>
           <Nav.Link className={styles.navLink} as={Link} to="/modelbuilder">
@@ -73,7 +73,7 @@ const NavigationBoard = () => {
           </Nav.Link>
         </Nav.Item>
       </Nav>
-    </>
+    </aside>
   )
 }
 
