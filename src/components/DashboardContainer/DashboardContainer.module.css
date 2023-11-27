@@ -1,19 +1,20 @@
 .page {
-  background-color: #e7edf4;
+  background-color: #fff;
   overflow: auto;
+  margin-left: 15.5rem;
   padding-bottom: 18rem;
 }
 
 .page-container {
-  max-width: 80rem;
+  /* max-width: 80rem; */
   margin: 0 auto;
   background: #fff url(../../assets/img/dash-bkgd.jpg) no-repeat top right;
   background-size: 680px 125px;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
 }
 
-.title-contanier {
-  padding: 3rem 2rem 0.5rem 2rem;
+.title-container {
+  padding: 1rem 2rem 2.5rem 2rem
 }
 
 .title {

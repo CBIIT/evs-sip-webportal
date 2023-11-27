@@ -47,9 +47,9 @@ const App = () => {
               exact
               path="/mainboard"
               render={() => (
-                <RequireAuthorization>
+                // <RequireAuthorization>
                   <GDCSource />
-                </RequireAuthorization>
+                // </RequireAuthorization>
               )}
             />
             <Route
