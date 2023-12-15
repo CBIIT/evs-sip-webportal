@@ -17,6 +17,9 @@
   border-right: solid #176bd3 5px;
   margin-bottom: 3px;
   color: var(--black);
+  position: relative;
+  z-index: 1000;
+  background-color: #fff;
 }
 
 .navDropdown {
@@ -28,6 +31,9 @@
   border: 1px solid rgba(0,0,0,.125);
   border-right: solid #176bd3 5px;
   color: var(--black);
+  background-color: #fff;
+  position: relative;
+  z-index: 1000;
 }
 
 .navDropdown > :global(.dropdown-menu){

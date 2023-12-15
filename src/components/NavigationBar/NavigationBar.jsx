@@ -98,7 +98,7 @@ const NavigationBar = () => {
               About
             </Nav.Link>
             {
-              isLoggedIn || currentUser.authenticated ? (
+              isLoggedIn ? (
                 <NavDropdown className={styles.dropdown} title={`user: ${currentUser.user.userid}`}>
                   <div className={styles.subtitle}>Model Owner</div>
                   <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="#">

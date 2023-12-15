@@ -1,0 +1,10 @@
+.page {
+  overflow: auto;
+  padding-bottom: 18rem;
+}
+
+.container {
+  max-width: 75rem;
+  margin: 0 auto;
+  margin-top: 2rem;
+}
