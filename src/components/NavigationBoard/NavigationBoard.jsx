@@ -6,16 +6,6 @@ import { baseServer } from '../../api'
 import { setUser } from '../../reducers/currentUser'
 
 const NavigationBoard = () => {
-  const dispatch = useDispatch()
-
-  const logout = async (e) => {
-    e.preventDefault()
-    dispatch(setUser({}))
-    // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/auth/logout`)
-    window.location.href = `${await response.json()}?TARGET=${window.location.origin}`
-  }
-
   return (
     <aside className={styles.aside}>
       <Nav className="flex-column">
@@ -32,8 +22,10 @@ const NavigationBoard = () => {
         <NavDropdown
           className={`${styles.navDropdown}`}
           title="Published Data Sources"
-          id="nav-dropdown"
-          data-toggle="collapse"
+          id="nav-dropdow-published"
+          onClick={(e) => {
+            e.target.href = ''
+          }}
           renderMenuOnMount
         >
           <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard/gdc">
@@ -52,7 +44,10 @@ const NavigationBoard = () => {
         <NavDropdown
           className={`${styles.navDropdown}`}
           title="Unpublished Data Sources"
-          id="nav-dropdown"
+          id="nav-dropdown-unpublished"
+          onClick={(e) => {
+            e.target.href = ''
+          }}
           renderMenuOnMount
         >
           <NavDropdown.Item className={styles.navDropdownItem} as={Link} to="/mainboard">
@@ -68,7 +63,7 @@ const NavigationBoard = () => {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link className={styles.navLink} onClick={logout}>
+          <Nav.Link href={`${baseServer}/auth/logout`} className={styles.navLink}>
             Sign Out
           </Nav.Link>
         </Nav.Item>

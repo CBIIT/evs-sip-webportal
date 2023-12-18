@@ -3,26 +3,10 @@ import { Link } from 'react-router-dom'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import styles from './NavigationBar.module.css'
 import { baseServer } from '../../api'
-import { setUser } from '../../reducers/currentUser'
 
 const NavigationBar = () => {
   const currentUser = useSelector((state) => state.currentUser)
-  //const isLoggedIn = Object.keys(currentUser).length > 0 && !currentUser.error && currentUser.authenticated
   const isLoggedIn = currentUser.authenticated;
-  const dispatch = useDispatch()
-
-  // const login = e => {
-  //   e.preventDefault();
-  //   dispatch(setUser({name: ''}));
-  // }
-
-  const logout = async (e) => {
-    e.preventDefault()
-    dispatch(setUser({}))
-    // can not use normal 301 response, since session is not properly cleared
-    const response = await fetch(`${baseServer}/auth/logout`)
-    window.location.href = response.url;
-  }
 
   return (
     <Navbar className={styles.navbar} bg="dark" role="navigation">
@@ -99,7 +83,7 @@ const NavigationBar = () => {
             </Nav.Link>
             {
               isLoggedIn ? (
-                <NavDropdown className={styles.dropdown} title={`user: ${currentUser.user.userid}`}>
+                <NavDropdown className={styles.dropdown} title={currentUser.user?.userid}>
                   <div className={styles.subtitle}>Model Owner</div>
                   <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="#">
                     Profile
@@ -107,7 +91,7 @@ const NavigationBar = () => {
                   <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="/mainboard">
                     Dashboard
                   </NavDropdown.Item>
-                  <NavDropdown.Item className={styles['dropdown-item']} onClick={logout}>
+                  <NavDropdown.Item href={`${baseServer}/auth/logout`} className={styles['dropdown-item']}>
                     Sign Out
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -116,7 +100,6 @@ const NavigationBar = () => {
                   Login
                 </a>
               )
-              // <a href='/#' onClick={login} target="_self" className="nav-link">Login</a>
             }
           </Nav>
         </Navbar.Collapse>
