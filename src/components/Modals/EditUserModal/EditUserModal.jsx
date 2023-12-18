@@ -43,7 +43,7 @@ const EditUserModal = ({updateUserList, username}) => {
       setFormErrors(errors);
     } else {
       const body = {
-          "requester": currentUser.name,
+          "requester": currentUser.user.userid,
           "user": {
               "role": userState.role,
               "projects": userState.projects,

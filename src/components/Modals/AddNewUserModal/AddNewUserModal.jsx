@@ -36,7 +36,7 @@ const AddNewUserModal = ({updateUserList}) => {
       setFormErrors(errors);
     } else {
       const body = {
-          "requester": currentUser.name,
+          "requester": currentUser.user.usedid,
           "user": {
               "role": userState.role,
               "projects": userState.projects,
