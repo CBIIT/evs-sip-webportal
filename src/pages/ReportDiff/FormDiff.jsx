@@ -11,9 +11,9 @@ const FormLabelStyled = styled(Form.Label)`
 `;
 
 const FormDiff = (props) => {
-  return <FormStyled>
+  return <Form style={{ marginBottom: '3rem' }}>
     <Form.Group>
-      <FormLabelStyled>Choose Data Source</FormLabelStyled>
+      <Form style={{ fontWeight: '500' }}>Choose Data Source</Form>
       <Form.Control as="select" disabled >
         <option value="gdc">Genomic Data Commons (GDC)</option>
         <option value="ctdc">Clinical Trial Data Commons (CTDC)</option>
@@ -22,7 +22,7 @@ const FormDiff = (props) => {
       </Form.Control>
     </Form.Group>
     <Form.Group>
-      <FormLabelStyled>Select Compare Type</FormLabelStyled>
+      <Form style={{ fontWeight: '500' }}>Select Compare Type</Form>
       <div>
         <Form.Check inline label="Value" name="compare_type" type="radio" id="value" defaultChecked disabled/>
         <Form.Check inline label="Property" name="compare_type" type="radio" id="property" disabled/>
@@ -30,7 +30,7 @@ const FormDiff = (props) => {
       </div>
     </Form.Group>
     <Form.Group>
-      <FormLabelStyled>Source Branch from GDC Dictionary</FormLabelStyled>
+      <Form style={{ fontWeight: '500' }}>Source Branch from GDC Dictionary</Form>
       <Form.Control as="select" disabled>
         <option value="2.3.0">Yertle the Turtle 2.3.0</option>
         <option value="2.2.0">Very Bad Fish 2.2.0</option>
@@ -40,7 +40,7 @@ const FormDiff = (props) => {
     <Button variant="primary" onClick={props.reportTrigger} >
       Compare
     </Button>
-  </FormStyled>
+  </Form>
 }
 
 export default FormDiff;

@@ -1,43 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styles from './TableDiff.module.css';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import TableDiff from './TableDiff';
 import PaginationController from './PaginationController';
-
-const TabNavsCol = styled(Col)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
-`;
-
-const NavLinkStyled = styled(Nav.Link)`
-  font-family: 'Lato-Regular', sans-serif;
-  font-size: 1.125rem;
-  text-align: center;
-  color: #042A68;
-  padding: 0.7rem 2rem;
-  width: 10rem;
-  inline-size: 10rem; 
-  background-color: #EBEBEB;
-  padding: .7rem 2rem;
-  margin-right: 10px;
-
-  &&.active {
-    color: #fff;
-    background-color: #535F74;
-    padding: 0.7rem 2rem;
-  }
-`;
-
-const NavStyled = styled(Nav)`
-  border-bottom: none;
-
-  && ${NavLinkStyled} {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-`;
 
 const TabsController = (props) => {
   return (
@@ -48,22 +13,22 @@ const TabsController = (props) => {
         activeKey={props.type}
         onSelect={props.selectTab}>
           <Row className="clearfix">
-            <TabNavsCol sm={12}>
-              <NavStyled variant="tabs">
+            <Col style={styles['tab-navs-col']} sm={12}>
+              <Nav styles={styles['nav-styled']} variant="tabs">
                 <Nav.Item>
-                  <NavLinkStyled eventKey="all">All</NavLinkStyled>
+                  <Nav.Link style={styles['nav-link-styled']} eventKey="all">All</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="unmapped">Unmapped</NavLinkStyled>
+                  <Nav.Link style={styles['nav-link-styled']} eventKey="unmapped">Unmapped</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="mapped">Mapped</NavLinkStyled>
+                  <Nav.Link style={styles['nav-link-styled']} eventKey="mapped">Mapped</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLinkStyled eventKey="conflict">Conflict</NavLinkStyled>
+                  <Nav.Link style={styles['nav-link-styled']} eventKey="conflict">Conflict</Nav.Link>
                 </Nav.Item>
-              </NavStyled>
-            </TabNavsCol>
+              </Nav>
+            </Col>
             <Col sm={12}>
               <Tab.Content transition="false" style={{"fontSize": "1rem", "border": "1px solid #535F74", "borderRadius": "5px", "padding": "5px 5px 0px 5px"}}>
                 <Tab.Pane unmountOnExit={true} eventKey="all">

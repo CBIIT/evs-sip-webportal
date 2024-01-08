@@ -1,21 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
+import styles from './PaginationController.module.css';
 import ReactPaginate from 'react-paginate';
 import { Form } from 'react-bootstrap';
 
-const PaginationContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-`;
-
-const PageInfo = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
-
 const PaginationController = (props) => {
-  return (<PaginationContainer>
+  return (<div className={styles['pagination-container']}>
     <ReactPaginate
       previousLabel={'«'}
       prevClassName={'page-item'}
@@ -37,7 +26,7 @@ const PaginationController = (props) => {
       activeClassName={'active'}
       forcePage={props.currentPage[props.type] - 1}
     />
-    <PageInfo>
+    <div className={styles['page-info']}>
       <Form.Label style={{padding: '.375rem .75rem'}}>Page Size:</Form.Label>
       <Form.Control style={{width: '12rem'}} as="select" value={props.pageSize} onChange={props.pageSizeChange}>
         <option value="10">10</option>
@@ -46,9 +35,9 @@ const PaginationController = (props) => {
         <option value="50">50</option>
         <option value="100">100</option>
       </Form.Control>
-    </PageInfo>
+    </div>
     
-  </PaginationContainer>);
+  </div>);
 }
 
 export default PaginationController;

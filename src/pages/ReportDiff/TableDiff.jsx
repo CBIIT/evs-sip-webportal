@@ -1,70 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
+import styles from './TableDiff.module.css';
 import { Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-
-const SearchContainer = styled.div`
-  width: 100%;
-  background-color: #535F74;
-  border: 1px solid #dee2e6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 0.4rem 1rem;
-`;
-
-const TableContainer = styled.div`
-  width: 100%;
-`;
-
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-  margin-bottom: 0;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
-const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
-`;
-
-const FormStyled = styled(Form)`
-  width: 30rem;
-`;
-
-const Indicator = styled.div`
-  position: relative;
-  padding-bottom: 36%;
-`;
-
-const IndicatorContent = styled.div`
-  width: 60%;
-  min-width: 550px;
-  text-align: center;
-  margin: auto;
-  padding: 1em 0;
-  background-color: #fff;
-  color: #535a60;
-  font-size: 1.2em;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-`;
-
 
 const TableDiff = (props) => {
   let groupCount = {};
@@ -87,8 +26,8 @@ const TableDiff = (props) => {
   };
 
   return <>
-    <SearchContainer>
-      <FormStyled onSubmit={props.searchSubmit}>
+    <div className={styles['search-container']}>
+      <Form className={styles['form-styled']} onSubmit={props.searchSubmit}>
         <Form.Row>
           <Col sm={12}>
             <Form.Label htmlFor="inlineFormInputGroupUsername" srOnly>
@@ -109,14 +48,14 @@ const TableDiff = (props) => {
             </InputGroup>
           </Col>
         </Form.Row>
-      </FormStyled>
+      </Form>
       {tableData.length !== 0 &&
         <Button variant="success" onClick={props.downloadResult} className="ml-auto">
           Download Result
         </Button>
       }
-    </SearchContainer>
-    <TableContainer>
+    </div>
+    <div className={styles['table-container']}>
     {tableData.length !== 0 ?
       <Table bordered>
         <thead style={{backgroundColor:"#535F74", color: "white", textAlign: "center"}}>
@@ -147,13 +86,13 @@ const TableDiff = (props) => {
                   <tr key={index}>
                     <td rowSpan={rowSpan}>
                       {item.c}
-                      <TableUl>
-                        <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.n}
-                          <TableUl>
-                            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.p}</TableLi>
-                          </TableUl>
-                        </TableLi>
-                      </TableUl>
+                      <ul className={styles['table-ul']}>
+                        <li className={styles['table-li']}><span className={styles['span-icon']}><FontAwesomeIcon icon={faAngleDown}/></span>{item.n}
+                          <ul className={styles['table-ul']}>
+                            <li className={styles['table-li']}><span className={styles['span-icon']}><FontAwesomeIcon icon={faAngleDown}/></span>{item.p}</li>
+                          </ul>
+                        </li>
+                      </ul>
                     </td>
                     <td>{item.v_1}</td>
                     <td>{item.n_1}</td>
@@ -177,13 +116,13 @@ const TableDiff = (props) => {
         </tbody>
       </Table>
     :
-      <Indicator>
-        <IndicatorContent>
+      <div className={styles['indicator']}>
+        <div className={styles['indicator-content']}>
           Sorry, no results found.
-        </IndicatorContent>
-      </Indicator>
+        </div>
+      </div>
     }
-    </TableContainer>
+    </div>
   </>
 }
 
