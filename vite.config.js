@@ -24,21 +24,26 @@ export default defineConfig({
     host: 'sip-dev.semantics.cancer.gov',
     //https: true
     proxy: {
-      '/evssip/api': {
+      '/evssip/api/': {
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/evssip/, ''),
       },
-      '/evssip/service/search': {
+      '/evssip/service/search/': {
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/evssip/, ''),
       },
-      '/evssip/auth': {
+      '/evssip/auth/': {
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/evssip/, ''),
       }
     },
-  }
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 })
