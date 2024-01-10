@@ -8,15 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from '../../Search/SuggestBox/SuggestBox'
 
-import { setKeyword, setDataSources, setIsSearching } from '../../Search/actions'
+import { setKeyword, setDataSources, setIsSearching } from '../../../reducers/searchSlice'
 
 const Search = () => {
   const [suggestState, setSuggestState] = useState([])
   const [selectIndexState, setSelectIndexState] = useState(-1)
   const [isToggleOnSource, setIsToggleOnSource] = useState(false)
 
-  const keyword = useSelector((state) => state.searchReducer.keyword)
-  const dataSources = useSelector((state) => state.searchReducer.dataSources)
+  const keyword = useSelector((state) => state.search.keyword)
+  const dataSources = useSelector((state) => state.search.dataSources)
 
   const history = useHistory()
   const dispatch = useDispatch()
