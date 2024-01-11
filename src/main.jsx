@@ -5,7 +5,7 @@ import './index.css'
 
 import { Provider } from 'react-redux'
 import store from './store'
-import { fetchUser } from './reducers/currentUser'
+import { fetchUser } from './reducers/userSlice'
 
 async function init() {
   await store.dispatch(fetchUser())

@@ -3,7 +3,6 @@ import { Nav, NavDropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import styles from './NavigationBoard.module.css'
 import { baseServer } from '../../api'
-import { setUser } from '../../reducers/currentUser'
 
 const NavigationBoard = () => {
   return (

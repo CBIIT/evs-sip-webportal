@@ -2,13 +2,13 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import ddgraph from './components/GraphicalView/DataDictionary/reducers'
 import submission from './components/GraphicalView/reducers'
-import currentUser from './reducers/currentUser'
+import userReducer from './reducers/userSlice'
 import searchReducer from './reducers/searchSlice'
 
 const store = configureStore({
   reducer: {
     search: searchReducer,
-    currentUser,
+    user: userReducer,
     ddgraph,
     submission,
   },

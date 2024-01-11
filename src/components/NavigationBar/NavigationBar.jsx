@@ -5,8 +5,8 @@ import styles from './NavigationBar.module.css'
 import { baseServer } from '../../api'
 
 const NavigationBar = () => {
-  const currentUser = useSelector((state) => state.currentUser)
-  const isLoggedIn = currentUser.authenticated;
+  const currentUser = useSelector((state) => state.user.currentUser)
+  const isLoggedIn = currentUser.authenticated
 
   return (
     <Navbar className={styles.navbar} bg="dark" role="navigation">
@@ -81,26 +81,24 @@ const NavigationBar = () => {
             <Nav.Link as={Link} to="/about">
               About
             </Nav.Link>
-            {
-              isLoggedIn ? (
-                <NavDropdown className={styles.dropdown} title={currentUser.user?.userid}>
-                  <div className={styles.subtitle}>Model Owner</div>
-                  <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="#">
-                    Profile
-                  </NavDropdown.Item>
-                  <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="/mainboard">
-                    Dashboard
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href={`${baseServer}/auth/logout`} className={styles['dropdown-item']}>
-                    Sign Out
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <a href={`${baseServer}/auth/login`} target="_self" className="nav-link">
-                  Login
-                </a>
-              )
-            }
+            {isLoggedIn ? (
+              <NavDropdown className={styles.dropdown} title={currentUser.user?.userid}>
+                <div className={styles.subtitle}>Model Owner</div>
+                <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="#">
+                  Profile
+                </NavDropdown.Item>
+                <NavDropdown.Item className={styles['dropdown-item']} as={Link} to="/mainboard">
+                  Dashboard
+                </NavDropdown.Item>
+                <NavDropdown.Item href={`${baseServer}/auth/logout`} className={styles['dropdown-item']}>
+                  Sign Out
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <a href={`${baseServer}/auth/login`} target="_self" className="nav-link">
+                Login
+              </a>
+            )}
           </Nav>
         </Navbar.Collapse>
       </div>
