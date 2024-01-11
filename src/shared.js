@@ -190,26 +190,3 @@ export const searchFilter = (items, keyword) => {
   })
   return newItem
 }
-
-// Firefox 1.0+
-const isFirefox = typeof InstallTrigger !== 'undefined'
-
-// Safari 3.0+
-const isSafari = navigator.userAgent.indexOf('Safari') > -1
-
-// Internet Explorer 6-11
-const isIE = /* @cc_on!@ */ false || !!document.documentMode
-
-// Edge 20+
-const isEdge = !isIE && !!window.StyleMedia
-
-// Chrome 1 - 71
-const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)
-
-export const browserDetection = {
-  isFirefox,
-  isSafari,
-  isIE,
-  isEdge,
-  isChrome,
-}
