@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 export const sortAlphabetically = (values) => {
   values.sort((a, b) => {
     const an = a.n.replace(/<b>/g, '').replace(/<\/b>/g, '').toLowerCase()
@@ -116,7 +114,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (c) {
           return c.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
@@ -129,7 +127,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (l) {
           return l.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
@@ -146,7 +144,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
