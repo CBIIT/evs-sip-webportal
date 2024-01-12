@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import styles from './NavigationBar.module.css'
 import { baseServer } from '../../api'
@@ -7,6 +7,7 @@ import { baseServer } from '../../api'
 const NavigationBar = () => {
   const currentUser = useSelector((state) => state.user.currentUser)
   const isLoggedIn = currentUser.authenticated
+  const navigate = useNavigate();
 
   return (
     <Navbar className={styles.navbar} bg="dark" role="navigation">
@@ -28,49 +29,49 @@ const NavigationBar = () => {
             <NavDropdown className={styles.dropdown} title="Data Model">
               <NavDropdown.Item
                 className={styles['dropdown-item']}
-                as={Link}
-                to={{
-                  pathname: '/datamodel',
-                  state: {
-                    fromDataModel: 'gdc',
-                  },
-                }}
+                onClick={() =>
+                  navigate('/datamodel', {
+                    state: {
+                      fromDataModel: 'gdc',
+                    },
+                  })
+                }
               >
                 GDC
               </NavDropdown.Item>
               <NavDropdown.Item
                 className={styles['dropdown-item']}
-                as={Link}
-                to={{
-                  pathname: '/datamodel',
-                  state: {
-                    fromDataModel: 'ctdc',
-                  },
-                }}
+                onClick={() =>
+                  navigate('/datamodel', {
+                    state: {
+                      fromDataModel: 'ctdc',
+                    },
+                  })
+                }
               >
                 CTDC
               </NavDropdown.Item>
               <NavDropdown.Item
                 className={styles['dropdown-item']}
-                as={Link}
-                to={{
-                  pathname: '/datamodel',
-                  state: {
-                    fromDataModel: 'icdc',
-                  },
-                }}
+                onClick={() =>
+                  navigate('/datamodel', {
+                    state: {
+                      fromDataModel: 'icdc',
+                    },
+                  })
+                }
               >
                 ICDC
               </NavDropdown.Item>
               <NavDropdown.Item
                 className={styles['dropdown-item']}
-                as={Link}
-                to={{
-                  pathname: '/datamodel',
-                  state: {
-                    fromDataModel: 'pcdc',
-                  },
-                }}
+                onClick={() =>
+                  navigate('/datamodel', {
+                    state: {
+                      fromDataModel: 'pcdc',
+                    },
+                  })
+                }
               >
                 PCDC
               </NavDropdown.Item>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { apiSuggest } from '../../../api'
 import styles from './Search.module.css'
 import { Container, Row, Col, InputGroup, Button, FormControl } from 'react-bootstrap'
@@ -18,14 +18,14 @@ const Search = () => {
   const keyword = useSelector((state) => state.search.keyword)
   const dataSources = useSelector((state) => state.search.dataSources)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const searchHandler = (kywd) => {
     const keywordCase = kywd.trim()
     dispatch(setKeyword(keywordCase))
     dispatch(setIsSearching(true))
-    history.push('./search')
+    navigate('./search')
   }
 
   const suggestHandler = (event) => {
