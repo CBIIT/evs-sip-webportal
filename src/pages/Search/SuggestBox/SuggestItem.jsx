@@ -1,6 +1,4 @@
-import React from 'react';
 import styled from 'styled-components';
-
 
 const SuggestObject = styled.div`
   line-height: 1.8em;

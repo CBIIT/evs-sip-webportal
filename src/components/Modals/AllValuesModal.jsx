@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';

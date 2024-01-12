@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import styles from './MainTabsController.module.css'
 import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap'

@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import SearchBox from './SearchBox/SearchBox'
 import MainTabsController from './MainTabsController/MainTabsController'

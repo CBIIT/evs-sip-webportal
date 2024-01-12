@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { baseUrl } from '../../../api'
 import styles from './ICDCSource.module.css'
 import { Table, Tabs, Tab } from 'react-bootstrap'
