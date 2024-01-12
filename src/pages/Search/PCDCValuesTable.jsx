@@ -1,6 +1,5 @@
-import React, { useState , useContext} from 'react';
+import { useState , useContext} from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -626,7 +625,7 @@ const PCDCValuesTable = (props) => {
     );
   }
 
-  if (!_.isEmpty(valuesObj)) {
+  if (Object.keys(valuesObj).length !== 0) {
     return (
     <ContainerStyled>
       <TableThead>

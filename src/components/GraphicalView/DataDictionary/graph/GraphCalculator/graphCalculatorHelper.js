@@ -1,6 +1,5 @@
 import Viz from "viz.js";
 import { Module, render } from "viz.js/full.render";
-import _ from "underscore";
 import {
   createNodesAndEdges,
   createDotStrinByNodesEdges,
@@ -24,7 +23,7 @@ import { getCategoryColor } from "../../NodeCategories/helper";
  */
 export const getAllTypes = (nodes) => {
   const types = nodes.map((node) => node.type);
-  const uniqueTypes = _.uniq(types);
+  const uniqueTypes = types.filter((value, index, array) => array.indexOf(value) === index);
   return uniqueTypes;
 };
 

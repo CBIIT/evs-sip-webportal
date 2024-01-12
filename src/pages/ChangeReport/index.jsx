@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Button, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

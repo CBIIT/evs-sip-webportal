@@ -2,13 +2,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import styles from './App.module.css'
 import { lazy, Suspense } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // components
-import Header from './components/Header/Header'
-import NavigationBar from './components/NavigationBar/NavigationBar'
-import Footer from './components/Footer/Footer'
-import Layout from './components/Layout/Layout'
+import Header from './layouts/Header/Header'
+import NavigationBar from './layouts/NavigationBar/NavigationBar'
+import Footer from './layouts/Footer/Footer'
+import Layout from './layouts/Layout/Layout'
 import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization'
 import LoadingAnimation from './components/LoadingAnimation/LoadingAnimation'
 
@@ -32,20 +32,20 @@ const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
 
 const App = () => {
   return (
-    <Router basename={'/evssip'}>
+    <BrowserRouter basename={'/evssip'}>
       <div id="main" className={styles.main}>
         <Header />
         <NavigationBar />
         <Layout>
-          <Suspense fallback={<LoadingAnimation/>}>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/search" component={Search} />
-              <Route path="/datamodel" component={DataModel} />
-              <Route path="/about" component={About} />
-              <Route path="/apidocs" component={APIDocs} />
-              <Route path="/reportdiff" component={ReportDiff} />
-              <Route path="/changereport" component={ChangeReport} />
+          <Suspense fallback={<LoadingAnimation />}>
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/datamodel" element={<DataModel />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/apidocs" element={<APIDocs />} />
+              <Route path="/reportdiff" element={<ReportDiff />} />
+              <Route path="/changereport" element={<ChangeReport />} />
               <Route
                 exact
                 path="/mainboard"
@@ -92,9 +92,9 @@ const App = () => {
                   </RequireAuthorization>
                 )}
               />
-              <Route path="/mappingreport" component={MappingReport} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/modelbuilder" component={ModelBuilder} />
+              <Route path="/mappingreport" element={<MappingReport />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/modelbuilder" element={<ModelBuilder />} />
               <Route
                 exact
                 path="/usermanagement"
@@ -104,13 +104,13 @@ const App = () => {
                   </RequireAuthorization>
                 )}
               />
-              <Route component={NotFound} />
-            </Switch>
+              <Route element={<NotFound />} />
+            </Routes>
           </Suspense>
         </Layout>
         <Footer />
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 

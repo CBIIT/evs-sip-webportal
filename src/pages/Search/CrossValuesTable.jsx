@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import LazyLoad from 'react-lazyload';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortSynonyms, browserDetection } from '../../shared';
+import { getHighlightObj, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -789,14 +788,6 @@ const CrossValuesTable = (props) => {
     );
   }
 
-  const LazyLoadContainer = (props) => {
-    return (
-      <LazyLoad height={250} once overflow={true} offset={270} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
-        {props.children}
-      </LazyLoad>
-    );
-  }
-
   if (crossValues.length !== 0) {
     return (
       <ContainerStyled>
@@ -819,22 +810,11 @@ const CrossValuesTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          {(crossValues.length < 25)
-          ? 
           <Col xs={12}>
             {crossValues.map((cross, index) => 
               <ValuesItemsContainer cross={cross} key={index} />
             )}
           </Col>
-          :
-          <Col xs={12}>
-            {crossValues.map((cross, index) => 
-              <LazyLoadContainer key={index}>
-                <ValuesItemsContainer cross={cross} key={index}/>
-              </LazyLoadContainer>
-            )}
-          </Col>
-          }
         </TableBody>
       </ContainerStyled>
     );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import Select from 'react-select';

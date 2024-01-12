@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Tab, Row, Col, Nav } from 'react-bootstrap';
 import TableDiff from './TableDiff';

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './SearchBox.module.css'
 import debounce from 'lodash.debounce'
 import { apiSuggest, apiSearchAll } from '../../../api'

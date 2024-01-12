@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 export const sortAlphabetically = (values) => {
   values.sort((a, b) => {
     const an = a.n.replace(/<b>/g, '').replace(/<\/b>/g, '').toLowerCase()
@@ -116,7 +114,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (c) {
           return c.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
@@ -129,7 +127,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (l) {
           return l.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
@@ -146,7 +144,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
         newItem.push(item)
       }
     }
@@ -189,27 +187,4 @@ export const searchFilter = (items, keyword) => {
     }
   })
   return newItem
-}
-
-// Firefox 1.0+
-const isFirefox = typeof InstallTrigger !== 'undefined'
-
-// Safari 3.0+
-const isSafari = navigator.userAgent.indexOf('Safari') > -1
-
-// Internet Explorer 6-11
-const isIE = /* @cc_on!@ */ false || !!document.documentMode
-
-// Edge 20+
-const isEdge = !isIE && !!window.StyleMedia
-
-// Chrome 1 - 71
-const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)
-
-export const browserDetection = {
-  isFirefox,
-  isSafari,
-  isIE,
-  isEdge,
-  isChrome,
 }
