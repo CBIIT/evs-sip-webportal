@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { baseUrl } from '../../../api'
 import styles from './ICDCSource.module.css'
 import { Table, Tabs, Tab } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { AngleDownIcon, EditIcon, TimesIcon } from '../../../components/ui/icons/Icons'
 
 import BatchUpdateModal from '../../../components/Modals/BatchUpdateModal'
 import DashboardContainer from '../../../components/DashboardContainer/DashboardContainer'
@@ -139,16 +138,10 @@ const ICDCSource = () => {
         </div>
         <div className={styles.tableContainer}>
           <SearchFormComponent submitSearch={handleSubmitSearch} />
-          <Tabs
-            defaultActiveKey="values"
-            id="uncontrolled-tab-example"
-            activeKey={tabState}
-            onSelect={selectTabHandle}
-          >
+          <Tabs defaultActiveKey="values" id="uncontrolled-tab-example" activeKey={tabState} onSelect={selectTabHandle}>
             <Tab eventKey="values" title="Values">
               <div>
-                {Object.keys(valueState).length === 0 ||
-                valueState.message === 'No matched data in values' ? (
+                {Object.keys(valueState).length === 0 || valueState.message === 'No matched data in values' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -167,25 +160,19 @@ const ICDCSource = () => {
                             {(i === 0 ||
                               valueState.result[i - 1].Node_Name !== v.Node_Name ||
                               valueState.result[i - 1].Property_Name !== v.Property_Name) && (
-                              <td
-                                rowSpan={
-                                  rowSpanState[
-                                    v.Category + '-' + v.Node_Name + '-' + v.Property_Name
-                                  ]
-                                }
-                              >
+                              <td rowSpan={rowSpanState[v.Category + '-' + v.Node_Name + '-' + v.Property_Name]}>
                                 <div>
                                   {'Category_Name'}
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
-                                        <FontAwesomeIcon icon={faAngleDown} />
+                                        <AngleDownIcon />
                                       </span>
                                       {v.Node_Name}
                                       <ul className={styles.tableUl}>
                                         <li className={styles.tableLi}>
                                           <span className={styles.spanIcon}>
-                                            <FontAwesomeIcon icon={faAngleDown} />
+                                            <AngleDownIcon />
                                           </span>
                                           {v.Property_Name}
                                         </li>
@@ -200,10 +187,10 @@ const ICDCSource = () => {
                             <td>{v.Term_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>
@@ -216,8 +203,7 @@ const ICDCSource = () => {
             </Tab>
             <Tab eventKey="props" title="Properties">
               <div>
-                {Object.keys(propState).length === 0 ||
-                propState.message === 'No matched data in properties.' ? (
+                {Object.keys(propState).length === 0 || propState.message === 'No matched data in properties.' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -242,7 +228,7 @@ const ICDCSource = () => {
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
-                                        <FontAwesomeIcon icon={faAngleDown} />
+                                        <AngleDownIcon />
                                       </span>
                                       {p.Node_Name}
                                     </li>
@@ -255,10 +241,10 @@ const ICDCSource = () => {
                             <td>{p.Property_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>
@@ -271,8 +257,7 @@ const ICDCSource = () => {
             </Tab>
             <Tab eventKey="nodes" title="Nodes">
               <div>
-                {Object.keys(nodeState).length === 0 ||
-                nodeState.message === 'No matched data in nodes.' ? (
+                {Object.keys(nodeState).length === 0 || nodeState.message === 'No matched data in nodes.' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -293,10 +278,10 @@ const ICDCSource = () => {
                             <td>{n.Node_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>
@@ -309,11 +294,7 @@ const ICDCSource = () => {
             </Tab>
           </Tabs>
           <div className={styles.paginationContainer}>
-            <PageSizeComponent
-              type={tabState}
-              pageSize={pageSizeState}
-              pageSizeChange={handlePageSize}
-            />
+            <PageSizeComponent type={tabState} pageSize={pageSizeState} pageSizeChange={handlePageSize} />
             <PaginationController
               type={tabState}
               pageCount={pageCountState}

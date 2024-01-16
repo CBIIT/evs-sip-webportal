@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { apiSuggest } from '../../../api'
 import styles from './Search.module.css'
 import { Container, Row, Col, InputGroup, Button, FormControl } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { ArrowRightIcon, CheckIcon } from '../../../components/ui/icons/Icons'
 import SuggestBox from '../../Search/SuggestBox/SuggestBox'
 
 import { setKeyword, setDataSources, setIsSearching } from '../../../reducers/searchSlice'
@@ -127,7 +126,7 @@ const Search = () => {
                     aria-label="search"
                     onClick={() => searchHandler(keyword)}
                   >
-                    <FontAwesomeIcon className={styles['input-box-icon']} icon={faArrowRight} />
+                    <ArrowRightIcon />
                   </Button>
                 </InputGroup>
                 <SuggestBox
@@ -160,7 +159,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Genomic Data Commons
                       </label>
@@ -173,7 +172,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Clinical Trial Data Commons
                       </label>
@@ -186,7 +185,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Integrated Canine Data Commons
                       </label>
@@ -201,7 +200,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Pedriactic Cancer Data Model
                       </label>

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Collapse} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { MinusIcon, PlusIcon, AngleDownIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj } from '../../shared';
 
 import AllValuesModal from '../../components/Modals/AllValuesModal';
@@ -96,8 +95,8 @@ const TableStyled = styled(Table)`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
+  left: -1.1rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;
   line-height: inherit;
@@ -359,7 +358,7 @@ const PropsTable = (props) => {
             {props.item.category}
             <TableUl>
               <TableLi>
-                <SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
+                <SpanIcon><AngleDownIcon/></SpanIcon>{props.item.node.n}
               </TableLi>
             </TableUl>
           </TableCol>
@@ -373,8 +372,8 @@ const PropsTable = (props) => {
                   <ColRight xs={2}>
                     <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                       {isToggleOn === true
-                        ? <FontAwesomeIcon icon={faMinus}/>
-                        : <FontAwesomeIcon icon={faPlus}/>
+                        ? <MinusIcon/>
+                        : <PlusIcon/>
                       }
                     </a>
                   </ColRight>

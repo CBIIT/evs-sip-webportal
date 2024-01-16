@@ -1,8 +1,7 @@
 import {useState, useRef} from 'react';
 import styled from 'styled-components';
 import { Button, Modal, Container, Row, Col, Collapse, Table, Form} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faCheck, faDownload} from '@fortawesome/free-solid-svg-icons';
+import { PlusIcon, MinusIcon, CheckIcon, DownloadIcon } from '../ui/icons/Icons';
 import { sortAlphabetically} from '../../shared';
 import { apiGetGDCDataById } from '../../api';
 
@@ -164,7 +163,7 @@ const CheckboxSpan = styled.span`
   margin-right: .5rem;
 `;
 
-const CheckboxIcon = styled(FontAwesomeIcon)`
+const CheckboxIcon = styled.span`
   position: absolute;
   font-size: .7rem;
   line-height: 0;
@@ -467,8 +466,8 @@ const ToCompareModal = (props) => {
             {((props.ncit !== undefined && props.ncit.length !== 0) || props.icdo !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon/>
+                  : <PlusIcon/>
                 }
               </a>
             }
@@ -551,8 +550,8 @@ const ToCompareModal = (props) => {
                 {((props.item.ncit !== undefined && props.item.ncit.length !== 0) || props.item.icdo !== undefined) &&
                   <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                     {isToggleOn === true
-                      ? <FontAwesomeIcon icon={faMinus}/>
-                      : <FontAwesomeIcon icon={faPlus}/>
+                      ? <MinusIcon/>
+                      : <PlusIcon/>
                     }
                   </a>
                 }
@@ -629,26 +628,26 @@ const ToCompareModal = (props) => {
             <CheckboxLabel>
               <CheckboxInput name="partial" type="checkbox" checked={optionsState['partial']}  onClick={checkedToggleHandler}/>
               <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
+                <CheckIcon/>
               </CheckboxSpan>
               Partial match
             </CheckboxLabel>
             <CheckboxLabel>
               <CheckboxInput name="syns" type="checkbox" checked={optionsState['syns']} onClick={checkedToggleHandler}/>
               <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
+                <CheckIcon/>
               </CheckboxSpan>
               Synonyms
             </CheckboxLabel>
             <CheckboxLabel>
               <CheckboxInput name="unmatched" type="checkbox" checked={optionsState['unmatched']} onClick={checkedToggleHandler}/>
               <CheckboxSpan>
-                <CheckboxIcon icon={faCheck}/>
+                <CheckIcon/>
               </CheckboxSpan>
               Show Unmatched Values
             </CheckboxLabel>
           </FormGroupStyled>
-          {showReport === true && <Button onClick={() => downloadCompareCVS(resultReport)}><FontAwesomeIcon icon={faDownload}/> Dowload Result</Button>}
+          {showReport === true && <Button onClick={() => downloadCompareCVS(resultReport)}><DownloadIcon/> Dowload Result</Button>}
         </OptionsHeader>
       </Modal.Header>
       <ModalBodyStyled>

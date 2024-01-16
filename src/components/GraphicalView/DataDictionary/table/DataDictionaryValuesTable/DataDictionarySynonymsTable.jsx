@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { PlusIcon, MinusIcon} from '../../../../ui/icons/Icons';
 import './DataDictionaryValuesTable.css';
 
 class DataDictionarySynonymsTable extends React.Component {
@@ -44,8 +43,8 @@ class DataDictionarySynonymsTable extends React.Component {
             <div className="pt-button">
               <div className="pt-toggle-icon" role="button" aria-label={this.state.show ? 'collapse' : 'expand'} tabIndex="0" onClick={this.toggleTableHandler}>
                 {this.state.show
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon />
+                  : <PlusIcon />
                 }
               </div>
             </div>
@@ -83,8 +82,8 @@ class DataDictionarySynonymsTable extends React.Component {
           <div className="pt-button">
             <a href="/#" onClick={this.toggleTableHandler}>
                 {this.state.show
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon />
+                  : <PlusIcon />
                 }
               </a>
           </div>

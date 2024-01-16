@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Container, Nav, NavDropdown, Row, Button, Col, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { AngleDownIcon, SearchIcon } from '../../components/ui/icons/Icons';
 
 import bkgd from '../../assets/img/dash-bkgd.jpg';
 
@@ -184,12 +183,6 @@ const NavDropdownItemStyled = styled(NavDropdown.Item)`
   }
 `;
 
-const InputGroupIcon = styled(FontAwesomeIcon)`
-  font-size: 1rem;
-  vertical-align: 0;
-`;
-
-
 const TableUl = styled.ul`
   padding-left: 15px;
   list-style: none;
@@ -201,8 +194,8 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
+  left: -1.1rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;
   line-height: inherit;
@@ -278,7 +271,7 @@ const MappingReport = (props) => {
                     aria-describedby="btnGroupAddon"
                   />
                   <InputGroupTextStyled id="btnGroupAddon">
-                    <InputGroupIcon icon={faSearch}/>
+                    <SearchIcon/>
                   </InputGroupTextStyled>
                 </InputGroupStyled>
                 <Table bordered>
@@ -300,9 +293,9 @@ const MappingReport = (props) => {
                       <td rowSpan="3">
                         {'biospecimen'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'read_group'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'chipseq_antibody'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'chipseq_antibody'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>
@@ -328,9 +321,9 @@ const MappingReport = (props) => {
                       <td rowSpan="6">
                         {'biospecimen'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'read_group'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'chipseq_antibody'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'chipseq_antibody'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>

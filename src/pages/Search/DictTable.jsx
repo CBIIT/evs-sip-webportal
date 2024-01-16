@@ -2,8 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { getHighlightObj, getAllValueHighlight } from '../../shared';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons';
 
 const ContainerStyled = styled(Container)`
   font-size: 1.3rem;
@@ -42,10 +41,6 @@ const TableCol = styled(Col)`
 const Ul = styled.ul`
   list-style: none;
   padding: 0;
-`;
-
-const GlyphiconStyled = styled(FontAwesomeIcon)`
-  font-size: 10px;
 `;
 
 const Categories = styled.li`
@@ -376,7 +371,7 @@ const DictTable = (props) => {
             <TableCol xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <GlyphiconStyled icon={isToggleOn === true ? faAngleUp : faAngleDown} />
+                  { isToggleOn === true ? <AngleUpIcon/> : <AngleDownIcon/> }
                 </a>
               </span>
               <a href="/#">{item.category} ({item.length})</a>
