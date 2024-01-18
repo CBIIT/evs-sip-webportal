@@ -1,66 +1,9 @@
-import styled from 'styled-components';
-import GraphicalView from '../../components/GraphicalView';
-
-const ContentBox =  styled.div`
-  padding: 3rem 4rem;
-  margin-bottom: 2.5rem;
-  background-color: var(--white-bkgd);
-`;
-
-const ContentBoxAbout = styled(ContentBox)`
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-`;
-
-const ContentBoxTitle = styled.h2`
-  font-family: 'Inter', sans-serif;
-  font-size: 1.1875rem;
-  font-weight: 500;
-  color: #009ECC;
-  text-transform: uppercase;
-`;
-
-const ContentBoxHr = styled.hr`
-  border-top: 1px solid #77B7CD;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-`;
-
-const ContentBoxText = styled.div`
-  margin-bottom: 3rem;
-
-  && > h2 {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1875rem;
-    font-weight: 500;
-    color: #009ECC;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-
-  && > p {
-    font-size: 1.0625rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-  }
-
-  && > p:last-child {
-    margin-bottom: 0;
-  }
-
-  && a {
-    color: var(--link);
-  }
-`;
-
-const GraphContent = styled.div`
-  margin: 2rem auto;
-`;
+import styles from './GDCModel.module.css'
+import GraphicalView from '../../../components/GraphicalView';
 
 const GDCModel = () => {
-  return <ContentBoxAbout>
-    <ContentBoxText>
+  return <div className={styles.content}>
+    <div className={styles.textbox}>
       <h2>Graph Representation of the GDC Data Model</h2>
       <p>
         The GDC data model is represented as a graph with nodes and edges, and this graph 
@@ -81,13 +24,13 @@ const GDCModel = () => {
         the graph, but rather in an external object store. The node/edge structure of the graph 
         is depicted below.
       </p>
-    </ContentBoxText>
-    <ContentBoxHr/>
-    <ContentBoxTitle>The GDC Data Model</ContentBoxTitle>
-    <GraphContent>
+    </div>
+    <hr className={styles.hr}/>
+    <h2 className={styles.title}>The GDC Data Model</h2>
+    <div className={styles['graph-content']}>
       <GraphicalView type="gdc_readonly"/>
-    </GraphContent>
-  </ContentBoxAbout>
+    </div>
+  </div>
 }
 
 export default GDCModel;

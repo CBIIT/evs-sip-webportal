@@ -1,27 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import styles from './DataModel.module.css'
 import { useLocation } from 'react-router-dom'
 import TabsController from './TabsController/TabsController'
-
-const Page = styled.div`
-  background-color: var(--page-bkgd);
-  overflow: auto;
-  padding-bottom: 18rem;
-`;
-
-const PageContainer = styled.div`
-  max-width: 80rem;
-  margin: 0 auto;
-`;
-
-const PageTitle = styled.h1`
-  font-family: 'Raleway-Medium', sans-serif;
-  font-size: 2.25rem;
-  color: var(--main-title);
-  padding: 3rem 0 1.5rem 0;
-  font-weight: 500;
-  margin-bottom: 0;
-`;
 
 const DataModel = (props) => {
 
@@ -39,12 +21,12 @@ const DataModel = (props) => {
     setModel(state.fromDataModel);
   }
 
-  return <Page>
-    <PageContainer>
-      <PageTitle>Data Model</PageTitle>
+  return <div className={styles.page}>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Data Model</h1>
       <TabsController dataModel={model} setDataModel={setModel}/>
-    </PageContainer>
-  </Page>
+    </div>
+  </div>
 }
 
 export default DataModel;

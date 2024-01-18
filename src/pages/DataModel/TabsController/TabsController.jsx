@@ -1,9 +1,9 @@
 import styles from './TabsController.module.css'
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap'
-import GDCModel from '../GDCModel'
-import CTDCModel from '../CTDCModel'
-import ICDCModel from '../ICDCModel'
-import PCDCModel from '../PCDCModel'
+import GDCModel from '../GDCModel/GDCModel'
+import CTDCModel from '../CTDCModel/CTDCModel'
+import ICDCModel from '../ICDCModel/ICDCModel'
+import PCDCModel from '../PCDCModel/PCDCModel'
 
 const TabsController = (props) => {
   const selectHandler = (k) => {
