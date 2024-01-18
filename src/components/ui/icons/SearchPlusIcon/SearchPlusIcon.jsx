@@ -1,4 +1,4 @@
-import styles from './Icons.module.css'
+import styles from '../Icons.module.css'
 
 const SearchPlusIcon = (props) => {
   return (
