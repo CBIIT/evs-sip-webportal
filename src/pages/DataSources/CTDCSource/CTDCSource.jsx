@@ -2,8 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { baseUrl } from '../../../api'
 import styles from './CTDCSource.module.css'
 import { Table, Tabs, Tab } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { AngleDownIcon, EditIcon, TimesIcon } from '../../../components/ui/icons/Icons'
 
 import BatchUpdateModal from '../../../components/Modals/BatchUpdateModal'
 import DashboardContainer from '../../../components/DashboardContainer/DashboardContainer'
@@ -167,13 +166,13 @@ const CTDCSource = () => {
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
-                                        <FontAwesomeIcon icon={faAngleDown} />
+                                        <AngleDownIcon />
                                       </span>
                                       {v.Node_Name}
                                       <ul className={styles.tableUl}>
                                         <li className={styles.tableLi}>
                                           <span className={styles.spanIcon}>
-                                            <FontAwesomeIcon icon={faAngleDown} />
+                                            <AngleDownIcon />
                                           </span>
                                           {v.Property_Name}
                                         </li>
@@ -188,10 +187,10 @@ const CTDCSource = () => {
                             <td>{v.Term_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>
@@ -229,7 +228,7 @@ const CTDCSource = () => {
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
-                                        <FontAwesomeIcon icon={faAngleDown} />
+                                        <AngleDownIcon />
                                       </span>
                                       {p.Node_Name}
                                     </li>
@@ -242,10 +241,10 @@ const CTDCSource = () => {
                             <td>{p.Property_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>
@@ -279,10 +278,10 @@ const CTDCSource = () => {
                             <td>{n.Node_Ncitcode}</td>
                             <td>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faEdit} />
+                                <EditIcon />
                               </a>
                               <a className={styles.tableLink} href="/#" aria-label="edit">
-                                <FontAwesomeIcon icon={faTimes} />
+                                <TimesIcon />
                               </a>
                             </td>
                           </tr>

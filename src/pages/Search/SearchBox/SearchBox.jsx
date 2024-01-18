@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
+import { ArrowRightIcon, CircleIcon, CheckIcon, TimesIcon } from '../../../components/ui/icons/Icons'
 import styles from './SearchBox.module.css'
 import debounce from 'lodash.debounce'
 import { apiSuggest, apiSearchAll } from '../../../api'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faCircle, faArrowRight, faTimes } from '@fortawesome/free-solid-svg-icons'
 import SuggestBox from '../SuggestBox/SuggestBox'
 import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation'
 import { useSelector, useDispatch } from 'react-redux'
@@ -219,14 +218,14 @@ const SearchBox = () => {
               onClick={cleanSearchBar}
               style={keyword.length === 0 ? {} : { display: 'block' }}
             >
-              <FontAwesomeIcon icon={faTimes} />
+              <TimesIcon />
             </a>
             <Button
               aria-label="Search"
               className={styles['search-button']}
               onClick={() => searchHandler(keyword, match, options, dataSources)}
             >
-              <FontAwesomeIcon className={styles['search-button-icon']} icon={faArrowRight} />
+              <ArrowRightIcon className={styles['search-button-icon']} />
             </Button>
           </InputGroup>
           <SuggestBox
@@ -250,7 +249,7 @@ const SearchBox = () => {
                     onChange={matchOptionsHandler}
                   />
                   <span className={styles['radio-span']}>
-                    <FontAwesomeIcon className={styles['radio-icon']} icon={faCircle} />
+                    <CircleIcon className={styles['radio-icon']} />
                   </span>
                   <span>Partial match of values or properties</span>
                 </label>
@@ -264,7 +263,7 @@ const SearchBox = () => {
                     onChange={matchOptionsHandler}
                   />
                   <span className={styles['radio-span']}>
-                    <FontAwesomeIcon className={styles['radio-icon']} icon={faCircle} />
+                    <CircleIcon className={styles['radio-icon']} />
                   </span>
                   <span>Exact match of values or properties</span>
                 </label>
@@ -291,7 +290,7 @@ const SearchBox = () => {
                     onChange={checkedToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Property Description
                 </label>
@@ -304,7 +303,7 @@ const SearchBox = () => {
                     onChange={checkedToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Synonyms of Values
                 </label>
@@ -317,7 +316,7 @@ const SearchBox = () => {
                     type="checkbox"
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Synonyms of Properties/Nodes
                 </label>
@@ -344,7 +343,7 @@ const SearchBox = () => {
                     onChange={selectDataToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Genomic Data Commons(GDC)
                 </label>
@@ -357,7 +356,7 @@ const SearchBox = () => {
                     onChange={selectDataToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Clinical Trial Data Commons (CTDC)
                 </label>
@@ -370,7 +369,7 @@ const SearchBox = () => {
                     onChange={selectDataToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Integrated Canine Data Commons (ICDC)
                 </label>
@@ -383,7 +382,7 @@ const SearchBox = () => {
                     onChange={selectDataToggleHandler}
                   />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Pediatric Cancer Data Commons (PCDC)
                 </label>

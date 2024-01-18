@@ -2,8 +2,7 @@ import {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { EditIcon } from '../../ui/icons/Icons';
 import styles from './EditUserModal.module.css';
 
 import { baseUrl } from '../../../api';
@@ -120,7 +119,7 @@ const EditUserModal = ({updateUserList, username}) => {
   return (
     <>
       <a className={styles.actionLink} href="/#" aria-label="edit"onClick={handleShow}>
-        <FontAwesomeIcon icon={faEdit}/>
+        <EditIcon />
       </a>
 
       <Modal size="lg" show={show} onHide={handleClose} animation={false} className={styles.modal}>

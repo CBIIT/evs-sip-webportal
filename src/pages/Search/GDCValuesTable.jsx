@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
+import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -65,8 +64,8 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
+  left: -1.1rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;
   line-height: inherit;
@@ -210,16 +209,6 @@ const GDCValuesTable = (props) => {
       values.push(obj);
     }
   });
-
-  const PlaceholderComponent = () => {
-    return (<Col sm={12}>
-        <Row>
-          <Center>
-            <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-          </Center>
-        </Row>
-      </Col>);
-  }
 
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
@@ -405,8 +394,8 @@ const GDCValuesTable = (props) => {
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon/>
+                  : <PlusIcon/>
                 }
               </a>
             }
@@ -444,9 +433,9 @@ const GDCValuesTable = (props) => {
         <TableCol xs={3}>
           {props.item.category}
           <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
+            <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{props.item.node.n}
               <TableUl>
-                <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+                <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{props.item.property.n}</TableLi>
               </TableUl>
             </TableLi>
           </TableUl>
@@ -483,11 +472,11 @@ const GDCValuesTable = (props) => {
               <TableCol data-class="TableCol" xs={12}>
               {isToggleOn === false ? (
                 <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
+                  <AngleDownIcon/> Show More ({props.item.vs.length - 5})
                 </a>
               ) : (
                 <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                  <AngleUpIcon/> Show Less
                 </a>
               )}
               </TableCol>

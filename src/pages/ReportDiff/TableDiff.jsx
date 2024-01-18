@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { SearchIcon, AngleDownIcon } from '../../components/ui/icons/Icons';
 
 const SearchContainer = styled.div`
   width: 100%;
@@ -30,8 +28,8 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
+  left: -1.1rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;
   line-height: inherit;
@@ -103,7 +101,7 @@ const TableDiff = (props) => {
                 onChange={handleSearchChange}
               />
               <InputGroup.Append>
-                <Button type="submit" value="Submit"><FontAwesomeIcon icon={faSearch}/></Button>
+                <Button type="submit" value="Submit"><SearchIcon/></Button>
               </InputGroup.Append>
             </InputGroup>
           </Col>
@@ -147,9 +145,9 @@ const TableDiff = (props) => {
                     <td rowSpan={rowSpan}>
                       {item.c}
                       <TableUl>
-                        <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.n}
+                        <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.n}
                           <TableUl>
-                            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.p}</TableLi>
+                            <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.p}</TableLi>
                           </TableUl>
                         </TableLi>
                       </TableUl>

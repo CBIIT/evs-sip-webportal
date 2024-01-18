@@ -1,8 +1,7 @@
 import { useState , useContext} from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -442,8 +441,8 @@ const PCDCValuesTable = (props) => {
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon/>
+                  : <PlusIcon/>
                 }
               </a>
             }
@@ -481,7 +480,7 @@ const PCDCValuesTable = (props) => {
         <TableCol xs={3}>
           {props.item.node.n}
           <TableUl>
-            <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+            <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{props.item.property.n}</TableLi>
           </TableUl>
         </TableCol>
 
@@ -512,11 +511,11 @@ const PCDCValuesTable = (props) => {
               <TableCol data-class="TableCol" xs={12}>
               {isToggleOn === false ? (
                 <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
+                  <AngleDownIcon/> Show More ({props.item.vs.length - 5})
                 </a>
               ) : (
                 <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                  <AngleUpIcon/> Show Less
                 </a>
               )}
               </TableCol>
@@ -570,11 +569,11 @@ const PCDCValuesTable = (props) => {
             <TableCol data-class="TableCol" xs={12}>
             {isToggleOn === false ? (
               <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.values.length - 5})
+                <AngleDownIcon/> Show More ({props.values.length - 5})
               </a>
             ) : (
               <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                <AngleUpIcon/> Show Less
               </a>
             )}
             </TableCol>
@@ -600,8 +599,8 @@ const PCDCValuesTable = (props) => {
         <ButtonStyled variant="link" onClick={decoratedOnClick}>{children}</ButtonStyled>
         <Button variant="link" onClick={decoratedOnClick}>
           {isCurrentEventKey === true
-            ? <FontAwesomeIcon icon={faAngleUp}/>
-            : <FontAwesomeIcon icon={faAngleDown}/>
+            ? <AngleUpIcon/>
+            : <AngleDownIcon/>
           }
         </Button>
       </>

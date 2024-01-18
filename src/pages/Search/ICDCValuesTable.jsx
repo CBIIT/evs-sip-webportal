@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { MinusIcon, PlusIcon, AngleDownIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
@@ -65,8 +64,8 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
+  left: -1.1rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;
   line-height: inherit;
@@ -393,8 +392,8 @@ const ICDCValuesTable = (props) => {
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon/>
+                  : <PlusIcon/>
                 }
               </a>
             }
@@ -424,9 +423,9 @@ const ICDCValuesTable = (props) => {
       <TableCol xs={3}>
         {item.category}
         <TableUl>
-          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.node.n}
+          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.node.n}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{item.property.n}</TableLi>
+              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.property.n}</TableLi>
             </TableUl>
           </TableLi>
         </TableUl>

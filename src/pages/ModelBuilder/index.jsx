@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Button, Table, Pagination, InputGroup, FormControl} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { SearchIcon } from '../../components/ui/icons/Icons';
 
 import DashboardContainer from '../../components/DashboardContainer/DashboardContainer';
 
@@ -85,11 +84,6 @@ const FormControlStyled = styled(FormControl)`
   padding-right: 2rem;
 `;
 
-const InputGroupIcon = styled(FontAwesomeIcon)`
-  font-size: 1rem;
-  vertical-align: 0;
-`;
-
 
 const ModelBuilder = (props) => {
 
@@ -113,6 +107,7 @@ const ModelBuilder = (props) => {
           />
           <InputGroupTextStyled id="btnGroupAddon">
             <InputGroupIcon icon={faSearch}/>
+              <SearchIcon/>
           </InputGroupTextStyled>
         </InputGroupStyled>
               <Table bordered>

@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 import { baseUrl } from '../../api';
 import styles from './UserManagement.module.css';
 import { Tabs, Tab, Table } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faTimes } from '@fortawesome/free-solid-svg-icons';
+import { TimesIcon } from '../../components/ui/icons/Icons';
 
 import AddNewUserModal from '../../components/Modals/AddNewUserModal/AddNewUserModal';
 import EditUserModal from '../../components/Modals/EditUserModal/EditUserModal';
@@ -127,7 +126,7 @@ const UserManagement = () => {
                           <td>
                             <EditUserModal updateUserList={fetchUsers} username={user.nci_username}/>
                             <a className={styles.tableLink} href="/#" aria-label="suspend" onClick={(e) => handleStatusUpdated(e, user)}>
-                              <FontAwesomeIcon icon={faTimes}/>
+                              <TimesIcon/>
                             </a>
                           </td>
                         </tr>
