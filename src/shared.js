@@ -27,10 +27,10 @@ export const sortSynonyms = (synonyms) => {
     mapped[a.termGroup] > mapped[b.termGroup]
       ? 1
       : a.termGroup === b.termGroup
-      ? a.termName.toLowerCase() > b.termName.toLowerCase()
-        ? 1
+        ? a.termName.toLowerCase() > b.termName.toLowerCase()
+          ? 1
+          : -1
         : -1
-      : -1
   )
   return synonyms
 }
@@ -101,7 +101,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (tmpArr.indexOf(true) >= 0 && !newItem.some((existingItem) => existingItem === item)) {
         newItem.push(item)
       }
     }
@@ -114,7 +114,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (c) {
           return c.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => existingItem === item)) {
         newItem.push(item)
       }
     }
@@ -127,7 +127,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (l) {
           return l.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => existingItem === item)) {
         newItem.push(item)
       }
     }
@@ -144,7 +144,7 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (tmpArr.includes(true) && !newItem.some((existingItem) => existingItem === item)) {
         newItem.push(item)
       }
     }

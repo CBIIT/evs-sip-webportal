@@ -4,8 +4,10 @@
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
+        "plugin:import/recommended",
         "standard",
         "prettier"
     ],
@@ -19,6 +21,15 @@
     "plugins": [
         "react"
     ],
-    "rules": {
+    "rules": {},
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/resolver": {
+            "node": {
+              "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+          }
     }
 }

@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import styles from './NavigationBar.module.css'

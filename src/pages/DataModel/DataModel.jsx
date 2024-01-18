@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-
 import styles from './DataModel.module.css'
 import { useLocation } from 'react-router-dom'
 import TabsController from './TabsController/TabsController'

@@ -1,4 +1,5 @@
 import styles from './TabsController.module.css'
+import PropTypes from 'prop-types'
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap'
 import GDCModel from '../GDCModel/GDCModel'
 import CTDCModel from '../CTDCModel/CTDCModel'
@@ -77,5 +78,11 @@ const TabsController = (props) => {
     </>
   )
 }
+
+TabsController.propTypes = {
+  dataModel: PropTypes.string,
+  setDataModel: PropTypes.func.isRequired
+}
+
 
 export default TabsController

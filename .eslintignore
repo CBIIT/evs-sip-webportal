@@ -7,7 +7,6 @@ src/components/RequireAuthorization
 src/components/Unauthorized
 src/pages/ChangeReport
 src/pages/Dashboard
-src/pages/DataModel
 src/pages/DataSources
 src/pages/MappingReport
 src/pages/ModelBuilder

@@ -10,7 +10,7 @@ const GDCModel = () => {
         is the store of record for the GDC. It maintains the critical relationship between 
         projects, cases, clinical data and molecular data and insures that this data is 
         linked correctly to the actual data file objects themselves, by means of unique 
-        identifiers. The graph is designed in terms of the "property graph" model, in which 
+        identifiers. The graph is designed in terms of the &quot;property graph&quot; model, in which 
         nodes represent entities, edges between nodes represent relationships between entities, 
         and properties on both nodes and edges represent additional data which describe 
         entities and their relationships. Relationships are encoded as edges of a given 

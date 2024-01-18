@@ -1,4 +1,5 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
 const CircleIcon = (props) => {
   return (
@@ -14,6 +15,10 @@ const CircleIcon = (props) => {
       <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
     </svg>
   )
+}
+
+CircleIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default CircleIcon
