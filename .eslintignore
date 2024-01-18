@@ -3,8 +3,6 @@ dist
 src/components/GraphicalView
 src/components/Modals
 src/components/PaginationController
-src/components/RequireAuthorization
-src/components/Unauthorized
 src/pages/ChangeReport
 src/pages/Dashboard
 src/pages/DataSources
