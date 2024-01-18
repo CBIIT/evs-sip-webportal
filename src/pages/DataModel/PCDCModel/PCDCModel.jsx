@@ -18,7 +18,7 @@ const PCDCModel = () => {
       <hr className={styles.hr} />
       <h2 className={styles.title}>The PCDC Data Model</h2>
       <div className={styles['graph-content']}>
-        <GraphicalView type="gdc_readonly" />
+        <GraphicalView type="pcdc_readonly" />
       </div>
     </div>
   )

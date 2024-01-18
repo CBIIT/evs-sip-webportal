@@ -50,7 +50,7 @@ const ICDCModel = () => {
       <hr className={styles.hr} />
       <h2 className={styles.title}>The ICDC Data Model</h2>
       <div className={styles['graph-content']}>
-        <GraphicalView type="gdc_readonly" />
+        <GraphicalView type="icdc_readonly" />
       </div>
     </div>
   )

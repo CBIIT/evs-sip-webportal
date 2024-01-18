@@ -42,8 +42,3 @@
   position: relative;
   top: 9px;
 }
-
-.canvas__overlay{
-  fill: none;
-  pointer-events: all;
-}

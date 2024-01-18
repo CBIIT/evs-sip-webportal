@@ -51,7 +51,7 @@ const CTDCModel = () => {
       <hr className={styles.hr} />
       <h2 className={styles.title}>The CTDC Data Model</h2>
       <div className={styles['graph-content']}>
-        <GraphicalView type="gdc_readonly" />
+        <GraphicalView type="ctdc_readonly" />
       </div>
     </div>
   )
