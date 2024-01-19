@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --write 'src/**/*.{js,jsx,css,scss}'"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",

@@ -4,6 +4,5 @@
     "singleQuote": true,
     "semi": false,
     "printWidth": 80,
-    "trailingComma": "all",
-    "parser": "flow"
+    "trailingComma": "es5"
 }

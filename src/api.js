@@ -27,7 +27,7 @@ export const apiSearchAll = async (keyword, match, options, dataSources) => {
     .replace(/\+/g, '%2B')
     .replace(/&/g, '%26')
   const response = await fetch(
-    `${baseUrl}/all/p?keyword=${encodedKeyword}&options=${opts}&sources=${sources.join()}`,
+    `${baseUrl}/all/p?keyword=${encodedKeyword}&options=${opts}&sources=${sources.join()}`
   )
   return await response.json()
 }
@@ -68,17 +68,17 @@ export const compareAllWithGDCDictionary = async (
   type = 'all',
   page = '1',
   pageSize = '25',
-  search = '',
+  search = ''
 ) => {
   const response = await fetch(
-    `${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}&searchText=${search}`,
+    `${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}&searchText=${search}`
   )
   return response.json()
 }
 
 export const exportCompareResult = async (type = 'all', search = '') => {
   const response = await fetch(
-    `${baseUrl}/exportCompareResult?type=${type}&searchText=${search}`,
+    `${baseUrl}/exportCompareResult?type=${type}&searchText=${search}`
   )
   return response.blob()
 }

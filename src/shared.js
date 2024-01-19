@@ -41,7 +41,7 @@ export const sortSynonyms = (synonyms) => {
         ? a.termName.toLowerCase() > b.termName.toLowerCase()
           ? 1
           : -1
-        : -1,
+        : -1
   )
   return synonyms
 }
@@ -83,7 +83,7 @@ export const getAllSyn = (items) => {
         item.all_syn = item.all_syn.concat(
           nc.s.map(function (x) {
             return x.n
-          }),
+          })
         )
       })
     }
