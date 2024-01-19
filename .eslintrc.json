@@ -7,7 +7,6 @@
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
-        "plugin:import/recommended",
         "standard",
         "prettier"
     ],
@@ -19,17 +18,15 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "prettier"
     ],
-    "rules": {},
+    "rules": {
+        "prettier/prettier": "error"
+    },
     "settings": {
         "react": {
             "version": "detect"
-        },
-        "import/resolver": {
-            "node": {
-              "extensions": [".js", ".jsx", ".ts", ".tsx"]
-            }
-          }
+        }
     }
 }
