@@ -1,4 +1,5 @@
-import styles from './Icons.module.css'
+import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
 const TimesIcon = (props) => {
   return (
@@ -17,6 +18,10 @@ const TimesIcon = (props) => {
       ></path>
     </svg>
   )
+}
+
+TimesIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default TimesIcon

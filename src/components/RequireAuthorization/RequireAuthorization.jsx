@@ -1,16 +1,16 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import Unauthorized from '../Unauthorized/Unauthorized'
 
-export default function RequireAuthorization({children}) {
-    const currentUser = useSelector(state => state.currentUser);
-    //const roles = (Array.isArray(role) ? role : [role]).filter(Boolean);
-    // const isLoggedIn = Object.keys(currentUser).length > 0 && !currentUser.error;
-    const isLoggedIn = currentUser.authenticated;
-    //const isLoggedIn = currentUser.loggedIn;
-    //const hasRole = !roles.length || roles.includes(user.role);
-    //const isAuthorized = isLoggedIn && hasRole;
+const RequireAuthorization = ({ children }) => {
+  const currentUser = useSelector((state) => state.currentUser)
+  const isLoggedIn = currentUser.authenticated
 
-    return isLoggedIn
-        ? <>{children}</>
-        : <Unauthorized />
+  return isLoggedIn ? <>{children}</> : <Unauthorized />
 }
+
+RequireAuthorization.propTypes = {
+  children: PropTypes.element.isRequired,
+}
+
+export default RequireAuthorization

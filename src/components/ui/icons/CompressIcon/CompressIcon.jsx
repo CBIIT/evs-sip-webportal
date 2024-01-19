@@ -1,4 +1,5 @@
-import styles from './Icons.module.css'
+import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
 const CompressIcon = (props) => {
   return (
@@ -18,4 +19,9 @@ const CompressIcon = (props) => {
     </svg>
   )
 }
+
+CompressIcon.propTypes = {
+  className: PropTypes.string,
+}
+
 export default CompressIcon

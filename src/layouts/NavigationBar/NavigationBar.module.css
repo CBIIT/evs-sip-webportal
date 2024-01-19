@@ -36,8 +36,6 @@
   padding: 0;
   width: fit-content;
   display: block;
-  
-
 }
 
 .dropdown-item:hover,
@@ -65,9 +63,9 @@
   font-size: 0.8rem;
 }
 
-@media (min-width: 992px){
+@media (min-width: 992px) {
   .dropdown :global(.dropdown-menu) {
-    margin: .125rem 0 0 !important;
+    margin: 0.125rem 0 0 !important;
     right: 0;
     left: auto;
     background-color: var(--nav-back-color-submenu);

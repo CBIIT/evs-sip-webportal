@@ -11,7 +11,11 @@ const Footer = () => {
         <div className={styles.menu}>
           <Row>
             <Col xs={5}>
-              <a href="https://www.cancer.gov/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.cancer.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img className={styles.logo} src={logo} alt="logo-footer" />
               </a>
             </Col>
@@ -49,17 +53,29 @@ const Footer = () => {
                   <h2 className={styles.title}>NIH Policies</h2>
                   <ul className={styles.ul}>
                     <li className={styles.li}>
-                      <a href="https://www.cancer.gov/policies/disclaimer" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.cancer.gov/policies/disclaimer"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Disclaimer
                       </a>
                     </li>
                     <li className={styles.li}>
-                      <a href="https://www.cancer.gov/policies/accessibility" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.cancer.gov/policies/accessibility"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Accessibility
                       </a>
                     </li>
                     <li className={styles.li}>
-                      <a href="https://www.cancer.gov/policies/foia" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://www.cancer.gov/policies/foia"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         FOIA
                       </a>
                     </li>
@@ -82,19 +98,35 @@ const Footer = () => {
         <Row>
           <Col xs={12}>
             <div className={styles.caption}>
-              <a href="http://www.hhs.gov/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="http://www.hhs.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 U.S. Department of Health and Human Services
               </a>
               <span>|</span>
-              <a href="http://www.nih.gov/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="http://www.nih.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 National Institutes of Health
               </a>
               <span>|</span>
-              <a href="http://www.cancer.gov/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="http://www.cancer.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 National Cancer Institute
               </a>
               <span>|</span>
-              <a href="http://www.usa.gov/" target="_blank" rel="noopener noreferrer">
+              <a
+                href="http://www.usa.gov/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 USA.gov
               </a>
             </div>

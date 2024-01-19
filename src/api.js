@@ -1,24 +1,34 @@
-export const baseUrl = import.meta.env.VITE_EVSSIP_SEARCH || 'http://localhost:3000/service/search'
-export const baseServer = import.meta.env.VITE_EVSSIP_SERVER || 'http://localhost:3000'
+export const baseUrl =
+  import.meta.env.VITE_EVSSIP_SEARCH || 'http://localhost:3000/service/search'
+export const baseServer =
+  import.meta.env.VITE_EVSSIP_SERVER || 'http://localhost:3000'
 
 export const apiSuggest = async (keyword) => {
-  const encodedKeyword = keyword.replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/&/g, "%26");
+  const encodedKeyword = keyword
+    .replace(/%/g, '%25')
+    .replace(/\+/g, '%2B')
+    .replace(/&/g, '%26')
   const response = await fetch(`${baseUrl}/suggest?keyword=${encodedKeyword}`)
   return await response.json()
 }
 
 export const apiSearchAll = async (keyword, match, options, dataSources) => {
-  const opts = `${match}${options.syns === true ? ',syn' : ''}${options.p_syns === true ? ',n_syn,p_syn' : ''}${
-    options.desc === true ? ',desc' : ''
-  }`
+  const opts = `${match}${options.syns === true ? ',syn' : ''}${
+    options.p_syns === true ? ',n_syn,p_syn' : ''
+  }${options.desc === true ? ',desc' : ''}`
   const sources = []
   for (const key in dataSources) {
     if (dataSources[key]) {
       sources.push(key)
     }
   }
-  const encodedKeyword = keyword.replace(/%/g, "%25").replace(/\+/g, "%2B").replace(/&/g, "%26");
-  const response = await fetch(`${baseUrl}/all/p?keyword=${encodedKeyword}&options=${opts}&sources=${sources.join()}`)
+  const encodedKeyword = keyword
+    .replace(/%/g, '%25')
+    .replace(/\+/g, '%2B')
+    .replace(/&/g, '%26')
+  const response = await fetch(
+    `${baseUrl}/all/p?keyword=${encodedKeyword}&options=${opts}&sources=${sources.join()}`
+  )
   return await response.json()
 }
 
@@ -54,7 +64,12 @@ export const apiGetPropertyValues = async (id) => {
 }
 
 // Reports API's
-export const compareAllWithGDCDictionary = async (type = 'all', page = '1', pageSize = '25', search = '') => {
+export const compareAllWithGDCDictionary = async (
+  type = 'all',
+  page = '1',
+  pageSize = '25',
+  search = ''
+) => {
   const response = await fetch(
     `${baseUrl}/compareAllWithGDCDictionary?type=${type}&page=${page}&pageSize=${pageSize}&searchText=${search}`
   )
@@ -62,7 +77,9 @@ export const compareAllWithGDCDictionary = async (type = 'all', page = '1', page
 }
 
 export const exportCompareResult = async (type = 'all', search = '') => {
-  const response = await fetch(`${baseUrl}/exportCompareResult?type=${type}&searchText=${search}`)
+  const response = await fetch(
+    `${baseUrl}/exportCompareResult?type=${type}&searchText=${search}`
+  )
   return response.blob()
 }
 

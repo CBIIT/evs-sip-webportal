@@ -7,7 +7,12 @@ const SearchFormComponent = ({ submitSearch }) => {
   return (
     <Form className={styles.form} onSubmit={submitSearch}>
       <Form.Group className={styles.formGroup} role="form">
-        <Form.Control type="text" placeholder="Search" aria-label="Search" className={styles.formControl} />
+        <Form.Control
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          className={styles.formControl}
+        />
         <Button type="submit" className={styles.searchButton}>
           <SearchIcon />
         </Button>

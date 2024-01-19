@@ -10,7 +10,14 @@ const DataCommonsIcon = ({ className }) => {
       version="1.1"
       viewBox="0 0 752 752"
     >
-      <linearGradient id="data-commons-icon" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="data-commons-icon"
+        x1="0%"
+        y1="0%"
+        x2="100%"
+        y2="0%"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop offset="0%" stopColor="#00c6cb" stopOpacity="1"></stop>
         <stop offset="100%" stopColor="#00c578" stopOpacity="1"></stop>
       </linearGradient>
@@ -38,7 +45,14 @@ const SemanticIntegrationIcon = ({ className }) => {
       version="1.1"
       viewBox="0 0 752 752"
     >
-      <linearGradient id="semantic-integration-icon" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="semantic-integration-icon"
+        x1="0%"
+        y1="0%"
+        x2="100%"
+        y2="0%"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop offset="0%" stopColor="#00c6cb" stopOpacity="1"></stop>
         <stop offset="100%" stopColor="#00c578" stopOpacity="1"></stop>
       </linearGradient>
@@ -68,7 +82,14 @@ const ToolsIcon = ({ className }) => {
       version="1.1"
       viewBox="0 0 752 752"
     >
-      <linearGradient id="tools-icon" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="tools-icon"
+        x1="0%"
+        y1="0%"
+        x2="100%"
+        y2="0%"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop offset="0%" stopColor="#00c6cb" stopOpacity="1"></stop>
         <stop offset="100%" stopColor="#00c578" stopOpacity="1"></stop>
       </linearGradient>
@@ -94,7 +115,14 @@ const SupportIcon = ({ className }) => {
       version="1.1"
       viewBox="0 0 752 752"
     >
-      <linearGradient id="support-icon" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="support-icon"
+        x1="0%"
+        y1="0%"
+        x2="100%"
+        y2="0%"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop offset="0%" stopColor="#00c6cb" stopOpacity="1"></stop>
         <stop offset="100%" stopColor="#00c578" stopOpacity="1"></stop>
       </linearGradient>

@@ -22,15 +22,26 @@ export const sortAlphabeticallyObject = (object) => {
 }
 
 export const sortSynonyms = (synonyms) => {
-  const mapped = { PT: 1, BR: 2, FB: 3, CN: 4, AB: 5, SY: 6, SN: 7, AD: 8, AQ: 9, AQS: 10 }
+  const mapped = {
+    PT: 1,
+    BR: 2,
+    FB: 3,
+    CN: 4,
+    AB: 5,
+    SY: 6,
+    SN: 7,
+    AD: 8,
+    AQ: 9,
+    AQS: 10,
+  }
   synonyms.sort((a, b) =>
     mapped[a.termGroup] > mapped[b.termGroup]
       ? 1
       : a.termGroup === b.termGroup
-      ? a.termName.toLowerCase() > b.termName.toLowerCase()
-        ? 1
+        ? a.termName.toLowerCase() > b.termName.toLowerCase()
+          ? 1
+          : -1
         : -1
-      : -1
   )
   return synonyms
 }
@@ -101,7 +112,10 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.indexOf(true) >= 0 && !_.some(newItem, item)) {
+      if (
+        tmpArr.indexOf(true) >= 0 &&
+        !newItem.some((existingItem) => existingItem === item)
+      ) {
         newItem.push(item)
       }
     }
@@ -114,7 +128,10 @@ export const searchFilter = (items, keyword) => {
         .map(function (c) {
           return c.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (
+        tmpArr.includes(true) &&
+        !newItem.some((existingItem) => existingItem === item)
+      ) {
         newItem.push(item)
       }
     }
@@ -127,7 +144,10 @@ export const searchFilter = (items, keyword) => {
         .map(function (l) {
           return l.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (
+        tmpArr.includes(true) &&
+        !newItem.some((existingItem) => existingItem === item)
+      ) {
         newItem.push(item)
       }
     }
@@ -144,7 +164,10 @@ export const searchFilter = (items, keyword) => {
         .map(function (s) {
           return s.indexOf(keyword) >= 0
         })
-      if (tmpArr.includes(true) && !newItem.some((existingItem) => isEqual(existingItem, item))) {
+      if (
+        tmpArr.includes(true) &&
+        !newItem.some((existingItem) => existingItem === item)
+      ) {
         newItem.push(item)
       }
     }
@@ -152,7 +175,10 @@ export const searchFilter = (items, keyword) => {
 
   // Highlight matched values and synonyms
   newItem.forEach((item) => {
-    item.n = item.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
+    item.n = item.n
+      .replace(/<b>/g, '')
+      .replace(/<\/b>/g, '')
+      .replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
     if (item.icdo !== undefined) {
       item.icdo.c = item.icdo.c
         .replace(/<b>/g, '')
@@ -160,7 +186,10 @@ export const searchFilter = (items, keyword) => {
         .replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
       item.icdo.s = item.icdo.s.map(function (x) {
         return {
-          n: x.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>'),
+          n: x.n
+            .replace(/<b>/g, '')
+            .replace(/<\/b>/g, '')
+            .replace(new RegExp(keyword, 'ig'), '<b>$&</b>'),
           t: x.t,
           src: x.src,
         }
@@ -170,15 +199,24 @@ export const searchFilter = (items, keyword) => {
     if (item.ncit !== undefined) {
       item.ncit.forEach((nc) => {
         if (nc.c !== undefined) {
-          nc.c = nc.c.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
+          nc.c = nc.c
+            .replace(/<b>/g, '')
+            .replace(/<\/b>/g, '')
+            .replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
         }
         if (nc.l !== undefined) {
-          nc.l = nc.l.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
+          nc.l = nc.l
+            .replace(/<b>/g, '')
+            .replace(/<\/b>/g, '')
+            .replace(new RegExp(keyword, 'ig'), '<b>$&</b>')
         }
         if (nc.s === undefined) return
         nc.s = nc.s.map(function (x) {
           return {
-            n: x.n.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(new RegExp(keyword, 'ig'), '<b>$&</b>'),
+            n: x.n
+              .replace(/<b>/g, '')
+              .replace(/<\/b>/g, '')
+              .replace(new RegExp(keyword, 'ig'), '<b>$&</b>'),
             t: x.t,
             src: x.src,
           }

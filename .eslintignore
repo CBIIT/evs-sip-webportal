@@ -3,16 +3,12 @@ dist
 src/components/GraphicalView
 src/components/Modals
 src/components/PaginationController
-src/components/RequireAuthorization
-src/components/Unauthorized
 src/pages/ChangeReport
 src/pages/Dashboard
-src/pages/DataModel
 src/pages/DataSources
 src/pages/MappingReport
 src/pages/ModelBuilder
 src/pages/Profile
 src/pages/ReportDiff
 src/pages/Search
-src/pages/UserManagement
 src/**/*.test.js

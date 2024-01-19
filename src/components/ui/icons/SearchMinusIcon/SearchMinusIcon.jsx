@@ -1,4 +1,5 @@
-import styles from './Icons.module.css'
+import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
 const SearchMinusIcon = (props) => {
   return (
@@ -18,4 +19,9 @@ const SearchMinusIcon = (props) => {
     </svg>
   )
 }
+
+SearchMinusIcon.propTypes = {
+  className: PropTypes.string,
+}
+
 export default SearchMinusIcon

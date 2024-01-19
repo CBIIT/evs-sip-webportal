@@ -4,7 +4,10 @@ import styles from './DashboardButton.module.css'
 
 const DashboardButton = (props) => {
   return (
-    <Button className={`${styles.button} ${props.className}`} onClick={props.onClick}>
+    <Button
+      className={`${styles.button} ${props.className}`}
+      onClick={props.onClick}
+    >
       {props.children}
     </Button>
   )

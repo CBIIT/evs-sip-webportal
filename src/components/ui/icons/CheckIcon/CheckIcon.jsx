@@ -1,4 +1,5 @@
-import styles from './Icons.module.css'
+import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
 const CheckIcon = (props) => {
   return (
@@ -17,6 +18,10 @@ const CheckIcon = (props) => {
       ></path>
     </svg>
   )
+}
+
+CheckIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default CheckIcon

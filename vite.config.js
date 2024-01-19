@@ -1,28 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import eslint from 'vite-plugin-eslint'
 
 import basicSsl from '@vitejs/plugin-basic-ssl'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    basicSsl(),
-  ],
+  plugins: [react(), eslint(), basicSsl()],
   base: `/evssip`,
   build: {
-      outDir: './build'
+    outDir: './build',
   },
   test: {
     environment: 'jsdom',
     testMatch: ['./tests/**/*.test.tsx'],
     setupFiles: ['./vitest.setup.js'],
-    globals: true
+    globals: true,
   },
   server: {
     port: 443,
     host: 'sip-dev.semantics.cancer.gov',
-    //https: true
+    // https: true
     proxy: {
       '/evssip/api/': {
         target: 'http://localhost:3000',
@@ -38,7 +36,7 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/evssip/, ''),
-      }
+      },
     },
   },
   optimization: {

@@ -16,18 +16,23 @@ const Graph = () => {
         <Row className={styles.row}>
           <Col xs={7}>
             <div className={styles.diagram}>
-              <img className={styles['diagram-img']} alt="Graphic Background" src={graphImg} />
+              <img
+                className={styles['diagram-img']}
+                alt="Graphic Background"
+                src={graphImg}
+              />
             </div>
           </Col>
           <Col xs={5}>
             <div className={styles['graph-container']}>
               <h2 className={styles['graph-title']}>
-                The EVS Semantic Integration Platform supports standardization of vocabulary for the NCI Cancer Research
-                Data Commons (CRDC) and beyond.
+                The EVS Semantic Integration Platform supports standardization
+                of vocabulary for the NCI Cancer Research Data Commons (CRDC)
+                and beyond.
               </h2>
               <p className={styles['graph-paragraph']}>
-                The EVS-SIP provides programmatic semantic tools to facilitate querying, downloading and submitting data
-                and metadata.
+                The EVS-SIP provides programmatic semantic tools to facilitate
+                querying, downloading and submitting data and metadata.
               </p>
             </div>
           </Col>

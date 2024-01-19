@@ -1,7 +1,11 @@
 .section {
   height: 50rem;
   background-color: var(--tools-green);
-  background: linear-gradient(90deg, var(--white-bkgd) 40%, var(--tools-green) 40%);
+  background: linear-gradient(
+    90deg,
+    var(--white-bkgd) 40%,
+    var(--tools-green) 40%
+  );
 }
 
 .container {
@@ -55,12 +59,12 @@
 .toolbox-container {
   width: 100%;
   height: 14rem;
-  border: #B7B7B7 0.125rem solid;
+  border: #b7b7b7 0.125rem solid;
   border-bottom: none;
   border-radius: 1rem 1rem 0 0;
 }
 
-.toolbox-link-container{
+.toolbox-link-container {
   display: block;
   width: 100%;
 }
