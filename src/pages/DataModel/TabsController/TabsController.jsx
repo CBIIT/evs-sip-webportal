@@ -13,14 +13,23 @@ const TabsController = (props) => {
 
   return (
     <>
-      <Tab.Container id="tabs-controller" defaultActiveKey="gdc" activeKey={props.dataModel} onSelect={selectHandler}>
+      <Tab.Container
+        id="tabs-controller"
+        defaultActiveKey="gdc"
+        activeKey={props.dataModel}
+        onSelect={selectHandler}
+      >
         <Container>
           <Row className="clearfix">
             <Col sm={12}>
               <div className={styles['nav-container']}>
                 <Nav className={styles['nav-tabs']} variant="tabs">
                   <Nav.Item className={styles['nav-item']}>
-                    <Nav.Link as="button" className={styles['nav-link']} eventKey="pcdc">
+                    <Nav.Link
+                      as="button"
+                      className={styles['nav-link']}
+                      eventKey="pcdc"
+                    >
                       <span className={styles['nav-span']}>
                         Pediatric Cancer <br />
                         Data Commons
@@ -28,7 +37,11 @@ const TabsController = (props) => {
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item className={styles['nav-item']}>
-                    <Nav.Link as="button" className={styles['nav-link']} eventKey="icdc">
+                    <Nav.Link
+                      as="button"
+                      className={styles['nav-link']}
+                      eventKey="icdc"
+                    >
                       <span className={styles['nav-span']}>
                         Integrated Canine <br />
                         Data Commons
@@ -36,7 +49,11 @@ const TabsController = (props) => {
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item className={styles['nav-item']}>
-                    <Nav.Link as="button" className={styles['nav-link']} eventKey="ctdc">
+                    <Nav.Link
+                      as="button"
+                      className={styles['nav-link']}
+                      eventKey="ctdc"
+                    >
                       <span className={styles['nav-span']}>
                         Clinical Trial <br />
                         Data Commons
@@ -44,7 +61,11 @@ const TabsController = (props) => {
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item className={styles['nav-item']}>
-                    <Nav.Link as="button" className={styles['nav-link']} eventKey="gdc">
+                    <Nav.Link
+                      as="button"
+                      className={styles['nav-link']}
+                      eventKey="gdc"
+                    >
                       <span className={styles['nav-span']}>
                         Genomic <br />
                         Data Commons
@@ -81,8 +102,7 @@ const TabsController = (props) => {
 
 TabsController.propTypes = {
   dataModel: PropTypes.string,
-  setDataModel: PropTypes.func.isRequired
+  setDataModel: PropTypes.func.isRequired,
 }
-
 
 export default TabsController

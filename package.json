@@ -1,6 +1,5 @@
 {
-  "name": "evs-sip-vitedemo",
-  "private": true,
+  "name": "evs-sip-webportal",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -8,8 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint --ext .js,.jsx ./src",
+    "lint:fix": "eslint --fix 'src/**/*.{js,jsx}'",
     "prettier": "prettier --write 'src/**/*.{js,jsx,css,scss}'"
   },
   "dependencies": {

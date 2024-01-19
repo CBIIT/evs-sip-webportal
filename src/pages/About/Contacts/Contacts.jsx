@@ -6,7 +6,8 @@ const Contacts = () => {
       <div className={styles.title}>EVS-SIP Contacts</div>
       <div className={styles.content}>
         <p>
-          If you have any questions, please contact us at <a href="mailto:evssip@mail.nih.gov">evssip@mail.nih.gov</a>.
+          If you have any questions, please contact us at{' '}
+          <a href="mailto:evssip@mail.nih.gov">evssip@mail.nih.gov</a>.
         </p>
       </div>
     </div>

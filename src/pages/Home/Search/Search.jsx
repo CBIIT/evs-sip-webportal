@@ -3,11 +3,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { apiSuggest } from '../../../api'
 import styles from './Search.module.css'
-import { Container, Row, Col, InputGroup, Button, FormControl } from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Button,
+  FormControl,
+} from 'react-bootstrap'
 import { ArrowRightIcon, CheckIcon } from '../../../components/ui/icons/Icons'
 import SuggestBox from '../../Search/SuggestBox/SuggestBox'
 
-import { setKeyword, setDataSources, setIsSearching } from '../../../reducers/searchSlice'
+import {
+  setKeyword,
+  setDataSources,
+  setIsSearching,
+} from '../../../reducers/searchSlice'
 
 const Search = () => {
   const [suggestState, setSuggestState] = useState([])
@@ -38,7 +49,11 @@ const Search = () => {
       setSuggestState([])
       searchHandler(event.target.value)
     }
-    if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
+    if (
+      event.keyCode === 13 &&
+      suggestState.length !== 0 &&
+      selectIndexState !== -1
+    ) {
       dispatch(setKeyword(suggestState[selectIndexState].id))
       setSuggestState([])
       searchHandler(suggestState[selectIndexState].id)
@@ -105,7 +120,9 @@ const Search = () => {
         <Row className={styles.row}>
           <Col xs={5}>
             <div className={styles['title-container']}>
-              <h1 className={styles.title}>Semantic Integration for Multiple Data Sources</h1>
+              <h1 className={styles.title}>
+                Semantic Integration for Multiple Data Sources
+              </h1>
             </div>
           </Col>
           <Col xs={7}>
@@ -142,10 +159,16 @@ const Search = () => {
                     </p>
                     <Button
                       className={styles['select-btn']}
-                      aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                      aria-label={
+                        isToggleOnSource === false
+                          ? 'Select All'
+                          : 'Unselect All'
+                      }
                       onClick={selectDataAllToggleHandler}
                     >
-                      {isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                      {isToggleOnSource === false
+                        ? 'Select All'
+                        : 'Unselect All'}
                     </Button>
                   </Col>
                   <Col xs={9}>

@@ -11,5 +11,4 @@ src/pages/ModelBuilder
 src/pages/Profile
 src/pages/ReportDiff
 src/pages/Search
-src/pages/UserManagement
 src/**/*.test.js

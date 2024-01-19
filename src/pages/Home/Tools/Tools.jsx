@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
 import styles from './Tools.module.css'
-
-import { DataCommonsIcon, SemanticIntegrationIcon, ToolsIcon, SupportIcon } from './Icons/Icons'
+import {
+  DataCommonsIcon,
+  SemanticIntegrationIcon,
+  ToolsIcon,
+  SupportIcon,
+} from './Icons/Icons'
 
 const Tools = () => {
   return (
@@ -16,9 +20,12 @@ const Tools = () => {
                   <div className={styles['toolbox-container']}>
                     <DataCommonsIcon className={styles['toolbox-icon']} />
                     <div className={styles['toolbox-title-container']}>
-                      <strong className={styles['toolbox-title']}>Data Commons</strong>
+                      <strong className={styles['toolbox-title']}>
+                        Data Commons
+                      </strong>
                     </div>
                   </div>
+
                   <div className={styles['toolbox-link-container']}>
                     <Link
                       className={`btn ${styles['toolbox-link']}`}
@@ -32,9 +39,13 @@ const Tools = () => {
                 </div>
                 <div className={styles.toolbox}>
                   <div className={styles['toolbox-container']}>
-                    <SemanticIntegrationIcon className={styles['toolbox-icon']} />
+                    <SemanticIntegrationIcon
+                      className={styles['toolbox-icon']}
+                    />
                     <div className={styles['toolbox-title-container']}>
-                      <strong className={styles['toolbox-title']}>Semantic Integration</strong>
+                      <strong className={styles['toolbox-title']}>
+                        Semantic Integration
+                      </strong>
                     </div>
                   </div>
                   <div className={styles['toolbox-link-container']}>
@@ -70,7 +81,9 @@ const Tools = () => {
                   <div className={styles['toolbox-container']}>
                     <SupportIcon className={styles['toolbox-icon']} />
                     <div className={styles['toolbox-title-container']}>
-                      <strong className={styles['toolbox-title']}>Support</strong>
+                      <strong className={styles['toolbox-title']}>
+                        Support
+                      </strong>
                     </div>
                   </div>
                   <div className={styles['toolbox-link-container']}>
