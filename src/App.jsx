@@ -27,7 +27,9 @@ const CTDCSource = lazy(
 const ICDCSource = lazy(
   () => import('./pages/DataSources/ICDCSource/ICDCSource')
 )
-const PCDCSource = lazy(() => import('./pages/DataSources/PCDCSource'))
+const PCDCSource = lazy(
+  () => import('./pages/DataSources/PCDCSource/PCDCSource')
+)
 const MappingReport = lazy(() => import('./pages/MappingReport'))
 const Profile = lazy(() => import('./pages/Profile'))
 const ModelBuilder = lazy(() => import('./pages/ModelBuilder'))
@@ -55,48 +57,48 @@ const App = () => {
               <Route
                 exact
                 path="/mainboard"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <GDCSource />
                   </RequireAuthorization>
-                )}
+                }
               />
               <Route
                 exact
                 path="/mainboard/gdc"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <GDCSource />
                   </RequireAuthorization>
-                )}
+                }
               />
               <Route
                 exact
                 path="/mainboard/ctdc"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <CTDCSource />
                   </RequireAuthorization>
-                )}
+                }
               />
 
               <Route
                 exact
                 path="/mainboard/icdc"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <ICDCSource />
                   </RequireAuthorization>
-                )}
+                }
               />
               <Route
                 exact
                 path="/mainboard/pcdc"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <PCDCSource />
                   </RequireAuthorization>
-                )}
+                }
               />
               <Route path="/mappingreport" element={<MappingReport />} />
               <Route path="/profile" element={<Profile />} />

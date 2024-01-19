@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { baseUrl } from '../../../api'
-import styles from './ICDCSource.module.css'
+import styles from './PCDCSource.module.css'
 import { Table, Tabs, Tab } from 'react-bootstrap'
 import {
   AngleDownIcon,
@@ -17,7 +17,7 @@ import PageSizeComponent from '../../../components/PageSizeComponent/PageSizeCom
 import AddNewValueModal from '../../../components/Modals/AddNewValueModal/AddNewValueModal'
 import AddNewPropertyModal from '../../../components/Modals/AddNewPropertyModal/AddNewPropertyModal'
 
-const ICDCSource = () => {
+const GDCSource = () => {
   const [nodeState, setNodeState] = useState({})
   const [propState, setPropState] = useState({})
   const [valueState, setValueState] = useState({})
@@ -84,7 +84,7 @@ const ICDCSource = () => {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${baseUrl}/datamodel/search?keyword=${searchTerm}&model=ICDC&type=${tabState}&page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`
+        `${baseUrl}/datamodel/search?keyword=${searchTerm}&model=GDC&type=${tabState}&page=${currentPageState[tabState]}&pageSize=${pageSizeState[tabState]}`
       )
       const data = await response.json()
       switch (tabState) {
@@ -134,7 +134,7 @@ const ICDCSource = () => {
     <DashboardContainer>
       <div className={styles.sectionContainer}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>Clinical Trial Data Commons</h2>
+          <h2 className={styles.sectionTitle}>Pedriactic Cancer Data Model</h2>
           <div>
             <Button>Graphic View</Button> <Button>Model Update</Button> <br />
             <BatchUpdateModal /> <Button>Change Report</Button>{' '}
@@ -186,7 +186,7 @@ const ICDCSource = () => {
                                 }
                               >
                                 <div>
-                                  {'Category_Name'}
+                                  {v.Category}
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
@@ -262,7 +262,7 @@ const ICDCSource = () => {
                                 }
                               >
                                 <div>
-                                  {'Category_Name'}
+                                  {p.Category}
                                   <ul className={styles.tableUl}>
                                     <li className={styles.tableLi}>
                                       <span className={styles.spanIcon}>
@@ -320,7 +320,7 @@ const ICDCSource = () => {
                       {nodeState.result.map((n, i) => {
                         return (
                           <tr key={i}>
-                            <td>{'Category_Name'}</td>
+                            <td>{n.Category}</td>
                             <td>{n.Node_Name}</td>
                             <td>{n.Node_Ncitcode}</td>
                             <td>
@@ -367,4 +367,4 @@ const ICDCSource = () => {
   )
 }
 
-export default ICDCSource
+export default GDCSource

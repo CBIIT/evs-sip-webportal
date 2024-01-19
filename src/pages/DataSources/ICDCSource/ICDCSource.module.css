@@ -11,7 +11,7 @@
 }
 
 .sectionTitle {
-  font-family: 'Raleway-Medium',sans-serif;
+  font-family: 'Raleway-Medium', sans-serif;
   font-weight: 500;
   color: #042a68;
   width: fit-content;
@@ -24,7 +24,7 @@
 }
 
 .tableLink {
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   font-size: 1.1rem;
 }
 
