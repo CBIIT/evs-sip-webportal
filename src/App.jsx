@@ -106,11 +106,11 @@ const App = () => {
               <Route
                 exact
                 path="/usermanagement"
-                render={() => (
+                element={
                   <RequireAuthorization>
                     <UserManagement />
                   </RequireAuthorization>
-                )}
+                }
               />
               <Route element={<NotFound />} />
             </Routes>
