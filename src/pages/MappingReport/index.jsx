@@ -263,7 +263,7 @@ const MappingReport = (props) => {
           <Tabs className={styles['tab-styles']} defaultActiveKey="all" id="uncontrolled-tab-example">
             <Tab eventKey="all" title="All">
               <div className={styles['table-container']}>
-                <InputGroup className={styles['input-group-styled']}>
+                <InputGroupStyled>
                   <FormControl
                     className={styles['form-control-styled']}
                     type="text"
