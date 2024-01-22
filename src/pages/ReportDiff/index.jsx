@@ -1,18 +1,6 @@
-import { useEffect }from 'react';
-import styled from 'styled-components';
-
+import React, { useEffect }from 'react';
+import styles from './index.module.css';
 import ContentDiff from './ContentDiff';
-
-const Page = styled.div`
-  background-color: var(--page-bkgd);
-  overflow: auto;
-  padding-bottom: 18rem;
-`;
-
-const PageContainer = styled.div`
-  max-width: 75rem;
-  margin: 0 auto;
-`;
 
 // const PageTitle = styled.h1`
 //   font-family: 'Raleway-Medium', sans-serif;
@@ -26,11 +14,11 @@ const ReportDiff = () => {
     window.scrollTo(0, 0);
   });
 
-  return <Page>
-    <PageContainer>
+  return <div className={styles['page']}>
+    <div className={styles['page-container']}>
         <ContentDiff/>
-    </PageContainer>
-  </Page>
+    </div>
+  </div>
 }
 
 export default ReportDiff;

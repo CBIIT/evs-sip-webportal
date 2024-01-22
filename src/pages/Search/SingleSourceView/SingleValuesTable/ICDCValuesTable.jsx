@@ -1,166 +1,26 @@
-import { useState , useContext} from 'react';
-import styled from 'styled-components';
-import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
-import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';
+import { useState } from 'react';
 
-const ContainerStyled = styled(Container)`
-  font-size: 1rem;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: var(--white-bkgd);
-  border-radius: 1rem;
-  min-height: 45rem;
-  border: 2px solid #535F74;
-  overflow: hidden;
-`;
+import styles from './SingleValuesTable.module.css';
+import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
+import { MinusIcon, PlusIcon, AngleDownIcon } from '../../../../components/ui/icons/Icons'
+import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../../../shared';
 
-const TableThead = styled(Row)`
-  background: #535F74;
-  display: flex;
-  align-items: center;
-  border-radius: 0.8rem 0.8rem 0 0;
-`;
 
-const TableTh = styled.div`
-  font-family: 'Lato-Bold', sans-serif;
-  font-size: 1rem;
-  text-align: center;
-  color: var(--white);
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-`;
+// const IndicatorTerm = styled.span`
+//   color: #2a72a4;
+// `;
 
-const TableBody = styled(Row)`
-  overflow-y: auto;
-  // max-height: 42rem;
-  max-height: 55rem;
-`;
 
-const TableRow = styled(Row)`
-  border-bottom: 1px solid #BBC5CD;
-  display: flex;
-  align-items: stretch;
-`;
+const ICDCValuesTable = (props) => {
+  // let termTypeNotAssigned = false;
+  // let valuesCount = 0;
 
-const TableRowValue = styled(TableRow)`
-  border-bottom: 1px solid #ecf0f1;
-`;
-
-const TableCol = styled(Col)`
-  text-align: left;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  line-height: 1.428571;
-`;
-
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
-const SpanIcon = styled.span`
-  left: -0.9rem;
-  top: 0.2rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
-`;
-
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
-`;
-
-const TableColLeft = styled(TableCol)`
-  border-bottom: 1px solid #BBC5CD;
-`;
-
-const TableColRight = styled(Col)`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-left: 1px solid #BBC5CD;
-`;
-
-const ColRight = styled(Col)`
-  text-align: right;
-`;
-
-const Indicator = styled.div`
-  position: relative;
-  padding-bottom: 36%;
-`;
-
-const IndicatorContent = styled.div`
-  width: 60%;
-  min-width: 550px;
-  text-align: center;
-  margin: auto;
-  padding: 1em 0;
-  background-color: #fff;
-  color: #535a60;
-  font-size: 1.2em;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-`;
-
-const AccordionStyled = styled(Accordion)`
-  width: 100%;
-  && > .card {
-    border-radius: 0;
-  }
-  &&:not(:last-of-type) > .card {
-    border-bottom: 0;
-  }
-`;
-
-const CardHeader = styled(Card.Header)`
-   display: flex;
-   justify-content: space-between;
-   padding: .25rem 1.25rem;
-`;
-
-const DivCenter = styled.div`
-  text-align: center;
-  padding: 1rem 0;
-`;
-
-const CodeSpan = styled.span`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  color: #475162;
-  font-size: 1.25rem;
-  font-weight: bold;
-  inline-size: 9rem;
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  min-height: 7rem;
-`;
-
-const ButtonStyled = styled(Button)`
-  color: #475162;
-  font-size: 1.25rem;
-  font-weight: bold;
-`;
-
-const PCDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
-  let info = props.info;  
-  let valuesObj = {};
+
+  let values = [];
 
   items.forEach((data) => {
-    if(data._source.source !== 'pcdc') return;
+    if(data._source.source !== 'icdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -173,7 +33,9 @@ const PCDCValuesTable = (props) => {
       obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
       obj.vs = [];
       let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-
+      // if (highlightCdeId !== undefined) {
+      //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
+      // }
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -246,14 +108,7 @@ const PCDCValuesTable = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
       // valuesCount += obj.vs.length;
-
-      if(valuesObj[obj.category] === undefined) {
-        valuesObj[obj.category] = [obj];
-      } else {
-        valuesObj[obj.category].push(obj);
-      }
-
-      valuesObj = sortAlphabeticallyObject(valuesObj);
+      values.push(obj);
     }
   });
 
@@ -288,13 +143,13 @@ const PCDCValuesTable = (props) => {
       return (
         <div className="ncit-value-container">
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <b>NCI Thesaurus Code: </b>
               <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + props.synonym.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: props.synonym.n_c }}></a>
-            </TableCol>
+            </Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -307,7 +162,7 @@ const PCDCValuesTable = (props) => {
                   <TableSynonyms synonyms={props.synonym.s}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -320,13 +175,13 @@ const PCDCValuesTable = (props) => {
       return props.ncit.map((item, index) =>
         <div key={index} className="ncit-value-container">
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <b>NCI Thesaurus Code: </b>
               <a href={"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + item.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')} rel="noopener noreferrer" target="_blank" dangerouslySetInnerHTML={{ __html: item.n_c }}></a>
-            </TableCol>
+            </Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -339,7 +194,7 @@ const PCDCValuesTable = (props) => {
                   <TableSynonyms synonyms={item.s}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -396,10 +251,10 @@ const PCDCValuesTable = (props) => {
       return (
         <div className="icdo3-value-container">
           <Row>
-            <TableCol xs={12} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></TableCol>
+            <Col className={styles['table-col']} xs={12} dangerouslySetInnerHTML={{ __html: props.ic.c + ' (ICD-O-3)' }}></Col>
           </Row>
           <Row>
-            <TableCol xs={12}>
+            <Col className={styles['table-col']} xs={12}>
               <Table striped bordered condensed="true" hover>
                 <thead>
                   <tr>
@@ -412,7 +267,7 @@ const PCDCValuesTable = (props) => {
                   <TableICDO3Syns synonyms={props.icemun}/>
                 </tbody>
               </Table>
-            </TableCol>
+            </Col>
           </Row>
         </div>
       );
@@ -429,7 +284,7 @@ const PCDCValuesTable = (props) => {
     };
 
     return (
-      <TableCol xs={12}>
+      <Col className={styles['table-col']} xs={12}>
         <Row>
           <Col xs={10}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) 
@@ -437,7 +292,7 @@ const PCDCValuesTable = (props) => {
               : <span dangerouslySetInnerHTML={{ __html: props.name }}></span>
             }
           </Col>
-          <ColRight xs={2}>
+          <Col className={styles['col-right']} xs={2}>
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
@@ -446,7 +301,7 @@ const PCDCValuesTable = (props) => {
                 }
               </a>
             }
-          </ColRight>
+          </Col>
         </Row>
         {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
           <Collapse in={isToggleOn} mountOnEnter={true}>
@@ -463,199 +318,60 @@ const PCDCValuesTable = (props) => {
             </div>
           </Collapse>
         }
-      </TableCol>
+      </Col>
     );
   };
 
-  const ValueItem = (props) => {
-    let [isToggleOn, setIsToggleOn] = useState(false);
-
-    const ToggleTableHandler = event => {
-      event.preventDefault();
-      setIsToggleOn(!isToggleOn);
-    };
-
-    return(
-      <TableRow>
-        <TableCol xs={3}>
-          {props.item.node.n}
-          <TableUl>
-            <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{props.item.property.n}</TableLi>
-          </TableUl>
-        </TableCol>
-
-        <TableValues xs={9}>
-          <>
-            {props.item.vs.slice(0,5).map((value, index) =>
-              <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-            )}
-            {props.item.vs.length > 5 && 
-            <Collapse in={isToggleOn} mountOnEnter={true}>
-              <div>
-                {props.item.vs.map((value, index) => {
-                  if (index >= 5) {
-                    return(
-                      <TableRowValue data-class="TableRowValue" key={index}>
-                        <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                      </TableRowValue>
-                    )
-                  }
-                  return null;
-                })}
-              </div>
-            </Collapse>
-            }
-          </>
-          {props.item.vs.length > 5 && 
-            <TableRowValue data-class="TableRowValue">
-              <TableCol data-class="TableCol" xs={12}>
-              {isToggleOn === false ? (
-                <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <AngleDownIcon/> Show More ({props.item.vs.length - 5})
-                </a>
-              ) : (
-                <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                  <AngleUpIcon/> Show Less
-                </a>
-              )}
-              </TableCol>
-            </TableRowValue>
-          }
-        </TableValues>
-      </TableRow>
-    );
-  }
-
-  const ValueItems = (props) => {
-    let [isToggleOn, setIsToggleOn] = useState(false);
-
-    const ToggleTableHandler = event => {
-      event.preventDefault();
-      setIsToggleOn(!isToggleOn);
-    };
-
-    return (
-      <Row>
-        <TableColLeft xs={2}>
-          <DivCenter>
-            <CodeSpan>{info[props.project] !== undefined ? info[props.project] : props.project}</CodeSpan>
-            {props.values.length > 5 && 
-              <Button variant="outline-secondary" onClick={ToggleTableHandler}>
-                {isToggleOn === false ? 'Show More' : 'Show Less'}
-              </Button>
-            }
-          </DivCenter>
-        </TableColLeft>
-        <TableColRight xs={10}>
-        {props.values.slice(0,5).map((item, index) =>
-          <ValueItem item={item} key={index} />
+  const valuesItems = values.map((item, index) =>
+    <Row className={styles['table-row']} key={index}>
+      <Col className={styles['table-col']} xs={3}>
+        {item.category}
+        <ul className={styles['table-ul']}>
+          <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.node.n}
+            <ul className={styles['table-ul']}>
+              <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.property.n}</li>
+            </ul>
+          </li>
+        </ul>
+        {/* <GDCTerms idterm={item.id}/> */}
+      </Col>
+      <Col xs={9}>
+        {item.vs.map((value, index) =>
+          <Row className={styles['table-row-value']} key={index}>
+            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+          </Row>
         )}
-        {props.values.length > 5 && 
-          <Collapse in={isToggleOn} mountOnEnter={true}>
-            <div>
-              {props.values.map((item, index) => {
-                if (index >= 5) {
-                  return(
-                    <ValueItem item={item} key={index} />
-                  )
-                }
-                return null;
-              })}
-            </div>
-          </Collapse>
-        }
-        {props.values.length > 5 && 
-          <TableRow data-class="TableRow">
-            <TableCol data-class="TableCol" xs={12}>
-            {isToggleOn === false ? (
-              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                <AngleDownIcon/> Show More ({props.values.length - 5})
-              </a>
-            ) : (
-              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
-                <AngleUpIcon/> Show Less
-              </a>
-            )}
-            </TableCol>
-          </TableRow>
-        }
-        </TableColRight>
+      </Col>
+    </Row>
+  );
+
+  if (values.length !== 0) {
+    return (
+    <Container className={styles['container']}>
+      <Row className={styles['table-head']}>
+        <Col xs={3}>
+          <div className={styles['table-th']}>Category / Node / Property</div>
+        </Col>
+        <Col xs={9}>
+          <div className={styles['table-th']}>Matched ICDC Values</div>
+        </Col>
       </Row>
-    );
-  }
-
-  const AccordionToggle = ({ children, eventKey, callback }) => {
-    const currentEventKey = useContext(AccordionContext);
-  
-    const decoratedOnClick = useAccordionButton(
-      eventKey,
-      () => callback && callback(eventKey),
-    );
-  
-    const isCurrentEventKey = currentEventKey === eventKey;
-  
-    return (
-      <>
-        <ButtonStyled variant="link" onClick={decoratedOnClick}>{children}</ButtonStyled>
-        <Button variant="link" onClick={decoratedOnClick}>
-          {isCurrentEventKey === true
-            ? <AngleUpIcon/>
-            : <AngleDownIcon/>
-          }
-        </Button>
-      </>
-    );
-  }
-
-  const AccordionValueItems = (props) => {
-    return (
-      <AccordionStyled defaultActiveKey={props.index === 0 ? '0': ''}>
-        <Card>
-          <CardHeader>
-            <AccordionToggle eventKey="0">{props.project}</AccordionToggle>
-          </CardHeader>
-          <Accordion.Collapse eventKey="0">
-            <Col xs={12}>
-              <ValueItems values={props.values} project={props.project}/>
-            </Col>
-          </Accordion.Collapse>
-        </Card>
-      </AccordionStyled>
-    );
-  }
-
-  if (Object.keys(valuesObj).length !== 0) {
-    return (
-    <ContainerStyled>
-      <TableThead>
-        <Col xs={2}>
-          <TableTh>Project</TableTh>
-        </Col>
-        <Col xs={2}>
-          <TableTh>Node / Property</TableTh>
-        </Col>
-        <Col xs={8}>
-          <TableTh>Matched PCDC Values</TableTh>
-        </Col>
-      </TableThead>
-      <TableBody>
-          {Object.entries(valuesObj).map((result, index) =>
-            <AccordionValueItems project={result[0]} values={result[1]} index={index}/>
-          )}
-      </TableBody>
-    </ContainerStyled>
+      <Row className={styles['table-body']}>
+        <Col xs={12}>{valuesItems}</Col>
+      </Row>
+    </Container>
     );
   } else {
     return (
-      <ContainerStyled>
-        <Indicator>
-          <IndicatorContent>
+      <Container className={styles['container']}>
+        <div className={styles['indicator']}>
+          <div className={styles['indicator-content']}>
             Sorry, no results found.
-          </IndicatorContent>
-        </Indicator>
-      </ContainerStyled>
+          </div>
+        </div>
+      </Container>
     );
   }
 };
 
-export default PCDCValuesTable;
+export default ICDCValuesTable;

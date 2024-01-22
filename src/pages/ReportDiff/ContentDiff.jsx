@@ -1,58 +1,11 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styles from './ContentDiff.module.css';
 import { Button } from 'react-bootstrap';
 import { compareAllWithGDCDictionary, exportCompareResult, exportAllCompareResult } from '../../api';
 
 import LoadingAnimation from '../../components/LoadingAnimation/LoadingAnimation';
 import FormDiff from './FormDiff';
 import TabController from './TabController';
-
-const ContentBox =  styled.div`
-  padding: 2.5rem;
-  margin: 2.5rem 0;
-  background-color: var(--white-bkgd);
-`;
-
-const ContentBoxTitle = styled.h1`
-  font-family: 'Raleway-Bold', sans-serif;
-  font-size: 1.5rem;
-  color: var(--sub-title);
-  text-transform: uppercase;
-
-  &&::after {
-    content: "";
-    border: 1px solid var(--black);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    display: block;
-    max-width: 24rem;
-  }
-`;
-
-const ContentBoxText = styled.div`
-  margin-top: 2rem;
-
-  && > p {
-    font-size: 1.0625rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--black);
-  }
-
-  && > p:last-child {
-    margin-bottom: 0;
-  }
-
-  && a {
-    color: var(--link);
-  }
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const ContentDiff = () => {
   let [loadingState, setLoadingState] = useState(false);
@@ -66,7 +19,7 @@ const ContentDiff = () => {
     all: '',
     unmapped: '',
     mapped: '',
-    conflict: ''
+    conflict: '' 
   });
   let [pageState, setPageState] = useState({
     all: 1,
@@ -182,9 +135,9 @@ const ContentDiff = () => {
     });
   }
 
-  return <ContentBox>
-    <ContentBoxTitle>Report Differences</ContentBoxTitle>
-    <ContentBoxText>
+  return <div className={styles['content-box']}>
+    <h1 className={styles['content-box-title']}>Report Differences</h1>
+    <div className={styles['content-box-text']}>
       <p>The Report Differences is a tool to compare the mapped NCIt codes of selected Compare Type (Node/Property/Value) between the official GDC Dictionary and Data Commons. Currently, only preset options are supported.</p>
       <p>The results have four tabs, "All", "Unmapped", "Mapped", and "Conflict".</p>
       <ul>
@@ -197,10 +150,10 @@ const ContentDiff = () => {
       <FormDiff reportTrigger={reportTrigger}/>
       {loadedDataStage &&
         <>
-          <TitleContainer>
+          <div className={styles['title-container']}>
             <h2>Result</h2>
             <Button variant="secondary" onClick={handleDowloadAllResults}>Download All Results</Button>
-          </TitleContainer>
+          </div>
           <TabController 
             selectTab={handleSelectTab} 
             type={typeState} 
@@ -218,9 +171,9 @@ const ContentDiff = () => {
           />
         </>
       }
-    </ContentBoxText>
+    </div>
     {loadingState && <LoadingAnimation/>}
-  </ContentBox>
+  </div>
 }
 
 export default ContentDiff;
