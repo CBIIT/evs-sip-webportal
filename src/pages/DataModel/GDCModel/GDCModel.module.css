@@ -1,0 +1,50 @@
+.content {
+  padding: 3rem 4rem;
+  margin-bottom: 2.5rem;
+  background-color: var(--white-bkgd);
+}
+
+.textbox {
+  margin-bottom: 3rem;
+}
+
+.textbox > h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  color: #009ecc;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.textbox > p {
+  font-size: 1.0625rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--black);
+}
+
+.textbox > p:last-child {
+  margin-bottom: 0;
+}
+
+.textbox a {
+  color: var(--link);
+}
+
+.hr {
+  border-top: 1px solid #77b7cd;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  color: #009ecc;
+  text-transform: uppercase;
+}
+
+.graph-content {
+  margin: 2rem auto;
+}

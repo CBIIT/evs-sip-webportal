@@ -6,7 +6,7 @@ class IconIndexFile extends React.Component {
             <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <title>Group</title>
                 <desc>Created with Sketch.</desc>
-                <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Page-2" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                     <g id="Group">
                         <circle id="Oval" fill="#26D9B1" cx="10" cy="10" r="10"></circle>
                         <path d="M4.5,5.5 L7.5,5.5 C8.05228475,5.5 8.5,5.94771525 8.5,6.5 L8.5,6.5 C8.5,7.05228475 8.05228475,7.5 7.5,7.5 L4.5,7.5 C3.94771525,7.5 3.5,7.05228475 3.5,6.5 L3.5,6.5 C3.5,5.94771525 3.94771525,5.5 4.5,5.5 Z" id="Rectangle" fill="#FFFFFF"></path>

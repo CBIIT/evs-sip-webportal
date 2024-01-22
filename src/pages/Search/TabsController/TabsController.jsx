@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './TabsController.module.css'
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap'
 import CrossValuesTable from '../CrossValuesTable'

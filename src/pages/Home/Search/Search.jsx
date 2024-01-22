@@ -1,31 +1,41 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { apiSuggest } from '../../../api'
 import styles from './Search.module.css'
-import { Container, Row, Col, InputGroup, Button, FormControl } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faCheck } from '@fortawesome/free-solid-svg-icons'
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Button,
+  FormControl,
+} from 'react-bootstrap'
+import { ArrowRightIcon, CheckIcon } from '../../../components/ui/icons/Icons'
 import SuggestBox from '../../Search/SuggestBox/SuggestBox'
 
-import { setKeyword, setDataSources, setIsSearching } from '../../Search/actions'
+import {
+  setKeyword,
+  setDataSources,
+  setIsSearching,
+} from '../../../reducers/searchSlice'
 
 const Search = () => {
   const [suggestState, setSuggestState] = useState([])
   const [selectIndexState, setSelectIndexState] = useState(-1)
   const [isToggleOnSource, setIsToggleOnSource] = useState(false)
 
-  const keyword = useSelector((state) => state.searchReducer.keyword)
-  const dataSources = useSelector((state) => state.searchReducer.dataSources)
+  const keyword = useSelector((state) => state.search.keyword)
+  const dataSources = useSelector((state) => state.search.dataSources)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const searchHandler = (kywd) => {
     const keywordCase = kywd.trim()
     dispatch(setKeyword(keywordCase))
     dispatch(setIsSearching(true))
-    history.push('./search')
+    navigate('./search')
   }
 
   const suggestHandler = (event) => {
@@ -39,7 +49,11 @@ const Search = () => {
       setSuggestState([])
       searchHandler(event.target.value)
     }
-    if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
+    if (
+      event.keyCode === 13 &&
+      suggestState.length !== 0 &&
+      selectIndexState !== -1
+    ) {
       dispatch(setKeyword(suggestState[selectIndexState].id))
       setSuggestState([])
       searchHandler(suggestState[selectIndexState].id)
@@ -106,7 +120,9 @@ const Search = () => {
         <Row className={styles.row}>
           <Col xs={5}>
             <div className={styles['title-container']}>
-              <h1 className={styles.title}>Semantic Integration for Multiple Data Sources</h1>
+              <h1 className={styles.title}>
+                Semantic Integration for Multiple Data Sources
+              </h1>
             </div>
           </Col>
           <Col xs={7}>
@@ -127,7 +143,7 @@ const Search = () => {
                     aria-label="search"
                     onClick={() => searchHandler(keyword)}
                   >
-                    <FontAwesomeIcon className={styles['input-box-icon']} icon={faArrowRight} />
+                    <ArrowRightIcon />
                   </Button>
                 </InputGroup>
                 <SuggestBox
@@ -143,10 +159,16 @@ const Search = () => {
                     </p>
                     <Button
                       className={styles['select-btn']}
-                      aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                      aria-label={
+                        isToggleOnSource === false
+                          ? 'Select All'
+                          : 'Unselect All'
+                      }
                       onClick={selectDataAllToggleHandler}
                     >
-                      {isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                      {isToggleOnSource === false
+                        ? 'Select All'
+                        : 'Unselect All'}
                     </Button>
                   </Col>
                   <Col xs={9}>
@@ -160,7 +182,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Genomic Data Commons
                       </label>
@@ -173,7 +195,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Clinical Trial Data Commons
                       </label>
@@ -186,7 +208,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Integrated Canine Data Commons
                       </label>
@@ -201,7 +223,7 @@ const Search = () => {
                           onChange={selectDataToggleHandler}
                         />
                         <span className={styles['checkbox-btn']}>
-                          <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck} />
+                          <CheckIcon className={styles['checkbox-icon']} />
                         </span>
                         Pedriactic Cancer Data Model
                       </label>

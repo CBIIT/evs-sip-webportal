@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit'
 
 import ddgraph from './components/GraphicalView/DataDictionary/reducers'
 import submission from './components/GraphicalView/reducers'
-import currentUser from './reducers/currentUser'
-import searchReducer from './reducers/searchReducer'
+import userReducer from './reducers/userSlice'
+import searchReducer from './reducers/searchSlice'
 
 const store = configureStore({
   reducer: {
-    searchReducer,
-    currentUser,
+    search: searchReducer,
+    user: userReducer,
     ddgraph,
     submission,
   },
@@ -18,6 +18,6 @@ const store = configureStore({
       serializableCheck: false,
       immutableCheck: false,
     }),
-});
+})
 
-export default store;
+export default store

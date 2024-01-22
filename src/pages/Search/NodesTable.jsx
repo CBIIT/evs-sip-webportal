@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import styles from './NodesTable.module.css';
 import { Container, Row, Col, Table, Collapse} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { MinusIcon, PlusIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj } from '../../shared';
 
 const NodesTable = (props) => {
@@ -215,8 +214,8 @@ const NodesTable = (props) => {
                   <Col className={styles['col-right']} xs={2}>
                     <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                       {isToggleOn === true
-                        ? <FontAwesomeIcon icon={faMinus}/>
-                        : <FontAwesomeIcon icon={faPlus}/>
+                        ? <MinusIcon/>
+                        : <PlusIcon/>
                       }
                     </a>
                   </Col>

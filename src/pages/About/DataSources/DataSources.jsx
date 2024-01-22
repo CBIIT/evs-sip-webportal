@@ -37,7 +37,9 @@ const DataSources = () => {
             </tr>
             <tr>
               <td>
-                <h3 className={styles['table-th-title']}>Genomic Data Commons</h3>
+                <h3 className={styles['table-th-title']}>
+                  Genomic Data Commons
+                </h3>
               </td>
               <td>
                 <a

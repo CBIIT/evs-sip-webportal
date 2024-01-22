@@ -1,186 +1,231 @@
-import React, { useState, useRef, useEffect} from 'react';
-import styles from './SearchBox.module.css';
-import debounce from 'lodash.debounce';
-import { apiSuggest, apiSearchAll } from '../../../api';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faCircle, faArrowRight, faTimes} from '@fortawesome/free-solid-svg-icons'
-import SuggestBox from '../SuggestBox/SuggestBox';
-import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation';
+import { useState, useRef, useEffect } from 'react'
+import { ArrowRightIcon, CircleIcon, CheckIcon, TimesIcon } from '../../../components/ui/icons/Icons'
+import styles from './SearchBox.module.css'
+import debounce from 'lodash.debounce'
+import { apiSuggest, apiSearchAll } from '../../../api'
+import { InputGroup, FormControl, Button } from 'react-bootstrap'
+import SuggestBox from '../SuggestBox/SuggestBox'
+import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+  setKeyword,
+  setResult,
+  setError,
+  setMatchOptions,
+  setOptionsSearch,
+  setDataSources,
+  setSearchTerm,
+  setIsLoading,
+  setIsSearching,
+} from '../../../reducers/searchSlice'
 
-const SearchBox = (props) => {
-  let [suggestState, setSuggestState] = useState([]);
-  let [selectIndexState, setSelectIndexState] = useState(-1);
+const SearchBox = () => {
+  let [suggestState, setSuggestState] = useState([])
+  let [selectIndexState, setSelectIndexState] = useState(-1)
 
-  let [isToggleOnOptions, setIsToggleOnOptions] = useState(false);
-  let [isToggleOnSource, setIsToggleOnSource] = useState(false);
+  let [isToggleOnOptions, setIsToggleOnOptions] = useState(false)
+  let [isToggleOnSource, setIsToggleOnSource] = useState(false)
 
-  const searchInputRef = useRef();
+  const keyword = useSelector((state) => state.search.keyword)
+  const error = useSelector((state) => state.search.error)
+  const match = useSelector((state) => state.search.match)
+  const options = useSelector((state) => state.search.options)
+  const dataSources = useSelector((state) => state.search.dataSources)
+  const isLoading = useSelector((state) => state.search.isLoading)
+  const isSearching = useSelector((state) => state.search.isSearching)
 
-  const searchHandler = (keyword, match, options, sources) => {
-    let keywordCase = keyword.trim();
-    //props.setKeyword(keywordCase);
-    props.setSearchTerm(keywordCase);
-    props.setIsLoading(true);
+  const searchInputRef = useRef()
+  const dispatch = useDispatch()
+
+  const searchHandler = (keyword, match, options, dataSources) => {
+    let keywordCase = keyword.trim()
+    dispatch(setKeyword(keywordCase))
+    dispatch(setSearchTerm(keywordCase))
+    dispatch(setIsLoading(true))
 
     if (keywordCase === '') {
-      props.setError(true);
-      props.setResult({});
-      props.setIsLoading(false);
-      return;
+      dispatch(setError(true))
+      dispatch(setResult({}))
+      dispatch(setIsLoading(false))
+      return
     }
 
-    apiSearchAll(keyword, match, options, sources)
-      .then(result => {
-        props.setIsLoading(false);
-        props.setError(false);
-        props.setResult(result);
-        props.setIsSearching(false);
-      });
-  };
+    apiSearchAll(keyword, match, options, dataSources).then((result) => {
+      dispatch(setIsLoading(false))
+      dispatch(setError(false))
+      dispatch(setResult(result))
+      dispatch(setIsSearching(false))
+    })
+  }
 
   const suggestClickHandler = (id, event) => {
-    props.setKeyword(id);
-    setSuggestState([]);
-    searchHandler(id, props.match, props.options, props.dataSource);
-  };
+    dispatch(setKeyword(id))
+    setSuggestState([])
+    searchHandler(id, match, options, dataSources)
+  }
 
-  const suggestKeyPressHandler = event => {
+  const suggestKeyPressHandler = (event) => {
     if (event.keyCode === 13 && selectIndexState === -1) {
-      props.setKeyword(event.target.value);
-      setSuggestState([]);
-      searchHandler(event.target.value, props.match, props.options, props.dataSources);
+      dispatch(setKeyword(event.target.value))
+      setSuggestState([])
+      searchHandler(event.target.value, match, options, dataSources)
     }
     if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
-      props.setKeyword(suggestState[selectIndexState].id);
-      setSuggestState([]);
-      searchHandler(suggestState[selectIndexState].id, props.match, props.options, props.dataSources);
+      dispatch(setKeyword(suggestState[selectIndexState].id))
+      setSuggestState([])
+      searchHandler(suggestState[selectIndexState].id, match, options, dataSources)
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
-      let index = selectIndexState;
-      index += event.keyCode === 40 ? 1 : -1;
+      let index = selectIndexState
+      index += event.keyCode === 40 ? 1 : -1
       if (index >= suggestState.length) {
-        index = 0;
+        index = 0
       }
       if (index < 0) {
-        index = suggestState.length - 1;
+        index = suggestState.length - 1
       }
-      setSelectIndexState(index);
+      setSelectIndexState(index)
     }
-  };
+  }
 
-  const cleanSearchBar = event => {
-    event.preventDefault();
-    props.setKeyword('');
-    searchInputRef.current.focus();
+  const cleanSearchBar = (event) => {
+    event.preventDefault()
+    dispatch(setKeyword(''))
+    searchInputRef.current.focus()
   }
 
   const cleanSuggestHandler = () => {
-    setSuggestState([]);
-    setSelectIndexState(-1);
-  };
+    setSuggestState([])
+    setSelectIndexState(-1)
+  }
 
   const suggestHandlerDebounce = useRef(
     debounce((value) => {
       apiSuggest(value)
-        .then(result => setSuggestState(result))
-        .catch(error => {
-          console.log(error);
-        });
+        .then((result) => setSuggestState(result))
+        .catch((error) => {
+          console.log(error)
+        })
     }, 300)
-  ).current;
+  ).current
 
-  const suggestHandler = event => {
-    let value =  event.target.value;
-    props.setKeyword(value);
-    suggestHandlerDebounce(value);
-  };
+  const suggestHandler = (event) => {
+    let value = event.target.value
+    dispatch(setKeyword(value))
+    suggestHandlerDebounce(value)
+  }
 
-  const matchOptionsHandler = event => {
-    props.setMatchOptions(event.target.value);
-  };
+  const matchOptionsHandler = (event) => {
+    dispatch(setMatchOptions(event.target.value))
+  }
 
-  const checkedToggleHandler = event => {
-    props.setOptionsSearch({
-      ...props.options,
-      [event.target.name]: event.target.checked
-    })
-  };
+  const checkedToggleHandler = (event) => {
+    dispatch(
+      setOptionsSearch({
+        ...options,
+        [event.target.name]: event.target.checked,
+      })
+    )
+  }
 
-  const selectDataToggleHandler = event => {
-    props.setDataSources({
-      ...props.dataSources,
-      [event.target.name]: event.target.checked
-    });
-  };
+  const selectDataToggleHandler = (event) => {
+    dispatch(
+      setDataSources({
+        ...dataSources,
+        [event.target.name]: event.target.checked,
+      })
+    )
+  }
 
-  const checkedAllToggleHandler = event => {
-    if(isToggleOnOptions === false){
-      props.setOptionsSearch({
-        desc: true,
-        syns: true,
-        npsyns: true
-      });
+  const checkedAllToggleHandler = (event) => {
+    if (isToggleOnOptions === false) {
+      dispatch(
+        setOptionsSearch({
+          desc: true,
+          syns: true,
+          npsyns: true,
+        })
+      )
     } else {
-      props.setOptionsSearch({
-        desc: false,
-        syns: false,
-        npsyns: false
-      });
+      dispatch(
+        setOptionsSearch({
+          desc: false,
+          syns: false,
+          npsyns: false,
+        })
+      )
     }
-    setIsToggleOnOptions(!isToggleOnOptions);
-  };
+    setIsToggleOnOptions(!isToggleOnOptions)
+  }
 
-  const selectDataAllToggleHandler = event => {
-    if(isToggleOnSource === false){
-      props.setDataSources({
-        ctdc: true,
-        gdc: true,
-        icdc: true,
-        pcdc: true
-      });
+  const selectDataAllToggleHandler = (event) => {
+    if (isToggleOnSource === false) {
+      dispatch(
+        setDataSources({
+          ctdc: true,
+          gdc: true,
+          icdc: true,
+          pcdc: true,
+        })
+      )
     } else {
-      props.setDataSources({
-        ctdc: false,
-        gdc: false,
-        icdc: false,
-        pcdc: false
-      });
+      dispatch(
+        setDataSources({
+          ctdc: false,
+          gdc: false,
+          icdc: false,
+          pcdc: false,
+        })
+      )
     }
-    setIsToggleOnSource(!isToggleOnSource);
-  };
+    setIsToggleOnSource(!isToggleOnSource)
+  }
 
   useEffect(() => {
-    if(props.isSearching !== undefined && props.isSearching === true){
-      props.setMatchOptions('partial');
-      props.setOptionsSearch({
-        desc: false,
-        syns: false,
-        npsyns: false
-      });
-      searchHandler(props.keyword, props.match, props.options, props.dataSources);
+    if (isSearching !== undefined && isSearching === true) {
+      dispatch(setMatchOptions('partial'))
+      dispatch(
+        setOptionsSearch({
+          desc: false,
+          syns: false,
+          npsyns: false,
+        })
+      )
+      searchHandler(keyword, match, options, dataSources)
     }
-  });
+  })
 
   return (
     <div className={styles.container}>
-      {props.isLoading && <LoadingAnimation/>}
+      {isLoading && <LoadingAnimation />}
       <div className={styles['search-bar-container']}>
         <div className={styles['search-bar']}>
           <InputGroup>
             <FormControl
               type="text"
-              className={`${styles['form-control']}${props.error ? ` ${styles.error}` : ''}`}
-              value={props.keyword}
+              className={`${styles['form-control']}${error ? ` ${styles.error}` : ''}`}
+              value={keyword}
               onChange={suggestHandler}
               onKeyDown={suggestKeyPressHandler}
               placeholder="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
               aria-label="Search Values, Properties, NCIt Terms or ICD-O-3 Terms"
               ref={searchInputRef}
             />
-            <a aria-label="Delete" className={styles['delete-button']} href="/#" onClick={cleanSearchBar} style={props.keyword.length === 0 ? {} : { display: 'block' }}><FontAwesomeIcon icon={faTimes} /></a>
-            <Button aria-label="Search" className={styles['search-button']} onClick={() => searchHandler(props.keyword, props.match, props.options, props.dataSources)}>
-              <FontAwesomeIcon className={styles['search-button-icon']} icon={faArrowRight}/>
+            <a
+              aria-label="Delete"
+              className={styles['delete-button']}
+              href="/#"
+              onClick={cleanSearchBar}
+              style={keyword.length === 0 ? {} : { display: 'block' }}
+            >
+              <TimesIcon />
+            </a>
+            <Button
+              aria-label="Search"
+              className={styles['search-button']}
+              onClick={() => searchHandler(keyword, match, options, dataSources)}
+            >
+              <ArrowRightIcon className={styles['search-button-icon']} />
             </Button>
           </InputGroup>
           <SuggestBox
@@ -195,16 +240,30 @@ const SearchBox = (props) => {
             <div className={styles['search-options']}>
               <div className={styles['form-group-radio']}>
                 <label className={styles['radio-label']}>
-                  <input className={styles['radio-input']} name="match" type="radio" value="partial" checked={props.match === 'partial'} onChange={matchOptionsHandler}/>
+                  <input
+                    className={styles['radio-input']}
+                    name="match"
+                    type="radio"
+                    value="partial"
+                    checked={match === 'partial'}
+                    onChange={matchOptionsHandler}
+                  />
                   <span className={styles['radio-span']}>
-                    <FontAwesomeIcon className={styles['radio-icon']} icon={faCircle}/>
+                    <CircleIcon className={styles['radio-icon']} />
                   </span>
                   <span>Partial match of values or properties</span>
                 </label>
                 <label className={styles['radio-label']}>
-                  <input className={styles['radio-input']} name="match" type="radio" value="exact" checked={props.match === 'exact'} onChange={matchOptionsHandler} />
+                  <input
+                    className={styles['radio-input']}
+                    name="match"
+                    type="radio"
+                    value="exact"
+                    checked={match === 'exact'}
+                    onChange={matchOptionsHandler}
+                  />
                   <span className={styles['radio-span']}>
-                    <FontAwesomeIcon className={styles['radio-icon']} icon={faCircle}/>
+                    <CircleIcon className={styles['radio-icon']} />
                   </span>
                   <span>Exact match of values or properties</span>
                 </label>
@@ -214,26 +273,50 @@ const SearchBox = (props) => {
           <div className={styles['search-options-container']}>
             <label className={styles['search-options-label']}>Search Include</label>
             <div className={styles['search-options']}>
-              <Button className={styles['select-button']} aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'} onClick={checkedAllToggleHandler}>{isToggleOnOptions === false ? 'Select All' : 'Unselect All'}</Button>
+              <Button
+                className={styles['select-button']}
+                aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'}
+                onClick={checkedAllToggleHandler}
+              >
+                {isToggleOnOptions === false ? 'Select All' : 'Unselect All'}
+              </Button>
               <div className={styles['form-group']}>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="desc" type="checkbox" checked={props.options['desc']}  onChange={checkedToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="desc"
+                    type="checkbox"
+                    checked={options['desc']}
+                    onChange={checkedToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Property Description
                 </label>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="syns" type="checkbox" checked={props.options['syns']} onChange={checkedToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="syns"
+                    type="checkbox"
+                    checked={options['syns']}
+                    onChange={checkedToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Synonyms of Values
                 </label>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="npsyns" checked={props.options['npsyns']} onChange={checkedToggleHandler} type="checkbox"/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="npsyns"
+                    checked={options['npsyns']}
+                    onChange={checkedToggleHandler}
+                    type="checkbox"
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Search Synonyms of Properties/Nodes
                 </label>
@@ -243,33 +326,63 @@ const SearchBox = (props) => {
           <div className={styles['search-options-container']}>
             <label className={styles['search-options-label']}>Choose your Data Source</label>
             <div className={styles['search-options']}>
-              <Button className={styles['select-button']} aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'} onClick={selectDataAllToggleHandler}>{isToggleOnSource === false ? 'Select All' : 'Unselect All'}</Button>
+              <Button
+                className={styles['select-button']}
+                aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                onClick={selectDataAllToggleHandler}
+              >
+                {isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+              </Button>
               <div className={styles['form-group']}>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="gdc" type="checkbox" checked={props.dataSources['gdc']} onChange={selectDataToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="gdc"
+                    type="checkbox"
+                    checked={dataSources['gdc']}
+                    onChange={selectDataToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Genomic Data Commons(GDC)
                 </label>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="ctdc" type="checkbox" checked={props.dataSources['ctdc']} onChange={selectDataToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="ctdc"
+                    type="checkbox"
+                    checked={dataSources['ctdc']}
+                    onChange={selectDataToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Clinical Trial Data Commons (CTDC)
                 </label>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="icdc" type="checkbox" checked={props.dataSources['icdc']} onChange={selectDataToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="icdc"
+                    type="checkbox"
+                    checked={dataSources['icdc']}
+                    onChange={selectDataToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Integrated Canine Data Commons (ICDC)
                 </label>
                 <label className={styles['checkbox-label']}>
-                  <input className={styles['checkbox-input']} name="pcdc" type="checkbox" checked={props.dataSources['pcdc']} onChange={selectDataToggleHandler}/>
+                  <input
+                    className={styles['checkbox-input']}
+                    name="pcdc"
+                    type="checkbox"
+                    checked={dataSources['pcdc']}
+                    onChange={selectDataToggleHandler}
+                  />
                   <span className={styles['checkbox-span']}>
-                    <FontAwesomeIcon className={styles['checkbox-icon']} icon={faCheck}/>
+                    <CheckIcon className={styles['checkbox-icon']} />
                   </span>
                   Pediatric Cancer Data Commons (PCDC)
                 </label>
@@ -279,7 +392,7 @@ const SearchBox = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SearchBox;
+export default SearchBox

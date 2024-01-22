@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { PlusIcon, MinusIcon, SearchIcon } from '../ui/icons/Icons';
 import { searchFilter } from '../../shared';
 import { apiGetGDCDataById } from '../../api';
 
@@ -157,8 +156,8 @@ const AllValuesModal = (props) => {
           <ColRight xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true
-                ? <FontAwesomeIcon icon={faMinus}/>
-                : <FontAwesomeIcon icon={faPlus}/>
+                ? <MinusIcon/>
+                : <PlusIcon/>
               }
             </a>
           </ColRight>
@@ -200,8 +199,8 @@ const AllValuesModal = (props) => {
           <ColRight xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true
-                ? <FontAwesomeIcon icon={faMinus}/>
-                : <FontAwesomeIcon icon={faPlus}/>
+                ? <MinusIcon/>
+                : <PlusIcon/>
               }
             </a>
           </ColRight>
@@ -371,7 +370,7 @@ const AllValuesModal = (props) => {
           </Modal.Title>
           <InputGroupStyled>
             <InputGroup.Text id="search-values-input">
-              <FontAwesomeIcon icon={faSearch}/>
+              <SearchIcon/>
             </InputGroup.Text>
             <FormControl
               placeholder="Type at least 3 characters"

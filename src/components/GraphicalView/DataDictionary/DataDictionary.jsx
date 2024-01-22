@@ -108,7 +108,7 @@ class DataDictionary extends React.Component {
             className='data-dictionary__main'
           >
             <div className='data-dictionary__graph graph-loading-info'>
-              <div class="lds-ellipsis">
+              <div className="lds-ellipsis">
                 <div></div>
                 <div></div>
                 <div></div>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import Select from 'react-select';
@@ -36,7 +36,7 @@ const AddNewUserModal = ({updateUserList}) => {
       setFormErrors(errors);
     } else {
       const body = {
-          "requester": currentUser.name,
+          "requester": currentUser.user.usedid,
           "user": {
               "role": userState.role,
               "projects": userState.projects,

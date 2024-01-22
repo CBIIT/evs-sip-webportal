@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import styles from './DietTable.module.css';
 import { getHighlightObj, getAllValueHighlight } from '../../shared';
 import { Container, Row, Col } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons';
 
 const DictTable = (props) => {
   let data = JSON.parse(JSON.stringify(props.dictionary));
@@ -301,7 +300,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon className={styles['glyphicon-styled']} icon={isToggleOn === true ? faAngleUp : faAngleDown} />
+                  { isToggleOn === true ? <AngleUpIcon/> : <AngleDownIcon/> }
                 </a>
               </span>
               <a href="/#">{item.category} ({item.length})</a>

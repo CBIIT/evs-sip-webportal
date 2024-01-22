@@ -6,8 +6,8 @@ class IconBiospecimen extends React.Component {
             <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <title>icon_Biospecimen</title>
                 <desc>Created with Sketch.</desc>
-                <g id="icon_Biospecimen" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Group-7" fill="#27AE60" fill-rule="nonzero">
+                <g id="icon_Biospecimen" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                    <g id="Group-7" fill="#27AE60" fillRule="nonzero">
                         <path d="M10,0 C15.5225192,0 20,4.47748082 20,10 C20,15.5218764 15.5225192,20 10,20 C4.47748082,20 0,15.5224478 0,10 C0,4.47755224 4.47683803,0 10,0 Z" id="Shape"></path>
                     </g>
                     <g id="Group-8" transform="translate(4.500000, 3.000000)" fill="#FFFFFF">

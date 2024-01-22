@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import LazyLoad from 'react-lazyload';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faAngleUp, faAngleDown, faSpinner} from '@fortawesome/free-solid-svg-icons';
-import { getHighlightObj, sortSynonyms, browserDetection } from '../../shared';
+import { MinusIcon , PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
+import { getHighlightObj, sortSynonyms } from '../../shared';
 
 const ContainerStyled = styled(Container)`
   font-size: 1rem;
@@ -89,8 +87,8 @@ const TableLi = styled.li`
 `;
 
 const SpanIcon = styled.span`
-  left: -0.8rem;
-  top: 0.2rem;
+  left: -0.9rem;
+  top: 0.3rem;
   position: absolute;
   width: 1rem;    
   line-height: inherit;
@@ -429,16 +427,6 @@ const CrossValuesTable = (props) => {
     })
   });
 
-  const PlaceholderComponent = () => {
-    return (<Col sm={12}>
-        <Row>
-          <Center>
-            <FontAwesomeIcon icon={faSpinner} spin size="2x"/>
-          </Center>
-        </Row>
-      </Col>);
-  }
-
   const TableSynonyms = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) =>
@@ -623,8 +611,8 @@ const CrossValuesTable = (props) => {
             {((props.nsyn !== undefined && props.nsyn.length !== 0) || props.icemun !== undefined) &&
               <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
                 {isToggleOn === true
-                  ? <FontAwesomeIcon icon={faMinus}/>
-                  : <FontAwesomeIcon icon={faPlus}/>
+                  ? <MinusIcon/>
+                  : <PlusIcon/>
                 }
               </a>
             }
@@ -663,9 +651,9 @@ const CrossValuesTable = (props) => {
           <TableCol data-class="TableCol" xs={3}>
             {props.item.category}
             <TableUl>
-              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.node.n}
+              <TableLi><SpanIcon><AngleDownIcon /></SpanIcon>{props.item.node.n}
                 <TableUl>
-                  <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{props.item.property.n}</TableLi>
+                  <TableLi><SpanIcon><AngleDownIcon /></SpanIcon>{props.item.property.n}</TableLi>
                 </TableUl>
               </TableLi>
             </TableUl>
@@ -701,11 +689,11 @@ const CrossValuesTable = (props) => {
                 <TableCol data-class="TableCol" xs={12}>
                 {isToggleOn === false ? (
                   <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleDown}/> Show More ({props.item.vs.length - 5})
+                    <AngleDownIcon /> Show More ({props.item.vs.length - 5})
                   </a>
                 ) : (
                   <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
-                    <FontAwesomeIcon icon={faAngleUp}/> Show Less
+                    <AngleUpIcon /> Show Less
                   </a>
                 )}
                 </TableCol>
@@ -789,14 +777,6 @@ const CrossValuesTable = (props) => {
     );
   }
 
-  const LazyLoadContainer = (props) => {
-    return (
-      <LazyLoad height={250} once overflow={true} offset={270} key={props.index} placeholder={<PlaceholderComponent />} classNamePrefix="lazyload-cross">
-        {props.children}
-      </LazyLoad>
-    );
-  }
-
   if (crossValues.length !== 0) {
     return (
       <ContainerStyled>
@@ -819,22 +799,11 @@ const CrossValuesTable = (props) => {
           </Col>
         </TableThead>
         <TableBody>
-          {(crossValues.length < 25)
-          ? 
           <Col xs={12}>
             {crossValues.map((cross, index) => 
               <ValuesItemsContainer cross={cross} key={index} />
             )}
           </Col>
-          :
-          <Col xs={12}>
-            {crossValues.map((cross, index) => 
-              <LazyLoadContainer key={index}>
-                <ValuesItemsContainer cross={cross} key={index}/>
-              </LazyLoadContainer>
-            )}
-          </Col>
-          }
         </TableBody>
       </ContainerStyled>
     );

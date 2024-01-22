@@ -1,10 +1,10 @@
-import React from 'react'
 import styled from 'styled-components'
 import styles from './MainTabsController.module.css'
 import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap'
 import TabsController from '../TabsController/TabsController'
 import GraphTabsController from '../GraphTabsController/GraphTabsController'
 import SingleTabsController from '../SingleTabsController/SingleTabsController'
+import { useSelector } from 'react-redux'
 
 const Result = styled.div`
   border-radius: 5px;
@@ -63,12 +63,12 @@ const Indicator = styled.div`
   }
 `
 
-const MainTabsController = (props) => {
-  if (
-    Object.keys(props.result).length !== 0 &&
-    props.result.returnList !== undefined &&
-    props.result.returnList.length !== 0
-  ) {
+const MainTabsController = () => {
+  const error = useSelector((state) => state.search.error)
+  const result = useSelector((state) => state.search.result)
+  const searchTerm = useSelector((state) => state.search.searchTerm)
+
+  if (Object.keys(result).length !== 0 && result.returnList !== undefined && result.returnList.length !== 0) {
     return (
       <Result>
         <Tab.Container id="main-tabs-controller" defaultActiveKey="cross" transition={false}>
@@ -76,9 +76,9 @@ const MainTabsController = (props) => {
             <Row className="clearfix">
               <TabNavTextCol sm={12}>
                 <TabNavText>
-                  Search Results for <TabNavSpan>{props.searchTerm}</TabNavSpan> in:
+                  Search Results for <TabNavSpan>{searchTerm}</TabNavSpan> in:
                 </TabNavText>
-                {props.result.total !== undefined && props.result.total >= 50 && (
+                {result.total !== undefined && result.total >= 50 && (
                   <AlertContainer>
                     <Alert variant="warning">
                       <Alert.Heading>Warning!</Alert.Heading>
@@ -111,13 +111,13 @@ const MainTabsController = (props) => {
               <Col sm={12}>
                 <TabContentStyled>
                   <Tab.Pane unmountOnExit={false} eventKey="cross">
-                    <TabsController source={props.result.returnList} />
+                    <TabsController source={result.returnList} />
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="single">
-                    <SingleTabsController source={props.result.returnList} info={props.result.info} />
+                    <SingleTabsController source={result.returnList} info={result.info} />
                   </Tab.Pane>
                   <Tab.Pane unmountOnExit={true} eventKey="graph">
-                    <GraphTabsController keyword={props.searchTerm} source={props.result.returnList} />
+                    <GraphTabsController keyword={searchTerm} source={result.returnList} />
                   </Tab.Pane>
                 </TabContentStyled>
               </Col>
@@ -126,11 +126,7 @@ const MainTabsController = (props) => {
         </Tab.Container>
       </Result>
     )
-  } else if (
-    Object.keys(props.result).length !== 0 &&
-    props.result.returnList !== undefined &&
-    props.result.returnList.length === 0
-  ) {
+  } else if (Object.keys(result).length !== 0 && result.returnList !== undefined && result.returnList.length === 0) {
     return (
       <Result>
         <Container>
@@ -138,7 +134,7 @@ const MainTabsController = (props) => {
             <TabNavTextCol sm={12}>
               <Indicator>
                 <h2>
-                  Sorry, no results found for keyword: <span>{props.searchTerm}</span>
+                  Sorry, no results found for keyword: <span>{searchTerm}</span>
                 </h2>
               </Indicator>
             </TabNavTextCol>
@@ -146,18 +142,14 @@ const MainTabsController = (props) => {
         </Container>
       </Result>
     )
-  } else if (
-    Object.keys(props.result).length !== 0 &&
-    props.result.timedOut !== undefined &&
-    props.result.timedOut === true
-  ) {
+  } else if (Object.keys(result).length !== 0 && result.timedOut !== undefined && result.timedOut === true) {
     return (
       <Result>
         <Container>
           <Row className="clearfix">
             <TabNavTextCol sm={12}>
               <TabNavText>
-                Search Results for <TabNavSpan>{props.searchTerm}</TabNavSpan> in:
+                Search Results for <TabNavSpan>{searchTerm}</TabNavSpan> in:
               </TabNavText>
               <AlertContainer>
                 <Alert variant="danger">
@@ -172,7 +164,7 @@ const MainTabsController = (props) => {
         </Container>
       </Result>
     )
-  } else if (Object.keys(props.result).length === 0 && props.error !== undefined && props.error === true) {
+  } else if (Object.keys(result).length === 0 && error !== undefined && error === true) {
     return (
       <Result>
         <Container>

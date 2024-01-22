@@ -1,8 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Button, Table, Pagination, InputGroup, FormControl, Tabs, Tab} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { SearchIcon, AngleDownIcon } from '../../components/ui/icons/Icons';
 
 import DashboardContainer from '../../components/DashboardContainer/DashboardContainer';
 
@@ -87,12 +85,6 @@ const FormControlStyled = styled(FormControl)`
   padding-right: 2rem;
 `;
 
-const InputGroupIcon = styled(FontAwesomeIcon)`
-  font-size: 1rem;
-  vertical-align: 0;
-`;
-
-
 const TableUl = styled.ul`
   padding-left: 15px;
   list-style: none;
@@ -143,7 +135,7 @@ const ChangeReport = (props) => {
                     aria-describedby="btnGroupAddon"
                   />
                   <InputGroupTextStyled id="btnGroupAddon">
-                    <InputGroupIcon icon={faSearch}/>
+                    <SearchIcon/>
                   </InputGroupTextStyled>
                 </InputGroupStyled>
                 <Table bordered>
@@ -160,9 +152,9 @@ const ChangeReport = (props) => {
                       <td>
                         {'biospecimen'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'read_group'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'chipseq_antibody'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'chipseq_antibody'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>
@@ -175,9 +167,9 @@ const ChangeReport = (props) => {
                       <td>
                         {'clinical'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'follow_up'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'follow_up'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'history_of_tumor'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'history_of_tumor'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>
@@ -190,9 +182,9 @@ const ChangeReport = (props) => {
                       <td>
                         {'clinical'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'read_group'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'read_group'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'comorbidity'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'comorbidity'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>
@@ -205,9 +197,9 @@ const ChangeReport = (props) => {
                       <td>
                         {'biospecimen'}
                         <TableUl>
-                          <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'sample'}
+                          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'sample'}
                             <TableUl>
-                              <TableLi><SpanIcon><FontAwesomeIcon icon={faAngleDown}/></SpanIcon>{'is_ffpe'}</TableLi>
+                              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{'is_ffpe'}</TableLi>
                             </TableUl>
                           </TableLi>
                         </TableUl>
