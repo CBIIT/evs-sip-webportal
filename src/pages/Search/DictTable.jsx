@@ -64,7 +64,7 @@ const DictTable = (props) => {
       }
       let highlightValueObj = {};
       if (enumHits.total !== 0) highlightValueObj = getAllValueHighlight(enumHits);
-      propertyObj.all_values = source.enum !== undefined ? source.enum.map(function(x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
+      propertyObj.all_values = source.enum !== undefined ? source.enum.map(function (x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
       propertyObj.all_values.sort();
 
       if (enumHits.total !== 0 && highlightCdeId === undefined) {
@@ -79,10 +79,10 @@ const DictTable = (props) => {
         });
       } else if (enumHits.total !== 0 && highlightCdeId !== undefined) {
         let highlightValueObj = getAllValueHighlight(enumHits);
-        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function(x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
+        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function (x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
         propertyObj.hl_values.sort();
       } else if (enumHits.total === 0 && highlightCdeId !== undefined) {
-        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function(x) { return x.n; }) : [];
+        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function (x) { return x.n; }) : [];
         propertyObj.hl_values.sort();
       }
       propertyObj.length += propertyObj.hl_values.length;
@@ -139,7 +139,7 @@ const DictTable = (props) => {
       }
       let highlightValueObj = {};
       if (enumHits.total !== 0) highlightValueObj = getAllValueHighlight(enumHits);
-      propertyObj.all_values = source.enum !== undefined ? source.enum.map(function(x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
+      propertyObj.all_values = source.enum !== undefined ? source.enum.map(function (x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
       propertyObj.all_values.sort();
 
       if (enumHits.total !== 0 && highlightCdeId === undefined) {
@@ -154,10 +154,10 @@ const DictTable = (props) => {
         });
       } else if (enumHits.total !== 0 && highlightCdeId !== undefined) {
         let highlightValueObj = getAllValueHighlight(enumHits);
-        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function(x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
+        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function (x) { return highlightValueObj[x.n] ? highlightValueObj[x.n] : x.n; }) : [];
         propertyObj.hl_values.sort();
       } else if (enumHits.total === 0 && highlightCdeId !== undefined) {
-        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function(x) { return x.n; }) : [];
+        propertyObj.hl_values = source.enum !== undefined ? source.enum.map(function (x) { return x.n; }) : [];
         propertyObj.hl_values.sort();
       }
       propertyObj.length += propertyObj.hl_values.length;
@@ -237,7 +237,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon className={styles['glyphicon-styled']} glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
+                  {isToggleOn === true ? <AngleUpIcon /> : <AngleDownIcon />}
                 </a>
               </span>
               <a href="/#">{item.property} ({item.length})</a>
@@ -245,7 +245,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={8}>{item.property_desc}</Col>
           </Row>
           <ul className={styles['ul']} style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
-            <HighlightValues hlvalues={item.hl_values}/>
+            <HighlightValues hlvalues={item.hl_values} />
           </ul>
           {/* <Ul><AllValues allvalues={item.all_values}/></Ul> */}
         </li>
@@ -269,7 +269,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  <FontAwesomeIcon className={styles['glyphicon-styled']} glyph={isToggleOn === true ? 'menu-up' : 'menu-down'} />
+                  {isToggleOn === true ? <AngleUpIcon /> : <AngleDownIcon />}ß
                 </a>
               </span>
               <a href="/#">{item.node} ({item.length})</a>
@@ -300,7 +300,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={4}>
               <span className="treeindenter">
                 <a className="treetoggle" href="/#" onClick={ToggleTableHandler}>
-                  { isToggleOn === true ? <AngleUpIcon/> : <AngleDownIcon/> }
+                  {isToggleOn === true ? <AngleUpIcon /> : <AngleDownIcon />}
                 </a>
               </span>
               <a href="/#">{item.category} ({item.length})</a>
@@ -308,7 +308,7 @@ const DictTable = (props) => {
             <Col className={styles['table-col']} xs={8}></Col>
           </Row>
           <ul className={styles['ul']} style={isToggleOn === true ? { display: 'block' } : { display: 'none' }}>
-            <NodesTable nodes={item.nodes}/>
+            <NodesTable nodes={item.nodes} />
           </ul>
         </li>
       );
