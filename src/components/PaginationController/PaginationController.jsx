@@ -1,4 +1,5 @@
-import ReactPaginate from 'react-paginate';
+import ReactPaginate from 'react-paginate'
+import PropTypes from 'prop-types'
 
 const PaginationController = (props) => {
   return (
@@ -23,7 +24,14 @@ const PaginationController = (props) => {
       activeClassName={'active'}
       forcePage={props.currentPage[props.type] - 1}
     />
-    );
+  )
 }
 
-export default PaginationController;
+PaginationController.propTypes = {
+  type: PropTypes.string,
+  pageCount: PropTypes.object,
+  currentPage: PropTypes.object,
+  pageClick: PropTypes.func.isRequired,
+}
+
+export default PaginationController

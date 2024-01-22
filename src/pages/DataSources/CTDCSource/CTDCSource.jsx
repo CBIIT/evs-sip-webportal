@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { baseUrl } from '../../../api'
 import styles from './CTDCSource.module.css'
 import { Table, Tabs, Tab } from 'react-bootstrap'
-import { AngleDownIcon, EditIcon, TimesIcon } from '../../../components/ui/icons/Icons'
+import {
+  AngleDownIcon,
+  EditIcon,
+  TimesIcon,
+} from '../../../components/ui/icons/Icons'
 
 import BatchUpdateModal from '../../../components/Modals/BatchUpdateModal'
 import DashboardContainer from '../../../components/DashboardContainer/DashboardContainer'
@@ -40,7 +44,7 @@ const CTDCSource = () => {
   const rowSpanCount = useCallback(
     (result, type) => {
       if (result === undefined || result.length === 0) return
-      let rowSpan = {}
+      const rowSpan = {}
       switch (tabState) {
         case 'nodes':
           result.forEach((x, i) => {
@@ -53,7 +57,7 @@ const CTDCSource = () => {
           break
         case 'props':
           result.forEach((x, i) => {
-            let idx = x.Category + '-' + x.Node_Name
+            const idx = x.Category + '-' + x.Node_Name
             if (idx in rowSpan === false) {
               rowSpan[idx] = 1
             } else {
@@ -63,7 +67,7 @@ const CTDCSource = () => {
           break
         default:
           result.forEach((x, i) => {
-            let idx = x.Category + '-' + x.Node_Name + '-' + x.Property_Name
+            const idx = x.Category + '-' + x.Node_Name + '-' + x.Property_Name
             if (idx in rowSpan === false) {
               rowSpan[idx] = 1
             } else {
@@ -138,10 +142,16 @@ const CTDCSource = () => {
         </div>
         <div className={styles.tableContainer}>
           <SearchFormComponent submitSearch={handleSubmitSearch} />
-          <Tabs defaultActiveKey="values" id="uncontrolled-tab-example" activeKey={tabState} onSelect={selectTabHandle}>
+          <Tabs
+            defaultActiveKey="values"
+            id="uncontrolled-tab-example"
+            activeKey={tabState}
+            onSelect={selectTabHandle}
+          >
             <Tab eventKey="values" title="Values">
               <div>
-                {Object.keys(valueState).length === 0 || valueState.message === 'No matched data in values' ? (
+                {Object.keys(valueState).length === 0 ||
+                valueState.message === 'No matched data in values' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -156,11 +166,25 @@ const CTDCSource = () => {
                     <tbody>
                       {valueState.result.map((v, i) => {
                         return (
-                          <tr key={v.Node_Name + '-' + v.Property_Name + '-' + i}>
+                          <tr
+                            key={v.Node_Name + '-' + v.Property_Name + '-' + i}
+                          >
                             {(i === 0 ||
-                              valueState.result[i - 1].Node_Name !== v.Node_Name ||
-                              valueState.result[i - 1].Property_Name !== v.Property_Name) && (
-                              <td rowSpan={rowSpanState[v.Category + '-' + v.Node_Name + '-' + v.Property_Name]}>
+                              valueState.result[i - 1].Node_Name !==
+                                v.Node_Name ||
+                              valueState.result[i - 1].Property_Name !==
+                                v.Property_Name) && (
+                              <td
+                                rowSpan={
+                                  rowSpanState[
+                                    v.Category +
+                                      '-' +
+                                      v.Node_Name +
+                                      '-' +
+                                      v.Property_Name
+                                  ]
+                                }
+                              >
                                 <div>
                                   {'Category_Name'}
                                   <ul className={styles.tableUl}>
@@ -186,10 +210,18 @@ const CTDCSource = () => {
                             <td>{v.Value}</td>
                             <td>{v.Term_Ncitcode}</td>
                             <td>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <EditIcon />
                               </a>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <TimesIcon />
                               </a>
                             </td>
@@ -203,7 +235,8 @@ const CTDCSource = () => {
             </Tab>
             <Tab eventKey="props" title="Properties">
               <div>
-                {Object.keys(propState).length === 0 || propState.message === 'No matched data in properties.' ? (
+                {Object.keys(propState).length === 0 ||
+                propState.message === 'No matched data in properties.' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -218,11 +251,16 @@ const CTDCSource = () => {
                     <tbody>
                       {propState.result.map((p, i) => {
                         return (
-                          <tr>
+                          <tr key={i}>
                             {(i === 0 ||
                               propState.result[i - 1].Category !== p.Category ||
-                              propState.result[i - 1].Node_Name !== p.Node_Name) && (
-                              <td rowSpan={rowSpanState[p.Category + '-' + p.Node_Name]}>
+                              propState.result[i - 1].Node_Name !==
+                                p.Node_Name) && (
+                              <td
+                                rowSpan={
+                                  rowSpanState[p.Category + '-' + p.Node_Name]
+                                }
+                              >
                                 <div>
                                   {'Category_Name'}
                                   <ul className={styles.tableUl}>
@@ -240,10 +278,18 @@ const CTDCSource = () => {
                             <td>{p.Property_Name}</td>
                             <td>{p.Property_Ncitcode}</td>
                             <td>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <EditIcon />
                               </a>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <TimesIcon />
                               </a>
                             </td>
@@ -257,7 +303,8 @@ const CTDCSource = () => {
             </Tab>
             <Tab eventKey="nodes" title="Nodes">
               <div>
-                {Object.keys(nodeState).length === 0 || nodeState.message === 'No matched data in nodes.' ? (
+                {Object.keys(nodeState).length === 0 ||
+                nodeState.message === 'No matched data in nodes.' ? (
                   <div>No Results</div>
                 ) : (
                   <Table bordered>
@@ -272,15 +319,23 @@ const CTDCSource = () => {
                     <tbody>
                       {nodeState.result.map((n, i) => {
                         return (
-                          <tr>
+                          <tr key={i}>
                             <td>{'Category_Name'}</td>
                             <td>{n.Node_Name}</td>
                             <td>{n.Node_Ncitcode}</td>
                             <td>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <EditIcon />
                               </a>
-                              <a className={styles.tableLink} href="/#" aria-label="edit">
+                              <a
+                                className={styles.tableLink}
+                                href="/#"
+                                aria-label="edit"
+                              >
                                 <TimesIcon />
                               </a>
                             </td>
@@ -294,7 +349,11 @@ const CTDCSource = () => {
             </Tab>
           </Tabs>
           <div className={styles.paginationContainer}>
-            <PageSizeComponent type={tabState} pageSize={pageSizeState} pageSizeChange={handlePageSize} />
+            <PageSizeComponent
+              type={tabState}
+              pageSize={pageSizeState}
+              pageSizeChange={handlePageSize}
+            />
             <PaginationController
               type={tabState}
               pageCount={pageCountState}
