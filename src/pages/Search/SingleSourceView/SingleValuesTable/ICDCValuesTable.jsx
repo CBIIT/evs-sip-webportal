@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import styles from './ValuesTable.module.css';
+import styles from './SingleValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import { MinusIcon, PlusIcon, AngleDownIcon } from '../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { MinusIcon, PlusIcon, AngleDownIcon } from '../../../../components/ui/icons/Icons'
+import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../../../shared';
 
 
 // const IndicatorTerm = styled.span`

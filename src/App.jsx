@@ -16,7 +16,7 @@ import LoadingAnimation from './components/LoadingAnimation/LoadingAnimation'
 const Home = lazy(() => import('./pages/Home/Home'))
 const About = lazy(() => import('./pages/About/About'))
 const APIDocs = lazy(() => import('./pages/APIDocs/APIDocs'))
-const Search = lazy(() => import('./pages/Search'))
+const Search = lazy(() => import('./pages/Search/Search'))
 const DataModel = lazy(() => import('./pages/DataModel/DataModel'))
 const ReportDiff = lazy(() => import('./pages/ReportDiff'))
 const ChangeReport = lazy(() => import('./pages/ChangeReport'))

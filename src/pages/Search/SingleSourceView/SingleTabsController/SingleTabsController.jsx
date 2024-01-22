@@ -1,10 +1,9 @@
 import styles from './SingleTabsController.module.css';
-// import styled from 'styled-components';
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap';
-import GDCValuesTable from '../GDCValuesTable';
-import CTDCValuesTable from '../CTDCValuesTable';
-import ICDCValuesTable from '../ICDCValuesTable';
-import PCDCValuesTable from '../PCDCValuesTable';
+import GDCValuesTable from '../SingleValuesTable/GDCValuesTable';
+import CTDCValuesTable from '../SingleValuesTable/CTDCValuesTable';
+import ICDCValuesTable from '../SingleValuesTable/ICDCValuesTable';
+import PCDCValuesTable from '../SingleValuesTable/PCDCValuesTable';
 
 const SingleTabsController = (props) => {
   return (

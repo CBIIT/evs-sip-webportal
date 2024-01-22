@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import styles from './ValuesTable.module.css';
+import styles from './SingleValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import { MinusIcon, PlusIcon, AngleDownIcon } from '../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../../../components/ui/icons/Icons'
+import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../../../shared';
 
 
-const CTDCValuesTable = (props) => {
+const GDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
   let values = [];
 
   items.forEach((data) => {
-    if(data._source.source !== 'ctdc') return;
+    if(data._source.source !== 'gdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -312,28 +312,72 @@ const CTDCValuesTable = (props) => {
     );
   };
 
-  const valuesItems = values.map((item, index) =>
-    <Row className={styles['table-row']} key={index}>
-      <Col className={styles['table-col']} xs={3}>
-        {item.category}
-        <ul className={styles['table-ul']}>
-          <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.node.n}
-            <ul className={styles['table-ul']}>
-              <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.property.n}</li>
-            </ul>
-          </li>
-        </ul>
-        {/* <GDCTerms idterm={item.id}/> */}
-      </Col>
-      <Col className={styles['table-values']} xs={9}>
-        {item.vs.map((value, index) =>
-          <Row className={styles['table-row-value']} key={index}>
-            <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-          </Row>
-        )}
-      </Col>
-    </Row>
-  );
+  const ValueItem = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return(
+      <Row className={styles['table-row']} key={props.index}>
+        <Col className={styles['table-col']} xs={3}>
+          {props.item.category}
+          <ul className={styles['table-ul']}>
+            <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{props.item.node.n}
+              <ul className={styles['table-ul']}>
+                <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{props.item.property.n}</li>
+              </ul>
+            </li>
+          </ul>
+        </Col>
+
+        <Col className={styles['table-values']} xs={9}>
+          <div>
+            {props.item.vs.slice(0,5).map((value, index) => {
+              return(
+                <Row className={styles['table-row-value']} data-class="TableRowValue" key={index}>
+                  <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                </Row>
+              )
+            })}
+            {props.item.vs.length > 5 && 
+            <Collapse in={isToggleOn} mountOnEnter={true}>
+              <div>
+                {props.item.vs.map((value, index) => {
+                  if (index >= 5) {
+                    return(
+                      <Row className={styles['table-row-value']} data-class="TableRowValue" key={index}>
+                        <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+                      </Row>
+                    )
+                  }
+                  return null;
+                })}
+              </div>
+            </Collapse>
+            }
+          </div>
+          {props.item.vs.length > 5 && 
+            <Row className={styles['table-row-value']} data-class="TableRowValue">
+              <Col className={styles['table-col']} data-class="TableCol" xs={12}>
+              {isToggleOn === false ? (
+                <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                  <AngleDownIcon/> Show More ({props.item.vs.length - 5})
+                </a>
+              ) : (
+                <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.item.vs.length - 5} onClick={ToggleTableHandler}>
+                  <AngleUpIcon/> Show Less
+                </a>
+              )}
+              </Col>
+            </Row>
+          }
+        </Col>
+      </Row>
+    );
+  }
 
   if (values.length !== 0) {
     return (
@@ -343,11 +387,15 @@ const CTDCValuesTable = (props) => {
           <div className={styles['table-th']}>Category / Node / Property</div>
         </Col>
         <Col xs={9}>
-          <div className={styles['table-th']}>Matched CTDC Values</div>
+          <div className={styles['table-th']}>Matched GDC Values</div>
         </Col>
       </Row>
       <Row className={styles['table-body']}>
-        <Col xs={12}>{valuesItems}</Col>
+        <Col xs={12}>
+          {values.map((item, index) => 
+            <ValueItem item={item} key={index} />
+          )}
+        </Col>
       </Row>
     </Container>
     );
@@ -364,4 +412,4 @@ const CTDCValuesTable = (props) => {
   }
 };
 
-export default CTDCValuesTable;
+export default GDCValuesTable;

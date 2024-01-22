@@ -3,7 +3,7 @@ import styles from './MainTabsController.module.css'
 import { Tab, Row, Col, Nav, Container, Alert } from 'react-bootstrap'
 import TabsController from '../TabsController/TabsController'
 import GraphTabsController from '../GraphTabsController/GraphTabsController'
-import SingleTabsController from '../SingleTabsController/SingleTabsController'
+import SingleTabsController from '../SingleSourceView/SingleTabsController/SingleTabsController'
 import { useSelector } from 'react-redux'
 
 const Result = styled.div`

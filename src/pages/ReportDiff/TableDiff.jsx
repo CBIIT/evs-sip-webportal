@@ -1,8 +1,6 @@
 import styles from './TableDiff.module.css';
 import { Form, Button, Table, Col, InputGroup } from 'react-bootstrap';
 import { SearchIcon, AngleDownIcon } from '../../components/ui/icons/Icons';
-import Search from '../Search';
-
 
 const TableDiff = (props) => {
   let groupCount = {};

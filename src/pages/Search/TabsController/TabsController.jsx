@@ -1,8 +1,8 @@
 import styles from './TabsController.module.css'
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap'
-import CrossValuesTable from '../CrossValuesTable'
-import PropsTable from '../PropsTable'
-import NodesTable from '../NodesTable'
+import CrossValuesTable from '../CrossSourceView/ValuesTable/ValuesTable'
+import PropsTable from '../CrossSourceView/PropsTable/PropsTable'
+import NodesTable from '../CrossSourceView/NodesTable/NodesTable'
 
 const TabsController = (props) => {
   return (

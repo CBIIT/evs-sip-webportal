@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import styles from './ValuesTable.module.css';
-import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
-import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
+import { useState , useContext} from 'react';
+import styles from './SingleValuesTable.module.css';
+import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
+import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../../../components/ui/icons/Icons'
+import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../../../shared';
 
-
-const GDCValuesTable = (props) => {
+const PCDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));
-  let values = [];
+  let info = props.info;  
+  let valuesObj = {};
 
   items.forEach((data) => {
-    if(data._source.source !== 'gdc') return;
+    if(data._source.source !== 'pcdc') return;
     let enums = data.inner_hits.enum;
     if (enums.hits.hits.length !== 0) { // If the searched term is cde id.
       let enumHits = enums.hits.hits;
@@ -23,9 +23,7 @@ const GDCValuesTable = (props) => {
       obj.cdeUrl = data._source.cde ? data._source.cde.url : undefined;
       obj.vs = [];
       let highlightCdeId = data.highlight !== undefined && ('cde.id' in data.highlight) ? data.highlight['cde.id'] : undefined;
-      // if (highlightCdeId !== undefined) {
-      //   if (data._source.enum !== undefined) obj.vs = getAllValues(data);
-      // }
+
       enumHits.forEach(hits => {
         let highlight = hits.highlight;
 
@@ -98,7 +96,14 @@ const GDCValuesTable = (props) => {
       });
       obj.vs = sortAlphabetically(obj.vs);
       // valuesCount += obj.vs.length;
-      values.push(obj);
+
+      if(valuesObj[obj.category] === undefined) {
+        valuesObj[obj.category] = [obj];
+      } else {
+        valuesObj[obj.category].push(obj);
+      }
+
+      valuesObj = sortAlphabeticallyObject(valuesObj);
     }
   });
 
@@ -321,27 +326,19 @@ const GDCValuesTable = (props) => {
     };
 
     return(
-      <Row className={styles['table-row']} key={props.index}>
-        <Col className={styles['table-col']} xs={3}>
-          {props.item.category}
-          <ul className={styles['table-ul']}>
-            <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{props.item.node.n}
-              <ul className={styles['table-ul']}>
-                <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{props.item.property.n}</li>
-              </ul>
-            </li>
-          </ul>
-        </Col>
+      <Row className={styles['table-row']}>
+        <TableCol xs={3}>
+          {props.item.node.n}
+          <TableUl>
+            <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{props.item.property.n}</TableLi>
+          </TableUl>
+        </TableCol>
 
         <Col className={styles['table-values']} xs={9}>
-          <div>
-            {props.item.vs.slice(0,5).map((value, index) => {
-              return(
-                <Row className={styles['table-row-value']} data-class="TableRowValue" key={index}>
-                  <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
-                </Row>
-              )
-            })}
+          <>
+            {props.item.vs.slice(0,5).map((value, index) =>
+              <TableValue name={value.n} ic={value.i_c} icemun={value.ic_enum} nsyn={value.n_syn}/>
+            )}
             {props.item.vs.length > 5 && 
             <Collapse in={isToggleOn} mountOnEnter={true}>
               <div>
@@ -358,7 +355,7 @@ const GDCValuesTable = (props) => {
               </div>
             </Collapse>
             }
-          </div>
+          </>
           {props.item.vs.length > 5 && 
             <Row className={styles['table-row-value']} data-class="TableRowValue">
               <Col className={styles['table-col']} data-class="TableCol" xs={12}>
@@ -379,23 +376,122 @@ const GDCValuesTable = (props) => {
     );
   }
 
-  if (values.length !== 0) {
+  const ValueItems = (props) => {
+    let [isToggleOn, setIsToggleOn] = useState(false);
+
+    const ToggleTableHandler = event => {
+      event.preventDefault();
+      setIsToggleOn(!isToggleOn);
+    };
+
+    return (
+      <Row>
+        <Col className={styles['table-col-left']} xs={2}>
+          <div className={styles['div-center']}>
+            <span className={styles['code-span']}>{info[props.project] !== undefined ? info[props.project] : props.project}</span>
+            {props.values.length > 5 && 
+              <Button variant="outline-secondary" onClick={ToggleTableHandler}>
+                {isToggleOn === false ? 'Show More' : 'Show Less'}
+              </Button>
+            }
+          </div>
+        </Col>
+        <Col className={styles['table-col-right']} xs={10}>
+        {props.values.slice(0,5).map((item, index) =>
+          <ValueItem item={item} key={index} />
+        )}
+        {props.values.length > 5 && 
+          <Collapse in={isToggleOn} mountOnEnter={true}>
+            <div>
+              {props.values.map((item, index) => {
+                if (index >= 5) {
+                  return(
+                    <ValueItem item={item} key={index} />
+                  )
+                }
+                return null;
+              })}
+            </div>
+          </Collapse>
+        }
+        {props.values.length > 5 && 
+          <Row className={styles['table-row']} data-class="TableRow">
+            <Col className={styles['table-col']} data-class="TableCol" xs={12}>
+            {isToggleOn === false ? (
+              <a href="/#" aria-label="Show More" aria-expanded="false" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <AngleDownIcon/> Show More ({props.values.length - 5})
+              </a>
+            ) : (
+              <a href="/#" aria-label="Show Less" aria-expanded="true" data-hidden={props.values.length - 5} onClick={ToggleTableHandler}>
+                <AngleUpIcon/> Show Less
+              </a>
+            )}
+            </Col>
+          </Row>
+        }
+        </Col>
+      </Row>
+    );
+  }
+
+  const AccordionToggle = ({ children, eventKey, callback }) => {
+    const currentEventKey = useContext(AccordionContext);
+  
+    const decoratedOnClick = useAccordionButton(
+      eventKey,
+      () => callback && callback(eventKey),
+    );
+  
+    const isCurrentEventKey = currentEventKey === eventKey;
+  
+    return (
+      <>
+        <Button className={styles['button-styled']} variant="link" onClick={decoratedOnClick}>{children}</Button>
+        <Button variant="link" onClick={decoratedOnClick}>
+          {isCurrentEventKey === true
+            ? <AngleUpIcon/>
+            : <AngleDownIcon/>
+          }
+        </Button>
+      </>
+    );
+  }
+
+  const AccordionValueItems = (props) => {
+    return (
+      <Accordion className={styles['accordion-styled']} defaultActiveKey={props.index === 0 ? '0': ''}>
+        <Card>
+          <Card.Header className={styles['card-header']}>
+            <AccordionToggle eventKey="0">{props.project}</AccordionToggle>
+          </Card.Header>
+          <Accordion.Collapse eventKey="0">
+            <Col xs={12}>
+              <ValueItems values={props.values} project={props.project}/>
+            </Col>
+          </Accordion.Collapse>
+        </Card>
+      </Accordion>
+    );
+  }
+
+  if (Object.keys(valuesObj).length !== 0) {
     return (
     <Container className={styles['container']}>
       <Row className={styles['table-thead']}>
-        <Col xs={3}>
-          <div className={styles['table-th']}>Category / Node / Property</div>
+        <Col xs={2}>
+          <div className={styles['table-th']}>Project</div>
         </Col>
-        <Col xs={9}>
-          <div className={styles['table-th']}>Matched GDC Values</div>
+        <Col xs={2}>
+          <div className={styles['table-th']}>Node / Property</div>
+        </Col>
+        <Col xs={8}>
+          <div className={styles['table-th']}>Matched PCDC Values</div>
         </Col>
       </Row>
       <Row className={styles['table-body']}>
-        <Col xs={12}>
-          {values.map((item, index) => 
-            <ValueItem item={item} key={index} />
+          {Object.entries(valuesObj).map((result, index) =>
+            <AccordionValueItems project={result[0]} values={result[1]} index={index}/>
           )}
-        </Col>
       </Row>
     </Container>
     );
@@ -412,4 +508,4 @@ const GDCValuesTable = (props) => {
   }
 };
 
-export default GDCValuesTable;
+export default PCDCValuesTable;
