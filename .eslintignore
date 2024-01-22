@@ -5,7 +5,6 @@ src/components/Modals
 src/pages/ChangeReport
 src/pages/MappingReport
 src/pages/ModelBuilder
-src/pages/Profile
 src/pages/ReportDiff
 src/pages/Search
 src/**/*.test.js
