@@ -1,32 +1,38 @@
-import styles from './index.module.css';
-import { Button, Table, Pagination, InputGroup, FormControl } from 'react-bootstrap';
-import { SearchIcon } from '../../components/ui/icons/Icons';
+import styles from './ModelBuilder.module.css'
+import {
+  Button,
+  Table,
+  Pagination,
+  InputGroup,
+  FormControl,
+} from 'react-bootstrap'
+import { SearchIcon } from '../../components/ui/icons/Icons'
 
-import DashboardContainer from '../../components/DashboardContainer/DashboardContainer';
+import DashboardContainer from '../../components/DashboardContainer/DashboardContainer'
 
-
-const ModelBuilder = (props) => {
-
+const ModelBuilder = () => {
   return (
     <DashboardContainer>
       <div className={styles['section-container']}>
         <div className={styles['section-header']}>
           <h2 className={styles['section-title']}>Model Builder</h2>
           <div>
-            <Button className={styles['button-blue']}>Create Model</Button>
+            <Button className={styles.button}>Create Model</Button>
           </div>
         </div>
         <div className={styles['table-container']}>
-
-          <InputGroup className={styles['input-group-styled']}>
+          <InputGroup className={styles['input-group']}>
             <FormControl
-              className={styles['form-control-styled']}
+              className={styles['form-control']}
               type="text"
               placeholder="Search"
               aria-label="Search"
               aria-describedby="btnGroupAddon"
             />
-            <InputGroup.Text className={styles['input-group-text-styled']} id="btnGroupAddon">
+            <InputGroup.Text
+              className={styles['input-group-text']}
+              id="btnGroupAddon"
+            >
               <SearchIcon />
             </InputGroup.Text>
           </InputGroup>
@@ -80,7 +86,7 @@ const ModelBuilder = (props) => {
         </div>
       </div>
     </DashboardContainer>
-  );
+  )
 }
 
-export default ModelBuilder;
+export default ModelBuilder

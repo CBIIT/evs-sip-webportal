@@ -32,7 +32,7 @@ const PCDCSource = lazy(
 )
 const MappingReport = lazy(() => import('./pages/MappingReport'))
 const Profile = lazy(() => import('./pages/Profile/Profile'))
-const ModelBuilder = lazy(() => import('./pages/ModelBuilder'))
+const ModelBuilder = lazy(() => import('./pages/ModelBuilder/ModelBuilder'))
 const UserManagement = lazy(
   () => import('./pages/UserManagement/UserManagement')
 )
