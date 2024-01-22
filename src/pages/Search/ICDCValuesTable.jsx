@@ -1,106 +1,10 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+
+import styles from './ValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { MinusIcon, PlusIcon, AngleDownIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../shared';
 
-const ContainerStyled = styled(Container)`
-  font-size: 1rem;
-  padding-left: 12px;
-  padding-right: 12px;
-  background-color: var(--white-bkgd);
-  border-radius: 1rem;
-  height: 45rem;
-  border: 2px solid #535F74;
-  overflow: hidden;
-`;
-
-const TableThead = styled(Row)`
-  background: #535F74;
-  display: flex;
-  align-items: center;
-  border-radius: 0.8rem 0.8rem 0 0;
-`;
-
-const TableTh = styled.div`
-  font-family: 'Lato-Bold', sans-serif;
-  font-size: 1rem;
-  text-align: center;
-  color: var(--white);
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
-`;
-
-const TableBody = styled(Row)`
-  overflow-y: auto;
-  max-height: 42rem;
-`;
-
-const TableRow = styled(Row)`
-  border-bottom: 1px solid #BBC5CD;
-  display: flex;
-  align-items: stretch;
-`;
-
-const TableRowValue = styled(TableRow)`
-  border-bottom: 1px solid #ecf0f1;
-`;
-
-const TableCol = styled(Col)`
-  text-align: left;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  line-height: 1.428571;
-`;
-
-const TableUl = styled.ul`
-  padding-left: 15px;
-  list-style: none;
-`;
-
-const TableLi = styled.li`
-  position: relative;
-  word-wrap: break-word;
-`;
-
-const SpanIcon = styled.span`
-  left: -1.1rem;
-  top: 0.3rem;
-  position: absolute;
-  width: 1rem;
-  line-height: inherit;
-  color: var(--checkbox-green);
-  transform: rotate(45deg);
-`;
-
-const TableValues = styled(Col)`
-  border-left: 1px solid #BBC5CD;
-`;
-
-const ColRight = styled(Col)`
-  text-align: right;
-`;
-
-const Indicator = styled.div`
-  position: relative;
-  padding-bottom: 36%;
-`;
-
-const IndicatorContent = styled.div`
-  width: 60%;
-  min-width: 550px;
-  text-align: center;
-  margin: auto;
-  padding: 1em 0;
-  background-color: #fff;
-  color: #535a60;
-  font-size: 1.2em;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-`;
 
 // const IndicatorTerm = styled.span`
 //   color: #2a72a4;
@@ -422,13 +326,13 @@ const ICDCValuesTable = (props) => {
     <Row className={styles['table-row']} key={index}>
       <Col className={styles['table-col']} xs={3}>
         {item.category}
-        <TableUl>
-          <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.node.n}
-            <TableUl>
-              <TableLi><SpanIcon><AngleDownIcon/></SpanIcon>{item.property.n}</TableLi>
-            </TableUl>
-          </TableLi>
-        </TableUl>
+        <ul className={styles['table-ul']}>
+          <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.node.n}
+            <ul className={styles['table-ul']}>
+              <li className={styles['table-li']}><span className={styles['span-icon']}><AngleDownIcon/></span>{item.property.n}</li>
+            </ul>
+          </li>
+        </ul>
         {/* <GDCTerms idterm={item.id}/> */}
       </Col>
       <Col xs={9}>

@@ -1,5 +1,5 @@
 import { useState , useContext} from 'react';
-import styled from 'styled-components';
+import styles from './ValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
 import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../components/ui/icons/Icons'
 import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../shared';

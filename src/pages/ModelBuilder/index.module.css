@@ -59,8 +59,12 @@
         background-color: #5b9baf;
     }
 }
-
 .input-group-styled {
+    margin-bottom: 1rem;
+    max-width: 20rem;
+}
+
+.input-group-text-styled{
     position: relative;
     left: -2.5rem;
     z-index: 3;
