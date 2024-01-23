@@ -1,0 +1,34 @@
+.tab-nav-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.nav-link {
+  font-family: 'Lato-Regular', sans-serif;
+  font-size: 1.125rem;
+  text-align: center;
+  color: #042a68;
+  padding: 0.7rem 2rem;
+  width: 10rem;
+  inline-size: 10rem;
+  background-color: #ebebeb;
+  padding: 0.7rem 2rem;
+  margin-right: 10px;
+}
+
+.nav-link .active {
+  color: #fff;
+  background-color: #535f74;
+  padding: 0.7rem 2rem;
+}
+
+.nav {
+  border-bottom: none;
+}
+
+.nav .nav-link-styled {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

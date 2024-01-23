@@ -3,6 +3,5 @@ build
 dist
 src/components/GraphicalView
 src/components/Modals
-src/pages/ReportDiff
 src/pages/Search
 src/**/*.test.js

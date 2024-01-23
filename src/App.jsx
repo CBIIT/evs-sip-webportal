@@ -18,7 +18,7 @@ const About = lazy(() => import('./pages/About/About'))
 const APIDocs = lazy(() => import('./pages/APIDocs/APIDocs'))
 const Search = lazy(() => import('./pages/Search/Search'))
 const DataModel = lazy(() => import('./pages/DataModel/DataModel'))
-const ReportDiff = lazy(() => import('./pages/ReportDiff'))
+const ReportDiff = lazy(() => import('./pages/ReportDiff/ReportDiff'))
 const ChangeReport = lazy(() => import('./pages/ChangeReport'))
 const GDCSource = lazy(() => import('./pages/DataSources/GDCSource/GDCSource'))
 const CTDCSource = lazy(
@@ -30,7 +30,7 @@ const ICDCSource = lazy(
 const PCDCSource = lazy(
   () => import('./pages/DataSources/PCDCSource/PCDCSource')
 )
-const MappingReport = lazy(() => import('./pages/MappingReport'))
+const MappingReport = lazy(() => import('./pages/MappingReport/MappingReport'))
 const Profile = lazy(() => import('./pages/Profile/Profile'))
 const ModelBuilder = lazy(() => import('./pages/ModelBuilder/ModelBuilder'))
 const UserManagement = lazy(
