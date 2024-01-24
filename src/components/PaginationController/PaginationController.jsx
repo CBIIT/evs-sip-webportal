@@ -1,7 +1,26 @@
 import ReactPaginate from 'react-paginate'
 import PropTypes from 'prop-types'
 
-const PaginationController = (props) => {
+/**
+ * PaginationController - A reusable Pagination component.
+ * @component
+ *
+ * @param {Object} props - The properties of the component.
+ * @param {string} props.type - The title of the card.
+ * @param {object} props.pageCount - The description
+ * @param {number} props.pageCount.values - values
+ * @param {number} props.pageCount.props - props
+ * @param {number} props.pageCount.nodes - nodes
+ * @param {object} props.currentPage - The description
+ * @param {number} props.currentPage.values - values
+ * @param {number} props.currentPage.props - props
+ * @param {number} props.currentPage.nodes - nodes
+ * @param {function} props.pageClick - The click event handler.
+ *
+ * @returns {JSX.Element} The rendered React component.
+ */
+
+const PaginationController = ({ type, pageCount, currentPage, pageClick }) => {
   return (
     <ReactPaginate
       previousLabel={'«'}
@@ -13,24 +32,32 @@ const PaginationController = (props) => {
       breakLabel={'...'}
       breakClassName={'page-item break-me'}
       breakLinkClassName={'page-link'}
-      pageCount={props.pageCount[props.type]}
+      pageCount={pageCount[type]}
       marginPagesDisplayed={2}
       pageRangeDisplayed={5}
-      onPageChange={props.pageClick}
+      onPageChange={pageClick}
       containerClassName={'pagination'}
       pageClassName={'page-item'}
       pageLinkClassName={'page-link'}
       subContainerClassName={'pages pagination'}
       activeClassName={'active'}
-      forcePage={props.currentPage[props.type] - 1}
+      forcePage={currentPage[type] - 1}
     />
   )
 }
 
 PaginationController.propTypes = {
-  type: PropTypes.string,
-  pageCount: PropTypes.object,
-  currentPage: PropTypes.object,
+  type: PropTypes.string.isRequired,
+  pageCount: PropTypes.shape({
+    values: PropTypes.number.isRequired,
+    props: PropTypes.number.isRequired,
+    nodes: PropTypes.number.isRequired,
+  }).isRequired,
+  currentPage: PropTypes.shape({
+    values: PropTypes.number.isRequired,
+    props: PropTypes.number.isRequired,
+    nodes: PropTypes.number.isRequired,
+  }).isRequired,
   pageClick: PropTypes.func.isRequired,
 }
 

@@ -1,5 +1,12 @@
 import styles from './LoadingAnimation.module.css'
 
+/**
+ * LoadingAnimation - A simple full screen Loading Animation component.
+ * @component
+ *
+ * @returns {JSX.Element} The rendered React LoadingAnimation component.
+ */
+
 const LoadingAnimation = () => {
   return (
     <div className={styles.loading}>
