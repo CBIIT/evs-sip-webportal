@@ -4,9 +4,19 @@ import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import styles from './NavigationBar.module.css'
 import { baseServer } from '../../api'
 
+/**
+ * NavigationBar - Main layout NavigationBar component.
+ * @component
+ *
+ * @returns {JSX.Element} The rendered NavigationBar component.
+ */
+
 const NavigationBar = () => {
+  // Using useSelector to get the currentUser login from the User Redux store
   const currentUser = useSelector((state) => state.user.currentUser)
+  // Extracting the 'authenticated' property from currentUser
   const isLoggedIn = currentUser.authenticated
+  // useNavigate hook from React Router
   const navigate = useNavigate()
 
   return (
