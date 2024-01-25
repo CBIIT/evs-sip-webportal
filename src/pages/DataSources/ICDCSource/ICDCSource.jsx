@@ -11,7 +11,7 @@ import {
 import BatchUpdateModal from '../../../components/Modals/BatchUpdateModal'
 import DashboardContainer from '../../../components/DashboardContainer/DashboardContainer'
 import SearchFormComponent from '../../../components/SearchFormComponet/SearchFormComponent'
-import Button from '../../../components/DashboardButton/DashboardButton'
+import Button from '../../../components/ui/Button/Button'
 import PaginationController from '../../../components/PaginationController/PaginationController'
 import PageSizeComponent from '../../../components/PageSizeComponent/PageSizeComponent'
 import AddNewValueModal from '../../../components/Modals/AddNewValueModal/AddNewValueModal'

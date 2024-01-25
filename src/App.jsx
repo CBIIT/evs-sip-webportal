@@ -19,7 +19,7 @@ const APIDocs = lazy(() => import('./pages/APIDocs/APIDocs'))
 const Search = lazy(() => import('./pages/Search/Search'))
 const DataModel = lazy(() => import('./pages/DataModel/DataModel'))
 const ReportDiff = lazy(() => import('./pages/ReportDiff/ReportDiff'))
-const ChangeReport = lazy(() => import('./pages/ChangeReport'))
+const ChangeReport = lazy(() => import('./pages/ChangeReport/ChangeReport'))
 const GDCSource = lazy(() => import('./pages/DataSources/GDCSource/GDCSource'))
 const CTDCSource = lazy(
   () => import('./pages/DataSources/CTDCSource/CTDCSource')

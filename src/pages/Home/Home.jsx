@@ -1,8 +1,7 @@
+import styles from './Home.module.css'
 import Search from './Search/Search'
 import Graph from './Graph/Graph'
 import Tools from './Tools/Tools'
-
-import styles from './Home.module.css'
 
 const Home = () => {
   return (
