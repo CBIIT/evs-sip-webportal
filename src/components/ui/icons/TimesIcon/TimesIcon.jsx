@@ -1,10 +1,27 @@
 import styles from '../Icons.module.css'
 import PropTypes from 'prop-types'
 
-const TimesIcon = (props) => {
+/**
+ * TimesIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { TimesIcon } from './Icons'
+ * ...
+ * <TimesIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered TimesIcon component.
+ */
+
+const TimesIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={`${styles.icon} ${props.className}`}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="times"
@@ -20,6 +37,7 @@ const TimesIcon = (props) => {
   )
 }
 
+// PropTypes for TimesIcon
 TimesIcon.propTypes = {
   className: PropTypes.string,
 }

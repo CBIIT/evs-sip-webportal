@@ -13,6 +13,13 @@ import SearchPlusIcon from './SearchPlusIcon/SearchPlusIcon'
 import DownloadIcon from './DownloadIcon/DownloadIcon'
 import EditIcon from './EditIcon/EditIcon'
 
+/**
+ * SVG Icon Components.
+ *
+ * @module SVGIcons
+ */
+
+// Export SVG Icons
 export {
   AngleDownIcon,
   AngleUpIcon,

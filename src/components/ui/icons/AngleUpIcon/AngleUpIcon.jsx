@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const AngleUpIcon = () => {
+/**
+ * AngleUpIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { AngleUpIcon } from './Icons';
+ * ...
+ * <AngleUpIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered AngleUpIcon component.
+ */
+
+const AngleUpIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="angle-up"
@@ -17,6 +35,11 @@ const AngleUpIcon = () => {
       ></path>
     </svg>
   )
+}
+
+// PropTypes for AngleUpIcon
+AngleUpIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default AngleUpIcon

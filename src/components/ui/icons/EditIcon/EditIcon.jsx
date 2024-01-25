@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const EditIcon = () => {
+/**
+ * EditIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { EditIcon } from './Icons';
+ * ...
+ * <EditIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered EditIcon component.
+ */
+
+const EditIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="edit"
@@ -17,6 +35,11 @@ const EditIcon = () => {
       ></path>
     </svg>
   )
+}
+
+// PropTypes for EditIcon
+EditIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default EditIcon

@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const DownloadIcon = () => {
+/**
+ * DownloadIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { DownloadIcon } from './Icons';
+ * ...
+ * <DownloadIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered DownloadIcon component.
+ */
+
+const DownloadIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="download"
@@ -17,6 +35,11 @@ const DownloadIcon = () => {
       ></path>
     </svg>
   )
+}
+
+// PropTypes for DownloadIcon
+DownloadIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default DownloadIcon

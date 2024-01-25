@@ -1,10 +1,27 @@
 import styles from '../Icons.module.css'
 import PropTypes from 'prop-types'
 
-const CircleIcon = (props) => {
+/**
+ * CircleIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { CircleIcon } from './Icons';
+ * ...
+ * <CircleIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered CircleIcon component.
+ */
+
+const CircleIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={`${styles.icon} ${props.className}`}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="circle"
@@ -20,6 +37,7 @@ const CircleIcon = (props) => {
   )
 }
 
+// PropTypes for CircleIcon
 CircleIcon.propTypes = {
   className: PropTypes.string,
 }

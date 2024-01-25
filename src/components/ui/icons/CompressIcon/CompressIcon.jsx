@@ -1,10 +1,27 @@
 import styles from '../Icons.module.css'
 import PropTypes from 'prop-types'
 
-const CompressIcon = (props) => {
+/**
+ * CompressIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { CompressIcon } from './Icons';
+ * ...
+ * <CompressIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered CompressIcon component.
+ */
+
+const CompressIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={`${styles.icon} ${props.className}`}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="compress"
@@ -20,6 +37,7 @@ const CompressIcon = (props) => {
   )
 }
 
+// PropTypes for CompressIcon
 CompressIcon.propTypes = {
   className: PropTypes.string,
 }

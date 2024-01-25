@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const PlusIcon = () => {
+/**
+ * SearchIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { SearchIcon } from './Icons';
+ * ...
+ * <SearchIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered SearchIcon component.
+ */
+
+const SearchIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="search"
@@ -19,4 +37,9 @@ const PlusIcon = () => {
   )
 }
 
-export default PlusIcon
+// PropTypes for SearchIcon
+SearchIcon.propTypes = {
+  className: PropTypes.string,
+}
+
+export default SearchIcon

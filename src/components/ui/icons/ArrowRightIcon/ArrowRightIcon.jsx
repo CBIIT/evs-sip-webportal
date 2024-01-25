@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const ArrowRightIcon = () => {
+/**
+ * ArrowRightIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { ArrowRightIcon } from './Icons';
+ * ...
+ * <ArrowRightIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered ArrowRightIcon component.
+ */
+
+const ArrowRightIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="arrow-right"
@@ -17,6 +35,11 @@ const ArrowRightIcon = () => {
       ></path>
     </svg>
   )
+}
+
+// PropTypes for ArrowRightIcon
+ArrowRightIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default ArrowRightIcon

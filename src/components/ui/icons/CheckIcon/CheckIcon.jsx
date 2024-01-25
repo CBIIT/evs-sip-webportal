@@ -1,10 +1,27 @@
 import styles from '../Icons.module.css'
 import PropTypes from 'prop-types'
 
-const CheckIcon = (props) => {
+/**
+ * CheckIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { CheckIcon } from './Icons';
+ * ...
+ * <CheckIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered CheckIcon component.
+ */
+
+const CheckIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={`${styles.icon} ${props.className}`}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="check"
@@ -20,6 +37,7 @@ const CheckIcon = (props) => {
   )
 }
 
+// PropTypes for CheckIcon
 CheckIcon.propTypes = {
   className: PropTypes.string,
 }

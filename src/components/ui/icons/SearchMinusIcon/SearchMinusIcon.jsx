@@ -1,10 +1,27 @@
 import styles from '../Icons.module.css'
 import PropTypes from 'prop-types'
 
-const SearchMinusIcon = (props) => {
+/**
+ * SearchMinusIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { SearchMinusIcon } from './Icons';
+ * ...
+ * <SearchMinusIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered SearchMinusIcon component.
+ */
+
+const SearchMinusIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={`${styles.icon} ${props.className}`}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="search-minus"
@@ -20,6 +37,7 @@ const SearchMinusIcon = (props) => {
   )
 }
 
+// PropTypes for SearchMinusIcon
 SearchMinusIcon.propTypes = {
   className: PropTypes.string,
 }

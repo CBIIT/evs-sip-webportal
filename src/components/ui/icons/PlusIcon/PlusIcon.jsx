@@ -1,9 +1,27 @@
 import styles from '../Icons.module.css'
+import PropTypes from 'prop-types'
 
-const PlusIcon = () => {
+/**
+ * PlusIcon component with customizable styling.
+ *
+ * @component
+ * @example
+ * Example usage:
+ * import { PlusIcon } from './Icons';
+ * ...
+ * <PlusIcon className="custom-class" />
+ *
+ * @param {string} [props.className] - Additional class names for the svg icon.
+ * @returns {JSX.Element} Rendered PlusIcon component.
+ */
+
+const PlusIcon = ({ className }) => {
+  // Combining class names
+  const classNames = [styles.icon, className || ''].join(' ')
+
   return (
     <svg
-      className={styles.icon}
+      className={classNames}
       aria-hidden="true"
       focusable="false"
       data-icon="plus"
@@ -17,6 +35,11 @@ const PlusIcon = () => {
       ></path>
     </svg>
   )
+}
+
+// PropTypes for PlusIcon
+PlusIcon.propTypes = {
+  className: PropTypes.string,
 }
 
 export default PlusIcon
