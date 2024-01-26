@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import styles from './Footer.module.css'
 
 // Import a footer logo asset
-import logo from '../../assets/img/nih-white-logo.png'
+import logo from '@/assets/img/nih-white-logo.png'
 
 /**
  * Footer - Main layout Footer component.

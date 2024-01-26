@@ -1,7 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap'
 import styles from './Graph.module.css'
 
-import graphImg from '../../../assets/img/graph-diagram.png'
+import graphImg from '@/assets/img/graph-diagram.png'
 
 const Graph = () => {
   return (

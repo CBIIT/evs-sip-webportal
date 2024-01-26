@@ -5,38 +5,38 @@ import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 // components
-import Header from './layouts/Header/Header'
-import NavigationBar from './layouts/NavigationBar/NavigationBar'
-import Footer from './layouts/Footer/Footer'
-import Layout from './layouts/Layout/Layout'
-import RequireAuthorization from './components/RequireAuthorization/RequireAuthorization'
-import LoadingAnimation from './components/LoadingAnimation/LoadingAnimation'
+import Header from '@/layouts/Header/Header'
+import NavigationBar from '@/layouts/NavigationBar/NavigationBar'
+import Footer from '@/layouts/Footer/Footer'
+import Layout from '@/layouts/Layout/Layout'
+import RequireAuthorization from '@/components/RequireAuthorization/RequireAuthorization'
+import LoadingAnimation from '@/components/LoadingAnimation/LoadingAnimation'
 
 // pages
-const Home = lazy(() => import('./pages/Home/Home'))
-const About = lazy(() => import('./pages/About/About'))
-const APIDocs = lazy(() => import('./pages/APIDocs/APIDocs'))
-const Search = lazy(() => import('./pages/Search/Search'))
-const DataModel = lazy(() => import('./pages/DataModel/DataModel'))
-const ReportDiff = lazy(() => import('./pages/ReportDiff/ReportDiff'))
-const ChangeReport = lazy(() => import('./pages/ChangeReport/ChangeReport'))
-const GDCSource = lazy(() => import('./pages/DataSources/GDCSource/GDCSource'))
+const Home = lazy(() => import('@/pages/Home/Home'))
+const About = lazy(() => import('@/pages/About/About'))
+const APIDocs = lazy(() => import('@/pages/APIDocs/APIDocs'))
+const Search = lazy(() => import('@/pages/Search/Search'))
+const DataModel = lazy(() => import('@/pages/DataModel/DataModel'))
+const ReportDiff = lazy(() => import('@/pages/ReportDiff/ReportDiff'))
+const ChangeReport = lazy(() => import('@/pages/ChangeReport/ChangeReport'))
+const GDCSource = lazy(() => import('@/pages/DataSources/GDCSource/GDCSource'))
 const CTDCSource = lazy(
-  () => import('./pages/DataSources/CTDCSource/CTDCSource')
+  () => import('@/pages/DataSources/CTDCSource/CTDCSource')
 )
 const ICDCSource = lazy(
-  () => import('./pages/DataSources/ICDCSource/ICDCSource')
+  () => import('@/pages/DataSources/ICDCSource/ICDCSource')
 )
 const PCDCSource = lazy(
-  () => import('./pages/DataSources/PCDCSource/PCDCSource')
+  () => import('@/pages/DataSources/PCDCSource/PCDCSource')
 )
-const MappingReport = lazy(() => import('./pages/MappingReport/MappingReport'))
-const Profile = lazy(() => import('./pages/Profile/Profile'))
-const ModelBuilder = lazy(() => import('./pages/ModelBuilder/ModelBuilder'))
+const MappingReport = lazy(() => import('@/pages/MappingReport/MappingReport'))
+const Profile = lazy(() => import('@/pages/Profile/Profile'))
+const ModelBuilder = lazy(() => import('@/pages/ModelBuilder/ModelBuilder'))
 const UserManagement = lazy(
-  () => import('./pages/UserManagement/UserManagement')
+  () => import('@/pages/UserManagement/UserManagement')
 )
-const NotFound = lazy(() => import('./pages/NotFound/NotFound'))
+const NotFound = lazy(() => import('@/pages/NotFound/NotFound'))
 
 const App = () => {
   return (

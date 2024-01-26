@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+    },
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react",
+  },
+  "include": ["src/**/*", "jsconfig.json"],
+  "exclude": ["node_modules", "build", "dist"]
+}

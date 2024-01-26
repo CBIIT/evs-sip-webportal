@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 
 // Import a footer logo asset
-import logo from '../../assets/img/nih-evs-sip-logo-color.png'
+import logo from '@/assets/img/nih-evs-sip-logo-color.png'
 
 /**
  * Header - Main layout Header component.
