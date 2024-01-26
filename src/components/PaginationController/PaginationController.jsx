@@ -6,12 +6,12 @@ import PropTypes from 'prop-types'
  * @component
  *
  * @param {Object} props - The properties of the component.
- * @param {string} props.type - The title of the card.
- * @param {object} props.pageCount - The description
+ * @param {string} props.type - The type value, prop or node.
+ * @param {object} props.pageCount - The properties of the pageCount
  * @param {number} props.pageCount.values - values
  * @param {number} props.pageCount.props - props
  * @param {number} props.pageCount.nodes - nodes
- * @param {object} props.currentPage - The description
+ * @param {object} props.currentPage - The properties of the currentPage
  * @param {number} props.currentPage.values - values
  * @param {number} props.currentPage.props - props
  * @param {number} props.currentPage.nodes - nodes
@@ -46,6 +46,7 @@ const PaginationController = ({ type, pageCount, currentPage, pageClick }) => {
   )
 }
 
+// PropTypes for PaginationController
 PaginationController.propTypes = {
   type: PropTypes.string.isRequired,
   pageCount: PropTypes.shape({
