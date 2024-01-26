@@ -1,98 +1,18 @@
 import {useState} from 'react';
-import styled from 'styled-components';
+import styles from './AllValuesModal.module.css'
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
-import { PlusIcon, MinusIcon, SearchIcon } from '../ui/icons/Icons';
-import { searchFilter } from '../../shared';
-import { apiGetGDCDataById } from '../../api';
-
-const ModalBodyStyled = styled(Modal.Body)`
-  min-height: 40rem;
-  display: flex;
-  align-content: space-between;
-  flex-wrap: wrap;
-`;
-
-const ColRight = styled(Col)`
-  text-align: right;
-`;
-
-const TableContainer = styled.div`
-  width: 100%;
-  padding: 12px;
-`;
-
-const MainTableContainer = styled.div`
-  width: 100%;
-`;
-
-const MainTable = styled(Table)`
-  && > thead {
-    background-color: #535F74;
-    color: white;
-    text-align: center;
-  }
-
-  && > thead th {
-    border: 1px solid #535F74;
-  }
-`;
-
-const TableStyled = styled(Table)`
-  margin-bottom: 0;
-`;
-
-const BadgeStyled = styled(Badge)`
-  margin-left: 1rem;
-  font-size: 100%;
-`;
-
-const ModalStyled = styled(Modal)`
-  && .modal-dialog {
-    max-width: 75rem;
-  }
-`;
-
-const RowStyled = styled(Row)`
-  min-width: 25rem;
-  margin-right: -0.75rem;
-  margin-left: -0.75rem;
-`;
-
-const ButtonStyled = styled(Button)`
-  padding: 0 .75rem;
-`;
-
-const PaginationContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const InputGroupStyled = styled(InputGroup)`
-  max-width: 23rem;
-  padding-left: 2rem;
-`;
-
-const Indicator = styled.div`
-  width: 100%;
-  padding: 3rem 0;
-  text-align: center;
-  font-size: 1.2rem;
-`;
-
-// const IndicatorContent = styled.div`
-//   text-align: center;
-//   font-size: 1.2rem;
-// `;
+import { PlusIcon, MinusIcon, SearchIcon } from '@/components/ui/icons/Icons';
+import { searchFilter } from '../../../../shared';
+import { apiGetGDCDataById } from '../../../../api';
 
 const AllValuesModal = (props) => {
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
   const [items, setItems] = useState([]);
-  //const [keyword, setKeyword] = useState('');
 
   const handleClose = () => setShow(false);
+
   const handleShow = () => {
     apiGetGDCDataById(props.idterm).then(result => {
       setData(result);
@@ -151,20 +71,20 @@ const AllValuesModal = (props) => {
     };
     return (
       <>
-        <RowStyled>
+        <Row className={styles.row}>
           <Col xs={10} dangerouslySetInnerHTML={{ __html: props.ncit.l }}></Col>
-          <ColRight xs={2}>
+          <Col className={styles['col-right']} xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true
                 ? <MinusIcon/>
                 : <PlusIcon/>
               }
             </a>
-          </ColRight>
-        </RowStyled>
+          </Col>
+        </Row>
         <Collapse in={isToggleOn} mountOnEnter={true}>
-          <TableContainer>
-            <TableStyled striped bordered condensed="true" hover>
+          <div className={styles['table-container']}>
+            <Table className={styles.table} striped bordered condensed="true" hover>
               <thead>
                 <tr>
                   <th>Term</th>
@@ -175,8 +95,8 @@ const AllValuesModal = (props) => {
               <tbody>
                 <TableSynonyms synonyms={props.ncit.s}/>
               </tbody>
-            </TableStyled>
-          </TableContainer>
+            </Table>
+          </div>
         </Collapse>
       </>
     );
@@ -192,22 +112,22 @@ const AllValuesModal = (props) => {
     };
     return (
       <>
-        <RowStyled>
+        <Row className={styles.row}>
           <Col xs={10}>
             <span dangerouslySetInnerHTML={{ __html: props.icdo.c }}></span> 
           </Col>
-          <ColRight xs={2}>
+          <Col className={styles['col-right']} xs={2}>
             <a href="/#" aria-label={isToggleOn === true ? 'collapse' : 'expand'} onClick={ToggleTableHandler}>
               {isToggleOn === true
                 ? <MinusIcon/>
                 : <PlusIcon/>
               }
             </a>
-          </ColRight>
-        </RowStyled>
+          </Col>
+        </Row>
         <Collapse in={isToggleOn} mountOnEnter={true}>
-          <TableContainer>
-            <TableStyled striped bordered condensed="true" hover>
+          <div className={styles['table-container']}>
+            <Table className={styles.table} striped bordered condensed="true" hover>
               <thead>
                 <tr>
                   <th>Term</th>
@@ -217,8 +137,8 @@ const AllValuesModal = (props) => {
               <tbody>
                 <TableICDOSyn synonyms={props.icdo.s}/>
               </tbody>
-            </TableStyled>
-          </TableContainer>
+            </Table>
+          </div>
         </Collapse>
       </>
     );
@@ -291,8 +211,8 @@ const AllValuesModal = (props) => {
 
       return (
       <>
-        <MainTableContainer>
-          <MainTable bordered condensed="true">
+        <div className={styles['main-table-container']}>
+          <Table className={styles['main-table']} bordered condensed="true">
             <thead>
               <tr>
                 <th>Values</th>
@@ -304,9 +224,9 @@ const AllValuesModal = (props) => {
             <tbody>
               {renderItems}
             </tbody>
-          </MainTable>
-        </MainTableContainer>
-        <PaginationContainer>
+          </Table>
+        </div>
+        <div className={styles['pagination-container']}>
           <ReactPaginate
             previousLabel={'«'}
             prevClassName={'page-item'}
@@ -327,7 +247,7 @@ const AllValuesModal = (props) => {
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
           />
-        </PaginationContainer>
+        </div>
       </>
       )
     }
@@ -346,7 +266,7 @@ const AllValuesModal = (props) => {
   const TotalLabel = (props) => {
     if (props.data !== undefined && props.data.length !== 0 && props.data[0]._source.enum !== undefined) {
       return(
-        <BadgeStyled variant="primary">{props.data[0]._source.enum.length}</BadgeStyled>
+        <Badge className={styles.badge} variant="primary">{props.data[0]._source.enum.length}</Badge>
       );
     }
     return (null);
@@ -354,13 +274,14 @@ const AllValuesModal = (props) => {
 
   return (
     <>
-      <ButtonStyled variant="link" onClick={handleShow}>
+      <Button className={styles.button} variant="link" onClick={handleShow}>
         See All Values
-      </ButtonStyled>
+      </Button>
 
-      <ModalStyled
+      <Modal
         show={show} 
         onHide={handleClose}
+        className={styles.modal}
         aria-labelledby="all-values-modal"
       >
         <Modal.Header closeButton>
@@ -368,7 +289,7 @@ const AllValuesModal = (props) => {
             <TitleModal data={data}/>
             <TotalLabel data={data}/>  
           </Modal.Title>
-          <InputGroupStyled>
+          <InputGroup className={styles['input-group']}>
             <InputGroup.Text id="search-values-input">
               <SearchIcon/>
             </InputGroup.Text>
@@ -378,16 +299,16 @@ const AllValuesModal = (props) => {
               aria-describedby="Search"
               onChange={handleSearchChange}
             />
-          </InputGroupStyled>
+          </InputGroup>
         </Modal.Header>
-        <ModalBodyStyled>
+        <Modal.Body className={styles['modal-body']}>
           {(items !== undefined && items.length !== 0) ? (
             <TableEnums items={items}/>
           ) : (
-            <Indicator>Sorry, no results found.</Indicator>
+            <div className={styles.indicator}>Sorry, no results found.</div>
           )}
-        </ModalBodyStyled>
-      </ModalStyled>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

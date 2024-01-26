@@ -5,10 +5,10 @@ import {
   MinusIcon,
   PlusIcon,
   AngleDownIcon,
-} from '../../../../components/ui/icons/Icons'
+} from '@/components/ui/icons/Icons'
 import { getHighlightObj } from '../../../../shared'
 
-import AllValuesModal from '../../../../components/Modals/AllValuesModal'
+import AllValuesModal from '../../components/AllValuesModal/AllValuesModal'
 import ToCompareModal from '../../../../components/Modals/ToCompareModal'
 
 const PropsTable = (props) => {

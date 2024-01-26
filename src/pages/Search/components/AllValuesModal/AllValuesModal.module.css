@@ -1,0 +1,73 @@
+.modal-body {
+  min-height: 40rem;
+  display: flex;
+  align-content: space-between;
+  flex-wrap: wrap;
+}
+
+.col-right {
+  text-align: right;
+}
+
+.table-container {
+  width: 100%;
+  padding: 12px;
+}
+
+.main-table-container {
+  width: 100%;
+}
+
+.main-table > thead {
+  background-color: #535f74;
+  color: white;
+  text-align: center;
+}
+
+.main-table > thead th {
+  border: 1px solid #535f74;
+  background-color: #535f74;
+  color: white;
+  text-align: center;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.badge {
+  margin-left: 1rem;
+  font-size: 100%;
+}
+
+.modal :global(.modal-dialog) {
+  max-width: 75rem;
+}
+
+.row {
+  min-width: 25rem;
+  margin-right: -0.75rem;
+  margin-left: -0.75rem;
+}
+
+.button {
+  padding: 0 0.75rem;
+}
+
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.input-group {
+  max-width: 23rem;
+  padding-left: 2rem;
+}
+
+.indicator {
+  width: 100%;
+  padding: 3rem 0;
+  text-align: center;
+  font-size: 1.2rem;
+}
