@@ -9,6 +9,8 @@ import {
 } from '../../../../components/ui/icons/Icons'
 import { getHighlightObj, sortSynonyms } from '../../../../shared'
 
+import { default as TableValueComp } from '../../components/TableValue/TableValue'
+
 const CrossValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values))
   let values = []
@@ -663,11 +665,17 @@ const CrossValuesTable = (props) => {
                     data-class="TableRowValue"
                     key={index}
                   >
-                    <TableValue
+                    {/* <TableValue
                       name={value.n}
                       ic={value.i_c}
                       icemun={value.ic_enum}
                       nsyn={value.n_syn}
+                    /> */}
+                    <TableValueComp 
+                      ncitName={value.n}
+                      nciTerms={value.n_syn}
+                      icdo3Code={value.i_c}
+                      icdo3Synonyms={value.ic_enum}
                     />
                   </Row>
                 )
