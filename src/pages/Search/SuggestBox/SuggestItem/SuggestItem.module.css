@@ -10,7 +10,7 @@
   background-color: #f0f0f0;
 }
 
-.object.selected {
+.object:global(.selected) {
   background-color: #f0f0f0;
 }
 
