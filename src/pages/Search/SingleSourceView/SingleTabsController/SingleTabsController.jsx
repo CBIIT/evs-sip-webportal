@@ -78,7 +78,7 @@ const SingleTabsController = (props) => {
 }
 
 SingleTabsController.propTypes = {
-  source: PropTypes.object,
+  source: PropTypes.array,
   info: PropTypes.object,
 }
 
