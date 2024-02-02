@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './SingleValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse} from 'react-bootstrap';
 import { MinusIcon, PlusIcon, AngleDownIcon } from '../../../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../../../shared';
+import { getHighlightObj, sortAlphabetically, sortSynonyms } from '../../../../utils';
 
 
 const CTDCValuesTable = (props) => {

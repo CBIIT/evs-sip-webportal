@@ -6,7 +6,7 @@ import {
   PlusIcon,
   AngleDownIcon,
 } from '@/components/ui/icons/Icons'
-import { getHighlightObj } from '../../../../shared'
+import { getHighlightObj } from '../../../../utils'
 
 import AllValuesModal from '../../components/AllValuesModal/AllValuesModal'
 import ToCompareModal from '../../../../components/Modals/ToCompareModal'

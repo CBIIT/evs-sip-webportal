@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { apiSuggest } from '../../../api'
+import { debounce } from '../../../utils'
 import styles from './Search.module.css'
 import {
   Container,
@@ -13,12 +14,11 @@ import {
 } from 'react-bootstrap'
 import { ArrowRightIcon, CheckIcon } from '../../../components/ui/icons/Icons'
 import SuggestBox from '../../Search/SuggestBox/SuggestBox'
-
 import {
   setKeyword,
   setDataSources,
   setIsSearching,
-} from '../../../reducers/searchSlice'
+} from '@/reducers/searchSlice'
 
 const Search = () => {
   const [suggestState, setSuggestState] = useState([])
@@ -38,9 +38,23 @@ const Search = () => {
     navigate('./search')
   }
 
+  const suggestHandlerDebounce = useRef(
+    debounce((value) => {
+      apiSuggest(value)
+        .then((result) => {
+          return setSuggestState(result)
+        })
+        .catch((error) => {
+          console.error(error)
+          // Handle errors as needed
+        })
+    }, 300)
+  ).current
+
   const suggestHandler = (event) => {
-    dispatch(setKeyword(event.target.value))
-    apiSuggest(event.target.value).then((result) => setSuggestState(result))
+    const value = event.target.value
+    dispatch(setKeyword(value))
+    suggestHandlerDebounce(value)
   }
 
   const suggestKeyPressHandler = (event) => {

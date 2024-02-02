@@ -3,7 +3,7 @@ import styles from './AllValuesModal.module.css'
 import ReactPaginate from 'react-paginate';
 import { Button, Modal, Table, Row, Col, Collapse, Badge, InputGroup, FormControl} from 'react-bootstrap';
 import { PlusIcon, MinusIcon, SearchIcon } from '@/components/ui/icons/Icons';
-import { searchFilter } from '../../../../shared';
+import { searchFilter } from '../../../../utils';
 import { apiGetGDCDataById } from '../../../../api';
 
 const AllValuesModal = (props) => {

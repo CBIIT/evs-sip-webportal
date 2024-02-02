@@ -11,7 +11,7 @@ import {
   getHighlightObj,
   sortAlphabetically,
   sortSynonyms,
-} from '../../../../shared'
+} from '../../../../utils'
 
 import TableValue from '../../components/TableValue/TableValue'
 

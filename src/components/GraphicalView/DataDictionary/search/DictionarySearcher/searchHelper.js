@@ -4,7 +4,7 @@ import {
   getPropertyDescription,
   getType,
 } from "../../utils";
-import { getHighlightObj } from "../../../../../shared"
+import { getHighlightObj } from "../../../../../utils"
 
 export const ZERO_RESULT_FOUND_MSG =
   "0 results found. Please try another keyword.";

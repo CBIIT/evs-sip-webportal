@@ -2,7 +2,7 @@ import { useState , useContext} from 'react';
 import styles from './SingleValuesTable.module.css';
 import { Container, Row, Col, Table, Tab, Nav, Collapse, Accordion, Card, Button, useAccordionButton, AccordionContext} from 'react-bootstrap';
 import { MinusIcon, PlusIcon, AngleDownIcon, AngleUpIcon } from '../../../../components/ui/icons/Icons'
-import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../../../shared';
+import { getHighlightObj, sortAlphabetically, sortAlphabeticallyObject, sortSynonyms } from '../../../../utils';
 
 const PCDCValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values));

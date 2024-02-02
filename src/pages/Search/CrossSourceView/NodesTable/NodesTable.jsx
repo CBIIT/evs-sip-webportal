@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './NodesTable.module.css'
 import { Container, Row, Col, Table, Collapse } from 'react-bootstrap'
 import { MinusIcon, PlusIcon } from '../../../../components/ui/icons/Icons'
-import { getHighlightObj } from '../../../../shared'
+import { getHighlightObj } from '../../../../utils'
 
 const NodesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.nodes))

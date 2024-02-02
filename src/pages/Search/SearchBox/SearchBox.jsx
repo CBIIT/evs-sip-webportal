@@ -1,8 +1,13 @@
 import { useState, useRef, useEffect } from 'react'
-import { ArrowRightIcon, CircleIcon, CheckIcon, TimesIcon } from '../../../components/ui/icons/Icons'
+import {
+  ArrowRightIcon,
+  CircleIcon,
+  CheckIcon,
+  TimesIcon,
+} from '../../../components/ui/icons/Icons'
 import styles from './SearchBox.module.css'
-import debounce from 'lodash.debounce'
 import { apiSuggest, apiSearchAll } from '../../../api'
+import { debounce } from '../../../utils'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
 import SuggestBox from '../SuggestBox/SuggestBox'
 import LoadingAnimation from '../../../components/LoadingAnimation/LoadingAnimation'
@@ -70,10 +75,19 @@ const SearchBox = () => {
       setSuggestState([])
       searchHandler(event.target.value, match, options, dataSources)
     }
-    if (event.keyCode === 13 && suggestState.length !== 0 && selectIndexState !== -1) {
+    if (
+      event.keyCode === 13 &&
+      suggestState.length !== 0 &&
+      selectIndexState !== -1
+    ) {
       dispatch(setKeyword(suggestState[selectIndexState].id))
       setSuggestState([])
-      searchHandler(suggestState[selectIndexState].id, match, options, dataSources)
+      searchHandler(
+        suggestState[selectIndexState].id,
+        match,
+        options,
+        dataSources
+      )
     }
     if (event.keyCode === 38 || event.keyCode === 40) {
       let index = selectIndexState
@@ -102,9 +116,12 @@ const SearchBox = () => {
   const suggestHandlerDebounce = useRef(
     debounce((value) => {
       apiSuggest(value)
-        .then((result) => setSuggestState(result))
+        .then((result) => {
+          return setSuggestState(result)
+        })
         .catch((error) => {
-          console.log(error)
+          console.error(error)
+          // Handle errors as needed
         })
     }, 300)
   ).current
@@ -223,7 +240,9 @@ const SearchBox = () => {
             <Button
               aria-label="Search"
               className={styles['search-button']}
-              onClick={() => searchHandler(keyword, match, options, dataSources)}
+              onClick={() =>
+                searchHandler(keyword, match, options, dataSources)
+              }
             >
               <ArrowRightIcon className={styles['search-button-icon']} />
             </Button>
@@ -271,11 +290,15 @@ const SearchBox = () => {
             </div>
           </div>
           <div className={styles['search-options-container']}>
-            <label className={styles['search-options-label']}>Search Include</label>
+            <label className={styles['search-options-label']}>
+              Search Include
+            </label>
             <div className={styles['search-options']}>
               <Button
                 className={styles['select-button']}
-                aria-label={isToggleOnOptions === false ? 'Select All' : 'Unselect All'}
+                aria-label={
+                  isToggleOnOptions === false ? 'Select All' : 'Unselect All'
+                }
                 onClick={checkedAllToggleHandler}
               >
                 {isToggleOnOptions === false ? 'Select All' : 'Unselect All'}
@@ -324,11 +347,15 @@ const SearchBox = () => {
             </div>
           </div>
           <div className={styles['search-options-container']}>
-            <label className={styles['search-options-label']}>Choose your Data Source</label>
+            <label className={styles['search-options-label']}>
+              Choose your Data Source
+            </label>
             <div className={styles['search-options']}>
               <Button
                 className={styles['select-button']}
-                aria-label={isToggleOnSource === false ? 'Select All' : 'Unselect All'}
+                aria-label={
+                  isToggleOnSource === false ? 'Select All' : 'Unselect All'
+                }
                 onClick={selectDataAllToggleHandler}
               >
                 {isToggleOnSource === false ? 'Select All' : 'Unselect All'}

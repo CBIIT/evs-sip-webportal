@@ -5,7 +5,7 @@ import {
   AngleDownIcon,
   AngleUpIcon,
 } from '@/components/ui/icons/Icons'
-import { getHighlightObj, sortSynonyms } from '../../../../shared'
+import { getHighlightObj, sortSynonyms } from '../../../../utils'
 
 import TableValue from '../../components/TableValue/TableValue'
 

@@ -2,7 +2,7 @@ import {useState, useRef} from 'react';
 import styled from 'styled-components';
 import { Button, Modal, Container, Row, Col, Collapse, Table, Form} from 'react-bootstrap';
 import { PlusIcon, MinusIcon, CheckIcon, DownloadIcon } from '../ui/icons/Icons';
-import { sortAlphabetically} from '../../shared';
+import { sortAlphabetically} from '../../utils';
 import { apiGetGDCDataById } from '../../api';
 
 import PaginationController from './PaginationController';
