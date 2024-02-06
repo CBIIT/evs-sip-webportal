@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import styles from './ValuesTable.module.css'
-import { Container, Row, Col, Table, Tab, Nav, Collapse } from 'react-bootstrap'
-import {
-  AngleDownIcon,
-  AngleUpIcon,
-} from '@/components/ui/icons/Icons'
+import { Container, Row, Col, Collapse } from 'react-bootstrap'
+import { AngleDownIcon, AngleUpIcon } from '@/components/ui/icons/Icons'
 import { getHighlightObj, sortSynonyms } from '../../../../utils'
 
 import TableValue from '../../components/TableValue/TableValue'
+import TreeSource from '../../components/TreeSource/TreeSource'
 
 const CrossValuesTable = (props) => {
   let items = JSON.parse(JSON.stringify(props.values))
@@ -356,23 +354,11 @@ const CrossValuesTable = (props) => {
       >
         <Row className={styles['table-row']}>
           <Col className={styles['table-col']} data-class="TableCol" xs={3}>
-            {props.item.category}
-            <ul className={styles['table-ul']}>
-              <li className={styles['table-li']}>
-                <span className={styles['span-icon']}>
-                  <AngleDownIcon />
-                </span>
-                {props.item.node.n}
-                <ul className={styles['table-ul']}>
-                  <li className={styles['table-li']}>
-                    <span className={styles['span-icon']}>
-                      <AngleDownIcon />
-                    </span>
-                    {props.item.property.n}
-                  </li>
-                </ul>
-              </li>
-            </ul>
+            <TreeSource
+              category={props.item.category}
+              node={props.item.node.n}
+              property={props.item.property.n}
+            />
           </Col>
           <Col
             className={styles['table-col-right']}

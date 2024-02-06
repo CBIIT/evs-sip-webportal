@@ -1,0 +1,19 @@
+.table-ul {
+  padding-left: 15px;
+  list-style: none;
+}
+
+.table-li {
+  position: relative;
+  word-wrap: break-word;
+}
+
+.span-icon {
+  left: -0.9rem;
+  top: 0.2rem;
+  position: absolute;
+  width: 1rem;
+  line-height: inherit;
+  color: var(--checkbox-green);
+  transform: rotate(45deg);
+}
