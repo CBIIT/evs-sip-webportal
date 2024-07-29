@@ -20,8 +20,8 @@ const NodesTable = (props) => {
             (n) =>
               n.source === item._source.source &&
               n.category === item._source.category &&
-              n.node.n.replace(/<b>/g, '').replace(/<\/b>/g, '') ===
-                item._source.node.n
+              n.node.node_name.replace(/<b>/g, '').replace(/<\/b>/g, '') ===
+                item._source.node.node_name
           ) !== -1
         )
           return
@@ -29,26 +29,26 @@ const NodesTable = (props) => {
         let hl = hits.highlight
 
         let highlightNode =
-          'node.n' in hl || 'node.n.have' in hl
-            ? hl['node.n'] || hl['node.n.have']
+          'node.node_name' in hl || 'node.node_name.have' in hl
+            ? hl['node.node_name'] || hl['node.node_name.have']
             : undefined
         let highlightNodeObj = getHighlightObj(highlightNode)
 
         let highlightDesc =
-          'node.d' in hl || 'node.d.have' in hl
-            ? hl['node.d'] || hl['node.d.have']
+          'node.node_description' in hl || 'node.node_description.have' in hl
+            ? hl['node.node_description'] || hl['node.node_description.have']
             : undefined
         let highlightDescObj = getHighlightObj(highlightDesc)
 
         let highlightNC =
-          'nodes.ncit.c' in hl || 'nodes.ncit.c.have' in hl
-            ? hl['nodes.ncit.c'] || hl['nodes.ncit.c.have']
+          'node.node_ncit.ncit_code' in hl || 'node.node_ncit.ncit_code.have' in hl
+            ? hl['node.node_ncit.ncit_code'] || hl['node.node_ncit.ncit_code.have']
             : undefined
         let highlightNCObj = getHighlightObj(highlightNC)
 
         let highlightSyn =
-          'nodes.ncit.s.n' in hl || 'nodes.ncit.s.n.have' in hl
-            ? hl['nodes.ncit.s.n'] || hl['nodes.ncit.s.n.have']
+          'node.node_ncit.ncit_synonyms.name' in hl || 'nodes.node_ncit.ncit_synonyms.name.have' in hl
+            ? hl['node.node_ncit.ncit_synonyms.name'] || hl['node.node_ncit.ncit_synonyms.name.have']
             : undefined
         let highlightSynObj = getHighlightObj(highlightSyn)
 
@@ -57,28 +57,28 @@ const NodesTable = (props) => {
         nodeObj.node = item._source.node
         nodeObj.id = item._source.id
         nodeObj.source = item._source.source
-        nodeObj.property = item._source.prop
-        nodeObj.type = item._source.type
-        nodeObj.node.n = highlightNodeObj[item._source.node.n]
-          ? highlightNodeObj[item._source.node.n]
-          : item._source.node.n
-        nodeObj.node.d = highlightDescObj[item._source.node.d]
-          ? highlightDescObj[item._source.node.d]
-          : item._source.node.d
+        nodeObj.property = item._source.property
+        nodeObj.type = item._source.property_type
+        nodeObj.node.node_name = highlightNodeObj[item._source.node.node_name]
+          ? highlightNodeObj[item._source.node.node_name]
+          : item._source.node.node_name
+        nodeObj.node.node_description = highlightDescObj[item._source.node.node_description]
+          ? highlightDescObj[item._source.node.node_description]
+          : item._source.node.node_description
 
-        nodeObj.ncit = hits._source.ncit ? hits._source.ncit : undefined
+        // nodeObj.ncit = hits._source.ncit ? hits._source.ncit : undefined
 
-        if (nodeObj.ncit !== undefined && nodeObj.ncit !== 0) {
-          nodeObj.ncit.forEach((ncit, i) => {
-            nodeObj.ncit[i].c = highlightNCObj[ncit.c]
-              ? highlightNCObj[ncit.c]
-              : ncit.c
+        if (nodeObj.node.node_ncit !== undefined && nodeObj.node.node_ncit !== 0) {
+          nodeObj.node.node_ncit.forEach((node_ncit, i) => {
+            nodeObj.node.node_ncit[i].ncit_code = highlightNCObj[node_ncit.ncit_code]
+              ? highlightNCObj[node_ncit.ncit_code]
+              : node_ncit.ncit_code
 
-            if (ncit.s !== undefined && ncit.s !== 0) {
-              ncit.s.forEach((s, j) => {
-                nodeObj.ncit[i].s[j].n = highlightSynObj[s.n]
-                  ? highlightSynObj[s.n]
-                  : s.n
+            if (node_ncit.ncit_synonyms !== undefined && node_ncit.ncit_synonyms  !== 0) {
+              node_ncit.ncit_synonyms.forEach((ncit_synonym, j) => {
+                nodeObj.node.node_ncit[i].ncit_synonyms[j].name = highlightSynObj[ncit_synonym.name]
+                  ? highlightSynObj[ncit_synonym.name]
+                  : ncit_synonym.name
               })
             }
           })
@@ -90,22 +90,22 @@ const NodesTable = (props) => {
   })
 
   let mappingObj = {}
-  nodes.forEach((prop) => {
-    if (prop.ncit !== undefined && prop.ncit !== 0) {
-      prop.ncit.forEach((nt) => {
-        if (mappingObj[nt.c] === undefined) {
-          mappingObj[nt.c] = []
-          mappingObj[nt.c].push(prop)
+  nodes.forEach((node) => {
+    if (node.node_ncit !== undefined && node.node_ncit  !== 0) {
+      node.node_ncit.forEach((node_ncit) => {
+        if (mappingObj[node_ncit.ncit_code] === undefined) {
+          mappingObj[node_ncit.ncit_code] = []
+          mappingObj[node_ncit.ncit_code].push(node)
         } else {
-          mappingObj[nt.c].push(prop)
+          mappingObj[node_ncit.ncit_code].push(node)
         }
       })
     } else {
       if (mappingObj['no-mapping'] === undefined) {
         mappingObj['no-mapping'] = []
-        mappingObj['no-mapping'].push(prop)
+        mappingObj['no-mapping'].push(node)
       } else {
-        mappingObj['no-mapping'].push(prop)
+        mappingObj['no-mapping'].push(node)
       }
     }
   })
@@ -151,9 +151,9 @@ const NodesTable = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) => (
         <tr key={index}>
-          <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
-          <td>{item.src}</td>
-          <td>{item.t}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.name }}></td>
+          <td>{item.source}</td>
+          <td>{item.termType}</td>
         </tr>
       ))
     }
@@ -170,11 +170,11 @@ const NodesTable = (props) => {
               <a
                 href={
                   'https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=' +
-                  item.c.replace(/<b>/g, '').replace(/<\/b>/g, '')
+                  item.ncit_code.replace(/<b>/g, '').replace(/<\/b>/g, '')
                 }
                 rel="noopener noreferrer"
                 target="_blank"
-                dangerouslySetInnerHTML={{ __html: item.c }}
+                dangerouslySetInnerHTML={{ __html: item.ncit_code }}
               ></a>
             </Col>
           </Row>
@@ -195,7 +195,7 @@ const NodesTable = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  <TableSynonyms synonyms={item.s} />
+                  <TableSynonyms synonyms={item.ncit_synonyms} />
                 </tbody>
               </Table>
             </Col>
@@ -278,7 +278,7 @@ const NodesTable = (props) => {
                   <Col xs={10}>
                     <a
                       href="/#"
-                      dangerouslySetInnerHTML={{ __html: props.item.node.n }}
+                      dangerouslySetInnerHTML={{ __html: props.item.node.node_name }}
                       onClick={ToggleTableHandler}
                     ></a>
                   </Col>
@@ -294,20 +294,20 @@ const NodesTable = (props) => {
                 </Row>
                 <Collapse in={isToggleOn} mountOnEnter={true}>
                   <div data-class="ncit-node-container">
-                    {props.item.node.d !== undefined &&
-                      props.item.node.d !== '' && (
+                    {props.item.node.node_description !== undefined &&
+                      props.item.node.node_description !== '' && (
                         <Row>
                           <Col
                             className={styles['table-col']}
                             data-class="TableCol"
                             xs={12}
                           >
-                            <DescCollapse desc={props.item.node.d} />
+                            <DescCollapse desc={props.item.node.node_description} />
                           </Col>
                         </Row>
                       )}
                     {props.item.node.ncit !== undefined && (
-                      <NcitProps ncit={props.item.node.ncit} />
+                      <NcitProps ncit={props.item.node.node_ncit} />
                     )}
                   </div>
                 </Collapse>

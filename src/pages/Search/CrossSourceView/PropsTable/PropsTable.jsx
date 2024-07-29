@@ -16,7 +16,7 @@ const PropsTable = (props) => {
   let properties = []
 
   items.forEach((item) => {
-    let prop = item.inner_hits.prop
+    let prop = item.inner_hits.property
 
     if (prop.hits.hits.length !== 0) {
       let propHits = prop.hits.hits
@@ -25,26 +25,26 @@ const PropsTable = (props) => {
         let hl = hits.highlight
 
         let highlightProp =
-          'prop.n' in hl || 'prop.n.have' in hl
-            ? hl['prop.n'] || hl['prop.n.have']
+          'property.property_name' in hl || 'property.property_name.have' in hl
+            ? hl['property.property_name'] || hl['property.property_name.have']
             : undefined
         let highlightPropObj = getHighlightObj(highlightProp)
 
         let highlightDesc =
-          'prop.d' in hl || 'prop.d.have' in hl
-            ? hl['prop.d'] || hl['prop.d.have']
+          'property.property_description' in hl || 'property.property_description.have' in hl
+            ? hl['property.property_description'] || hl['property.property_description.have']
             : undefined
         let highlightDescObj = getHighlightObj(highlightDesc)
 
         let highlightNC =
-          'prop.ncit.c' in hl || 'prop.ncit.c.have' in hl
-            ? hl['prop.ncit.c'] || hl['prop.ncit.c.have']
+          'property.property_ncit.ncit_code' in hl || 'property.property_ncit.ncit_code.have' in hl
+            ? hl['property.property_ncit.ncit_code'] || hl['property.property_ncit.ncit_code.have']
             : undefined
         let highlightNCObj = getHighlightObj(highlightNC)
 
         let highlightSyn =
-          'prop.ncit.s.n' in hl || 'prop.ncit.s.n.have' in hl
-            ? hl['prop.ncit.s.n'] || hl['prop.ncit.s.n.have']
+          'property.property_ncit.ncit_synonyms.name' in hl || 'property.property_ncit.ncit_synonyms.name.have' in hl
+            ? hl['property.property_ncit.ncit_synonyms.name'] || hl['property.property_ncit.ncit_synonyms.name.have']
             : undefined
         let highlightSynObj = getHighlightObj(highlightSyn)
 
@@ -53,28 +53,28 @@ const PropsTable = (props) => {
         propObj.node = item._source.node
         propObj.id = item._source.id
         propObj.source = item._source.source
-        propObj.property = item._source.prop
-        propObj.type = item._source.type
-        propObj.property.n = highlightPropObj[item._source.prop.n]
-          ? highlightPropObj[item._source.prop.n]
-          : item._source.prop.n
-        propObj.property.d = highlightDescObj[item._source.prop.d]
-          ? highlightDescObj[item._source.prop.d]
-          : item._source.prop.d
+        propObj.property = item._source.property
+        propObj.type = item._source.property_type
+        propObj.property.property_name = highlightPropObj[item._source.property.property_name]
+          ? highlightPropObj[item._source.property.property_name]
+          : item._source.property.property_name
+        propObj.property.property_description= highlightDescObj[item._source.property.property_description]
+          ? highlightDescObj[item._source.property.property_description]
+          : item._source.property.property_descriptionproperty_description
 
-        propObj.ncit = hits._source.ncit ? hits._source.ncit : undefined
+        // propObj.property.property_ncit = hits._source.property.property_ncit ? hits._source.property.property_ncit : undefined
 
-        if (propObj.ncit !== undefined && propObj.ncit !== 0) {
-          propObj.ncit.forEach((ncit, i) => {
-            propObj.ncit[i].c = highlightNCObj[ncit.c]
-              ? highlightNCObj[ncit.c]
-              : ncit.c
+        if (propObj.property.property_ncit !== undefined && propObj.property.property_ncit !== 0) {
+          propObj.property.property_ncit.forEach((property_ncit, i) => {
+            propObj.property.property_ncit[i].ncit_code = highlightNCObj[property_ncit.ncit_code]
+              ? highlightNCObj[property_ncit.ncit_code]
+              : property_ncit.ncit_code
 
-            if (ncit.s !== undefined && ncit.s !== 0) {
-              ncit.s.forEach((s, j) => {
-                propObj.ncit[i].s[j].n = highlightSynObj[s.n]
-                  ? highlightSynObj[s.n]
-                  : s.n
+            if (property_ncit.ncit_synonyms !== undefined && property_ncit.ncit_synonyms !== 0) {
+              property_ncit.ncit_synonyms.forEach((ncit_synonym, j) => {
+                propObj.property.property_ncit[i].ncit_synonyms[j].name = highlightSynObj[ncit_synonym.name]
+                  ? highlightSynObj[ncit_synonym.name]
+                  : ncit_synonym.name
               })
             }
           })
@@ -86,22 +86,22 @@ const PropsTable = (props) => {
   })
 
   let mappingObj = {}
-  properties.forEach((prop) => {
-    if (prop.ncit !== undefined && prop.ncit !== 0) {
-      prop.ncit.forEach((nt) => {
-        if (mappingObj[nt.c] === undefined) {
-          mappingObj[nt.c] = []
-          mappingObj[nt.c].push(prop)
+  properties.forEach((property) => {
+    if (property.property_ncit !== undefined && property.property_ncit !== 0) {
+      property.property_ncit.forEach((property_ncit) => {
+        if (mappingObj[property_ncit.ncit_code] === undefined) {
+          mappingObj[property_ncit.ncit_code] = []
+          mappingObj[property_ncit.ncit_code].push(property)
         } else {
-          mappingObj[nt.c].push(prop)
+          mappingObj[property_ncit.ncit_code].push(property)
         }
       })
     } else {
       if (mappingObj['no-mapping'] === undefined) {
         mappingObj['no-mapping'] = []
-        mappingObj['no-mapping'].push(prop)
+        mappingObj['no-mapping'].push(property)
       } else {
-        mappingObj['no-mapping'].push(prop)
+        mappingObj['no-mapping'].push(property)
       }
     }
   })
@@ -147,9 +147,9 @@ const PropsTable = (props) => {
     if (props.synonyms !== undefined) {
       return props.synonyms.map((item, index) => (
         <tr key={index}>
-          <td dangerouslySetInnerHTML={{ __html: item.n }}></td>
-          <td>{item.src}</td>
-          <td>{item.t}</td>
+          <td dangerouslySetInnerHTML={{ __html: item.name }}></td>
+          <td>{item.source}</td>
+          <td>{item.termType}</td>
         </tr>
       ))
     }
@@ -166,11 +166,11 @@ const PropsTable = (props) => {
               <a
                 href={
                   'https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=' +
-                  item.c.replace(/<b>/g, '').replace(/<\/b>/g, '')
+                  item.ncit_code.replace(/<b>/g, '').replace(/<\/b>/g, '')
                 }
                 rel="noopener noreferrer"
                 target="_blank"
-                dangerouslySetInnerHTML={{ __html: item.c }}
+                dangerouslySetInnerHTML={{ __html: item.ncit_code }}
               ></a>
             </Col>
           </Row>
@@ -191,7 +191,7 @@ const PropsTable = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  <TableSynonyms synonyms={item.s} />
+                  <TableSynonyms synonyms={item.ncit_synonyms} />
                 </tbody>
               </Table>
             </Col>
@@ -254,7 +254,7 @@ const PropsTable = (props) => {
                 <span className={styles['span-icon']}>
                   <AngleDownIcon />
                 </span>
-                {props.item.node.n}
+                {props.item.node.node_name}
               </li>
             </ul>
           </Col>
@@ -274,7 +274,7 @@ const PropsTable = (props) => {
                     <a
                       href="/#"
                       dangerouslySetInnerHTML={{
-                        __html: props.item.property.n,
+                        __html: props.item.property.property_name,
                       }}
                       onClick={ToggleTableHandler}
                     ></a>
@@ -299,12 +299,12 @@ const PropsTable = (props) => {
                             data-class="TableCol"
                             xs={12}
                           >
-                            <DescCollapse desc={props.item.property.d} />
+                            <DescCollapse desc={props.item.property.property_description} />
                           </Col>
                         </Row>
                       )}
-                    {props.item.property.ncit !== undefined && (
-                      <NcitProps ncit={props.item.ncit} />
+                    {props.item.property.property_ncit !== undefined && (
+                      <NcitProps ncit={props.item.property.property_ncit} />
                     )}
                   </div>
                 </Collapse>
