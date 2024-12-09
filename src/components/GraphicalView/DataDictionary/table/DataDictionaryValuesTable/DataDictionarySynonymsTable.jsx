@@ -64,13 +64,13 @@ class DataDictionarySynonymsTable extends React.Component {
     const tb = this.props.syns.map((syn, index) => {
       return (
         <tr key={index}>
-          <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: syn.n }}>
+          <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: syn.name }}>
           </td>
           <td className="data-dictionary-property-table__data">
-            {syn.src}
+            {syn.source}
           </td>
           <td className="data-dictionary-property-table__data">
-            {syn.t}
+            {syn.termType}
           </td>
         </tr>
       );

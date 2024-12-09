@@ -25,15 +25,17 @@ class DataDictionaryValuesTableBodyMatched extends React.Component {
   async componentDidMount() {
     let values = [];
     let original_source = this.props.source.replace("_readonly","");
-    let rs = await apiGetPropertyValues(this.props.property + "/" + this.props.node + "/" + this.props.category + "/" + original_source);
+    let PropertyValuesID = original_source + "." + this.props.node + "." + this.props.property
+    let rs = await apiGetPropertyValues(PropertyValuesID);
+    // let rs = await apiGetPropertyValues(this.props.property + "/" + this.props.node + "/" + this.props.category + "/" + original_source);
     rs.forEach(function(item){
       let tmp = {};
-      tmp.name = item.n;
-      tmp.ncit = item.ncit ? item.ncit : [];
+      tmp.name = item.value_name;
+      tmp.ncit = item.value_ncit ? item.value_ncit : [];
       tmp.syns = [];
       tmp.icdo = "";
-      if(item.icdo){
-        tmp.icdo = item.icdo.c;
+      if(item.value_icdo3?.length !== 0){
+        tmp.icdo = item.value_icdo3[0].icdo3_code;
       }
       tmp.matched = false;
       values.push(tmp);
@@ -47,8 +49,8 @@ class DataDictionaryValuesTableBodyMatched extends React.Component {
       if(tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"]){
         tmp.name = tmp.matched_fields["enum.n"] || tmp.matched_fields["enum.n.have"];
       }
-      if(tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"]){
-        tmp.icdo = tmp.matched_fields["enum.icdo.c"] || tmp.matched_fields["enum.icdo.have"][tmp.matched_fields["enum.icdo.have"].length -1];
+      if(tmp.matched_fields["enum.value_icdo3.icdo3_code"] || tmp.matched_fields["enum.value_icdo3.have"]){
+        tmp.icdo = tmp.matched_fields["enum.value_icdo3.icdo3_code"] || tmp.matched_fields["enum.value_icdo3.have"][tmp.matched_fields["enum.value_icdo3.have"].length -1];
       }
     });
 

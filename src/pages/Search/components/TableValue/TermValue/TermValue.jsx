@@ -7,8 +7,8 @@ const TermValue = ({ type, term }) => {
     let code
     let synonyms
     if (type === 'ncit') {
-      code = term.n_c
-      synonyms = term.s
+      code = term.ncit_code
+      synonyms = term.ncit_synonyms
     }
     if (type === 'icdo3') {
       code = term.c
@@ -26,7 +26,7 @@ const TermValue = ({ type, term }) => {
                   <a
                     href={
                       'https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=' +
-                      term.n_c.replace(/<b>/g, '').replace(/<\/b>/g, '')
+                      code.replace(/<b>/g, '').replace(/<\/b>/g, '')
                     }
                     rel="noopener noreferrer"
                     target="_blank"

@@ -214,13 +214,13 @@ class DataDictionaryPropertyTable extends React.Component {
                   let nameMatch = null;
                   let descriptionMatch = null;
                   
-                  if(original_source === 'gdc'){
+                  if(original_source === 'gdc' || original_source === 'ctdc' || original_source === 'icdc' || original_source === 'pcdc'){
                     hasValues = property.enum && property.enum.length > 0;
                   }
-                  else if(original_source === 'ctdc' || original_source === 'icdc' || original_source === 'pcdc'){
-                    hasValues = property.type && Array.isArray(property.type);
-                  }
-                  else{
+                  // else if(original_source === 'ctdc' || original_source === 'icdc' || original_source === 'pcdc'){
+                  //   hasValues = property.type && Array.isArray(property.type);
+                  // }
+                  else {
                     hasValues = false;
                   }
 

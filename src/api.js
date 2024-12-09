@@ -38,23 +38,24 @@ export const apiGetGDCDataById = async (id) => {
 }
 
 export const apiGetGDCDictionary = async () => {
-  const response = await fetch(`${baseUrl}/graph/gdc`)
+  const response = await fetch(`${baseUrl}/new-graph/gdc`)
   return response.json()
 }
 
 export const apiGetICDCDictionary = async () => {
-  const response = await fetch(`${baseUrl}/graph/icdc`)
+  const response = await fetch(`${baseUrl}/new-graph/icdc`)
   return response.json()
 }
 
 export const apiGetCTDCDictionary = async () => {
-  const response = await fetch(`${baseUrl}/graph/ctdc`)
+  const response = await fetch(`${baseUrl}/new-graph/ctdc`)
   return response.json()
 }
 
 export const apiGetPCDCDictionary = async (project) => {
   const p = project === undefined ? '' : project
-  const response = await fetch(`${baseUrl}/graph/pcdc?project=${p}`)
+  // const response = await fetch(`${baseUrl}/graph/pcdc?project=${p}`)
+  const response = await fetch(`${baseUrl}/new-graph/pcdc?project=${p}`)
   return response.json()
 }
 

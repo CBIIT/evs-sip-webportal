@@ -58,7 +58,12 @@ export const getType = (property) => {
   let type = 'UNDEFINED';
   if ('type' in property) {
     if (typeof property.type === 'string') {
-      type = property.type;
+      if ('enum' in property) {
+        type = property.enum;
+      }
+      else {
+        type = property.type;
+      }
     } else {
       type = property.type;
     }

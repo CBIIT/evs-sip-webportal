@@ -141,30 +141,20 @@ const CrossValuesTable = (props) => {
           }
           valueObj.i_c = {}
 
-  
-          // source.value_icdo3.forEach((icdo3) => {
-          //   // let ido3Obj = {}
-          //   icdo3.c = icdo3.icdo3_code
-          //   ? highlightICObj[icdo3.icdo3_code]
-          //     ? highlightICObj[icdo3.icdo3_code]
-          //     : icdo3.icdo3_code
-          //   : undefined
-            
+          let source_value_icdo3 = source.value_icdo3[0] ? source.value_icdo3[0] : [];
 
-          // })
-
-          valueObj.i_c.c = source.value_icdo3.icdo3_code
-            ? highlightICObj[source.value_icdo3.icdo3_code]
-              ? highlightICObj[source.value_icdo3.icdo3_code]
-              : source.value_icdo3.icdo3_code
+          valueObj.i_c.c = source_value_icdo3.icdo3_code
+            ? highlightICObj[source_value_icdo3.icdo3_code]
+              ? highlightICObj[source_value_icdo3.icdo3_code]
+              : source_value_icdo3.icdo3_code
             : undefined
-          valueObj.i_c.id = source.value_icdo3.icdo3_code
+          valueObj.i_c.id = source_value_icdo3.icdo3_code
             ? (
                 obj.property.property_name +
                 '-' +
                 valueObj.src_n +
                 '-' +
-                source.icdo.c
+                source_value_icdo3.icdo3_code
               ).replace(/[^a-zA-Z0-9-]+/gi, '')
             : undefined
 
@@ -176,10 +166,10 @@ const CrossValuesTable = (props) => {
             }
           }
 
-          if (source.value_icdo3 && source.value_icdo3.icdo3_synonyms !== undefined) {
-            valueObj.ic_enum = source.value_icdo3.icdo3_synonyms
-            icdo3MatchObj[valueObj.i_c.c].enum = source.value_icdo3.icdo3_synonyms
-            source.value_icdo3.icdo3_synonyms.forEach((ic) => {
+          if (source_value_icdo3 && source_value_icdo3.icdo3_synonyms !== undefined) {
+            valueObj.ic_enum = source_value_icdo3.icdo3_synonyms
+            icdo3MatchObj[valueObj.i_c.c].enum = source_value_icdo3.icdo3_synonyms
+            source_value_icdo3.icdo3_synonyms.forEach((ic) => {
               if (ic.term_type === 'PT') {
                 icdo3MatchObj[valueObj.i_c.c].preferredTerm = ic
               }
@@ -485,8 +475,8 @@ const CrossValuesTable = (props) => {
             )}
             {props.cross.icdo3PreferredTerm !== undefined && (
               <div className={styles['preferred-term']}>
-                {props.cross.icdo3PreferredTerm.n} (
-                {props.cross.icdo3PreferredTerm.t})
+                {props.cross.icdo3PreferredTerm.icdo3_synonym} (
+                {props.cross.icdo3PreferredTerm.term_type})
               </div>
             )}
           </div>

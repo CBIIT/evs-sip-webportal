@@ -120,6 +120,8 @@ export const getSearchResult = (graphType, searchData, project_filter) => {
   if (graphType === "pcdc" && project_filter === undefined) {
     project_filter = "AML";
   }
+  console.log("project_filter", project_filter);
+  console.log("graphType", graphType);
   if (searchData.length > 0) {
     searchData.forEach((entry) => {
       let dt = entry._source;
@@ -129,35 +131,35 @@ export const getSearchResult = (graphType, searchData, project_filter) => {
         return;
       }
       if (dt.source === graphType) {
-        if (!(dt.node.n in result)) {
-          result[dt.node.n] = {};
-          result[dt.node.n].props = {};
+        if (!(dt.node.node_name in result)) {
+          result[dt.node.node_name] = {};
+          result[dt.node.node_name].props = {};
         }
-        result[dt.node.n].props[dt.prop.n] = {};
+        result[dt.node.node_name].props[dt.property.property_name] = {};
 
-        if (ih.prop.hits.hits.length !== 0) {
-          let propHits = ih.prop.hits.hits;
+        if (ih.property.hits.hits.length !== 0) {
+          let propHits = ih.property.hits.hits;
     
           propHits.forEach((hits) => {
             let hl = hits.highlight;
     
-            let highlightProp = ('prop.n' in hl) || ('prop.n.have' in hl) ? hl['prop.n'] || hl['prop.n.have'] : undefined;
+            let highlightProp = ('property.property_name' in hl) || ('property.property_name.have' in hl) ? hl['property.property_name'] || hl['property.property_name.have'] : undefined;
             let highlightPropObj = getHighlightObj(highlightProp);
 
-            let highlightDesc = ('prop.d' in hl) || ('prop.d.have' in hl) ? hl['prop.d'] || hl['prop.d.have'] : undefined;
+            let highlightDesc = ('property.property_description' in hl) || ('property.property_description.have' in hl) ? hl['property.property_description'] || hl['property.property_description.have'] : undefined;
             let highlightDescObj = getHighlightObj(highlightDesc);
 
-            result[dt.node.n].props[dt.prop.n].title = highlightPropObj[dt.prop.n] ? highlightPropObj[dt.prop.n] : dt.prop.n;
-            result[dt.node.n].props[dt.prop.n].desc = highlightDescObj[dt.prop.d] ? highlightDescObj[dt.prop.d] : dt.prop.d;
+            result[dt.node.node_name].props[dt.property.property_name].title = highlightPropObj[dt.property.property_name] ? highlightPropObj[dt.property.property_name] : dt.property.property_name;
+            result[dt.node.node_name].props[dt.property.property_name].desc = highlightDescObj[dt.prop.d] ? highlightDescObj[dt.prop.d] : dt.prop.d;
           });
         } else {
-          result[dt.node.n].props[dt.prop.n].title = dt.prop.n;
-          result[dt.node.n].props[dt.prop.n].desc = dt.prop.d;
+          result[dt.node.node_name].props[dt.property.property_name].title = dt.property.property_name;
+          result[dt.node.node_name].props[dt.property.property_name].desc = dt.property.property_description;
         }
 
-        result[dt.node.n].props[dt.prop.n].type = dt.type;
-        result[dt.node.n].props[dt.prop.n].enum = dt.enum ? dt.enum : [];
-        result[dt.node.n].props[dt.prop.n].hits = entry.inner_hits.enum.hits.hits;
+        result[dt.node.node_name].props[dt.property.property_name].type = dt.property_type;
+        result[dt.node.node_name].props[dt.property.property_name].enum = dt.enum ? dt.enum : [];
+        result[dt.node.node_name].props[dt.property.property_name].hits = entry.inner_hits.enum.hits.hits;
       }
     });
   }

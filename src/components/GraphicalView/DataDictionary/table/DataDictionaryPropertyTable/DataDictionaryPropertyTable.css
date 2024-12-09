@@ -52,14 +52,6 @@
     z-index: 1;
 }
 
-.data-dictionary-property-table__row {
-  cursor: pointer;
-}
-
-.data-dictionary-property-table__row:hover {
-  background: #dcdcdc;
-}
-
 .values-row{
   background-color:#a5a5a5;
 }

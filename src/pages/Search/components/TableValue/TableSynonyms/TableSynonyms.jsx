@@ -16,18 +16,18 @@ const TableNCItSynonyms = ({ type, synonyms }) => {
           type == 'ncit' &&
           synonyms.map((item, index) => (
             <tr key={index}>
-              <td dangerouslySetInnerHTML={{ __html: item.termName }}></td>
-              <td>{item.termSource}</td>
-              <td>{item.termGroup}</td>
+              <td dangerouslySetInnerHTML={{ __html: item.name }}></td>
+              <td>{item.source}</td>
+              <td>{item.termType}</td>
             </tr>
           ))}
         {synonyms?.length !== 0 &&
           type == 'icdo3' &&
           synonyms.map((item, index) => (
             <tr key={index}>
-              <td>{item.n}</td>
+              <td>{item.icdo3_synonym}</td>
               <td>(ICD-O-3)</td>
-              <td>{item.t}</td>
+              <td>{item.term_type}</td>
             </tr>
           ))}
       </tbody>

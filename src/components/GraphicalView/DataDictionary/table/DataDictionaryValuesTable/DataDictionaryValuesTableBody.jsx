@@ -16,15 +16,23 @@ class DataDictionaryValuesTableBody extends React.Component {
   async componentDidMount() {
     let values = [];
     let original_source = this.props.source.replace("_readonly","");
-    let rs = await apiGetPropertyValues(this.props.property + "/" + this.props.node + "/" + this.props.category + "/" + original_source);
+
+    // gdc.demographic.cause_of_death
+    let PropertyValuesID = original_source + "." + this.props.node + "." + this.props.property
+    let rs = await apiGetPropertyValues(PropertyValuesID);
+
+    // let rs = await apiGetPropertyValues(this.props.property + "/" + this.props.node + "/" + this.props.category + "/" + original_source);
     rs.forEach(function(item){
       let tmp = {};
-      tmp.name = item.n;
-      tmp.ncit = item.ncit ? item.ncit : [];
+      tmp.name = item.value_name;
+      tmp.ncit = item.value_ncit;
       tmp.syns = [];
       tmp.icdo = "";
-      if(item.icdo){
-        tmp.icdo = item.icdo.c;
+      // if(item.value_ncit?.length !== 0){
+      //   tmp.ncit = item.value_ncit[0].ncit_code;
+      // }
+      if(item.value_icdo3?.length !== 0){
+        tmp.icdo = item.value_icdo3[0].icdo3_code;
       }
       values.push(tmp);
     });

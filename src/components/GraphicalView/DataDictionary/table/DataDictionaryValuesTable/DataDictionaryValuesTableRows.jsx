@@ -26,16 +26,16 @@ class DataDictionaryValuesTableRows extends React.Component {
 
     let highlights = [];
 
-    if(this.props.highlights["enum.ncit.s.n"] || this.props.highlights["enum.ncit.s.n.have"]){
-        highlights = this.props.highlights["enum.ncit.s.n"] || this.props.highlights["enum.ncit.s.n.have"];
+    if(this.props.highlights["enum.value_ncit.ncit_synonyms.name"] || this.props.highlights["enum.value_ncit.ncit_synonyms.name.have"]){
+        highlights = this.props.highlights["enum.value_ncit.ncit_synonyms.name"] || this.props.highlights["enum.value_ncit.ncit_synonyms.name.have"];
     }
 
     const rows = this.props.syns.map((syn, index) => {
 
-      let ncit = "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + syn.c + "\">" + syn.c + "</a>";
+      let ncit = "<a target=\"_blank\" href=\"https://ncit.nci.nih.gov/ncitbrowser/pages/concept_details.jsf?dictionary=NCI_Thesaurus&code=" + syn.ncit_code + "\">" + syn.ncit_code + "</a>";
 
-      if(this.props.highlights["enum.ncit.c"] || this.props.highlights["enum.ncit.c.have"]){
-        let ncits = this.props.highlights["enum.ncit.c"] || this.props.highlights["enum.ncit.c.have"];
+      if(this.props.highlights["enum.value_ncit.ncit_code"] || this.props.highlights["enum.value_ncit.ncit_code.have"]){
+        let ncits = this.props.highlights["enum.value_ncit.ncit_code"] || this.props.highlights["enum.value_ncit.ncit_code.have"];
         ncits.forEach(function(nc){
           ncit = ncit.replace('>' + nc.replace(/<b>/g, '').replace(/<\/b>/g, '') + '<',  '>' + nc + '<');
         });
@@ -53,7 +53,7 @@ class DataDictionaryValuesTableRows extends React.Component {
             <td className="data-dictionary-property-table__data" dangerouslySetInnerHTML={{ __html: ncit }}>
             </td>
             <td className="data-dictionary-property-table__data">
-              <DataDictionarySynonymsTable label={syn.l} syns={syn.s} highlights={highlights}/>
+              <DataDictionarySynonymsTable label={syn.ncit_name} syns={syn.ncit_synonyms} highlights={highlights}/>
             </td>
           </tr>
         );
