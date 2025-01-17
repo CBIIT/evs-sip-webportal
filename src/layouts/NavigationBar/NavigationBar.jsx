@@ -123,7 +123,9 @@ const NavigationBar = () => {
               <a
                 href={`${baseServer}/auth/login`}
                 target="_self"
-                className="nav-link"
+                className="nav-link disabled"
+                style={{ display: 'none' }}
+                onClick={(e) => e.preventDefault()}
               >
                 Login
               </a>
