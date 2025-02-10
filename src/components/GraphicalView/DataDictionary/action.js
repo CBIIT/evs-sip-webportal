@@ -1,165 +1,102 @@
+import {
+  toggleGraphTableView,
+  updateGraphLayout,
+  updateGraphLegend,
+  updateHoveringNode,
+  updateCanvasBoundingRect,
+  updateRelatedHighlightingNode,
+  updateSecondHighlightingNodeCandidates,
+  updatePathRelatedToSecondHighlightingNode,
+  updateDataModelStructure,
+  updateOverlayPropertyTableHidden,
+  setCanvasResetRequired,
+  resetHighlight,
+  clickNodeAction,
+  setSearching,
+  updateSearchResult,
+  clearSearchHistory,
+  addSearchHistory,
+  updateGraphNodesSVGElements,
+  clearSearch,
+  saveSearchKeyword,
+  applyHighlightingMatchedNodeOpened,
+  saveAsCurrentProject,
+} from './reducers';
+
 export const initiateGraph = (graphType, dictionary) => ({
   type: "RECEIVE_DICTIONARY_" + graphType.toUpperCase(),
   graphType: graphType,
   dictionary: dictionary,
 });
 
-export const clickBlankSpace = (graphType) => ({
-  type: "GRAPH_CLICK_BLANK_SPACE",
-  graphType: graphType,
-});
+export const clickBlankSpace = (graphType) => 
+  resetHighlight({ graphType });
 
-export const setCanvasBoundingRect = (graphType, canvasBoundingRect) => ({
-  type: "GRAPH_UPDATE_CANVAS_BOUNDING_RECT",
-  graphType: graphType,
-  canvasBoundingRect: canvasBoundingRect,
-});
+export const setCanvasBoundingRect = (graphType, canvasBoundingRect) => 
+  updateCanvasBoundingRect({ graphType, canvasBoundingRect });
 
-export const setSecondHighlightingNodeCandidateIDs = (
-  graphType,
-  secondHighlightingNodeCandidateIDs
-) => ({
-  type: "GRAPH_UPDATE_SECOND_HIGHLIGHTING_NODE_CANDIDATES",
-  graphType: graphType,
-  secondHighlightingNodeCandidateIDs: secondHighlightingNodeCandidateIDs,
-});
+export const setSecondHighlightingNodeCandidateIDs = (graphType, secondHighlightingNodeCandidateIDs) => 
+  updateSecondHighlightingNodeCandidates({ graphType, secondHighlightingNodeCandidateIDs });
 
-export const setPathRelatedToSecondHighlightingNode = (
-  graphType,
-  pathRelatedToSecondHighlightingNode
-) => ({
-  type: "GRAPH_UPDATE_PATH_RELATED_TO_SECOND_HIGHLIGHTING_NODE",
-  graphType: graphType,
-  pathRelatedToSecondHighlightingNode: pathRelatedToSecondHighlightingNode,
-});
+export const setPathRelatedToSecondHighlightingNode = (graphType, pathRelatedToSecondHighlightingNode) => 
+  updatePathRelatedToSecondHighlightingNode({ graphType, pathRelatedToSecondHighlightingNode });
 
-export const setDataModelStructure = (
-  graphType,
-  dataModelStructure,
-  dataModelStructureRelatedNodeIDs,
-  routesBetweenStartEndNodes
-) => ({
-  type: "GRAPH_UPDATE_DATA_MODEL_STRUCTURE",
-  graphType: graphType,
-  dataModelStructure: dataModelStructure,
-  dataModelStructureRelatedNodeIDs: dataModelStructureRelatedNodeIDs,
-  routesBetweenStartEndNodes: routesBetweenStartEndNodes,
-});
+export const setDataModelStructure = (graphType, dataModelStructure, dataModelStructureRelatedNodeIDs, routesBetweenStartEndNodes) => 
+  updateDataModelStructure({ graphType, dataModelStructure, dataModelStructureRelatedNodeIDs, routesBetweenStartEndNodes });
 
-export const setRelatedNodeIDs = (graphType, relatedNodeIDs) => ({
-  type: "GRAPH_UPDATE_RELATED_HIGHLIGHTING_NODE",
-  graphType: graphType,
-  relatedNodeIDs: relatedNodeIDs,
-});
+export const setRelatedNodeIDs = (graphType, relatedNodeIDs) => 
+  updateRelatedHighlightingNode({ graphType, relatedNodeIDs });
 
-export const setGraphLayout = (graphType, layout) => ({
-  type: "GRAPH_LAYOUT_CALCULATED",
-  graphType: graphType,
-  nodes: layout.nodes,
-  edges: layout.edges,
-  graphBoundingBox: layout.graphBoundingBox,
-});
+export const setGraphLayout = (graphType, layout) => 
+  setGraphLayout({ graphType, ...layout });
 
-export const setGraphLegend = (graphType, legendItems) => ({
-  type: "GRAPH_LEGEND_CALCULATED",
-  graphType: graphType,
-  legendItems: legendItems,
-});
+export const setGraphLegend = (graphType, legendItems) => 
+  setGraphLegend({ graphType, legendItems });
 
-export const hoverNode = (graphType, nodeID) => ({
-  type: "GRAPH_UPDATE_HOVERING_NODE",
-  graphType: graphType,
-  nodeID: nodeID,
-});
+export const hoverNode = (graphType, nodeID) => 
+  updateHoveringNode({ graphType, nodeID });
 
-export const clickNode = (graphType, nodeID) => ({
-  type: "GRAPH_CLICK_NODE",
-  graphType: graphType,
-  nodeID: nodeID,
-});
+export const clickNode = (graphType, nodeID) => 
+  clickNodeAction({ graphType, nodeID });
 
-export const resetGraphHighlight = (graphType) => ({
-  type: "GRAPH_RESET_HIGHLIGHT",
-  graphType: graphType,
-});
+export const resetGraphHighlight = (graphType) => 
+  resetHighlight({ graphType });
 
-export const setOverlayPropertyTableHidden = (graphType, isHidden) => ({
-  type: "GRAPH_SET_OVERLAY_PROPERTY_TABLE_HIDDEN",
-  graphType: graphType,
-  isHidden: isHidden,
-});
+export const setOverlayPropertyTableHidden = (graphType, isHidden) => 
+  updateOverlayPropertyTableHidden({ graphType, isHidden });
 
-export const setExpandNode = (graphType, nodeID) => ({
-  type: "TABLE_EXPAND_NODE",
-  graphType: graphType,
-  nodeID: nodeID,
-});
+export const setExpandNode = (graphType, nodeID) => 
+  clickNode({ graphType, nodeID });
 
-export const setGraphView = (graphType, isGraphView) => ({
-  type: "TOGGLE_GRAPH_TABLE_VIEW",
-  graphType: graphType,
-  isGraphView: isGraphView,
-});
+export const setGraphView = (graphType, isGraphView) => 
+  toggleGraphTableView({ graphType, isGraphView });
 
-export const setNeedReset = (graphType, needReset) => ({
-  type: "GRAPH_CANVAS_RESET_REQUIRED",
-  graphType: graphType,
-  needReset: needReset,
-});
+export const setNeedReset = (graphType, needReset) => 
+  setCanvasResetRequired({ graphType, needReset });
 
-export const setIsSearching = (graphType, isSearching) => ({
-  type: "SEARCH_SET_IS_SEARCHING_STATUS",
-  graphType: graphType,
-  isSearching: isSearching,
-});
+export const setIsSearching = (graphType, isSearching) => 
+  setSearching({ graphType, isSearching });
 
-export const setSearchResult = (
-  graphType,
-  searchResult,
-  searchResultSummary
-) => ({
-  type: "SEARCH_RESULT_UPDATED",
-  graphType: graphType,
-  searchResult: searchResult,
-  searchResultSummary: searchResultSummary,
-});
+export const setSearchResult = (graphType, searchResult, searchResultSummary) => 
+  updateSearchResult({ graphType, searchResult, searchResultSummary });
 
-export const clearSearchHistoryItems = (graphType) => ({
-  type: "SEARCH_CLEAR_HISTORY",
-  graphType: graphType,
-});
+export const clearSearchHistoryItems = (graphType) => 
+  clearSearchHistory({ graphType });
 
-export const addSearchHistoryItem = (graphType, searchHistoryItem) => ({
-  type: "SEARCH_HISTORY_ITEM_CREATED",
-  graphType: graphType,
-  searchHistoryItem: searchHistoryItem,
-});
+export const addSearchHistoryItem = (graphType, searchHistoryItem) => 
+  addSearchHistory({ graphType, searchHistoryItem });
 
-export const setGraphNodesSVGElements = (graphType, graphNodesSVGElements) => ({
-  type: "GRAPH_NODES_SVG_ELEMENTS_UPDATED",
-  graphType: graphType,
-  graphNodesSVGElements: graphNodesSVGElements,
-});
+export const setGraphNodesSVGElements = (graphType, graphNodesSVGElements) => 
+  updateGraphNodesSVGElements({ graphType, graphNodesSVGElements });
 
-export const clearSearchResult = (graphType) => ({
-  type: "SEARCH_RESULT_CLEARED",
-  graphType: graphType,
-});
+export const clearSearchResult = (graphType) => 
+  clearSearch({ graphType });
 
-export const saveCurrentSearchKeyword = (graphType, keyword) => ({
-  type: "SEARCH_SAVE_CURRENT_KEYWORD",
-  graphType: graphType,
-  keyword: keyword,
-});
+export const saveCurrentSearchKeyword = (graphType, keyword) => 
+  saveSearchKeyword({ graphType, keyword });
 
-export const setHighlightingMatchedNodeOpened = (graphType, opened) => ({
-  type: "GRAPH_MATCHED_NODE_OPENED",
-  graphType: graphType,
-  opened: opened,
-});
+export const setHighlightingMatchedNodeOpened = (graphType, opened) => 
+  applyHighlightingMatchedNodeOpened({ graphType, opened });
 
-export const saveCurrentProject = (graphType, currentProject) => ({
-  type: "GRAPH_SAVE_CURRENT_PROJECT",
-  graphType: graphType,
-  currentProject: currentProject,
-});
+export const saveCurrentProject = (graphType, currentProject) => 
+  saveAsCurrentProject({ graphType, currentProject });

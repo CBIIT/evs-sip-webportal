@@ -1,5 +1,5 @@
 import styles from './GDCModel.module.css'
-import GraphicalView from '../../../components/GraphicalView'
+import GraphicalView from '../../../components/GraphicalView/GraphicalView'
 
 const GDCModel = () => {
   return (

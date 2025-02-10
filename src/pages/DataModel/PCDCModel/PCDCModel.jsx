@@ -1,5 +1,5 @@
 import styles from './PCDCModel.module.css'
-import GraphicalView from '../../../components/GraphicalView'
+import GraphicalView from '../../../components/GraphicalView/GraphicalView'
 
 const PCDCModel = () => {
   return (

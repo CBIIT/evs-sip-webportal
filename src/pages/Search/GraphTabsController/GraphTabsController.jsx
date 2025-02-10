@@ -1,6 +1,6 @@
 import styles from './GraphTabsController.module.css'
 import { Tab, Row, Col, Nav, Container } from 'react-bootstrap'
-import GraphicalView from '../../../components/GraphicalView'
+import GraphicalView from '../../../components/GraphicalView/GraphicalView'
 
 const GraphTabsController = (props) => {
   return (

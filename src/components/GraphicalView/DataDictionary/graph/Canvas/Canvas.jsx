@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { select } from 'd3-selection';
 import { transition } from 'd3-transition';
 import { easeLinear } from 'd3-ease';
 import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 import { CompressIcon, SearchMinusIcon, SearchPlusIcon } from '../../../../ui/icons/Icons';
-
+import { clickBlankSpace, setCanvasBoundingRect, setNeedReset } from '../../action';
 import './Canvas.css';
 
 const d3 = {
@@ -15,195 +16,226 @@ const d3 = {
   zoomIdentity,
   transition,
   easeLinear,
-  // event,
-  //get event() { return event; }, // https://stackoverflow.com/a/40048292
 };
 
-class Canvas extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      canvasWidth: 0,
-      canvasHeight: 0,
-    };
-    this.canvasElement = React.createRef();
-    this.svgElement = React.createRef();
-    this.containerElement = React.createRef();
-    this.transition = d3.transition()
+const Canvas = ({ 
+  graphType,
+  minZoom = 0.1,
+  maxZoom = 10,
+  topLeftTranslateLimit = [-Infinity, -Infinity],
+  bottomRightTranslateLimit = [+Infinity, +Infinity],
+  children 
+}) => {
+  const dispatch = useDispatch();
+  const isGraphView = useSelector(state => state.dataDictionary[graphType].isGraphView);
+  const needReset = useSelector(state => state.dataDictionary[graphType].needReset);
+
+  const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const canvasRef = useRef(null);
+  const svgRef = useRef(null);
+  const containerRef = useRef(null);
+  const zoomBehaviorRef = useRef(null);
+  const zoomTargetRef = useRef(null);
+  const zoomCatcherRef = useRef(null);
+
+  // Initialize zoom behavior
+  useEffect(() => {
+    const transition = d3.transition()
       .duration(150)
       .ease(d3.easeLinear);
-  }
 
-  componentDidMount() {
-    this.zoomBehavior = d3.zoom()
-      .scaleExtent([this.props.minZoom, this.props.maxZoom])
-      .translateExtent([this.props.topLeftTranslateLimit, this.props.bottomRightTranslateLimit])
+    zoomBehaviorRef.current = d3.zoom()
+      .scaleExtent([minZoom, maxZoom])
+      .translateExtent([topLeftTranslateLimit, bottomRightTranslateLimit])
       .on('zoom', (event) => {
-        this.handleCanvasUpdate();
-        this.zoomTarget
-          .attr('transform', event.transform);
+        handleCanvasUpdate();
+        zoomTargetRef.current.attr('transform', event.transform);
       });
-    this.zoomTarget = d3.select('#canvas__container_' + this.props.graphType);
-    this.zoomCatcher = d3.select('#canvas__overlay_' + this.props.graphType)
+
+    zoomTargetRef.current = d3.select(`#canvas__container_${graphType}`);
+    zoomCatcherRef.current = d3.select(`#canvas__overlay_${graphType}`)
       .style('fill', 'none')
       .style('pointer-events', 'all')
-      .call(this.zoomBehavior);
-    this.updateCanvasSize();
-    window.addEventListener('resize', this.handleResize);
-    window.addEventListener('scroll', this.handleCanvasUpdate);
-  }
+      .call(zoomBehaviorRef.current);
 
-  componentDidUpdate() {
-    if (this.props.needReset) {
-      this.handleReset();
-      this.props.onResetCanvasFinished();
+    updateCanvasSize();
+
+    // Event listeners
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('scroll', handleCanvasUpdate);
+
+    return () => {
+      d3.select(`#canvas__overlay_${graphType}`).on('.zoom', null);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('scroll', handleCanvasUpdate);
+    };
+  }, [graphType, minZoom, maxZoom, topLeftTranslateLimit, bottomRightTranslateLimit]);
+
+  // Handle needReset changes
+  useEffect(() => {
+    if (needReset) {
+      handleReset();
+      dispatch(setNeedReset(graphType, false));
     }
-  }
+  }, [needReset, graphType]);
 
-  componentWillUnmount() {
-    d3.select('#canvas__overlay_' + this.props.graphType)
-      .on('.zoom', null);
-    window.removeEventListener('resize', this.handleResize);
-    window.removeEventListener('scroll', this.handleCanvasUpdate);
-  }
-
-  handleResize = () => {
-    if (this.props.isGraphView) {
-      this.updateCanvasSize();
+  const handleResize = () => {
+    if (isGraphView) {
+      updateCanvasSize();
     }
-  }
+  };
 
-  updateCanvasSize() {
-    this.setState({
-      canvasWidth: this.canvasElement.current.clientWidth,
-      canvasHeight: this.canvasElement.current.clientHeight,
-    });
-    this.handleCanvasUpdate();
-  }
+  const updateCanvasSize = () => {
+    if (canvasRef.current) {
+      setCanvasSize({
+        width: canvasRef.current.clientWidth,
+        height: canvasRef.current.clientHeight,
+      });
+      handleCanvasUpdate();
+    }
+  };
 
-  handleCanvasUpdate = () => {
-    const canvasBoundingRect = this.canvasElement.current.getBoundingClientRect();
-    this.props.onCanvasBoundingBoxUpdate(canvasBoundingRect);
-  }
+  const handleCanvasUpdate = () => {
+    if (canvasRef.current) {
+      const canvasBoundingRect = canvasRef.current.getBoundingClientRect();
+      dispatch(setCanvasBoundingRect(graphType, canvasBoundingRect));
+    }
+  };
 
-  handleClick = () => {
-    this.props.onClickBlankSpace();
-  }
+  const handleClick = () => {
+    dispatch(clickBlankSpace(graphType));
+  };
 
-  zoomAction = (k) => {
-    const transform = d3.zoomTransform(this.zoomCatcher.node());
+  const zoomAction = (k) => {
+    if (!zoomCatcherRef.current) return;
 
-    // if zoomin (k>1), translate toward negative direction, if zoomout, toward positive
+    const transform = d3.zoomTransform(zoomCatcherRef.current.node());
     const translateSign = k > 1 ? -1 : +1;
 
-    this.zoomCatcher
+    zoomCatcherRef.current
       .transition()
       .call(
-        this.zoomBehavior.transform,
+        zoomBehaviorRef.current.transform,
         transform
           .translate(
-            translateSign * (this.state.canvasWidth / 2) * Math.abs(k - 1),
-            translateSign * (this.state.canvasHeight / 2) * Math.abs(k - 1),
+            translateSign * (canvasSize.width / 2) * Math.abs(k - 1),
+            translateSign * (canvasSize.height / 2) * Math.abs(k - 1),
           )
           .scale(k),
       );
-  }
+  };
 
-  handleZoomIn = () => {
-    this.zoomAction(1.2);
-  }
+  const handleZoomIn = () => {
+    zoomAction(1.2);
+  };
 
-  handleZoomOut = () => {
-    this.zoomAction(0.8);
-  }
+  const handleZoomOut = () => {
+    zoomAction(0.8);
+  };
 
-  handleReset = () => {
-    this.zoomCatcher
-      .transition()
-      .call(this.zoomBehavior.transform, d3.zoomIdentity);
-  }
+  const handleReset = () => {
+    if (zoomCatcherRef.current && zoomBehaviorRef.current) {
+      zoomCatcherRef.current
+        .transition()
+        .call(zoomBehaviorRef.current.transform, d3.zoomIdentity);
+    }
+  };
 
-  render() {
-    const containerID = "canvas__container_" + this.props.graphType;
-    const overlayID = "canvas__overlay_" + this.props.graphType;
-    const markerArrowID = "markerArrow_" + this.props.graphType;
-    return (
-      <div className='canvas' ref={this.canvasElement} style={{ height: '100%', width: 'calc(100% - 50px)' , marginLeft: '50px', border: '4px solid #1588ae', borderRadius: '15px', background: 'white'}}>
-        <div className='canvas__zoom-button-group'>
-          
-          <div
-            className='canvas__zoom-button canvas__zoom-button--zoom-in'
-            onClick={this.handleZoomIn}
-            onKeyPress={this.handleZoomIn}
-            role='button'
-            title='Zoom in' 
-            tabIndex={-1}
-          >
-            <SearchPlusIcon className='canvas-button-icon'/>
-          </div>
-          <div
-            className='canvas__zoom-button canvas__zoom-button--zoom-out'
-            onClick={this.handleZoomOut}
-            onKeyPress={this.handleZoomOut}
-            role='button'
-            title='Zoom out' 
-            tabIndex={-1}
-          >
-            <SearchMinusIcon className='canvas-button-icon'/>
-          </div>
-          <div
-            className='canvas__zoom-button canvas__zoom-button--reset'
-            onClick={this.handleReset}
-            onKeyPress={this.handleReset}
-            role='button'
-            title='Reset' 
-            tabIndex={-1}
-          >
-            <CompressIcon className='canvas-button-icon'/>
-          </div>
-        </div>
-        <svg
-          className='canvas__svg'
-          ref={this.svgElement}
-          width={this.state.canvasWidth}
-          height={this.state.canvasHeight}
-          xmlns="http://www.w3.org/2000/svg"
+  const containerID = `canvas__container_${graphType}`;
+  const overlayID = `canvas__overlay_${graphType}`;
+  const markerArrowID = `markerArrow_${graphType}`;
+
+  return (
+    <div 
+      className='canvas' 
+      ref={canvasRef} 
+      style={{ 
+        height: '100%', 
+        width: 'calc(100% - 50px)', 
+        marginLeft: '50px', 
+        border: '4px solid #1588ae', 
+        borderRadius: '15px', 
+        background: 'white'
+      }}
+    >
+      <div className='canvas__zoom-button-group'>
+        <div
+          className='canvas__zoom-button canvas__zoom-button--zoom-in'
+          onClick={handleZoomIn}
+          onKeyPress={handleZoomIn}
+          role='button'
+          title='Zoom in'
+          tabIndex={-1}
         >
-          <defs>
-            <marker id={markerArrowID} markerWidth="20" markerHeight="20" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L0,6 L9,3 z" fill="black" />
-            </marker>
-              </defs>
-  
-
-          <rect
-            
-            className='canvas__overlay'
-            id={overlayID}
-            width={this.state.canvasWidth}
-            height={this.state.canvasHeight}
-            onClick={this.handleClick}
-          />
-          <g
-            className='canvas__container' 
-            id={containerID} 
-            ref={this.containerElement}
-          >
-            {
-              React.Children.map(this.props.children, child => React.cloneElement(child, {
-                canvasWidth: this.state.canvasWidth,
-                canvasHeight: this.state.canvasHeight,
-              }),
-              )
-            }
-          </g>
-        </svg>
+          <SearchPlusIcon className='canvas-button-icon'/>
+        </div>
+        <div
+          className='canvas__zoom-button canvas__zoom-button--zoom-out'
+          onClick={handleZoomOut}
+          onKeyPress={handleZoomOut}
+          role='button'
+          title='Zoom out'
+          tabIndex={-1}
+        >
+          <SearchMinusIcon className='canvas-button-icon'/>
+        </div>
+        <div
+          className='canvas__zoom-button canvas__zoom-button--reset'
+          onClick={handleReset}
+          onKeyPress={handleReset}
+          role='button'
+          title='Reset'
+          tabIndex={-1}
+        >
+          <CompressIcon className='canvas-button-icon'/>
+        </div>
       </div>
-    );
-  }
-}
+      <svg
+        className='canvas__svg'
+        ref={svgRef}
+        width={canvasSize.width}
+        height={canvasSize.height}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <marker 
+            id={markerArrowID} 
+            markerWidth="20" 
+            markerHeight="20" 
+            refX="0" 
+            refY="3" 
+            orient="auto" 
+            markerUnits="strokeWidth"
+          >
+            <path d="M0,0 L0,6 L9,3 z" fill="black" />
+          </marker>
+        </defs>
+        <rect
+          className='canvas__overlay'
+          id={overlayID}
+          width={canvasSize.width}
+          height={canvasSize.height}
+          onClick={handleClick}
+        />
+        <g
+          className='canvas__container'
+          id={containerID}
+          ref={containerRef}
+        >
+          {React.Children.map(children, child => 
+            React.cloneElement(child, {
+              canvasWidth: canvasSize.width,
+              canvasHeight: canvasSize.height,
+            })
+          )}
+        </g>
+      </svg>
+    </div>
+  );
+};
 
 Canvas.propTypes = {
+  graphType: PropTypes.string.isRequired,
   minZoom: PropTypes.number,
   maxZoom: PropTypes.number,
   topLeftTranslateLimit: PropTypes.arrayOf(PropTypes.number),
@@ -212,25 +244,6 @@ Canvas.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]).isRequired,
-  onClickBlankSpace: PropTypes.func,
-  onCanvasBoundingBoxUpdate: PropTypes.func,
-  isGraphView: PropTypes.bool,
-  needReset: PropTypes.bool,
-  graphType: PropTypes.string,
-  onResetCanvasFinished: PropTypes.func,
-};
-
-Canvas.defaultProps = {
-  minZoom: 0.1,
-  maxZoom: 10,
-  topLeftTranslateLimit: [-Infinity, -Infinity],
-  bottomRightTranslateLimit: [+Infinity, +Infinity],
-  onClickBlankSpace: () => {},
-  onCanvasBoundingBoxUpdate: () => {},
-  isGraphView: true,
-  needReset: false,
-  graphType: "gdc",
-  onResetCanvasFinished: () => {},
 };
 
 export default Canvas;

@@ -1,5 +1,5 @@
 import styles from './ICDCModel.module.css'
-import GraphicalView from '../../../components/GraphicalView'
+import GraphicalView from '../../../components/GraphicalView/GraphicalView'
 
 const ICDCModel = () => {
   return (

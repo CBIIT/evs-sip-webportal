@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit';
+
 //import { combineReducers } from 'redux';
 
 //import ddgraph from './DataDictionary/reducers';
@@ -9,8 +11,8 @@ const excludeSystemProperties = (node) => {
     const properties = node.properties && Object.keys(node.properties)
         .filter(key => (node.systemProperties ? !node.systemProperties.includes(key) : true))
         .reduce((acc, key) => {
-        acc[key] = node.properties[key];
-        return acc;
+            acc[key] = node.properties[key];
+            return acc;
         }, {});
     return properties;
 };
@@ -18,58 +20,72 @@ const excludeSystemProperties = (node) => {
 const getDictionaryWithExcludeSystemProperties = (dictionary) => {
     const ret = Object.keys(dictionary)
         .map((nodeID) => {
-        const node = dictionary[nodeID];
-        if (!node.properties) return node;
-        return {
-            ...node,
-            properties: excludeSystemProperties(node),
-        };
+            const node = dictionary[nodeID];
+            if (!node.properties) return node;
+            return {
+                ...node,
+                properties: excludeSystemProperties(node),
+            };
         })
         .reduce((acc, node) => {
-        acc[node.id] = node;
-        return acc;
+            acc[node.id] = node;
+            return acc;
         }, {});
     return ret;
 };
 
-const submission = (state = {}, action) => {
-  switch (action.type) {
-  case 'RECEIVE_DICTIONARY_GDC':
-    return { ...state,
-      dictionary_gdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_ICDC':
-    return { ...state,
-      dictionary_icdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_CTDC':
-    return { ...state,
-      dictionary_ctdc: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_PCDC':
-    return { ...state,
-      dictionary_pcdc: action.dictionary,
-    };
-  case 'RECEIVE_DICTIONARY_GDC_READONLY':
-    return { ...state,
-      dictionary_gdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_ICDC_READONLY':
-    return { ...state,
-      dictionary_icdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_CTDC_READONLY':
-    return { ...state,
-      dictionary_ctdc_readonly: getDictionaryWithExcludeSystemProperties(action.dictionary),
-    };
-  case 'RECEIVE_DICTIONARY_PCDC_READONLY':
-    return { ...state,
-      dictionary_pcdc_readonly: action.dictionary,
-    };
-  default:
-    return state;
-  }
+const initialState = {
+    dictionary_gdc: null,
+    dictionary_icdc: null,
+    dictionary_ctdc: null,
+    dictionary_pcdc: null,
+    dictionary_gdc_readonly: null,
+    dictionary_icdc_readonly: null,
+    dictionary_ctdc_readonly: null,
+    dictionary_pcdc_readonly: null,
 };
 
-export default submission;
+const dictionarySlice = createSlice({
+    name: 'dictionary',
+    initialState,
+    reducers: {
+        receiveDictionaryGDC: (state, action) => {
+            state.dictionary_gdc = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryICDC: (state, action) => {
+            state.dictionary_icdc = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryCTDC: (state, action) => {
+            state.dictionary_ctdc = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryPCDC: (state, action) => {
+            state.dictionary_pcdc = action.payload;
+        },
+        receiveDictionaryGDCReadonly: (state, action) => {
+            state.dictionary_gdc_readonly = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryICDCReadonly: (state, action) => {
+            state.dictionary_icdc_readonly = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryCTDCReadonly: (state, action) => {
+            state.dictionary_ctdc_readonly = getDictionaryWithExcludeSystemProperties(action.payload);
+        },
+        receiveDictionaryPCDCReadonly: (state, action) => {
+            state.dictionary_pcdc_readonly = action.payload;
+        },
+    },
+});
+
+export const {
+    receiveDictionaryGDC,
+    receiveDictionaryICDC,
+    receiveDictionaryCTDC,
+    receiveDictionaryPCDC,
+    receiveDictionaryGDCReadonly,
+    receiveDictionaryICDCReadonly,
+    receiveDictionaryCTDCReadonly,
+    receiveDictionaryPCDCReadonly,
+} = dictionarySlice.actions;
+
+export default dictionarySlice.reducer;
 

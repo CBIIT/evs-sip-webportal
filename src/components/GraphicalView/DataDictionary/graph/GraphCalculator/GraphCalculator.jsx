@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getAllTypes,
   calculateGraphLayout,
@@ -7,112 +8,37 @@ import {
   calculateHighlightRelatedNodeIDs,
   calculateDataModelStructure,
 } from './graphCalculatorHelper';
+import {
+  setGraphLayout,
+  setGraphLegend,
+  setRelatedNodeIDs,
+  setSecondHighlightingNodeCandidateIDs,
+  setPathRelatedToSecondHighlightingNode,
+  setDataModelStructure,
+  resetGraphHighlight,
+} from '../../action';
 
-class GraphCalculator extends React.Component {
-  constructor(props) {
-    super(props);
-    this.oldHighlightingNode = null;
-    this.oldSecondHighlightingNodeID = null;
-  }
+const GraphCalculator = ({ graphType }) => {
+  const dispatch = useDispatch();
+  const oldHighlightingNodeRef = useRef(null);
+  const oldSecondHighlightingNodeIDRef = useRef(null);
 
-  componentDidMount() {
-    if (!this.props.layoutInitialized) {
-      calculateGraphLayout(
-        this.props.dictionary,
-        this.props.countsSearch,
-        this.props.linksSearch,
-        this.props.graphType,
-      ).then((layoutResult) => {
-        this.props.onGraphLayoutCalculated(layoutResult);
-        const legendItems = getAllTypes(layoutResult.nodes);
-        this.props.onGraphLegendCalculated(legendItems);
-      });
-    }
-  }
+  // Select state from Redux store
+  const dictionary = useSelector(state => state.dictionary[`dictionary_${graphType}`]);
+  const countsSearch = useSelector(state => state.dictionary.counts_search);
+  const linksSearch = useSelector(state => state.dictionary.links_search);
+  const highlightingNode = useSelector(state => state.dataDictionary[graphType].highlightingNode);
+  const nodes = useSelector(state => state.dataDictionary[graphType].nodes);
+  const edges = useSelector(state => state.dataDictionary[graphType].edges);
+  const secondHighlightingNodeID = useSelector(state => state.dataDictionary[graphType].secondHighlightingNodeID);
+  const layoutInitialized = useSelector(state => state.dataDictionary[graphType].layoutInitialized);
 
-  componentDidUpdate(prevProps) {
-    // check if need update all node's svg elements
-    // this only happens once, at the first time graph is rendered
-    if(this.props.graphType.indexOf("pcdc") === 0 && prevProps.dictionary){
-      const prevNodes = Object.keys(prevProps.dictionary);
-      const currentNodes = Object.keys(this.props.dictionary);
-      if(prevNodes.length !== currentNodes.length 
-        || prevProps.dictionary[prevNodes[0]].category !== this.props.dictionary[currentNodes[0]].category){
-          calculateGraphLayout(
-            this.props.dictionary,
-            this.props.countsSearch,
-            this.props.linksSearch,
-            this.props.graphType,
-          ).then((layoutResult) => {
-            this.props.onGraphLayoutCalculated(layoutResult);
-            const legendItems = getAllTypes(layoutResult.nodes);
-            this.props.onGraphLegendCalculated(legendItems);
-            this.props.onClearGraphHighlight(this.props.graphType);
-          });
-      }
-    }
-    
-  }
-
-  componentWillUpdate(nextProps) {
-    // if the highlighted node is updated, calculate related highlighted nodes
-    const newHighlightingNode = nextProps.highlightingNode;
-    const newSecondHighlightingNodeID = nextProps.secondHighlightingNodeID;
-    if (this.oldHighlightingNode !== newHighlightingNode) {
-      const relatedHighlightedNodeIDs = calculateHighlightRelatedNodeIDs(
-        newHighlightingNode,
-        this.props.nodes,
-      );
-      this.props.onHighlightRelatedNodesCalculated(relatedHighlightedNodeIDs);
-      const secondHighlightingNodeCandidateIDs = newHighlightingNode
-        ? newHighlightingNode.outLinks : [];
-      this.props.onSecondHighlightingNodeCandidateIDsCalculated(secondHighlightingNodeCandidateIDs);
-    }
-
-    // if the second highlighting node is updated, calculate related highlighting nodes
-    if (this.oldSecondHighlightingNodeID !== newSecondHighlightingNodeID) {
-      const pathRelatedToSecondHighlightingNode = calculatePathRelatedToSecondHighlightingNode(
-        newHighlightingNode,
-        newSecondHighlightingNodeID,
-        this.props.nodes,
-      );
-      this.props.onPathRelatedToSecondHighlightingNodeCalculated(
-        pathRelatedToSecondHighlightingNode);
-    }
-
-    // update data model structure if update highlighting/secondHighlighting node
-    if (this.oldHighlightingNode !== newHighlightingNode
-      || this.oldSecondHighlightingNodeID !== newSecondHighlightingNodeID
-    ) {
-      if (newSecondHighlightingNodeID) {
-        const {
-          dataModelStructure,
-          dataModelStructureRelatedNodeIDs,
-          routesBetweenStartEndNodes,
-        } = this.getDataModelStructureForSecondHighlightingNodes(
-          newHighlightingNode,
-          newSecondHighlightingNodeID,
-        );
-        this.props.onDataModelStructureCalculated(
-          dataModelStructure,
-          dataModelStructureRelatedNodeIDs,
-          routesBetweenStartEndNodes,
-        );
-      } else {
-        this.props.onDataModelStructureCalculated(null);
-      }
-    }
-
-    this.oldHighlightingNode = newHighlightingNode;
-    this.oldSecondHighlightingNodeID = newSecondHighlightingNodeID;
-  }
-
-  getDataModelStructureForHighlightedNodes(newHighlightingNode) {
+  const getDataModelStructureForHighlightedNodes = (newHighlightingNode) => {
     const relatedHighlightedNodeIDs = calculateHighlightRelatedNodeIDs(
       newHighlightingNode,
-      this.props.nodes,
+      nodes,
     );
-    const subgraphEdges = this.props.edges
+    const subgraphEdges = edges
       .filter(e => (relatedHighlightedNodeIDs.includes(e.source)
         && relatedHighlightedNodeIDs.includes(e.target)))
       .map(e => ({ source: e.source, target: e.target }));
@@ -123,24 +49,24 @@ class GraphCalculator extends React.Component {
       newHighlightingNode,
       relatedHighlightedNodeIDs,
       subgraphEdges,
-      this.props.nodes,
+      nodes,
     );
     return {
       dataModelStructure,
       dataModelStructureRelatedNodeIDs: relatedHighlightedNodeIDs,
       routesBetweenStartEndNodes,
     };
-  }
+  };
 
-  getDataModelStructureForSecondHighlightingNodes(
+  const getDataModelStructureForSecondHighlightingNodes = (
     newHighlightingNode,
     newSecondHighlightingNodeID,
-  ) {
+  ) => {
     const subgraphNodeIDs = [];
     const pathRelatedToSecondHighlightingNode = calculatePathRelatedToSecondHighlightingNode(
       newHighlightingNode,
       newSecondHighlightingNodeID,
-      this.props.nodes,
+      nodes,
     );
     pathRelatedToSecondHighlightingNode.forEach((e) => {
       if (!subgraphNodeIDs.includes(e.source)) subgraphNodeIDs.push(e.source);
@@ -153,56 +79,105 @@ class GraphCalculator extends React.Component {
       newHighlightingNode,
       subgraphNodeIDs,
       pathRelatedToSecondHighlightingNode,
-      this.props.nodes,
+      nodes,
     );
     return {
       dataModelStructure,
       dataModelStructureRelatedNodeIDs: subgraphNodeIDs,
       routesBetweenStartEndNodes,
     };
-  }
+  };
 
-  render() {
-    return (<React.Fragment />);
-  }
-}
+  // Initial layout calculation
+  useEffect(() => {
+    if (!layoutInitialized) {
+      calculateGraphLayout(
+        dictionary,
+        countsSearch,
+        linksSearch,
+        graphType,
+      ).then((layoutResult) => {
+        dispatch(setGraphLayout(graphType, layoutResult));
+        const legendItems = getAllTypes(layoutResult.nodes);
+        dispatch(setGraphLegend(graphType, legendItems));
+      });
+    }
+  }, [layoutInitialized, dictionary, countsSearch, linksSearch, graphType, dispatch]);
 
-GraphCalculator.propTypes = {
-  graphType:PropTypes.string,
-  dictionary: PropTypes.object,
-  countsSearch: PropTypes.array,
-  linksSearch: PropTypes.array,
-  onGraphLayoutCalculated: PropTypes.func,
-  onGraphLegendCalculated: PropTypes.func,
-  nodes: PropTypes.arrayOf(PropTypes.object),
-  edges: PropTypes.arrayOf(PropTypes.object),
-  highlightingNode: PropTypes.object,
-  onHighlightRelatedNodesCalculated: PropTypes.func,
-  onSecondHighlightingNodeCandidateIDsCalculated: PropTypes.func,
-  secondHighlightingNodeID: PropTypes.string,
-  onPathRelatedToSecondHighlightingNodeCalculated: PropTypes.func,
-  onDataModelStructureCalculated: PropTypes.func,
-  layoutInitialized: PropTypes.bool,
-  onClearGraphHighlight: PropTypes.func,
+  // Handle PCDC dictionary updates
+  useEffect(() => {
+    if (graphType.indexOf("pcdc") === 0 && dictionary) {
+      const currentNodes = Object.keys(dictionary);
+      if (currentNodes.length > 0) {
+        calculateGraphLayout(
+          dictionary,
+          countsSearch,
+          linksSearch,
+          graphType,
+        ).then((layoutResult) => {
+          dispatch(setGraphLayout(graphType, layoutResult));
+          const legendItems = getAllTypes(layoutResult.nodes);
+          dispatch(setGraphLegend(graphType, legendItems));
+          dispatch(resetGraphHighlight(graphType));
+        });
+      }
+    }
+  }, [dictionary, graphType, countsSearch, linksSearch, dispatch]);
+
+  // Handle highlighting node updates
+  useEffect(() => {
+    if (oldHighlightingNodeRef.current !== highlightingNode) {
+      const relatedHighlightedNodeIDs = calculateHighlightRelatedNodeIDs(
+        highlightingNode,
+        nodes,
+      );
+      dispatch(setRelatedNodeIDs(graphType, relatedHighlightedNodeIDs));
+      const secondHighlightingNodeCandidateIDs = highlightingNode
+        ? highlightingNode.outLinks : [];
+      dispatch(setSecondHighlightingNodeCandidateIDs(graphType, secondHighlightingNodeCandidateIDs));
+    }
+
+    if (oldSecondHighlightingNodeIDRef.current !== secondHighlightingNodeID) {
+      const pathRelatedToSecondHighlightingNode = calculatePathRelatedToSecondHighlightingNode(
+        highlightingNode,
+        secondHighlightingNodeID,
+        nodes,
+      );
+      dispatch(setPathRelatedToSecondHighlightingNode(graphType, pathRelatedToSecondHighlightingNode));
+    }
+
+    if (oldHighlightingNodeRef.current !== highlightingNode
+      || oldSecondHighlightingNodeIDRef.current !== secondHighlightingNodeID
+    ) {
+      if (secondHighlightingNodeID) {
+        const {
+          dataModelStructure,
+          dataModelStructureRelatedNodeIDs,
+          routesBetweenStartEndNodes,
+        } = getDataModelStructureForSecondHighlightingNodes(
+          highlightingNode,
+          secondHighlightingNodeID,
+        );
+        dispatch(setDataModelStructure(
+          graphType,
+          dataModelStructure,
+          dataModelStructureRelatedNodeIDs,
+          routesBetweenStartEndNodes,
+        ));
+      } else {
+        dispatch(setDataModelStructure(graphType, null));
+      }
+    }
+
+    oldHighlightingNodeRef.current = highlightingNode;
+    oldSecondHighlightingNodeIDRef.current = secondHighlightingNodeID;
+  }, [highlightingNode, secondHighlightingNodeID, nodes, graphType, dispatch]);
+
+  return null;
 };
 
-GraphCalculator.defaultProps = {
-  graphType: "gdc",
-  dictionary: {},
-  countsSearch: [],
-  linksSearch: [],
-  onGraphLayoutCalculated: () => {},
-  onGraphLegendCalculated: () => {},
-  highlightingNode: null,
-  nodes: [],
-  edges: [],
-  onHighlightRelatedNodesCalculated: () => {},
-  secondHighlightingNodeID: null,
-  onSecondHighlightingNodeCandidateIDsCalculated: () => {},
-  onPathRelatedToSecondHighlightingNodeCalculated: () => {},
-  onDataModelStructureCalculated: () => {},
-  layoutInitialized: false,
-  onClearGraphHighlight: () => {},
+GraphCalculator.propTypes = {
+  graphType: PropTypes.string.isRequired,
 };
 
 export default GraphCalculator;
