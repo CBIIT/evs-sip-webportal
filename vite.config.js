@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite'
+import dotenv from 'dotenv'
 import react from '@vitejs/plugin-react'
 import eslint from 'vite-plugin-eslint'
 
-// import basicSsl from '@vitejs/plugin-basic-ssl'
+// Load environment variables from .env file
+dotenv.config()
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), eslint()],
-  base: `/evssip`,
+  base: process.env.VITE_EVSSIP_BASENAME || '/',
   build: {
-    outDir: './build',
     rollupOptions: {
       input: {
         main: './index.html',
@@ -22,28 +23,6 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.js'],
     globals: true,
   },
-  // server: {
-  //   port: 443,
-  //   host: 'sip-dev.semantics.cancer.gov',
-  //   // https: true
-  //   proxy: {
-  //     '/evssip/api/': {
-  //       target: 'http://localhost:3000',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/evssip/, ''),
-  //     },
-  //     '/evssip/service/search/': {
-  //       target: 'http://localhost:3000',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/evssip/, ''),
-  //     },
-  //     '/evssip/auth/': {
-  //       target: 'http://localhost:3000',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/evssip/, ''),
-  //     },
-  //   },
-  // },
   resolve: {
     alias: [
       { find: '@', replacement: new URL('src/', import.meta.url).pathname },

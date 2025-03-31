@@ -38,9 +38,12 @@ const UserManagement = lazy(
 )
 const NotFound = lazy(() => import('@/pages/NotFound/NotFound'))
 
+// basename
+const baseName = import.meta.env.VITE_EVSSIP_BASENAME || '/'
+
 const App = () => {
   return (
-    <BrowserRouter basename={'/evssip'}>
+    <BrowserRouter basename={baseName}>
       <div id="main" className={styles.main}>
         <Header />
         <NavigationBar />

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import styles from './TableDiff.module.css'
+import styles from './TabController.module.css'
 import { Tab, Row, Col, Nav } from 'react-bootstrap'
 import TableDiff from '../TableDiff/TableDiff'
 import PaginationController from '../PaginationController/PaginationController'
