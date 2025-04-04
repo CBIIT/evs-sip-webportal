@@ -3,7 +3,10 @@ version: '3.8'
 services:
   frontend:
     build: .
-    container_name: evssip-webportal
+    container_name: evs-sip-webportal
+    image: evs-sip-webportal-image:latest
+    # volumes: 
+    #   - ${PWD}/logs/:/deploy/logs/
     ports:
-      - "3000:80"  # Map Nginx port 80 to localhost:3000
+      - "3000:80"  # Map Apache port 80 to localhost:3000
     restart: always
