@@ -1,7 +1,5 @@
-export const baseUrl =
-  import.meta.env.VITE_EVSSIP_SEARCH || 'http://localhost:3000/service/search'
-export const baseServer =
-  import.meta.env.VITE_EVSSIP_SERVER || 'http://localhost:3000'
+export const baseUrl = import.meta.env.VITE_EVSSIP_SEARCH || './service/search'
+export const baseServer = import.meta.env.VITE_EVSSIP_SERVER || '.'
 
 export const apiSuggest = async (keyword) => {
   const encodedKeyword = keyword
