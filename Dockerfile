@@ -1,46 +1,38 @@
 # Stage 1: Build React App with Vite
-# Use an alpine variant for smaller image size
-FROM node:18-alpine AS builder
+FROM node:18 AS builder
 
 # Set working directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json (or yarn.lock)
-# Copy these first to leverage Docker cache
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY ./package*.json ./
 
-# Install dependencies using npm ci for faster, more reliable builds
-# If you don't have a package-lock.json, use 'npm install'
-RUN npm install
-
-# Copy the rest of the application source code
+# Copy the entire project into the container
 COPY . .
 
+# Install dependencies
+RUN npm install
+
 # Build the React app
-# Vite typically outputs to './dist', verify this matches your project setup
 RUN npm run build
 
-# Stage 2: Serve static files with Apache HTTP Server (httpd)
-FROM httpd:alpine
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
 
-# Set Apache's document root as working directory
-WORKDIR /usr/local/apache2/htdocs/
+# Set working directory inside Nginx
+WORKDIR /usr/share/nginx/html
 
-# Remove default index.html
-RUN rm -f index.html
+# Remove default Nginx static files
+RUN rm -rf ./*
 
-# Copy built assets from the builder stage's 'dist' directory
-# Ensure '/app/dist' matches the output directory from the build stage
-COPY --from=builder /app/dist .
+# Copy the built files from the previous stage
+COPY --from=builder /usr/src/app/build .
 
-# Copy a custom httpd.conf file to handle SPA routing and logging
-# This configuration ensures that requests to non-existent files/paths
-# are redirected to /index.html for React Router to handle.
-# COPY my-httpd.conf /usr/local/apache2/conf/httpd.conf
+# Copy custom Nginx configuration
+# COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80 (standard HTTP port)
+# Expose port 80
 EXPOSE 80
 
-# Start Apache in the foreground
-# httpd-foreground runs Apache and keeps the container running
-CMD ["httpd-foreground"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"] 
