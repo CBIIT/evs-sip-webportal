@@ -19,12 +19,12 @@ const GraphicalView = ({ type: graphType, keyword, source }) => {
 GraphicalView.propTypes = {
   type: PropTypes.string.isRequired,
   keyword: PropTypes.string,
-  source: PropTypes.object,
+  source: PropTypes.array,
 };
 
 GraphicalView.defaultProps = {
   keyword: "",
-  source: null,
+  source: [],
 };
 
 export default GraphicalView;

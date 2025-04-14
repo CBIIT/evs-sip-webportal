@@ -48,10 +48,10 @@ export const setRelatedNodeIDs = (graphType, relatedNodeIDs) =>
   updateRelatedHighlightingNode({ graphType, relatedNodeIDs });
 
 export const setGraphLayout = (graphType, layout) => 
-  setGraphLayout({ graphType, ...layout });
+  updateGraphLayout({ graphType, ...layout });
 
 export const setGraphLegend = (graphType, legendItems) => 
-  setGraphLegend({ graphType, legendItems });
+  updateGraphLegend({ graphType, legendItems });
 
 export const hoverNode = (graphType, nodeID) => 
   updateHoveringNode({ graphType, nodeID });

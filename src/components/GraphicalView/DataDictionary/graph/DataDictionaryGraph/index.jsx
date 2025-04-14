@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import GraphCalculator from '../GraphCalculator/GraphCalculator';
 import Legend from '../Legend/Legend';
 import Canvas from '../Canvas/Canvas';
-import ReduxGraphDrawer from '../GraphDrawer/.';
-import ReduxNodeTooltip from '../NodeTooltip/.';
-import ReduxNodePopup from '../NodePopup/.';
-import ReduxOverlayPropertyTable from '../OverlayPropertyTable/.';
-import ReduxActionLayer from '../ActionLayer/.';
+import GraphDrawer from '../GraphDrawer/GraphDrawer';
+import NodeTooltip from '../NodeTooltip/NodeTooltip';
+import NodePopup from '../NodePopup/NodePopup';
+import OverlayPropertyTable from '../OverlayPropertyTable/OverlayPropertyTable';
+import ActionLayer from '../ActionLayer/ActionLayer';
 
 const DataDictionaryGraph = ({ graphType, source, onClearSearchResult }) => {
   return (
@@ -15,24 +15,24 @@ const DataDictionaryGraph = ({ graphType, source, onClearSearchResult }) => {
       <GraphCalculator graphType={graphType} />
       <Legend graphType={graphType} source={source} />
       <Canvas graphType={graphType}>
-        <ReduxGraphDrawer graphType={graphType} />
+        <GraphDrawer graphType={graphType} />
       </Canvas>
-      <ReduxNodeTooltip graphType={graphType} />
-      <ReduxNodePopup graphType={graphType} />
-      <ReduxOverlayPropertyTable graphType={graphType} />
-      <ReduxActionLayer graphType={graphType} />
+      <NodeTooltip graphType={graphType} />
+      <NodePopup graphType={graphType} />
+      <OverlayPropertyTable graphType={graphType} />
+      <ActionLayer graphType={graphType} />
     </>
   );
 };
 
 DataDictionaryGraph.propTypes = {
   graphType: PropTypes.string.isRequired,
-  source: PropTypes.object,
+  source: PropTypes.array,
   onClearSearchResult: PropTypes.func,
 };
 
 DataDictionaryGraph.defaultProps = {
-  source: null,
+  source: [],
   onClearSearchResult: () => {},
 };
 

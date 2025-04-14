@@ -15,8 +15,8 @@ const ReduxGraphCalculator = ({ graphType }) => {
   const dispatch = useDispatch();
   
   const dictionary = useSelector(state => state.dictionary[`dictionary_${graphType}`]);
-  const countsSearch = useSelector(state => state.dictionary.counts_search);
-  const linksSearch = useSelector(state => state.dictionary.links_search);
+  const countsSearch = useSelector(state => state.dictionary.counts_search ?? []);
+  const linksSearch = useSelector(state => state.dictionary.links_search ?? []);
   const highlightingNode = useSelector(state => state.dataDictionary[graphType].highlightingNode);
   const nodes = useSelector(state => state.dataDictionary[graphType].nodes);
   const edges = useSelector(state => state.dataDictionary[graphType].edges);

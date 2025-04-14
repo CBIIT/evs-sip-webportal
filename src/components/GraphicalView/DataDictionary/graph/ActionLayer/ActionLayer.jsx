@@ -1,34 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import './ActionLayer.css';
 
 /**
-* A layer over the graph.
-* Put action buttons here.
-*/
-class ActionLayer extends React.Component {
-  handleClearSearch = () => {
-    this.props.onClearSearchResult();
-  }
+ * A layer over the graph using modern React and Redux Toolkit patterns.
+ * Put action buttons here.
+ */
+const ActionLayer = ({ graphType }) => {
+  // Get state directly from Redux store with hooks
+  const isSearchMode = useSelector(state => state.dataDictionary[graphType].isSearchMode);
+  const matchedResult = useSelector(state => state.dataDictionary[graphType].searchResult);
 
-  render() {
-    const found_match = Object.keys(this.props.matchedResult).length === 0 && this.props.graphType.indexOf('readonly') === -1;
-    return (
-      <div className={found_match ? 'action-layer__empty' : 'action-layer'}>
-        {found_match? "Sorry, no results found." : ""}
-      </div>
-    );
-  }
-}
-
-ActionLayer.propTypes = {
-  isSearchMode: PropTypes.bool,
-  onClearSearchResult: PropTypes.func,
-};
-
-ActionLayer.defaultProps = {
-  isSearchMode: false,
-  onClearSearchResult: () => {},
+  const found_match = Object.keys(matchedResult).length === 0 && graphType.indexOf('readonly') === -1;
+  
+  return (
+    <div className={found_match ? 'action-layer__empty' : 'action-layer'}>
+      {found_match ? "Sorry, no results found." : ""}
+    </div>
+  );
 };
 
 export default ActionLayer;

@@ -152,7 +152,7 @@ const Legend = ({ graphType, source }) => {
 
 Legend.propTypes = {
   graphType: PropTypes.string.isRequired,
-  source: PropTypes.object,
+  source: PropTypes.array,
 };
 
 Legend.defaultProps = {

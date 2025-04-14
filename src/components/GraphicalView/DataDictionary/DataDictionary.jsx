@@ -143,7 +143,7 @@ DataDictionary.propTypes = {
   isGraphView: PropTypes.bool,
   graphType: PropTypes.string,
   keyword: PropTypes.string,
-  source: PropTypes.object,
+  source: PropTypes.array,
   dictionary: PropTypes.object,
 };
 

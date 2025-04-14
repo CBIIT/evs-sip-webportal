@@ -1,238 +1,194 @@
-import React from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import GraphNode from '../GraphNode/GraphNode';
 import GraphEdge from '../GraphEdge/GraphEdge';
+import {
+  hoverNode,
+  clickNode,
+  setGraphNodesSVGElements,
+} from '../../action';
 import './GraphDrawer.css';
 
-class GraphDrawer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.graphDomRef = React.createRef();
-    this.graphNodeRefs = [];
-    this.nodeSVGElementInitialized = false;
+const GraphDrawer = ({ graphType }) => {
+  const dispatch = useDispatch();
+
+  // Select state from Redux store
+  const nodes = useSelector(state => state.dataDictionary[graphType].nodes);
+  const edges = useSelector(state => state.dataDictionary[graphType].edges);
+  const graphBoundingBox = useSelector(state => state.dataDictionary[graphType].graphBoundingBox);
+  const layoutInitialized = useSelector(state => state.dataDictionary[graphType].layoutInitialized);
+  const highlightingNode = useSelector(state => state.dataDictionary[graphType].highlightingNode);
+  const relatedNodeIDs = useSelector(state => state.dataDictionary[graphType].relatedNodeIDs);
+  const secondHighlightingNodeID = useSelector(state => state.dataDictionary[graphType].secondHighlightingNodeID);
+  const secondHighlightingNodeCandidateIDs = useSelector(state => state.dataDictionary[graphType].secondHighlightingNodeCandidateIDs);
+  const pathRelatedToSecondHighlightingNode = useSelector(state => state.dataDictionary[graphType].pathRelatedToSecondHighlightingNode);
+  const isGraphView = useSelector(state => state.dataDictionary[graphType].isGraphView);
+  const isSearchMode = useSelector(state => state.dataDictionary[graphType].isSearchMode);
+  const matchedNodeIDs = useSelector(state => state.dataDictionary[graphType].matchedNodeIDs);
+  const matchedNodeIDsInNameAndDescription = useSelector(state => state.dataDictionary[graphType].matchedNodeIDsInNameAndDescription);
+  const searchResult = useSelector(state => state.dataDictionary[graphType].searchResult);
+  const canvasWidth = useSelector(state => state.dataDictionary[graphType].canvasWidth);
+  const canvasHeight = useSelector(state => state.dataDictionary[graphType].canvasHeight);
+
+  const graphDomRef = useRef();
+  const graphNodeRefs = useRef({});
+  const nodeSVGElementInitialized = useRef(false);
+
+  const getNodeRef = useCallback((nodeID) => {
+    if (!graphNodeRefs.current[nodeID]) {
+      graphNodeRefs.current[nodeID] = React.createRef();
+    }
+    return graphNodeRefs.current[nodeID];
+  }, []);
+
+  useEffect(() => {
+    if (isGraphView && layoutInitialized && !nodeSVGElementInitialized.current) {
+      const graphNodesSVGElements = nodes.reduce((acc, node) => ({
+        ...acc,
+        [node.id]: getNodeRef(node.id).current?.getSVGElement(),
+      }), {});
+      
+      nodeSVGElementInitialized.current = true;
+      dispatch(setGraphNodesSVGElements(graphType, graphNodesSVGElements));
+    }
+  }, [isGraphView, layoutInitialized, nodes, dispatch, graphType, getNodeRef]);
+
+  const onMouseOverNode = useCallback((node) => {
+    dispatch(hoverNode(graphType, node.id));
+  }, [dispatch, graphType]);
+
+  const onMouseOutNode = useCallback(() => {
+    dispatch(hoverNode(graphType, null));
+  }, [dispatch, graphType]);
+
+  const onClickNode = useCallback((node) => {
+    dispatch(clickNode(graphType, node.id));
+  }, [dispatch, graphType]);
+
+  if (!layoutInitialized) return null;
+
+  const boundingBoxLength = graphBoundingBox[2][0];
+  let fittingScale = Math.min(canvasWidth, canvasHeight) / boundingBoxLength;
+  if(graphType.indexOf('pcdc') === 0){
+    fittingScale = fittingScale * 0.8;
   }
+  const fittingTransX = Math.abs(
+    (boundingBoxLength - (canvasWidth / fittingScale)) / 2,
+  );
+  const fittingTransY = Math.abs(
+    (boundingBoxLength - (canvasHeight / fittingScale)) / 2,
+  );
+  if (isNaN(fittingTransX) || isNaN(fittingTransY) || isNaN(fittingScale)) return <g />;
 
-  componentDidUpdate(prevProps) {
-    // check if need update all node's svg elements
-    // this only happens once, at the first time graph is rendered, or when switching between projects in PCDC
-    let needUpdate = false;
+  return (
+    <g
+      className='graph-drawer'
+      transform={`scale(${fittingScale}) translate(${fittingTransX}, ${fittingTransY})`}
+      ref={graphDomRef}
+    >
+      {
+        nodes.map((node) => {
+          let isNodeFaded = false;
+          let isNodeClickable = true;
+          let isHighlightingNode = false;
+          let isNodeHalfFaded = false;
+          let isNodeDashed = false;
+          if (isSearchMode) {
+            isNodeFaded = !matchedNodeIDs.includes(node.id);
+            isNodeDashed = matchedNodeIDsInNameAndDescription.length > 0
+              && !isNodeFaded && !matchedNodeIDsInNameAndDescription.includes(node.id);
+            isNodeClickable = !isNodeFaded;
+          } else if (highlightingNode) {
+            isHighlightingNode = (highlightingNode.id === node.id);
+            isNodeClickable =
+              highlightingNode.id === node.id
+              || (secondHighlightingNodeCandidateIDs.length > 1
+                && secondHighlightingNodeCandidateIDs.includes(node.id));
 
-    if(this.props.graphType.indexOf("pcdc") === 0 && prevProps.nodes.length > 0){
-      if(prevProps.nodes.length !== this.props.nodes.length 
-        || prevProps.nodes[0].type !== this.props.nodes[0].type){
-          needUpdate = true;
+            isNodeFaded = !relatedNodeIDs.includes(node.id);
+
+            if(graphType.indexOf("pcdc") === 0){
+              isNodeFaded = highlightingNode.id !== node.id;
+            }
+            if (secondHighlightingNodeID) {
+              isNodeHalfFaded = !isNodeFaded && !pathRelatedToSecondHighlightingNode
+                .find(e => (e.source === node.id || e.target === node.id));
+            }
+          }
+          let matchedNodeNameIndices = [];
+          /*
+          searchResult.forEach((item) => {
+            if (item.item.id === node.id) {
+              item.matches.forEach((matchItem) => {
+                if (matchItem.key === 'title') {
+                  matchedNodeNameIndices = matchItem.indices;
+                }
+              });
+            }
+          });
+          */
+          return (
+            <GraphNode
+              key={node.id}
+              node={node}
+              isHighlightingNode={isHighlightingNode}
+              isFaded={isNodeFaded}
+              isHalfFaded={isNodeHalfFaded}
+              isDashed={isNodeDashed}
+              isClickable={isNodeClickable}
+              onMouseOver={() => onMouseOverNode(node)}
+              onMouseOut={onMouseOutNode}
+              onClick={() => onClickNode(node)}
+              ref={getNodeRef(node.id)}
+              matchedNodeNameIndices={matchedNodeNameIndices}
+            />
+          );
+        })
       }
-    }
-
-
-    if (this.props.isGraphView
-       && this.props.layoutInitialized
-       && (!this.nodeSVGElementInitialized || needUpdate)) {
-      const graphNodesSVGElements = this.props.nodes.map(node => ({
-        nodeID: node.id,
-        svgElement: this.getNodeRef(node.id).current.getSVGElement(),
-      }))
-        .reduce((acc, cur) => {
-          acc[cur.nodeID] = cur.svgElement;
-          return acc;
-        }, {});
-      this.nodeSVGElementInitialized = true;
-      this.props.onGraphNodesSVGElementsUpdated(graphNodesSVGElements);
-    }
-  }
-
-  onMouseOverNode = (node) => {
-    this.props.onHoverNode(node.id);
-  }
-
-  onMouseOutNode = () => {
-    this.props.onCancelHoverNode();
-  }
-
-  onClickNode = (node) => {
-    this.props.onClickNode(node.id);
-  }
-
-  getNodeRef = (nodeID) => {
-    if (!this.graphNodeRefs[nodeID]) {
-      this.graphNodeRefs[nodeID] = React.createRef();
-    }
-    return this.graphNodeRefs[nodeID];
-  }
-
-  render() {
-    if (!this.props.layoutInitialized) return (<React.Fragment />);
-    const boundingBoxLength = this.props.graphBoundingBox[2][0];
-    let fittingScale = Math.min(
-      this.props.canvasWidth,
-      this.props.canvasHeight,
-    ) / boundingBoxLength;
-    if(this.props.graphType.indexOf('pcdc') === 0){
-      fittingScale = fittingScale * 0.8;
-    }
-    const fittingTransX = Math.abs(
-      (boundingBoxLength - (this.props.canvasWidth / fittingScale)) / 2,
-    );
-    const fittingTransY = Math.abs(
-      (boundingBoxLength - (this.props.canvasHeight / fittingScale)) / 2,
-    );
-    if (isNaN(fittingTransX) || isNaN(fittingTransY) || isNaN(fittingScale)) return <g />;
-    return (
-      <g
-        className='graph-drawer'
-        transform={`scale(${fittingScale}) translate(${fittingTransX}, ${fittingTransY}) `}
-        ref={this.graphDomRef}
-      >
-         {
-          this.props.nodes.map((node) => {
-            let isNodeFaded = false;
-            let isNodeClickable = true;
-            let isHighlightingNode = false;
-            let isNodeHalfFaded = false;
-            let isNodeDashed = false;
-            if (this.props.isSearchMode) {
-              isNodeFaded = !this.props.matchedNodeIDs.includes(node.id);
-              isNodeDashed = this.props.matchedNodeIDsInNameAndDescription.length > 0
-                && !isNodeFaded && !this.props.matchedNodeIDsInNameAndDescription.includes(node.id);
-              isNodeClickable = !isNodeFaded;
-            } else if (this.props.highlightingNode) {
-              isHighlightingNode = (this.props.highlightingNode.id === node.id);
-              isNodeClickable =
-                this.props.highlightingNode.id === node.id
-                || (this.props.secondHighlightingNodeCandidateIDs.length > 1
-                  && this.props.secondHighlightingNodeCandidateIDs.includes(node.id));
-
-              isNodeFaded = !this.props.relatedNodeIDs.includes(node.id);
-
-              if(this.props.graphType.indexOf("pcdc") === 0){
-                isNodeFaded = this.props.highlightingNode.id !== node.id;
-              }
-              if (this.props.secondHighlightingNodeID) {
-                isNodeHalfFaded = !isNodeFaded && !this.props.pathRelatedToSecondHighlightingNode
-                  .find(e => (e.source === node.id || e.target === node.id));
-              }
+      {
+        edges.map((edge, i) => {
+          let isEdgeFaded = false;
+          let isEdgeHalfFaded = false;
+          let isEdgeHighlighted = false;
+          if (isSearchMode) {
+            isEdgeFaded = true;
+          } else if (highlightingNode) {
+            const isEdgeRelatedToHighlightedNode =
+              relatedNodeIDs.includes(edge.source)
+              && relatedNodeIDs.includes(edge.target);
+            if (secondHighlightingNodeID) {
+              const isEdgeAlongPathRelatedToSecondHighlightNode =
+                !!pathRelatedToSecondHighlightingNode
+                  .find(e => (e.source === edge.source && e.target === edge.target));
+              isEdgeHalfFaded = isEdgeRelatedToHighlightedNode
+                && !isEdgeAlongPathRelatedToSecondHighlightNode;
+              isEdgeFaded = !isEdgeRelatedToHighlightedNode;
+              isEdgeHighlighted = isEdgeAlongPathRelatedToSecondHighlightNode;
+            } else {
+              isEdgeFaded = !isEdgeRelatedToHighlightedNode;
+              isEdgeHighlighted = isEdgeRelatedToHighlightedNode;
             }
-            let matchedNodeNameIndices = [];
-            /*
-            this.props.searchResult.forEach((item) => {
-              if (item.item.id === node.id) {
-                item.matches.forEach((matchItem) => {
-                  if (matchItem.key === 'title') {
-                    matchedNodeNameIndices = matchItem.indices;
-                  }
-                });
-              }
-            });
-            */
-            return (
-              <GraphNode
-                key={node.id}
-                node={node}
-                isHighlightingNode={isHighlightingNode}
-                isFaded={isNodeFaded}
-                isHalfFaded={isNodeHalfFaded}
-                isDashed={isNodeDashed}
-                isClickable={isNodeClickable}
-                onMouseOver={() => this.onMouseOverNode(node)}
-                onMouseOut={this.onMouseOutNode}
-                onClick={() => this.onClickNode(node)}
-                ref={this.getNodeRef(node.id)}
-                matchedNodeNameIndices={matchedNodeNameIndices}
-              />
-            
-            );
-          })
-        }
-        {
-          this.props.edges.map((edge, i) => {
-            let isEdgeFaded = false;
-            let isEdgeHalfFaded = false;
-            let isEdgeHighlighted = false;
-            if (this.props.isSearchMode) {
-              isEdgeFaded = true;
-            } else if (this.props.highlightingNode) {
-              const isEdgeRelatedToHighlightedNode =
-                this.props.relatedNodeIDs.includes(edge.source)
-                && this.props.relatedNodeIDs.includes(edge.target);
-              if (this.props.secondHighlightingNodeID) {
-                const isEdgeAlongPathRelatedToSecondHighlightNode =
-                  !!this.props.pathRelatedToSecondHighlightingNode
-                    .find(e => (e.source === edge.source && e.target === edge.target));
-                isEdgeHalfFaded = isEdgeRelatedToHighlightedNode
-                  && !isEdgeAlongPathRelatedToSecondHighlightNode;
-                isEdgeFaded = !isEdgeRelatedToHighlightedNode;
-                isEdgeHighlighted = isEdgeAlongPathRelatedToSecondHighlightNode;
-              } else {
-                isEdgeFaded = !isEdgeRelatedToHighlightedNode;
-                isEdgeHighlighted = isEdgeRelatedToHighlightedNode;
-              }
-            }
-            return (           
-              <GraphEdge
-                key={`${edge.source}-${edge.target}-${i}`}
-                edge={edge}
-                isRequired={edge.required}
-                isFaded={isEdgeFaded}
-                isHalfFaded={isEdgeHalfFaded}
-                isHighlighted={isEdgeHighlighted}
-                graphType={this.props.graphType}
-              />
-    
-            );
-          })
-        }
-       
-      </g>
-    );
-  }
-}
+          }
+          return (
+            <GraphEdge
+              key={`${edge.source}-${edge.target}-${i}`}
+              edge={edge}
+              isRequired={edge.required}
+              isFaded={isEdgeFaded}
+              isHalfFaded={isEdgeHalfFaded}
+              isHighlighted={isEdgeHighlighted}
+              graphType={graphType}
+            />
+          );
+        })
+      }
+    </g>
+  );
+};
 
 GraphDrawer.propTypes = {
-  nodes: PropTypes.arrayOf(PropTypes.object),
-  edges: PropTypes.arrayOf(PropTypes.object),
-  graphBoundingBox: PropTypes.array,
-  layoutInitialized: PropTypes.bool,
-  canvasWidth: PropTypes.number,
-  canvasHeight: PropTypes.number,
-  onHoverNode: PropTypes.func,
-  onCancelHoverNode: PropTypes.func,
-  onClickNode: PropTypes.func,
-  highlightingNode: PropTypes.object,
-  relatedNodeIDs: PropTypes.array,
-  secondHighlightingNodeID: PropTypes.string,
-  secondHighlightingNodeCandidateIDs: PropTypes.arrayOf(PropTypes.string),
-  pathRelatedToSecondHighlightingNode: PropTypes.arrayOf(PropTypes.object),
-  isGraphView: PropTypes.bool,
-  isSearchMode: PropTypes.bool,
-  matchedNodeIDs: PropTypes.arrayOf(PropTypes.string),
-  matchedNodeIDsInNameAndDescription: PropTypes.arrayOf(PropTypes.string),
-  onGraphNodesSVGElementsUpdated: PropTypes.func,
-  searchResult: PropTypes.object,
-  graphType: PropTypes.string,
+  graphType: PropTypes.string.isRequired,
 };
 
-GraphDrawer.defaultProps = {
-  nodes: [],
-  edges: [],
-  graphBoundingBox: [[0, 0], [0, 1], [1, 1], [1, 0]],
-  layoutInitialized: false,
-  canvasWidth: 1000,
-  canvasHeight: 1000,
-  onHoverNode: () => {},
-  onCancelHoverNode: () => {},
-  onClickNode: () => {},
-  highlightingNode: null,
-  relatedNodeIDs: [],
-  secondHighlightingNodeID: null,
-  secondHighlightingNodeCandidateIDs: [],
-  pathRelatedToSecondHighlightingNode: [],
-  isGraphView: true,
-  isSearchMode: false,
-  matchedNodeIDs: [],
-  matchedNodeIDsInNameAndDescription: [],
-  onGraphNodesSVGElementsUpdated: () => {},
-  searchResult: {},
-  graphType: "gdc",
-};
-
-export default GraphDrawer;
+export default React.memo(GraphDrawer);
